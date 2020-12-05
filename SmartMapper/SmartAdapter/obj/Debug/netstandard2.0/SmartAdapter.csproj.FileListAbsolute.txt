@@ -1,0 +1,9 @@
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/bin/Debug/netstandard2.0/SmartAdapter.deps.json
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/bin/Debug/netstandard2.0/SmartAdapter.dll
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/bin/Debug/netstandard2.0/SmartAdapter.pdb
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.csprojAssemblyReference.cache
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.AssemblyInfoInputs.cache
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.AssemblyInfo.cs
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.dll
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.pdb
+/home/rubia/code/Royal-Code/SmartMapper/SmartMapper/SmartAdapter/obj/Debug/netstandard2.0/SmartAdapter.csproj.CoreCompileInputs.cache
