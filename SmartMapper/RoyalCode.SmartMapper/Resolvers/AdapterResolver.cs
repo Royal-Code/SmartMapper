@@ -10,7 +10,7 @@ public class AdapterResolver
 
         foreach (var sourceProperty in fromSourceProperties)
         {
-            var propertyOptions = options.GetPropertyOptions(sourceProperty.Property);
+            var propertyOptions = options.GetAdapterPropertyOptions(sourceProperty.Property);
             if (propertyOptions is not null && propertyOptions.Action != PropertyMapAction.Undefined)
                 sourceProperty.UseOptions(propertyOptions);
         }

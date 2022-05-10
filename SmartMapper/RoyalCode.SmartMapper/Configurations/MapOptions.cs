@@ -4,17 +4,21 @@ namespace RoyalCode.SmartMapper.Configurations;
 
 public class MapOptions
 {
-    private Dictionary<PropertyInfo, PropertyOptions>? propertyOptions;
+    private Dictionary<MapPropertyKey, PropertyOptions>? propertyOptions;
 
-    public PropertyOptions? GetPropertyOptions(PropertyInfo property)
+    // TODO: can polymorphism be used? and remove MapKind and the key?
+    public PropertyOptions? GetAdapterPropertyOptions(PropertyInfo property)
     {
+        var key = new MapPropertyKey(property, MapKind.Adapter);
         return propertyOptions is null
             ? null
-            : propertyOptions.ContainsKey(property)
-                ? propertyOptions[property]
+            : propertyOptions.ContainsKey(key)
+                ? propertyOptions[key]
                 : null;
     }
 }
+
+public record MapPropertyKey(PropertyInfo Property, MapKind Kind);
 
 public class MapOptions<TSource, TTarget> : MapOptions
 {
@@ -33,6 +37,32 @@ public class PropertyOptions
     public PropertyInfo? TargetProperty { get; set; }
     
     public PropertyMapAction Action { get; set; }
+}
+
+public enum MapKind
+{
+    /// <summary>
+    /// <para>
+    ///     Used to create a new target object, 
+    ///     where the values of the source object's properties are read and assigned to the target object's properties.
+    /// </para>
+    /// <para>
+    ///     
+    /// </para>
+    /// </summary>
+    Adapter,
+
+    /// <summary>
+    /// <para>
+    ///     Used in mappings where a 'new' expression is generated for the target object and its properties initialized.
+    /// </para>
+    /// <para>
+    ///     It can be used in the <c>Select</c> method of Linq namespace.
+    /// </para>
+    /// </summary>
+    Selector,
+
+    Specifier
 }
 
 public enum PropertyMapAction

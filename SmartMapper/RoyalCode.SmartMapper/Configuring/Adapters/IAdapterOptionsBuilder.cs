@@ -36,7 +36,7 @@ public static class ConfigureSample
     {
         builder.Configure<MyDto, MyEntity>(b =>
         {
-
+            b.Map(d => d.Id).To(e => e.Id);
         });
 
     }
