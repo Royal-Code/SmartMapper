@@ -16,6 +16,8 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelection);
 
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
+    
+    
 }
 
 public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty>
@@ -27,7 +29,7 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
 
 public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>
 {
-
+    
 }
 
 public static class ConfigureSample
@@ -40,7 +42,6 @@ public static class ConfigureSample
         });
 
     }
-
 
     public class MyEntity
     {
