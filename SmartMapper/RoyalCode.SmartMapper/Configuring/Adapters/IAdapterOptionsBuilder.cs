@@ -10,7 +10,6 @@ public interface IAdapterOptionsBuilder
     IAdapterOptionsBuilder<TSource, TTarget> Configure<TSource, TTarget>();
 }
 
-
 public interface IAdapterOptionsBuilder<TSource, TTarget>
 {
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelection);
