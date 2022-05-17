@@ -2,6 +2,11 @@ using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
+public interface IMapOptions
+{
+    public PropertyOptions? GetPropertyOptions(PropertyInfo property);
+}
+
 public class MapOptions
 {
     private Dictionary<MapPropertyKey, PropertyOptions>? propertyOptions;
@@ -33,6 +38,7 @@ public class PropertyOptions
     }
     
     public PropertyInfo SourceProperty { get; }
+    
 
     public PropertyInfo? TargetProperty { get; set; }
     
