@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Configurations;
+using RoyalCode.SmartMapper.Extensions;
 
-namespace RoyalCode.SmartMapper.Configuring.Adapters;
+namespace RoyalCode.SmartMapper.Configurations.Adapters;
 
 public class AdapterOptionsBuilder : IAdapterOptionsBuilder
 {
@@ -18,7 +18,7 @@ public class AdapterOptionsBuilder : IAdapterOptionsBuilder
         configure(builder);
         return this;
     }
-
+     
     public IAdapterOptionsBuilder<TSource, TTarget> Configure<TSource, TTarget>()
     {
         return new AdapterOptionsBuilder<TSource, TTarget>(mapOptions);
@@ -37,7 +37,9 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelection)
     {
-        throw new NotImplementedException();
+        var property = propertySelection.GetSelectedProperty();
+        var options = mapOptions.GetOrCreatePropertyOptions(property);
+        return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options);
     }
 
     public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)

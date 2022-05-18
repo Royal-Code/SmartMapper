@@ -17,6 +17,8 @@ internal class FromSourceProperty
     
     public ResolutionState State { get; private set; }
 
+    public PropertyOptions? Options { get; private set; }
+
     public FromSourceProperty(PropertyInfo property)
     {
         Property = property;
@@ -24,6 +26,9 @@ internal class FromSourceProperty
 
     public void UseOptions(PropertyOptions propertyOptions)
     {
-        throw new NotImplementedException();
+        Options = propertyOptions;
+        State = propertyOptions.Action == PropertyMapAction.Ignore
+            ? ResolutionState.Ignore
+            : ResolutionState.Resolved;
     }
 }
