@@ -9,7 +9,7 @@ public class UnitTest1
     {
         var configuration = new MapperConfiguration();
 
-        var options = configuration.Configure<SimplePlainDto, SimplePlainEntity>();
+        //var options = configuration.Configure<SimplePlainDto, SimplePlainEntity>();
     }
 }
 

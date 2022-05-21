@@ -16,7 +16,7 @@ public class Resolutions
     private Resolution<TFrom, TTo> GetResolution<TFrom, TTo>()
     {
         var key = new Tuple<Type, Type>(typeof(TFrom), typeof(TTo));
-        var map = resolutions.GetOrAdd(key, k => new Resolution<TFrom, TTo>());
+        var map = resolutions.GetOrAdd(key, _ => new Resolution<TFrom, TTo>());
         return (Resolution<TFrom, TTo>)map;
     }
 

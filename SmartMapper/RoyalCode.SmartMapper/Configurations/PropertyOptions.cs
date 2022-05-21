@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using RoyalCode.Extensions.PropertySelection;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
@@ -13,7 +14,7 @@ public class PropertyOptions
     
     public PropertyInfo SourceProperty { get; }
     
-    public PropertyInfo? TargetProperty { get; internal set; }
+    public PropertySelection? TargetProperty { get; internal set; }
     
     public PropertyMapAction Action { get; internal set; }
 

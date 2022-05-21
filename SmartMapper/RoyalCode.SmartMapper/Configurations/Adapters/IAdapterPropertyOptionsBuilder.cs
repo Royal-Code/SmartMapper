@@ -8,6 +8,14 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> To<TTargetProperty>(Expression<Func<TTarget, TTargetProperty>> propertySelection);
 
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> To<TTargetProperty>(string propertyName);
+
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty> ToConstructor();
+
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty> ToConstructorParameter();
+
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty> ToMethod();
+
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty> ToMethodParameter();
 }
 
 public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>
@@ -16,4 +24,6 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
 
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> UseConverver(
         Expression<Func<TSourceProperty, TTargetProperty>> converter);
+    
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TNextProperty> ThenTo<TNextProperty>(Expression<Func<TTargetProperty, TNextProperty>> propertySelection);
 }
