@@ -27,6 +27,26 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     {
         throw new NotImplementedException();
     }
+
+    public IConstructorPropertyOptionsBuilder<TSource, TProperty> ToConstructor()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> ToConstructorParameter()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> ToMethod()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> ToMethodParameter()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>

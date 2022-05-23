@@ -16,6 +16,8 @@ public class PropertyOptions
     
     public PropertySelection? TargetProperty { get; internal set; }
     
+    public PropertyToMethodOptions? TargetMethodOptions { get; internal set; }
+    
     public PropertyMapAction Action { get; internal set; }
 
     public object? FindAnnotation(string alias)
@@ -36,4 +38,32 @@ public class PropertyOptions
         annotations ??= new();
         annotations[alias] = value;
     }
+}
+
+public class PropertyToMethodOptions
+{
+    public PropertyToMethodOptions(PropertyOptions propertyOptions)
+    {
+        PropertyOptions = propertyOptions;
+    }
+
+    public PropertyOptions PropertyOptions { get; }
+
+    public PropertyInfo SourceProperty => PropertyOptions.SourceProperty;
+    
+    public MethodInfo? TargetMethod { get; internal set; }
+    
+    public string MethodName { get; internal set; }
+}
+
+public class PropertyToParameterOptions
+{
+    public PropertyToParameterOptions(PropertyToMethodOptions propertyToMethodOptions)
+    {
+        PropertyToMethodOptions = propertyToMethodOptions;
+    }
+
+    public PropertyToMethodOptions PropertyToMethodOptions { get; }
+    
+    
 }
