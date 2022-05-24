@@ -42,6 +42,8 @@ public class PropertyOptions
 
 public class PropertyToMethodOptions
 {
+    private readonly Dictionary<PropertyInfo, PropertyToParameterOptions> paramtersOptions = new();
+
     public PropertyToMethodOptions(PropertyOptions propertyOptions)
     {
         PropertyOptions = propertyOptions;
@@ -54,16 +56,31 @@ public class PropertyToMethodOptions
     public MethodInfo? TargetMethod { get; internal set; }
     
     public string MethodName { get; internal set; }
+
+    public PropertyToParameterOptions GetParameterOptions(PropertyInfo property)
+    {
+        if (paramtersOptions.TryGetValue(property, out var parameter))
+            return parameter;
+
+        parameter = new PropertyToParameterOptions(this, property);
+        paramtersOptions[property] = parameter;
+        return parameter;
+    }
 }
 
 public class PropertyToParameterOptions
 {
-    public PropertyToParameterOptions(PropertyToMethodOptions propertyToMethodOptions)
+    public PropertyToParameterOptions(PropertyToMethodOptions propertyToMethodOptions, PropertyInfo propertyToParameterInfo)
     {
         PropertyToMethodOptions = propertyToMethodOptions;
+        PropertyToParameterInfo = propertyToParameterInfo;
     }
 
     public PropertyToMethodOptions PropertyToMethodOptions { get; }
     
+    public PropertyInfo PropertyToParameterInfo { get; }
     
+    public ParameterInfo? ParameterInfo { get; internal set; }
+
+    public MapAction MapAction { get; } = new();
 }

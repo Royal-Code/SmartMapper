@@ -19,18 +19,35 @@ public class PropertyToMethodResolver
 
 public class PropertyToParameterResolver
 {
+    private readonly IResolversManager resolversManager;
+
+    public PropertyToParameterResolver(IResolversManager resolversManager)
+    {
+        this.resolversManager = resolversManager;
+    }
 
     public void Resolver(PropertyToMethodOptions options, IEnumerable<PropertyInfo> properties)
     {
         var method = options.TargetMethod 
             ?? throw new ArgumentException("Target method not resolved", nameof(options));
-
+        var parameters = method.GetParameters();
+        
         foreach (var property in properties)
         {
-            PropertyToParameterOptions parameterOptions;
+            PropertyToParameterOptions parameterOptions = options.GetParameterOptions(property);
+
             // for each property, try read the PropertyToParameterOptions from the options,
             // if exists, check if the parameter was specified and try resolve the parameter type.
             // otherwise, try find a parameter and then resolve the type.
+            
+            if (parameterOptions.ParameterInfo is null)
+            {
+                var matchParameter = parameters.FirstOrDefault(p => p.Name == property.Name);
+                if (matchParameter is null)
+                {
+                    // match with the source name handler
+                }
+            }
         }
     }
 }
