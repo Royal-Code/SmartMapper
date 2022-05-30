@@ -7,19 +7,12 @@ public interface IResolversManager
     IEnumerable<TargetNameHandler> TargetNameHandlers { get; }
 }
 
-public class NameHandlerBase
-{
-    public string Sufix { get; set; }
-
-    public string Prefix { get; set; }
-}
-
-public class SourceNameHandler
+public class SourceNameHandler : NameHandlerBase
 {
     
 }
 
-public class TargetNameHandler
+public class TargetNameHandler : NameHandlerBase
 {
     
 }
