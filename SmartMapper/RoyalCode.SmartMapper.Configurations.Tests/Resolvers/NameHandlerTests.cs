@@ -6,6 +6,49 @@ namespace RoyalCode.SmartMapper.Configurations.Tests.Resolvers;
 
 public class NameHandlerTests
 {
+    [Fact]
+    public void MustRemovePrefixOfName()
+    {
+        var handler = new NameHandlerBase
+        {
+            Prefix = "Key"
+        };
+        
+        var found = handler.GetNames("KeyTest").ToList();
+        Assert.Single(found);
+        
+        Assert.Equal("Test", found.First());
+    }
+    
+    [Fact]
+    public void MustRemoveSuffixOfName()
+    {
+        var handler = new NameHandlerBase
+        {
+            Suffix = "Key"
+        };
+        
+        var found = handler.GetNames("TestKey").ToList();
+        Assert.Single(found);
+        
+        Assert.Equal("Test", found.First());
+    }
+    
+    [Fact]
+    public void MustRemovePrefixAndSuffixOfName()
+    {
+        var handler = new NameHandlerBase
+        {
+            Prefix = "key",
+            Suffix = "Key"
+        };
+        
+        var found = handler.GetNames("KeyTestKey").ToList();
+        Assert.Equal(3, found.Count);
+        
+        Assert.Equal("Test", found.Last());
+    }
+    
     [Theory]
     [InlineData("Key", "KeyValue", true)]
     [InlineData("key", "KeyValue", true)]

@@ -39,6 +39,8 @@ public class PropertyToParameterResolver
             // for each property, try read the PropertyToParameterOptions from the options,
             // if exists, check if the parameter was specified and try resolve the parameter type.
             // otherwise, try find a parameter and then resolve the type.
+
+            SourceNameHandler? matchNameHandler = null;
             
             if (parameterOptions.ParameterInfo is null)
             {
@@ -48,9 +50,24 @@ public class PropertyToParameterResolver
                     // match with the source name handler
                     foreach (var sourceNameHandler in resolversManager.SourceNameHandlers)
                     {
-                        
+                        foreach (var name in sourceNameHandler.GetNames(property.Name))
+                        {
+                            matchParameter = parameters.FirstOrDefault(p => p.Name == property.Name);
+                            if (matchParameter is not null)
+                            {
+                                matchNameHandler = sourceNameHandler;
+                                break;
+                            }
+                        }
+                        if (matchParameter is not null)
+                        {
+                            break;
+                        }
                     }
                 }
+                
+                // here we have the method parameter and maybe the match name handler
+                // now is time to try resolve the type set kind.
             }
         }
     }
