@@ -26,7 +26,7 @@ public class PropertyToParameterResolver
         this.resolversManager = resolversManager;
     }
 
-    public void Resolver(PropertyToMethodOptions options, IEnumerable<PropertyInfo> properties)
+    public void Resolve(PropertyToMethodOptions options, IEnumerable<PropertyInfo> properties)
     {
         var method = options.TargetMethod 
             ?? throw new ArgumentException("Target method not resolved", nameof(options));
