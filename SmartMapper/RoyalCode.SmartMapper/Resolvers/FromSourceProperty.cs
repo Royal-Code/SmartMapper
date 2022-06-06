@@ -1,8 +1,7 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Configurations;
-using RoyalCode.SmartMapper.Resolvers;
 
-namespace RoyalCode.SmartMapper;
+namespace RoyalCode.SmartMapper.Resolvers;
 
 internal class FromSourceProperty
 {

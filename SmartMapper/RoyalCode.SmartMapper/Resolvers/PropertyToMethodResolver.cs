@@ -55,6 +55,9 @@ public class PropertyToParameterResolver
                             matchParameter = parameters.FirstOrDefault(p => p.Name == property.Name);
                             if (matchParameter is not null)
                             {
+                                // here the handler is validated, and it can fail.
+                                // how check this?
+                                sourceNameHandler.Validate(options.SourceProperty, matchParameter.ParameterType);
                                 matchNameHandler = sourceNameHandler;
                                 break;
                             }

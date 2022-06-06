@@ -14,6 +14,8 @@ public class AssignmentResolver
     
     public void Resolve(AssignmentOptions options, Type sourceType, Type targetType)
     {
+        
+        
         throw new NotImplementedException();
     }
 }
