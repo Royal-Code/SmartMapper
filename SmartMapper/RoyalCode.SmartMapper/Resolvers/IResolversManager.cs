@@ -1,3 +1,5 @@
+using RoyalCode.SmartMapper.Resolvers.Assigners;
+
 namespace RoyalCode.SmartMapper.Resolvers;
 
 public interface IResolversManager

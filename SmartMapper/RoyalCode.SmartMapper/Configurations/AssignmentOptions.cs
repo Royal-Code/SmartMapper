@@ -1,4 +1,5 @@
 using RoyalCode.SmartMapper.Resolvers;
+using RoyalCode.SmartMapper.Resolvers.Assigners;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
@@ -9,5 +10,8 @@ namespace RoyalCode.SmartMapper.Configurations;
 /// </summary>
 public class AssignmentOptions : OptionsBase
 {
-    public ValueAssignmentStrategy Strategy { get; internal set; }
+    public ValueAssignmentStrategy Strategy => Assigner?.Strategy ?? ValueAssignmentStrategy.Undefined;
+
+
+    public IValueAssigner? Assigner { get; internal set; }
 }
