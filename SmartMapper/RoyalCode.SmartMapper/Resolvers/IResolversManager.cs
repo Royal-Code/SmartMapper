@@ -9,6 +9,18 @@ public interface IResolversManager
     IEnumerable<TargetNameHandler> TargetNameHandlers { get; }
 
     IEnumerable<IAssignmentStrategy> AssignmentStrategies { get; }
+
+    AdaptResolveResult ResolveAdapter(Type sourceType, Type targetType);
+}
+
+public class AdaptResolveResult : ResolveResult
+{
+
+}
+
+public class ResolveResult
+{
+    public bool Success { get; internal set; }
 }
 
 public class SourceNameHandler : NameHandlerBase
