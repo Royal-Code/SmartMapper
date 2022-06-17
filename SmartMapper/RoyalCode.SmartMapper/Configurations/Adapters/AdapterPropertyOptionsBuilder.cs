@@ -67,7 +67,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetP
         return this;
     }
 
-    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> UseConverver(
+    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> UseConverter(
         Expression<Func<TProperty, TTargetProperty>> converter)
     {
         options.Action = PropertyMapAction.Adapt;
