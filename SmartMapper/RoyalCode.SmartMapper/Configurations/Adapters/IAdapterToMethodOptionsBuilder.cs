@@ -1,0 +1,44 @@
+namespace RoyalCode.SmartMapper.Configurations.Adapters;
+
+/// <summary>
+/// <para>
+///     A builder to configurate the mapping for adapter of a source type to a method of a destination type.
+/// </para>
+/// <para>
+///     By default, all properties will be mapped to the method, and will be resolved by the property/parameter name.    
+/// </para>
+/// <para>
+///     It is possible to choose only some properties to be mapped to a method.
+///     This option requires that the method is identified.
+/// </para>
+/// </summary>
+/// <typeparam name="TSource">The source type.</typeparam>
+/// <typeparam name="TTarget">The destination type.</typeparam>
+public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
+{
+    /// <summary>
+    /// <para>
+    ///     In this option, some properties of the source type are mapped to parameters.
+    /// </para>
+    /// <para>
+    ///     The order of the properties is the order of the parameters.
+    /// </para>
+    /// </summary>
+    /// <param name="configureParameters">
+    ///     A function to configure the parameters of the destination method.
+    /// </param>
+    void Parameters(Action<IAdapterToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters);
+
+    /// <summary>
+    /// <para>
+    ///     This is the default option if the other is not performed.
+    /// </para>
+    /// <para>
+    ///     In it you can configure each property of the source type for a parameter.
+    /// </para>
+    /// </summary>
+    /// <param name="configureProperties">
+    ///     A function to configure the properties of the source type.
+    /// </param>
+    void AllProperties(Action<IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
+}

@@ -3,35 +3,132 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Configurations.Adapters;
 
+/// <summary>
+/// <para>
+///     A builder to configurate the mapping for adapters.
+/// </para>
+/// </summary>
 public interface IAdapterOptionsBuilder
 {
+    /// <summary>
+    /// <para>
+    ///     Configures the mapping of a source type to a destination type.
+    /// </para>
+    /// </summary>
+    /// <param name="configure">Configuration action.</param>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TTarget">The destination type.</typeparam>
+    /// <returns>The same instance for chained calls.</returns>
     IAdapterOptionsBuilder Configure<TSource, TTarget>(Action<IAdapterOptionsBuilder<TSource, TTarget>> configure);
 
+    /// <summary>
+    /// <para>
+    ///     Gets the configuration for the specified source and destination types.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TTarget">The destination type.</typeparam>
+    /// <returns>
+    ///     The configuration for the specified source and destination types.
+    /// </returns>
     IAdapterOptionsBuilder<TSource, TTarget> Configure<TSource, TTarget>();
 }
 
+/// <summary>
+/// <para>
+///     A builder to configurate the mapping for adapter of a source type to a destination type.
+/// </para>
+/// </summary>
+/// <typeparam name="TSource">The source type.</typeparam>
+/// <typeparam name="TTarget">The destination type.</typeparam>
 public interface IAdapterOptionsBuilder<TSource, TTarget>
 {
+    /// <summary>
+    /// <para>
+    ///     Adapts the source type to a method of the destination type.
+    /// </para>
+    /// <para>
+    ///     The properties of the source type are mapped to the parameters of the destination method.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    ///     A builder to configure the method mapping options.
+    /// </returns>
     IAdapterToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
 
+    /// <summary>
+    /// <para>
+    ///     Adapts the source type to a method of the destination type.
+    /// </para>
+    /// <para>
+    ///     The properties of the source type are mapped to the parameters of the destination method.
+    /// </para>
+    /// </summary>
+    /// <param name="methodSelect">
+    ///     A function to select the method of the destination type.
+    /// </param>
+    /// <returns>
+    ///     A builder to configure the method mapping options.
+    /// </returns>
     IAdapterToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelect);
 
+    /// <summary>
+    /// <para>
+    ///     Adapts the source type to a method of the destination type.
+    /// </para>
+    /// <para>
+    ///     The properties of the source type are mapped to the parameters of the destination method.
+    /// </para>
+    /// </summary>
+    /// <param name="methodName">
+    ///     The name of the method of the destination type.
+    /// </param>
+    /// <returns>
+    ///     A builder to configure the method mapping options.
+    /// </returns>
     IAdapterToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
 
+    /// <summary>
+    /// <para>
+    ///     Configure the constructor that will be used to create the destination instance.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    ///     A builder to configure the constructor mapping options.
+    /// </returns>
     IAdapterConstructorOptionsBuilder<TSource, TTarget> Constructor();
 
+    /// <summary>
+    /// <para>
+    ///     Configure the mapping of a property from the source type.
+    /// </para>
+    /// </summary>
+    /// <param name="propertySelection">
+    ///     An expression to select the property of the source type.
+    /// </param>
+    /// <typeparam name="TProperty">
+    ///     The type of the property of the source type.
+    /// </typeparam>
+    /// <returns>
+    ///     A builder to configure the property mapping options.
+    /// </returns>
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelection);
 
+    /// <summary>
+    /// <para>
+    ///     Configure the mapping of a property from the source type.
+    /// </para>
+    /// </summary>
+    /// <param name="propertyName">
+    ///     The name of the property of the source type.
+    /// </param>
+    /// <typeparam name="TProperty">
+    ///     The type of the property of the source type.
+    /// </typeparam>
+    /// <returns>
+    ///     A builder to configure the property mapping options.
+    /// </returns>
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
-}
-
-public interface IAdapterConstructorOptionsBuilder<TSource, TTarget>
-{
-    void Parameters(Action<IAdapterConstructorParametersOptionsBuilder<TSource, TTarget>> configurePrameters);
-
-    void WithParameters(int numberOfParameters);
-
-    void WithParameters(params Type[] parameterTypes);
 }
 
 public interface IAdapterConstructorParametersOptionsBuilder<TSource, TTarget>
@@ -40,57 +137,12 @@ public interface IAdapterConstructorParametersOptionsBuilder<TSource, TTarget>
 }
 
 /// <summary>
-/// Aqui o tipo de origem é mapeado para um método.
-/// Por padrão, todas propriedades serão mapeadas para o método, e serão resolvidas pelo nome da propriedade/parâmetro.
-/// É possível escolher só algumas propriedades a serem mapeadas para um método.
-/// Esta opção requer que o método seja identificado.
-/// </summary>
-/// <typeparam name="TSource"></typeparam>
-/// <typeparam name="TTarget"></typeparam>
-public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
-{
-    /// <summary>
-    /// Nesta opção, algumas propriedades do tipo de origem são mapeadas os parâmetros.
-    /// A ordem das propriedades é a ordem dos parâmetros.
-    /// </summary>
-    /// <param name="configureParameters"></param>
-    /// <returns></returns>
-    void Parameters(Action<IAdapterToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters);
-
-    /// <summary>
-    /// Esta é a opção padrão caso a outra não seja executada.
-    /// Nele é possível configurar cada propriedade do tipo de origem para um parâmetro.
-    /// </summary>
-    /// <param name="configureProperties"></param>
-    void AllProperties(Action<IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
-}
-
-/// <summary>
-/// Configura os parâmetros de um método adaptado do tipo de origem.
-/// </summary>
-/// <typeparam name="TSource"></typeparam>
-/// <typeparam name="TTarget"></typeparam>
-public interface IAdapterToMethodParametersOptionsBuilder<TSource, TTarget>
-{
-    /// <summary>
-    /// Mapeia uma propriedade do tipo de origem para um parâmetro no tipo de destino.
-    /// A ordem de chamada deste método durante a configuração dos parâmetros definirá a posição
-    /// do parâmetro.
-    /// </summary>
-    /// <typeparam name="TProperty">The source property type.</typeparam>
-    /// <param name="propertySelector"></param>
-    /// <returns></returns>
-    IAdapterToMethodPropertyParameterOptionsBuilder<TSource, TTarget, TProperty> Parameter<TProperty>(
-        Expression<Func<TSource, TProperty>> propertySelector);
-}
-
-/// <summary>
 /// Opções para configurar uma propriedade do tipo de origem que é mapeada para um parâmetro de um método no tipo 
 /// de destino.
 /// </summary>
-/// <typeparam name="TSource"></typeparam>
-/// <typeparam name="TTarget"></typeparam>
-/// <typeparam name="TProperty"></typeparam>
+/// <typeparam name="TSource">The source type.</typeparam>
+/// <typeparam name="TTarget">The destination type.</typeparam>
+/// <typeparam name="TProperty">The source property type</typeparam>
 public interface IAdapterToMethodPropertyParameterOptionsBuilder<TSource, TTarget, TProperty>
 {
     // deve ser possível configurar a estratégia de atribuíção.
@@ -100,8 +152,8 @@ public interface IAdapterToMethodPropertyParameterOptionsBuilder<TSource, TTarge
 /// Opções onde todas propriedades do tipo de origem são mapeadas como parâmetros no tipo de destino.
 /// É possível mapear a propriedade para um parâmetro, definindo o nome do parâmetro e estratégia de atribuíção.
 /// </summary>
-/// <typeparam name="TSource"></typeparam>
-/// <typeparam name="TTarget"></typeparam>
+/// <typeparam name="TSource">The source type.</typeparam>
+/// <typeparam name="TTarget">The destination type.</typeparam>
 public interface IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>
 {
 
@@ -118,7 +170,13 @@ public static class ConfigureSample
 
         builder.Configure<MyDto, MyEntity>(b =>
         {
-            b.MapToMethod(e => e.DoSomething);
+            b.MapToMethod(e => e.DoSomething)
+                .Parameters(b2 =>
+                {
+                    b2.Parameter(e => e.Id);
+                });
+            
+            b.Map(d => d.ValueObject).ToMethod(e => e.DoSomething);
         });
     }
 
@@ -139,5 +197,12 @@ public static class ConfigureSample
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public SomeValueObject ValueObject { get; set; }
+    }
+    
+    public class SomeValueObject
+    {
+        public string Value { get; set; }
     }
 }
