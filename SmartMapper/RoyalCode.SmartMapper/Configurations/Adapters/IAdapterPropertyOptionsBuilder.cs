@@ -69,8 +69,6 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
         Expression<Func<TTarget, Delegate>> methodSelect);
 }
 
-
-
 /// <summary>
 /// <para>
 ///     A builder to configure the mapping of a source property to a target property.
@@ -81,68 +79,8 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
 /// <typeparam name="TTargetProperty">The destination property type.</typeparam>
 public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>
+    : IAdapterPropertyStrategyBuilder<TSourceProperty, TTargetProperty, IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>>
 {
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to cast the source value type to the destination value type.
-    /// </para>
-    /// </summary>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> CastValue();
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to convert the source value type to the destination value type.
-    /// </para>
-    /// </summary>
-    /// <param name="converter">
-    ///     The converter to use to convert the source value type to the destination value type.
-    /// </param>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> UseConverter(
-        Expression<Func<TSourceProperty, TTargetProperty>> converter);
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to adapt the source value type to the destination value type.
-    /// </para>
-    /// </summary>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> Adapt();
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to select the source value type to the destination value type.
-    /// </para>
-    /// </summary>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> Select();
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to process the source value with a service to retreive the destination value.
-    /// </para>
-    /// </summary>
-    /// <param name="valueProcessor">
-    ///     The service to use to process the source value.
-    /// </param>
-    /// <typeparam name="TService">
-    ///     The service type.
-    /// </typeparam>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty> WithService<TService>(
-        Expression<Func<TService, TSourceProperty, TTargetProperty>> valueProcessor);
-
     /// <summary>
     /// <para>
     ///     Continues the mapping of the source property to an internal property of the target property.
@@ -159,63 +97,18 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     /// </returns>
     IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
         Expression<Func<TTargetProperty, TNextProperty>> propertySelection);
-    
+
+    /// <summary>
+    /// <para>
+    ///     Continues the mapping of the source property to an internal property of the target property.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    ///     The builder to configure the property to property mapping.
+    /// </returns>
     IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty> Then();
 }
 
-public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty>
-{
-    /// <summary>
-    /// <para>
-    ///     Map to another property.
-    /// </para>
-    /// </summary>
-    /// <typeparam name="TNextProperty">The destination property type.</typeparam>
-    /// <param name="propertySelection">The property selection expression.</param>
-    /// <returns>
-    ///     The builder to configure the property to property mapping.
-    /// </returns>
-    IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> To<TNextProperty>(
-        Expression<Func<TTargetProperty, TNextProperty>> propertySelection);
-
-    /// <summary>
-    /// <para>
-    ///     Map to another property.
-    /// </para>
-    /// </summary>
-    /// <typeparam name="TNextProperty">The destination property type.</typeparam>
-    /// <param name="propertyName">The property name.</param>
-    /// <returns>
-    ///     The builder to configure the property to property mapping.
-    /// </returns>
-    IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> To<TNextProperty>(string propertyName);
-    
-    /// <summary>
-    /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
-    /// </summary>
-    /// <returns>
-    ///     The builder to configure the property to method mapping.
-    /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TSourceProperty, TTargetProperty, TSourceProperty> ToMethod();
-    
-    /// <summary>
-    /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
-    /// </summary>
-    /// <param name="methodSelect">
-    ///     A function to select the method of the destination type.
-    /// </param>
-    /// <returns>
-    ///     The builder to configure the property to method mapping.
-    /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TSourceProperty, TTargetProperty, TSourceProperty> ToMethod(
-        Expression<Func<TTargetProperty, Delegate>> methodSelect);
-}
-
-public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>
-    : IAdapterPropertyOptionsBuilder<TSourceProperty, TTargetProperty, TSourceProperty, TTargetProperty>
-{
-    
-}
 
 public interface IConstructorPropertyOptionsBuilder<TSource, TSourceProperty>
 {
