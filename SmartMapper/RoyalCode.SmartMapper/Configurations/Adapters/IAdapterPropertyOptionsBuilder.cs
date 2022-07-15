@@ -109,32 +109,6 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty> Then();
 }
 
-
-public interface IConstructorPropertyOptionsBuilder<TSource, TSourceProperty>
-{
-    /// <summary>
-    /// Nesta opção, algumas propriedades do tipo de origem são mapeadas os parâmetros.
-    /// A ordem das propriedades é a ordem dos parâmetros.
-    /// </summary>
-    /// <param name="configureParameters"></param>
-    /// <returns></returns>
-    void Parameters(Action<IConstructorPropertyParametersOptionsBuilder<TSource, TSourceProperty>> configureParameters);
-}
-
-public interface IConstructorPropertyParametersOptionsBuilder<TSource, TSourceProperty>
-{
-    /// <summary>
-    /// Mapeia uma propriedade do tipo de origem para um parâmetro do construtor no tipo de destino.
-    /// A ordem de chamada deste método durante a configuração dos parâmetros definirá a posição
-    /// do parâmetro.
-    /// </summary>
-    /// <typeparam name="TProperty">The source property type.</typeparam>
-    /// <param name="propertySelector"></param>
-    /// <returns></returns>
-    IConstructorParameterPropertyOptionsBuilder<TSource, TSourceProperty, TProperty> Parameter<TProperty>(
-        Expression<Func<TSourceProperty, TProperty>> propertySelector);
-}
-
 public interface IConstructorParameterPropertyOptionsBuilder<TSource, TSourceProperty, TParameterProperty>
 {
     // deve ser possível configurar a estratégia de atribuíção.
@@ -157,8 +131,24 @@ public interface IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TSourc
     /// </summary>
     /// <param name="configureProperty"></param>
     void Value(Action<IAdapterPropertyToMethodParameterOptionsBuilder<TSource, TSourceProperty>> configureProperty);
-    
-    // deve ser possível configurar o nome do método ou o método por uma expressão.
+
+    /// <summary>
+    /// <para>
+    ///     Configure the name of the target method.
+    /// </para>
+    /// </summary>
+    /// <param name="name">The name of method.</param>
+    /// <returns>The same instance for chained calls.</returns>
+    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
+
+    /// <summary>
+    /// <para>
+    ///     Configure the target method using a expression selector.
+    /// </para>
+    /// </summary>
+    /// <param name="methodSelector">An expression that select the target method.</param>
+    /// <returns>The same instance for chained calls.</returns>
+    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 }
 
 public interface IAdapterPropertyToMethodParametersOptionsBuilder<TSource, TSourceProperty>

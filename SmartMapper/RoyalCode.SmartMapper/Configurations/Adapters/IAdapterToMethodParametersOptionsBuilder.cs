@@ -26,6 +26,6 @@ public interface IAdapterToMethodParametersOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the parameter mapping options.
     /// </returns>
-    IAdapterToMethodPropertyParameterOptionsBuilder<TSource, TTarget, TProperty> Parameter<TProperty>(
+    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector);
 }

@@ -131,34 +131,6 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
 }
 
-public interface IAdapterConstructorParametersOptionsBuilder<TSource, TTarget>
-{
-
-}
-
-/// <summary>
-/// Opções para configurar uma propriedade do tipo de origem que é mapeada para um parâmetro de um método no tipo 
-/// de destino.
-/// </summary>
-/// <typeparam name="TSource">The source type.</typeparam>
-/// <typeparam name="TTarget">The destination type.</typeparam>
-/// <typeparam name="TProperty">The source property type</typeparam>
-public interface IAdapterToMethodPropertyParameterOptionsBuilder<TSource, TTarget, TProperty>
-{
-    // deve ser possível configurar a estratégia de atribuíção.
-}
-
-/// <summary>
-/// Opções onde todas propriedades do tipo de origem são mapeadas como parâmetros no tipo de destino.
-/// É possível mapear a propriedade para um parâmetro, definindo o nome do parâmetro e estratégia de atribuíção.
-/// </summary>
-/// <typeparam name="TSource">The source type.</typeparam>
-/// <typeparam name="TTarget">The destination type.</typeparam>
-public interface IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>
-{
-
-}
-
 public static class ConfigureSample
 {
     public static void Configure(IAdapterOptionsBuilder builder)
@@ -177,6 +149,16 @@ public static class ConfigureSample
                 });
             
             b.Map(d => d.ValueObject).ToMethod(e => e.DoSomething);
+
+            b.Constructor().Parameters(b2 =>
+            {
+                b2.Parameter(e => e.Id);
+            });
+
+            b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
+            {
+                b2.Parameter(e => e.Id);
+            });
         });
     }
 

@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace RoyalCode.SmartMapper.Configurations.Adapters;
 
 /// <summary>
@@ -41,4 +43,22 @@ public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
     ///     A function to configure the properties of the source type.
     /// </param>
     void AllProperties(Action<IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
+
+    /// <summary>
+    /// <para>
+    ///     Configure the name of the target method.
+    /// </para>
+    /// </summary>
+    /// <param name="name">The name of method.</param>
+    /// <returns>The same instance for chained calls.</returns>
+    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
+
+    /// <summary>
+    /// <para>
+    ///     Configure the target method using a expression selector.
+    /// </para>
+    /// </summary>
+    /// <param name="methodSelector">An expression that select the target method.</param>
+    /// <returns>The same instance for chained calls.</returns>
+    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 }
