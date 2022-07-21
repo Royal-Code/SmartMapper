@@ -46,7 +46,7 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     /// <returns>
     ///     The builder to configure the property to constructor mapping.
     /// </returns>
-    IConstructorPropertyOptionsBuilder<TSource, TSourceProperty> ToConstructor();
+    IAdapterPropertyToConstructorOptionsBuilder<TSource, TSourceProperty> ToConstructor();
 
     /// <summary>
     /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
@@ -107,72 +107,4 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     ///     The builder to configure the property to property mapping.
     /// </returns>
     IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty> Then();
-}
-
-public interface IConstructorParameterPropertyOptionsBuilder<TSource, TSourceProperty, TParameterProperty>
-{
-    // deve ser possível configurar a estratégia de atribuíção.
-    // semelhante ao IAdapterToMethodPropertyParameterOptionsBuilder
-}
-
-public interface IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TSourceProperty>
-{
-    /// <summary>
-    /// Nesta opção, as propriedades internas do tipo da propriedade da origem são mapeadas os parâmetros.
-    /// A ordem das propriedades é a ordem dos parâmetros.
-    /// </summary>
-    /// <param name="configureParameters"></param>
-    /// <returns></returns>
-    void Parameters(Action<IAdapterPropertyToMethodParametersOptionsBuilder<TSource, TSourceProperty>> configureParameters);
-
-    /// <summary>
-    /// Nesta opção, a propriedade da origem é mapeada como parâmetro do método, onde o método deverá ter um único
-    /// parâmetro.
-    /// </summary>
-    /// <param name="configureProperty"></param>
-    void Value(Action<IAdapterPropertyToMethodParameterOptionsBuilder<TSource, TSourceProperty>> configureProperty);
-
-    /// <summary>
-    /// <para>
-    ///     Configure the name of the target method.
-    /// </para>
-    /// </summary>
-    /// <param name="name">The name of method.</param>
-    /// <returns>The same instance for chained calls.</returns>
-    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
-
-    /// <summary>
-    /// <para>
-    ///     Configure the target method using a expression selector.
-    /// </para>
-    /// </summary>
-    /// <param name="methodSelector">An expression that select the target method.</param>
-    /// <returns>The same instance for chained calls.</returns>
-    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
-}
-
-public interface IAdapterPropertyToMethodParametersOptionsBuilder<TSource, TSourceProperty>
-{
-    /// <summary>
-    /// Mapeia uma propriedade do tipo da propriedade da origem para um parâmetro do método no tipo de destino.
-    /// A ordem de chamada deste método durante a configuração dos parâmetros definirá a posição
-    /// do parâmetro.
-    /// </summary>
-    /// <typeparam name="TProperty">The source property type.</typeparam>
-    /// <param name="propertySelector"></param>
-    /// <returns></returns>
-    IConstructorParameterPropertyOptionsBuilder<TSource, TSourceProperty, TProperty> Parameter<TProperty>(
-        Expression<Func<TSourceProperty, TProperty>> propertySelector);
-}
-
-public interface IAdapterPropertyToMethodParameterOptionsBuilder<TSource, TSourceProperty, TParameterProperty>
-{
-    // deve ser possível configurar a estratégia de atribuíção.
-    // semelhante ao IAdapterToMethodPropertyParameterOptionsBuilder
-}
-
-public interface IAdapterPropertyToMethodParameterOptionsBuilder<TSource, TSourceProperty>
-{
-    // deve ser possível configurar a estratégia de atribuíção.
-    // semelhante ao IAdapterToMethodPropertyParameterOptionsBuilder
 }

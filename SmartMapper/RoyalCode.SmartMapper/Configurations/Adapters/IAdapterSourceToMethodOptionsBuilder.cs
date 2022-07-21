@@ -16,7 +16,7 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
 /// <typeparam name="TTarget">The destination type.</typeparam>
-public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
+public interface IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
 {
     /// <summary>
     /// <para>
@@ -29,7 +29,7 @@ public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureParameters">
     ///     A function to configure the parameters of the destination method.
     /// </param>
-    void Parameters(Action<IAdapterToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters);
+    void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters);
 
     /// <summary>
     /// <para>
@@ -42,7 +42,7 @@ public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureProperties">
     ///     A function to configure the properties of the source type.
     /// </param>
-    void AllProperties(Action<IAdapterToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
+    void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
 
     /// <summary>
     /// <para>
@@ -51,7 +51,7 @@ public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
     /// </summary>
     /// <param name="name">The name of method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
+    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
 
     /// <summary>
     /// <para>
@@ -60,5 +60,5 @@ public interface IAdapterToMethodOptionsBuilder<TSource, TTarget>
     /// </summary>
     /// <param name="methodSelector">An expression that select the target method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    IAdapterToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
+    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 }

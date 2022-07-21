@@ -28,7 +28,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
         throw new NotImplementedException();
     }
 
-    public IConstructorPropertyOptionsBuilder<TSource, TProperty> ToConstructor()
+    public IAdapterPropertyToConstructorOptionsBuilder<TSource, TProperty> ToConstructor()
     {
         throw new NotImplementedException();
     }

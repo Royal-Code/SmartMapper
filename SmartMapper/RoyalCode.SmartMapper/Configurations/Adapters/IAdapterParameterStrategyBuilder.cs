@@ -9,9 +9,8 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-/// <typeparam name="TTarget">The destination type.</typeparam>
 /// <typeparam name="TProperty">The source property type</typeparam>
-public interface IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty>
+public interface IAdapterParameterStrategyBuilder<TSource, TProperty>
 {
     /// <summary>
     /// <para>
@@ -21,20 +20,23 @@ public interface IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> CastValue();
+    IAdapterParameterStrategyBuilder<TSource, TProperty> CastValue();
 
     /// <summary>
     /// <para>
     ///     Configure the assignment strategy to convert the source value type to the destination value type.
     /// </para>
     /// </summary>
+    /// <typeparam name="TParameter">
+    ///     The method parameter type.
+    /// </typeparam>
     /// <param name="converter">
     ///     The converter to use to convert the source value type to the destination value type.
     /// </param>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> UseConverter<TParameter>(
+    IAdapterParameterStrategyBuilder<TSource, TProperty> UseConverter<TParameter>(
         Expression<Func<TProperty, TParameter>> converter);
 
     /// <summary>
@@ -45,7 +47,7 @@ public interface IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> Adapt();
+    IAdapterParameterStrategyBuilder<TSource, TProperty> Adapt();
 
     /// <summary>
     /// <para>
@@ -55,7 +57,7 @@ public interface IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> Select();
+    IAdapterParameterStrategyBuilder<TSource, TProperty> Select();
 
     /// <summary>
     /// <para>
@@ -68,9 +70,12 @@ public interface IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty>
     /// <typeparam name="TService">
     ///     The service type.
     /// </typeparam>
+    /// <typeparam name="TParameter">
+    ///     The method parameter type.
+    /// </typeparam>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParamterStrategyBuilder<TSource, TTarget, TProperty> WithService<TService, TParameter>(
+    IAdapterParameterStrategyBuilder<TSource, TProperty> WithService<TService, TParameter>(
         Expression<Func<TService, TProperty, TParameter>> valueProcessor);
 }

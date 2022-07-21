@@ -8,7 +8,7 @@
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
-public interface IConstructorPropertyOptionsBuilder<TSource, TSourceProperty>
+public interface IAdapterPropertyToConstructorOptionsBuilder<TSource, TSourceProperty>
 {
     /// <summary>
     /// In this option, the internal properties of the source type property
@@ -17,5 +17,5 @@ public interface IConstructorPropertyOptionsBuilder<TSource, TSourceProperty>
     /// <param name="configureParameters">
     ///     A function to configure the constructor parameters. 
     /// </param>
-    void Parameters(Action<IConstructorPropertyParametersOptionsBuilder<TSource, TSourceProperty>> configureParameters);
+    void Parameters(Action<IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProperty>> configureParameters);
 }
