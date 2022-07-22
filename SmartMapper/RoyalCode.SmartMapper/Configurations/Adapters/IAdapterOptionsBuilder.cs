@@ -64,13 +64,13 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     ///     The properties of the source type are mapped to the parameters of the destination method.
     /// </para>
     /// </summary>
-    /// <param name="methodSelect">
+    /// <param name="methodSelector">
     ///     A function to select the method of the destination type.
     /// </param>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelect);
+    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 
     /// <summary>
     /// <para>
@@ -157,7 +157,7 @@ public static class ConfigureSample
 
             b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
             {
-                b2.Parameter(e => e.Id);
+                b2.Parameter(e => e.Value);
             });
         });
     }
@@ -168,6 +168,13 @@ public static class ConfigureSample
 
         public string Name { get; set; }
 
+        public MyEntity() { }
+
+        public MyEntity(Guid id)
+        {
+            Id = id;
+        }
+        
         public void DoSomething(string value)
         {
             Console.WriteLine(value);

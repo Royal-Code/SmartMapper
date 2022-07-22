@@ -22,6 +22,9 @@ public interface IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProp
     /// <param name="propertySelector">
     ///     The property selection expression.
     /// </param>
+    /// <param name="parameterName">
+    ///     The name of the parameter.
+    /// </param>
     /// <returns>
     ///     The builder to configure the property to parameter method mapping.
     /// </returns>

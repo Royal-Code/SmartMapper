@@ -36,6 +36,9 @@ public interface IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     ///     This is the default option if the other is not performed.
     /// </para>
     /// <para>
+    ///     All properties of the source type are mapped to a destination type method.
+    /// </para>
+    /// <para>
     ///     In it you can configure each property of the source type for a parameter.
     /// </para>
     /// </summary>
