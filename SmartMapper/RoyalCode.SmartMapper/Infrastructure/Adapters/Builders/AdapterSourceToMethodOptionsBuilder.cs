@@ -1,9 +1,11 @@
 using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
+/// <inheritdoc />
 public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget> 
     : IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
 {
@@ -17,17 +19,23 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     }
 
     /// <inheritdoc />
-    public void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters)
+    public void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource>> configureParameters)
     {
-        throw new NotImplementedException();
+        methodOptions.ClearParameters();
+        methodOptions.ParametersStrategy = ParametersStrategy.SelectedParameters;
+        
+        var builder = new AdapterSourceToMethodParametersOptionsBuilder<TSource>(adapterOptions, methodOptions);
+        configureParameters(builder);
     }
 
     /// <inheritdoc />
-    public void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties)
+    public void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>> configureProperties)
     {
         methodOptions.ClearParameters();
+        methodOptions.ParametersStrategy = ParametersStrategy.AllParameters;
         
-        throw new NotImplementedException();
+        var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<TSource>(adapterOptions, methodOptions);
+        configureProperties(builder);
     }
 
     /// <inheritdoc />

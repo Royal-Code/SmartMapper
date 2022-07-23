@@ -1,4 +1,6 @@
-﻿namespace RoyalCode.SmartMapper.Resolvers.Assigners;
+﻿using RoyalCode.SmartMapper.Infrastructure.Adapters;
+
+namespace RoyalCode.SmartMapper.Resolvers.Assigners;
 
 public class DirectSetValueAssigner : IValueAssigner
 {

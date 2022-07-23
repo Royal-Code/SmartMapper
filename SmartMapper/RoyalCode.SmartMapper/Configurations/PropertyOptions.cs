@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using RoyalCode.Extensions.PropertySelection;
-using RoyalCode.SmartMapper.Infrastructure.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Configurations;
 

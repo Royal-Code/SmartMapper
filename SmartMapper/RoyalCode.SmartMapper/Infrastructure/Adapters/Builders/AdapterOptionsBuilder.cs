@@ -4,9 +4,10 @@ using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
+/// <inheritdoc />
 public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TSource, TTarget>
 {
-    private readonly AdapterOptions options = new();
+    private readonly AdapterOptions options = new(typeof(TSource), typeof(TTarget));
     
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()

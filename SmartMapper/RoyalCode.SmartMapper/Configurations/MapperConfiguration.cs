@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Configurations;
 

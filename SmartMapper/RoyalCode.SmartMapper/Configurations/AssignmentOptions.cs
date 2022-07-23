@@ -1,4 +1,5 @@
-using RoyalCode.SmartMapper.Infrastructure.Options;
+using RoyalCode.SmartMapper.Infrastructure.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolvers;
 using RoyalCode.SmartMapper.Resolvers.Assigners;
 

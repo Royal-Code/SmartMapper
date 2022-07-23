@@ -29,7 +29,7 @@ public interface IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureParameters">
     ///     A function to configure the parameters of the destination method.
     /// </param>
-    void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource, TTarget>> configureParameters);
+    void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource>> configureParameters);
 
     /// <summary>
     /// <para>
@@ -45,7 +45,7 @@ public interface IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureProperties">
     ///     A function to configure the properties of the source type.
     /// </param>
-    void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource, TTarget>> configureProperties);
+    void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>> configureProperties);
 
     /// <summary>
     /// <para>

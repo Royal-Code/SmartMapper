@@ -1,4 +1,4 @@
-namespace RoyalCode.SmartMapper.Infrastructure.Options;
+namespace RoyalCode.SmartMapper.Infrastructure.Core;
 
 /// <summary>
 /// <para>

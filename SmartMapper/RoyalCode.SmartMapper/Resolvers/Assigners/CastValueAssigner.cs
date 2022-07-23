@@ -1,4 +1,6 @@
 ﻿
+using RoyalCode.SmartMapper.Infrastructure.Adapters;
+
 namespace RoyalCode.SmartMapper.Resolvers.Assigners;
 
 public class CastValueAssigner : IValueAssigner
