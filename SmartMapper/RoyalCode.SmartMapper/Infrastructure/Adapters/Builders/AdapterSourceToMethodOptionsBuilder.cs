@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
-using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -41,7 +41,18 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new InvalidMethodNameException("Value cannot be null or whitespace.", nameof(name));
+
+        var methods = typeof(TTarget).GetMethods().Where(m => m.Name == name).ToList();
+        if (methods.Count is 0)
+            throw new InvalidMethodNameException(
+                $"Method '{name}' not found on type '{typeof(TTarget).Name}'.", nameof(name));
+
         methodOptions.MethodName = name;
+        if (methods.Count is 1)
+            methodOptions.Method = methods[0];
+        
         return this;
     }
 
@@ -49,9 +60,10 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector)
     {
         if (!methodSelector.TryGetMethod(out var method))
-            throw new ArgumentException("Invalid method selector");
+            throw new InvalidMethodDelegateException(nameof(methodSelector));
         
         methodOptions.Method = method;
+        
         return this;
     }
 }

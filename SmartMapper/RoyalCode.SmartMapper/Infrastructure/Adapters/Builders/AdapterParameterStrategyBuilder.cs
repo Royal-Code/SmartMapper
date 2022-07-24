@@ -16,30 +16,37 @@ public class AdapterParameterStrategyBuilder<TSource, TProperty> : IAdapterParam
     /// <inheritdoc />
     public IAdapterParameterStrategyBuilder<TSource, TProperty> CastValue()
     {
-        throw new NotImplementedException();
+        options.UseCast();
+        return this;
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> UseConverter<TParameter>(Expression<Func<TProperty, TParameter>> converter)
+    public IAdapterParameterStrategyBuilder<TSource, TProperty> UseConverter<TParameter>(
+        Expression<Func<TProperty, TParameter>> converter)
     {
-        throw new NotImplementedException();
+        options.UseConvert(converter);
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterParameterStrategyBuilder<TSource, TProperty> Adapt()
     {
-        throw new NotImplementedException();
+        options.UseAdapt();
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterParameterStrategyBuilder<TSource, TProperty> Select()
     {
-        throw new NotImplementedException();
+        options.UseSelect();
+        return this;
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> WithService<TService, TParameter>(Expression<Func<TService, TProperty, TParameter>> valueProcessor)
+    public IAdapterParameterStrategyBuilder<TSource, TProperty> WithService<TService, TParameter>(
+        Expression<Func<TService, TProperty, TParameter>> valueProcessor)
     {
-        throw new NotImplementedException();
+        options.UseProcessor(valueProcessor);
+        return this;
     }
 }

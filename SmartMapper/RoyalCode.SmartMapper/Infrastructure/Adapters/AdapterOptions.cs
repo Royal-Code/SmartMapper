@@ -59,8 +59,8 @@ public class AdapterOptions : OptionsBase
     public PropertyOptions GetPropertyOptions(PropertyInfo property)
     {
         // check property type
-        if (property.PropertyType != SourceType)
-            throw new ArgumentException($"The property type of '{property.Name}' is not '{SourceType.Name}'.");
+        if (property.DeclaringType != SourceType)
+            throw new ArgumentException($"The property {property.Name} is not a property of the source type {SourceType.Name}.");
         
         var options = propertyOptions?.FirstOrDefault(x => x.Property == property);
         if (options is null)

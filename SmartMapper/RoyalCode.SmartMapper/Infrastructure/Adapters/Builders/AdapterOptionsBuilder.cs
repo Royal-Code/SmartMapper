@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
@@ -7,8 +8,18 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 /// <inheritdoc />
 public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TSource, TTarget>
 {
-    private readonly AdapterOptions options = new(typeof(TSource), typeof(TTarget));
+    private readonly AdapterOptions options;
     
+    public AdapterOptionsBuilder(AdapterOptions options)
+    {
+        this.options = options;
+    }
+
+    public AdapterOptionsBuilder()
+    {
+        options = new(typeof(TSource), typeof(TTarget));
+    }
+
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
     {
@@ -21,7 +32,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
     {
         if (!methodSelector.TryGetMethod(out var method))
-            throw new ArgumentException("Invalid method selector");
+            throw new InvalidMethodDelegateException(nameof(methodSelector));
         
         var toMethodOptions = new AdapterSourceToMethodOptions
         {
@@ -35,12 +46,20 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
     {
         if (string.IsNullOrWhiteSpace(methodName))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(methodName));
-        
-        var toMethodOptions = new AdapterSourceToMethodOptions
+            throw new InvalidMethodNameException("Value cannot be null or whitespace.", nameof(methodName));
+
+        var methods = typeof(TTarget).GetMethods().Where(m => m.Name == methodName).ToList();
+        if (methods.Count is 0)
+            throw new InvalidMethodNameException(
+                $"Method '{methodName}' not found on type '{typeof(TTarget).Name}'.", nameof(methodName));
+
+        var toMethodOptions = new AdapterSourceToMethodOptions()
         {
             MethodName = methodName
         };
+        if (methods.Count is 1)
+            toMethodOptions.Method = methods[0];
+        
         options.AddToMethod(toMethodOptions);
         return new AdapterSourceToMethodOptionsBuilder<TSource, TTarget>(options, toMethodOptions);
     }

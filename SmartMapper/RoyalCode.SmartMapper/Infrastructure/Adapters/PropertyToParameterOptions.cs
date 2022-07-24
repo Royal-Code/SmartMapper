@@ -32,12 +32,25 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     /// </summary>
     public PropertyInfo Property { get; }
     
+    /// <summary>
+    /// The assignment strategy options.
+    /// </summary>
     public AssignmentStrategyOptions AssignmentStrategy { get; }
 
     /// <summary>
     /// The parameter name.
     /// </summary>
     public string? ParameterName { get; private set; }
+    
+    /// <summary>
+    /// <para>
+    ///     The method parameter type.
+    /// </para>
+    /// <para>
+    ///     This value can be determined if the method is defined and assigned the parameter name.
+    /// </para>
+    /// </summary>
+    public ParameterInfo? Parameter { get; private set; }
     
     /// <summary>
     /// Configure the options for use the parameter name.
@@ -54,15 +67,11 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
         
         if (MethodOptions.Method is not null)
         {
-            var parameter = MethodOptions.Method.GetParameters().FirstOrDefault(p => p.Name == parameterName);
-            if (parameter is null)
-            {
-                throw new ArgumentException($"Parameter '{parameterName}' does not exist in method '{MethodOptions.Method.Name}'.");
-            }
+            Parameter = MethodOptions.Method.GetParameters().FirstOrDefault(p => p.Name == parameterName)
+                ?? throw new ArgumentException(
+                    $"Parameter '{parameterName}' does not exist in method '{MethodOptions.Method.Name}'.");
         }
         
         ParameterName = parameterName;
     }
-
-    
 }
