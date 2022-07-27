@@ -37,6 +37,24 @@ public class AdapterSourceToMethodOptionsTests
 
         sourceToMethodOptions.ClearParameters();
     }
+    
+    [Fact]
+    public void ClearParameters_Must_ClearTheRelatedOptions()
+    {
+        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+
+        var propertyInfo = typeof(Foo).GetProperty("Value")!;
+
+        var options = sourceToMethodOptions.GetPropertyToParameterOptions(propertyInfo);
+        options.Should().NotBeNull();
+
+        PropertyOptions propertyOptions = new PropertyOptions(propertyInfo);
+        propertyOptions.MappedToMethodParameter(options);
+        propertyOptions.ResolutionOptions.Should().NotBeNull();
+        
+        sourceToMethodOptions.ClearParameters();
+        propertyOptions.ResolutionOptions.Should().BeNull();
+    }
 
     private class Foo
     {
