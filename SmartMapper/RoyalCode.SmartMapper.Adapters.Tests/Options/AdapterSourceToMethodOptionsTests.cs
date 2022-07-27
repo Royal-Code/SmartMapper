@@ -1,5 +1,4 @@
-﻿
-using FluentAssertions;
+﻿using FluentAssertions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using Xunit;
 
@@ -29,6 +28,14 @@ public class AdapterSourceToMethodOptionsTests
         var options2 = sourceToMethodOptions.GetPropertyToParameterOptions(propertyInfo);
 
         options1.Should().BeSameAs(options2);
+    }
+    
+    [Fact]
+    public void ClearParameters_WhenNotConfigurated_Must_NotThrow()
+    {
+        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+
+        sourceToMethodOptions.ClearParameters();
     }
 
     private class Foo
