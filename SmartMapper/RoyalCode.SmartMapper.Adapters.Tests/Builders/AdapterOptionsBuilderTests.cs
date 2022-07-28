@@ -86,7 +86,7 @@ public class AdapterOptionsBuilderTests
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
 
-        Action actNull = () => builder.MapToMethod((string)null);
+        Action actNull = () => builder.MapToMethod((string)null!);
         Action actWhiteSpace = () => builder.MapToMethod(" ");
         Action actEmpty = () => builder.MapToMethod(string.Empty);
 
@@ -143,10 +143,62 @@ public class AdapterOptionsBuilderTests
         methodOptions.First().Method.Should().BeNull();
         methodOptions.First().MethodName.Should().NotBeNullOrWhiteSpace();
     }
+
+    [Fact]
+    public void Constructor_Must_Return_ConstructorBuilder()
+    { 
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
+
+        var constructorBuilder = builder.Constructor();
+
+        constructorBuilder.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Map_Must_Throw_When_SelectorIsNotAProperty()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
+        
+        Action act1 = () => builder.Map<Delegate>(b => b.InvalidDelegate);
+        Action act2 = () => builder.Map<Delegate>(b => () => b.SomeMethod);
+        
+        act1.Should().Throw<InvalidPropertySelectorException>();
+        act2.Should().Throw<InvalidPropertySelectorException>();
+    }
+
+    [Fact]
+    public void Map_Must_Throw_When_NotFoundThePropertyByTheName()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
+        
+        Action act = () => builder.Map<string>("NotExistentProperty");
+        
+        act.Should().Throw<InvalidPropertyNameException>();
+    }
+    
+    [Fact]
+    public void Map_Must_ReturnThePropertyToPropertyBuilder()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
+        
+        var propertyBuilder = builder.Map<string>("Value");
+        propertyBuilder.Should().NotBeNull();
+
+        propertyBuilder = builder.Map(f => f.Value);
+        propertyBuilder.Should().NotBeNull();
+    }
     
     private class Foo
     {
         public string Value { get; set; }
+        
+        public Func<string> InvalidDelegate { get; set; }
+        
+        public void SomeMethod(string value) { }
     }
     
     private class Bar

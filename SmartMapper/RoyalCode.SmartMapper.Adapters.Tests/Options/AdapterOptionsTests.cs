@@ -62,7 +62,7 @@ public class AdapterOptionsTests
         
         result1.Should().BeSameAs(result2);
     }
-
+    
     private class Foo
     {
         public string Value { get; set; }

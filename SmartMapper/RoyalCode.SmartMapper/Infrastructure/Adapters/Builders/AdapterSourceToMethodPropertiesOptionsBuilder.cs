@@ -37,8 +37,9 @@ public class AdapterSourceToMethodPropertiesOptionsBuilder<TSource>
 
         if (parameterName is not null)
             parameterOptions.UseParameterName(parameterName);
-        
-        return new AdapterParameterStrategyBuilder<TSource, TProperty>(parameterOptions.AssignmentStrategy);
+
+        var strategyOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
+        return new AdapterParameterStrategyBuilder<TSource, TProperty>(strategyOptions);
     }
 
     /// <inheritdoc />

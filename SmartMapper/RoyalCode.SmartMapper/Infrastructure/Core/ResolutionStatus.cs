@@ -10,7 +10,7 @@ public enum ResolutionStatus
     /// <summary>
     /// The property will be ignored.
     /// </summary>
-    Ignore,
+    Ignored,
     
     /// <summary>
     /// The property is mapped to a destination method parameter.

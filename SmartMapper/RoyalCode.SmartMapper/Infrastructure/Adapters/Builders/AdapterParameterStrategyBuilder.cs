@@ -6,9 +6,9 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 /// <inheritdoc />
 public class AdapterParameterStrategyBuilder<TSource, TProperty> : IAdapterParameterStrategyBuilder<TSource, TProperty>
 {
-    private readonly AssignmentStrategyOptions options;
+    private readonly AssignmentStrategyOptions<TProperty> options;
 
-    public AdapterParameterStrategyBuilder(AssignmentStrategyOptions options)
+    public AdapterParameterStrategyBuilder(AssignmentStrategyOptions<TProperty> options)
     {
         this.options = options;
     }

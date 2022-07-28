@@ -26,7 +26,12 @@ public class PropertyOptions : OptionsBase
     /// The property of the source object.
     /// </summary>
     public PropertyInfo Property { get; }
-    
+
+    /// <summary>
+    /// Options of the strategy to be used to assign the property value to the destination counterpart.
+    /// </summary>
+    public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
+
     /// <summary>
     /// The kind or status of the mapping of the property.
     /// </summary>
@@ -48,7 +53,7 @@ public class PropertyOptions : OptionsBase
     /// <param name="options">The options that configure the property to be mapped to a method parameter.</param>
     public void MappedToMethodParameter(PropertyToParameterOptions options)
     {
-        ResolutionStatus = ResolutionStatus.MappedToMethodParameter;
+        UpdateResolutionStatus(ResolutionStatus.MappedToMethodParameter);
         ResolutionOptions = options;
         options.PropertyRelated = this;
     }
@@ -58,8 +63,7 @@ public class PropertyOptions : OptionsBase
     /// </summary>
     public void IgnoreMapping()
     {
-        ResolutionStatus = ResolutionStatus.Ignore;
-        ResolutionOptions = null;
+        UpdateResolutionStatus(ResolutionStatus.Ignored);
     }
     
     /// <summary>
@@ -69,5 +73,46 @@ public class PropertyOptions : OptionsBase
     {
         ResolutionStatus = ResolutionStatus.Undefined;
         ResolutionOptions = null;
+        AssignmentStrategy = null;
+    }
+    
+    /// <summary>
+    /// <para>
+    ///     Get o create the <see cref="AssignmentStrategyOptions{TProperty}"/>.
+    /// </para>
+    /// <para>
+    ///     When the <see cref="AssignmentStrategy"/> is null or not for the <typeparamref name="TProperty"/> type,
+    ///     a new instance of the <see cref="AssignmentStrategyOptions{TProperty}"/> is created.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TProperty">The type of the property.</typeparam>
+    /// <returns>The <see cref="AssignmentStrategyOptions{TProperty}"/>.</returns>
+    public AssignmentStrategyOptions<TProperty> GetOrCreateAssignmentStrategyOptions<TProperty>()
+    {
+        if (typeof(TProperty) != Property.PropertyType)
+            throw new InvalidOperationException($"The type of the property '{Property.Name}' is not '{typeof(TProperty).Name}'");
+        
+        var strategyOptions = AssignmentStrategy as AssignmentStrategyOptions<TProperty>;
+        if (strategyOptions is null)
+        {
+            strategyOptions = new AssignmentStrategyOptions<TProperty>();
+            AssignmentStrategy = strategyOptions;
+        }
+
+        return strategyOptions;
+    }
+    
+    private void UpdateResolutionStatus(ResolutionStatus status)
+    {
+        if (ResolutionStatus == ResolutionStatus.Undefined)
+        {
+            ResolutionStatus = status;
+            return;
+        }
+        
+        if (ResolutionStatus != status)
+            throw new InvalidOperationException(
+                $"The resolution status of the property '{Property.Name}' is already set to '{ResolutionStatus}'" +
+                $" and cannot be changed to '{status}'");
     }
 }

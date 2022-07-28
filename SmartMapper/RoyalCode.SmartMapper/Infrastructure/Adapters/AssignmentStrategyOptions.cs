@@ -26,8 +26,11 @@ public class AssignmentStrategyOptions : OptionsBase
     {
         Strategy = ValueAssignmentStrategy.Select;
     }
-    
-    public void UseConvert<TProperty, TParameter>(Expression<Func<TProperty, TParameter>> converter)
+}
+
+public class AssignmentStrategyOptions<TProperty> : AssignmentStrategyOptions
+{
+    public void UseConvert<TParameter>(Expression<Func<TProperty, TParameter>> converter)
     {
         Strategy = ValueAssignmentStrategy.Convert;
         
@@ -35,7 +38,7 @@ public class AssignmentStrategyOptions : OptionsBase
         SetAnnotation<ConvertOptions>(convertOptions);
     }
     
-    public void UseProcessor<TService, TProperty, TParameter>(
+    public void UseProcessor<TService, TParameter>(
         Expression<Func<TService, TProperty, TParameter>> valueProcessor)
     {
         Strategy = ValueAssignmentStrategy.Processor;

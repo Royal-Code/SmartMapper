@@ -62,8 +62,8 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     /// </exception>
     public void UseParameterName(string parameterName)
     {
-        if (string.IsNullOrEmpty(parameterName))
-            throw new ArgumentException("Value cannot be null or empty.", nameof(parameterName));
+        if (string.IsNullOrWhiteSpace(parameterName))
+            throw new ArgumentException("The parameter name cannot be null or empty.", nameof(parameterName));
         
         if (MethodOptions.Method is not null)
         {

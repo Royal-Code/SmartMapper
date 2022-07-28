@@ -104,6 +104,20 @@ public class AdapterSourceToMethodOptionsBuilderTests
     }
     
     [Fact]
+    public void Parameters_Must_SetParametersStrategy_With_SelectedParameters()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var methodOptions = new AdapterSourceToMethodOptions();
+        adapterOptions.AddToMethod(methodOptions);
+            
+        var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
+
+        builder.Parameters(_ => { });
+        
+        methodOptions.ParametersStrategy.Should().Be(ParametersStrategy.SelectedParameters);
+    }
+    
+    [Fact]
     public void AllProperties_Must_CallTheConfigureAction()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
@@ -141,6 +155,20 @@ public class AdapterSourceToMethodOptionsBuilderTests
         builder.AllProperties(_ => { });
         
         propertyOptions.ResolutionOptions.Should().BeNull();
+    }
+    
+    [Fact]
+    public void AllProperties_Must_SetParametersStrategy_With_AllParameters()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var methodOptions = new AdapterSourceToMethodOptions();
+        adapterOptions.AddToMethod(methodOptions);
+            
+        var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
+
+        builder.AllProperties(_ => { });
+        
+        methodOptions.ParametersStrategy.Should().Be(ParametersStrategy.AllParameters);
     }
 
     private class Foo
