@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public class Resolution<TFrom, TTo>
 {
     private Expression<Func<TFrom, TTo>>? adapterExpression;

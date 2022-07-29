@@ -8,6 +8,7 @@ namespace RoyalCode.SmartMapper.Configurations;
 ///     A class to store all resolutions of type mappings.
 /// </para>
 /// </summary>
+[Obsolete]
 public class Resolutions
 {
     private readonly ConcurrentDictionary<Tuple<Type, Type>, object> adapterExpressions = new();

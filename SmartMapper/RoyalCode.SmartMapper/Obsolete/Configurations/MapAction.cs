@@ -1,5 +1,6 @@
 namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public class MapAction
 {
     private Dictionary<string, object>? annotations;

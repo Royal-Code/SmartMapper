@@ -4,6 +4,7 @@ using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public class PropertyOptions : OptionsBase
 {
     public PropertyOptions(PropertyInfo sourceProperty)
@@ -20,6 +21,7 @@ public class PropertyOptions : OptionsBase
     public PropertyMapAction Action { get; internal set; }
 }
 
+[Obsolete]
 public class PropertyToMethodOptions
 {
     private readonly Dictionary<PropertyInfo, PropertyToParameterOptions> paramtersOptions = new();
@@ -35,7 +37,7 @@ public class PropertyToMethodOptions
     
     public MethodInfo? TargetMethod { get; internal set; }
     
-    public string MethodName { get; internal set; }
+    public string? MethodName { get; internal set; }
 
     public PropertyToParameterOptions GetParameterOptions(PropertyInfo property)
     {
@@ -48,6 +50,7 @@ public class PropertyToMethodOptions
     }
 }
 
+[Obsolete]
 public class PropertyToParameterOptions
 {
     public PropertyToParameterOptions(PropertyToMethodOptions propertyToMethodOptions, PropertyInfo propertyToParameterInfo)

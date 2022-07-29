@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public interface IValueConverter
 {
 

@@ -1,5 +1,6 @@
 ﻿namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public enum PropertyMapAction
 {
     /// <summary>

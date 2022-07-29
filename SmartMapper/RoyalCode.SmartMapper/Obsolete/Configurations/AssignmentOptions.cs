@@ -10,6 +10,7 @@ namespace RoyalCode.SmartMapper.Configurations;
 ///     Properties that define how the values will be assigned between the source and target types.
 /// </para>
 /// </summary>
+[Obsolete]
 public class AssignmentOptions : OptionsBase
 {
     public ValueAssignmentStrategy Strategy => Assigner?.Strategy ?? ValueAssignmentStrategy.Undefined;

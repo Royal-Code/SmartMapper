@@ -25,4 +25,8 @@
       <ProjectReference Include="..\RoyalCode.SmartMapper\RoyalCode.SmartMapper.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Resolutions" />
+    </ItemGroup>
+
 </Project>

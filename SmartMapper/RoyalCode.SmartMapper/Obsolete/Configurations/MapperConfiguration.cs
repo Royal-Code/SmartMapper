@@ -3,6 +3,7 @@ using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Configurations;
 
+[Obsolete]
 public class MapperConfiguration
 {
     private readonly Resolutions resolutions = new();
