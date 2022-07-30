@@ -161,11 +161,9 @@ public class AdapterOptionsBuilderTests
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
         
-        Action act1 = () => builder.Map<Delegate>(b => b.InvalidDelegate);
-        Action act2 = () => builder.Map<Delegate>(b => () => b.SomeMethod);
+        Action act = () => builder.Map<Delegate>(b => () => b.SomeMethod);
         
-        act1.Should().Throw<InvalidPropertySelectorException>();
-        act2.Should().Throw<InvalidPropertySelectorException>();
+        act.Should().Throw<InvalidPropertySelectorException>();
     }
 
     [Fact]

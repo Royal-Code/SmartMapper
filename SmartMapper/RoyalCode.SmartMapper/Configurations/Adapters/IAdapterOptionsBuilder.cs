@@ -96,14 +96,14 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the constructor mapping options.
     /// </returns>
-    IAdapterConstructorOptionsBuilder<TSource, TTarget> Constructor();
+    IAdapterConstructorOptionsBuilder<TSource> Constructor();
 
     /// <summary>
     /// <para>
     ///     Configure the mapping of a property from the source type.
     /// </para>
     /// </summary>
-    /// <param name="propertySelection">
+    /// <param name="propertySelector">
     ///     An expression to select the property of the source type.
     /// </param>
     /// <typeparam name="TProperty">
@@ -112,7 +112,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the property mapping options.
     /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelection);
+    IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
 
     /// <summary>
     /// <para>

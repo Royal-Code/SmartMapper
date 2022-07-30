@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
@@ -11,6 +12,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 public class AdapterOptions : OptionsBase
 {
     private ICollection<AdapterSourceToMethodOptions>? sourceToMethodOptions;
+    private ConstructorOptions? constructorOptions;
     private ICollection<PropertyOptions>? propertyOptions;
 
     public AdapterOptions(Type sourceType, Type targetType)
@@ -21,7 +23,7 @@ public class AdapterOptions : OptionsBase
 
     public Type SourceType { get; }
     public Type TargetType { get; }
-    
+
     /// <summary>
     /// <para>
     ///     Gets the options for mapping a source type to a method.
@@ -46,7 +48,7 @@ public class AdapterOptions : OptionsBase
         sourceToMethodOptions ??= new List<AdapterSourceToMethodOptions>();
         sourceToMethodOptions.Add(options);
     }
-    
+
     /// <summary>
     /// <para>
     ///     Gets or create the options for a property of the source type.
@@ -60,8 +62,9 @@ public class AdapterOptions : OptionsBase
     {
         // check property type
         if (property.DeclaringType != SourceType)
-            throw new ArgumentException($"The property {property.Name} is not a property of the source type {SourceType.Name}.");
-        
+            throw new ArgumentException(
+                $"The property {property.Name} is not a property of the source type {SourceType.Name}.");
+
         var options = propertyOptions?.FirstOrDefault(x => x.Property == property);
         if (options is null)
         {
@@ -69,6 +72,42 @@ public class AdapterOptions : OptionsBase
             propertyOptions ??= new List<PropertyOptions>();
             propertyOptions.Add(options);
         }
+
         return options;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Gets the options for the constructor of the target type.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    ///     The options for the constructor of the target type.
+    /// </returns>
+    public ConstructorOptions GetConstructorOptions()
+    {
+        constructorOptions ??= new ConstructorOptions();
+        return constructorOptions;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Gets or create the options for a property of the source type.
+    /// </para>
+    /// </summary>
+    /// <param name="propertyName">The name of the property of the source type.</param>
+    /// <param name="options">The options for the property of the source type.</param>
+    /// <returns>True if exists a property with the given name, otherwise false.</returns>
+    public bool TryGetPropertyOptions(string propertyName, [NotNullWhen(true)] out PropertyOptions? options)
+    {
+        options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
+        if (options is null)
+        {
+            var propertyInfo = SourceType.GetProperty(propertyName);
+            if (propertyInfo is not null)
+                options = GetPropertyOptions(propertyInfo);
+        }
+
+        return options is not null;
     }
 }

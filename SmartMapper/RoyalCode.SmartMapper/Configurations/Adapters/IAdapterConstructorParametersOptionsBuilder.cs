@@ -19,8 +19,7 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-/// <typeparam name="TTarget">The destination type.</typeparam>
-public interface IAdapterConstructorParametersOptionsBuilder<TSource, TTarget>
+public interface IAdapterConstructorParametersOptionsBuilder<TSource>
 {
     /// <summary>
     /// <para>

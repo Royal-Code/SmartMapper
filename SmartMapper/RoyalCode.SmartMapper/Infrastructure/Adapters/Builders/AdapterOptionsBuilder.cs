@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
@@ -15,11 +16,6 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
         this.options = options;
     }
 
-    public AdapterOptionsBuilder()
-    {
-        options = new(typeof(TSource), typeof(TTarget));
-    }
-
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
     {
@@ -29,7 +25,8 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     }
 
     /// <inheritdoc />
-    public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
+    public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(
+        Expression<Func<TTarget, Delegate>> methodSelector)
     {
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
@@ -65,20 +62,34 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     }
 
     /// <inheritdoc />
-    public IAdapterConstructorOptionsBuilder<TSource, TTarget> Constructor()
+    public IAdapterConstructorOptionsBuilder<TSource> Constructor()
     {
-        throw new NotImplementedException();
+        var constructorOptions = options.GetConstructorOptions();
+        return new AdapterConstructorOptionsBuilder<TSource>(options, constructorOptions);
     }
 
     /// <inheritdoc />
-    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelection)
+    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(
+        Expression<Func<TSource, TProperty>> propertySelector)
     {
-        throw new NotImplementedException();
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+        
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+        
+        var propertyOptions = options.GetPropertyOptions(propertyInfo);
+        
+        return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
     }
 
     /// <inheritdoc />
     public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
     {
-        throw new NotImplementedException();
+        if (options.TryGetPropertyOptions(propertyName, out var propertyOptions))
+            return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
+        
+        throw new InvalidPropertyNameException(
+            $"Property '{propertyName}' not found on type '{typeof(TSource).Name}'.", nameof(propertyName));
     }
 }

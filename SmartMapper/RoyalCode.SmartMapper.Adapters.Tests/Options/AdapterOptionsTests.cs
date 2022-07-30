@@ -63,6 +63,39 @@ public class AdapterOptionsTests
         result1.Should().BeSameAs(result2);
     }
     
+    [Fact]
+    public void GetConstructorOptions_Must_Return_SameInstances()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        
+        var result1 = options.GetConstructorOptions();
+        var result2 = options.GetConstructorOptions();
+        
+        result1.Should().NotBeNull().And.BeSameAs(result2);
+    }
+    
+    [Theory]
+    [InlineData("InvalidName", false)]
+    [InlineData("Value", true)]
+    public void TryGetPropertyOptions_Must_Return_True_When_PropertyExists(string propertyName, bool expected)
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        
+        var result = options.TryGetPropertyOptions(propertyName, out var propertyOptions);
+        
+        result.Should().Be(expected);
+        if (expected)
+        {
+            propertyOptions.Should().NotBeNull();
+            propertyOptions!.Property.Should().NotBeNull();
+            propertyOptions.Property.Name.Should().Be(propertyName);
+        }
+        else
+        {
+            propertyOptions.Should().BeNull();
+        }
+    }
+    
     private class Foo
     {
         public string Value { get; set; }
