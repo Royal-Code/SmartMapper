@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using Xunit;
 
@@ -18,7 +19,7 @@ public class PropertyToParameterOptionsTests
         
         var options = new PropertyToParameterOptions(methodOptions, propertyInfo);
         
-        Assert.Throws<ArgumentException>(() => options.UseParameterName(parameterName));
+        Assert.Throws<InvalidParameterNameException>(() => options.UseParameterName(parameterName));
     }
     
     [Fact]
@@ -49,7 +50,7 @@ public class PropertyToParameterOptionsTests
         if (isValid)
             act.Should().NotThrow();
         else
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<InvalidParameterNameException>();
     }
     
     private class Foo

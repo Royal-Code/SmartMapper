@@ -1,4 +1,5 @@
 using System.Reflection;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
@@ -63,13 +64,12 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     public void UseParameterName(string parameterName)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
-            throw new ArgumentException("The parameter name cannot be null or empty.", nameof(parameterName));
+            throw new InvalidParameterNameException(nameof(parameterName));
         
         if (MethodOptions.Method is not null)
         {
             Parameter = MethodOptions.Method.GetParameters().FirstOrDefault(p => p.Name == parameterName)
-                ?? throw new ArgumentException(
-                    $"Parameter '{parameterName}' does not exist in method '{MethodOptions.Method.Name}'.");
+                ?? throw new InvalidParameterNameException(parameterName, MethodOptions.Method, nameof(parameterName));
         }
         
         ParameterName = parameterName;

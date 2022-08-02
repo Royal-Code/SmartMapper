@@ -3,6 +3,7 @@ using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
@@ -34,7 +35,22 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
         var strategyBuilder = builder.Parameter(f => f.Value);
         strategyBuilder.Should().NotBeNull();
     }
-    
+
+    [Fact]
+    public void Parameter_Must_SetPropertyOptionsWithTheParameterOptions()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var methodOptions = new AdapterSourceToMethodOptions();
+        adapterOptions.AddToMethod(methodOptions);
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+
+        var builder = new AdapterSourceToMethodParametersOptionsBuilder<Foo>(adapterOptions, methodOptions);
+        builder.Parameter(f => f.Value);
+
+        propertyOptions.ResolutionOptions.Should().BeOfType<PropertyToParameterOptions>();
+        propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToMethodParameter);
+    }
+
     [Fact]
     public void Parameter_Must_AddTheParameterToTheMethodOptionsSequence()
     {

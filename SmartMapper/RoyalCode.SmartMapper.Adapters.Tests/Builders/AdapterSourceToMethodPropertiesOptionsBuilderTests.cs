@@ -56,9 +56,42 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
         if (isValid)
             act.Should().NotThrow();
         else
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<InvalidParameterNameException>();
     }
-    
+
+    [Fact]
+    public void Parameter_Must_SetPropertyOptionsWithTheParameterOptions()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var methodOptions = new AdapterSourceToMethodOptions();
+        adapterOptions.AddToMethod(methodOptions);
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+
+        var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
+        builder.Parameter(f => f.Value);
+
+        propertyOptions.ResolutionOptions.Should().BeOfType<PropertyToParameterOptions>();
+        propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToMethodParameter);
+    }
+
+    [Fact]
+    public void Parameter_Must_SetMethodOptionsWithParameterOptions()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var methodOptions = new AdapterSourceToMethodOptions();
+        adapterOptions.AddToMethod(methodOptions);
+
+        var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
+        builder.Parameter(f => f.Value);
+
+        var found = methodOptions.TryGetPropertyToParameterOptions(
+            typeof(Foo).GetProperty(nameof(Foo.Value))!
+            , out var propertyToParameterOptions);
+
+        found.Should().BeTrue();
+        propertyToParameterOptions.Should().NotBeNull();
+    }
+
     [Fact]
     public void Ignore_Must_Throw_When_NotIsAProperty()
     {

@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resolutions" />
+      <Folder Include="Resolutions\" />
     </ItemGroup>
 
 </Project>

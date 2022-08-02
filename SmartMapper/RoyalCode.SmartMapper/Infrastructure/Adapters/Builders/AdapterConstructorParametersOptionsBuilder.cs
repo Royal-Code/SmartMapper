@@ -1,16 +1,21 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
 public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConstructorParametersOptionsBuilder<TSource>
 {
-    private readonly AdapterOptions options;
+    private readonly AdapterOptions adapterOptions;
     private readonly ConstructorOptions constructorOptions;
 
-    public AdapterConstructorParametersOptionsBuilder(AdapterOptions options, ConstructorOptions constructorOptions)
+    public AdapterConstructorParametersOptionsBuilder(
+        AdapterOptions adapterOptions,
+        ConstructorOptions constructorOptions)
     {
-        this.options = options;
+        this.adapterOptions = adapterOptions;
         this.constructorOptions = constructorOptions;
     }
     
@@ -18,6 +23,15 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null)
     {
-        throw new NotImplementedException();
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
+
+        var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
+        return new AdapterParameterStrategyBuilder<TSource, TProperty>(assigmentOptions);
     }
 }
