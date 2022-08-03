@@ -57,7 +57,12 @@ public class PropertyOptions : OptionsBase
         ResolutionOptions = options;
         options.PropertyRelated = this;
     }
-    
+
+    public void MappedToConstructorParamter(PropertyToConstructorOptions propertyToConstructor)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Sets to ignore the mapping of the property.
     /// </summary>

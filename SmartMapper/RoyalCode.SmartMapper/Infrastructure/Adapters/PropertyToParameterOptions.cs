@@ -20,7 +20,6 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     {
         MethodOptions = methodOptions;
         Property = property;
-        AssignmentStrategy = new AssignmentStrategyOptions();
     }
 
     /// <summary>
@@ -32,11 +31,6 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     /// The property that will be mapped to a method parameter.
     /// </summary>
     public PropertyInfo Property { get; }
-    
-    /// <summary>
-    /// The assignment strategy options.
-    /// </summary>
-    public AssignmentStrategyOptions AssignmentStrategy { get; }
 
     /// <summary>
     /// The parameter name.

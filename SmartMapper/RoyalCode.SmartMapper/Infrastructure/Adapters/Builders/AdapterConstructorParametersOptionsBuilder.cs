@@ -30,6 +30,12 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
         var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
+        var propertyToConstructor = constructorOptions.GetPropertyToConstructorOptions(propertyInfo);
+        propertyOptions.MappedToConstructorParamter(propertyToConstructor);
+
+        if (parameterName is not null)
+            propertyToConstructor.UseParameterName(parameterName);
+
 
         var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         return new AdapterParameterStrategyBuilder<TSource, TProperty>(assigmentOptions);
