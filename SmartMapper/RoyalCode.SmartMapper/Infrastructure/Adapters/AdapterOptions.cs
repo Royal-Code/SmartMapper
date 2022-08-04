@@ -86,7 +86,7 @@ public class AdapterOptions : OptionsBase
     /// </returns>
     public ConstructorOptions GetConstructorOptions()
     {
-        constructorOptions ??= new ConstructorOptions();
+        constructorOptions ??= new ConstructorOptions(TargetType);
         return constructorOptions;
     }
 

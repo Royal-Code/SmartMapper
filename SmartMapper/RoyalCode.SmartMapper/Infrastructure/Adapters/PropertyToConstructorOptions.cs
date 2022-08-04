@@ -1,4 +1,5 @@
-﻿using RoyalCode.SmartMapper.Infrastructure.Core;
+﻿using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
@@ -16,11 +17,17 @@ public class PropertyToConstructorOptions : WithAssignmentOptionsBase
     /// </para>
     /// </summary>
     /// <param name="property"></param>
-    public PropertyToConstructorOptions(PropertyInfo property)
+    public PropertyToConstructorOptions(Type targetType, PropertyInfo property)
     {
+        TargetType = targetType;
         Property = property;
     }
-    
+
+    /// <summary>
+    /// The target type that this property will be mapped.
+    /// </summary>
+    public Type TargetType { get; }
+
     /// <summary>
     /// The property that will be mapped to a method parameter.
     /// </summary>
@@ -31,8 +38,18 @@ public class PropertyToConstructorOptions : WithAssignmentOptionsBase
     /// </summary>
     public string? ParameterName { get; private set; }
 
-    internal void UseParameterName(string parameterName)
+    /// <summary>
+    /// Set the constructor parameter name to which this property should be mapped.
+    /// </summary>
+    /// <param name="parameterName">The name of the constructor parameter.</param>
+    /// <exception cref="InvalidParameterNameException">
+    ///     If none parameter exists in all constructors with the provided name.
+    /// </exception>
+    public void UseParameterName(string parameterName)
     {
-        throw new NotImplementedException();
+        if (!TargetType.GetConstructors().Any(c => c.GetParameters().Any(p => p.Name == parameterName)))
+            throw new InvalidParameterNameException(parameterName, TargetType, nameof(parameterName));
+
+        ParameterName = parameterName;
     }
 }

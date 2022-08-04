@@ -77,6 +77,7 @@ public class AdapterOptionsTests
     [Theory]
     [InlineData("InvalidName", false)]
     [InlineData("Value", true)]
+    [InlineData("Other", true)]
     public void TryGetPropertyOptions_Must_Return_True_When_PropertyExists(string propertyName, bool expected)
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
@@ -96,7 +97,7 @@ public class AdapterOptionsTests
         }
     }
     
-    private class Foo
+    private class Foo : Quux
     {
         public string Value { get; set; }
     }
@@ -104,5 +105,10 @@ public class AdapterOptionsTests
     private class Bar
     {
         public string Value { get; set; }
+    }
+
+    private class Quux
+    {
+        public string Other { get; set; }
     }
 }

@@ -57,7 +57,7 @@ public class ConstructorOptions : OptionsBase
         var options = propertiesOptions.FirstOrDefault(p => p.Property == property);
         if (options is null)
         {
-            options = new PropertyToConstructorOptions(property);
+            options = new PropertyToConstructorOptions(TargetType, property);
             propertiesOptions.Add(options);
         }
 

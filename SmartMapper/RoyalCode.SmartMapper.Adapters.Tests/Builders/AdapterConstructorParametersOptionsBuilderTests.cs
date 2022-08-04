@@ -88,5 +88,11 @@ public class AdapterConstructorParametersOptionsBuilderTests
         public void DoSomething(string value) { }
     }
 
-    private class Bar { }
+    private class Bar 
+    {
+        public Bar(string value)
+        {
+
+        }
+    }
 }

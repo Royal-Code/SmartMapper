@@ -67,7 +67,48 @@ public class PropertyOptionsTests
         
         action.Should().Throw<InvalidOperationException>();
     }
-    
+
+    [Fact]
+    public void MappedToConstructor_Must_SetPropertyRelated()
+    {
+        var propertyInfo = typeof(Foo).GetProperty("Value")!;
+        var options = new PropertyOptions(propertyInfo);
+
+        var propertyToContructor = new PropertyToConstructorOptions(typeof(Bar), propertyInfo);
+
+        options.MappedToConstructor(propertyToContructor);
+
+        propertyToContructor.PropertyRelated.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void MappedToConstructor_Must_SetResolutionOptions()
+    {
+        var propertyInfo = typeof(Foo).GetProperty("Value")!;
+        var options = new PropertyOptions(propertyInfo);
+
+        var propertyToContructor = new PropertyToConstructorOptions(typeof(Bar), propertyInfo);
+
+        options.MappedToConstructor(propertyToContructor);
+
+        options.ResolutionOptions.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void MappedToConstructor_Must_Throw_When_ResolutionStatusIsSetPreviously()
+    {
+        var propertyInfo = typeof(Foo).GetProperty("Value")!;
+        var options = new PropertyOptions(propertyInfo);
+        options.IgnoreMapping();
+
+        var propertyToContructor = new PropertyToConstructorOptions(typeof(Bar), propertyInfo);
+
+        var action = () => options.MappedToConstructor(propertyToContructor);
+
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+
     [Fact]
     public void IgnoreMapping_Must_Throw_When_ResolutionStatusIsSetPreviously()
     {
@@ -87,4 +128,6 @@ public class PropertyOptionsTests
     {
         public string Value { get; set; }
     }
+
+    private class Bar { }
 }
