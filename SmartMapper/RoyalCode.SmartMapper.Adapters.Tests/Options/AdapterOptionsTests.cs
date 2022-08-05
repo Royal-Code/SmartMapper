@@ -41,6 +41,18 @@ public class AdapterOptionsTests
     }
 
     [Fact]
+    public void GetPropertyOptions_Must_AcceptPropertiesFromInheritTypes()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+
+        var result = options.GetPropertyOptions(typeof(Quux).GetProperty("Other")!);
+
+        result.Should().NotBeNull();
+        result.Property.Should().NotBeNull();
+        result.Property.Name.Should().Be("Other");
+    }
+
+    [Fact]
     public void GetPropertyOptions_Must_Return_NewOptions()
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));

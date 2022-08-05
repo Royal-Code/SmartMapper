@@ -61,7 +61,7 @@ public class AdapterOptions : OptionsBase
     public PropertyOptions GetPropertyOptions(PropertyInfo property)
     {
         // check property type
-        if (property.DeclaringType != SourceType)
+        if (!property.DeclaringType?.IsAssignableFrom(SourceType) ?? false)
             throw new ArgumentException(
                 $"The property {property.Name} is not a property of the source type {SourceType.Name}.");
 
@@ -103,7 +103,10 @@ public class AdapterOptions : OptionsBase
         options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
         if (options is null)
         {
-            var propertyInfo = SourceType.GetProperty(propertyName);
+            // get source property by name, including inherited type properties
+            var propertyInfo = SourceType.GetRuntimeProperty(propertyName);
+
+            //var propertyInfo = SourceType.GetProperty(propertyName);
             if (propertyInfo is not null)
                 options = GetPropertyOptions(propertyInfo);
         }
