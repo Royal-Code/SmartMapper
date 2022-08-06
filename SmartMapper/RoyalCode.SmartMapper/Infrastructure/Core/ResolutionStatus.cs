@@ -24,5 +24,10 @@ public enum ResolutionStatus
     /// The property is mapped to a constructor parameter of the destination type.
     /// </summary>
     MappedToConstructor,
+
+    /// <summary>
+    /// The property is mapped to a property of the destination type.
+    /// </summary>
+    MappedToProperty,
     
 }

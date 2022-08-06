@@ -16,7 +16,7 @@ public class PropertyToConstructorOptions : WithAssignmentOptionsBase
     ///     Creates a new instance of <see cref="PropertyToConstructorOptions"/>.
     /// </para>
     /// </summary>
-    /// <param name="property"></param>
+    /// <param name="property">The source property mapped to a target constructor parameter.</param>
     public PropertyToConstructorOptions(Type targetType, PropertyInfo property)
     {
         TargetType = targetType;
