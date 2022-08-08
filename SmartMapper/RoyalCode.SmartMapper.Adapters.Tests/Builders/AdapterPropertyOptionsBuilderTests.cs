@@ -73,7 +73,7 @@ public class AdapterProTpertyOptionsBuilderTests
     }
 
     [Fact]
-    public void To_Must_ConfigurePropertOption_With_MappedToProperty_PropertyNameIsValid()
+    public void To_Must_ConfigurePropertyOption_With_MappedToProperty_PropertyNameIsValid()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
@@ -84,6 +84,78 @@ public class AdapterProTpertyOptionsBuilderTests
 
         propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MappedToProperty);
         // TODO: checar o propertyOptions.ResolutionOptions para ser algo PropertyToProperty.
+    }
+
+    [Fact]
+    public void ToConstructor_Must_ReturnTheBuilder()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var nextBuilder = builder.ToConstructor();
+
+        nextBuilder.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void ToConstructor_Must_ConfigurePropertyOptions_With_MapInternalProperties()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var nextBuilder = builder.ToConstructor();
+        nextBuilder.Should().NotBeNull();
+
+        //propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInternalProperties);
+    }
+
+    [Fact]
+    public void ToMethod_Must_ReturnTheBuilder()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var nextBuilder = builder.ToMethod();
+        nextBuilder.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void ToMethod_With_Delegate_Must_ReturnTheBuilder()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var nextBuilder = builder.ToMethod(x => x.DoSomething);
+        nextBuilder.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void ToMethod_Must_ConfigurePropertyOptions_With_MapInternalProperties()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var nextBuilder = builder.ToMethod();
+        nextBuilder.Should().NotBeNull();
+
+        //propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInternalProperties);
+    }
+
+    [Fact]
+    public void ToMethod_With_Delegate_Must_Throw_When_InvalidDelegate()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+
+        var act = () => builder.ToMethod(x => string.IsNullOrEmpty);
+        
+        act.Should().Throw<InvalidMethodDelegateException>();
     }
 
     private class Foo
