@@ -6,6 +6,7 @@ using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
+/// <inheritdoc />
 public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConstructorParametersOptionsBuilder<TSource>
 {
     private readonly AdapterOptions adapterOptions;
@@ -19,6 +20,7 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
         this.constructorOptions = constructorOptions;
     }
     
+    /// <inheritdoc />
     public IAdapterParameterStrategyBuilder<TSource, TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null)
@@ -30,11 +32,11 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
         var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
-        var propertyToConstructor = constructorOptions.GetPropertyToConstructorOptions(propertyInfo);
-        propertyOptions.MappedToConstructor(propertyToConstructor);
+        var constructorParameterOptions = constructorOptions.GetConstructorParameterOptions(propertyInfo);
+        propertyOptions.MappedToConstructor(constructorParameterOptions);
 
         if (parameterName is not null)
-            propertyToConstructor.UseParameterName(parameterName);
+            constructorParameterOptions.UseParameterName(parameterName);
 
 
         var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();

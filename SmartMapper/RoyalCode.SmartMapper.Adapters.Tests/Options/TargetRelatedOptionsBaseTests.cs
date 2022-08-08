@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Options;
 
-public class WithAssignmentOptionsBaseTests
+public class TargetRelatedOptionsBaseTests
 {
     private static readonly PropertyInfo ValuePropertyInfo = typeof(TestOptions).GetProperty("Value")!;
     
@@ -35,7 +35,7 @@ public class WithAssignmentOptionsBaseTests
         propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.Undefined);
     }
     
-    private class TestOptions : WithAssignmentOptionsBase
+    private class TestOptions : TargetRelatedOptionsBase
     {
         public string Value { get; set; }
     }

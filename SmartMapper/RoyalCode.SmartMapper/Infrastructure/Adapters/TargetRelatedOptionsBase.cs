@@ -1,7 +1,7 @@
 
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Core;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 
 /// <summary>
 /// <para>
@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Core;
 ///     to some destination property, method parameter or constructor parameter.
 /// </para>
 /// </summary>
-public abstract class WithAssignmentOptionsBase : OptionsBase
+public abstract class TargetRelatedOptionsBase : OptionsBase
 {
     /// <summary>
     /// The source property related to the assignment.

@@ -66,7 +66,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         builder.Parameter(f => f.Value);
 
-        propertyOptions.ResolutionOptions.Should().BeOfType<PropertyToConstructorOptions>();
+        propertyOptions.ResolutionOptions.Should().BeOfType<ConstructorParameterOptions>();
         propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToConstructor);
     }
 
@@ -79,7 +79,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         builder.Parameter(f => f.Value);
 
-        // criar as verificações
+        // criar as verificaï¿½ï¿½es
     }
 
     private class Foo

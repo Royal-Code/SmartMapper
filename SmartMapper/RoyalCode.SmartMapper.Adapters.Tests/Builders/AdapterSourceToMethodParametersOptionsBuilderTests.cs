@@ -14,7 +14,7 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
     public void Parameter_Must_Throw_When_NotIsAProperty()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodParametersOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -28,7 +28,7 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
     public void Parameter_Must_ReturnTheStrategyBuilder()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodParametersOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -40,7 +40,7 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
     public void Parameter_Must_SetPropertyOptionsWithTheParameterOptions()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
 
@@ -55,7 +55,7 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
     public void Parameter_Must_AddTheParameterToTheMethodOptionsSequence()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
 
         methodOptions.GetSelectedPropertyToParameterSequence().Should().BeEmpty();

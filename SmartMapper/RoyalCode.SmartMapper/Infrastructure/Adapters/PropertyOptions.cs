@@ -61,10 +61,28 @@ public class PropertyOptions : OptionsBase
     /// <summary>
     /// Sets the mapping of the property to a constructor parameter.
     /// </summary>
-    /// <param name="options"></param>
-    public void MappedToConstructor(PropertyToConstructorOptions options)
+    /// <param name="parameterOptions">The options that configure the property to be mapped to a constructor parameter.</param>
+    public void MappedToConstructor(ConstructorParameterOptions parameterOptions)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToConstructor);
+        ResolutionOptions = parameterOptions;
+        parameterOptions.PropertyRelated = this;
+    }
+    
+    /// <summary>
+    /// Sets the mapping of the property to a property of the destination object.
+    /// </summary>
+    /// <param name="toPropertyOptions">The options that configure the property to be mapped to a property of the destination object.</param>
+    public void MappedToProperty(PropertyToPropertyOptions toPropertyOptions)
+    {
+        UpdateResolutionStatus(ResolutionStatus.MappedToProperty);
+        ResolutionOptions = toPropertyOptions;
+        toPropertyOptions.PropertyRelated = this;
+    }
+    
+    public void MapInnerProperties(InnerPropertiesOptionsBase options)
+    {
+        UpdateResolutionStatus(ResolutionStatus.MapInnerProperties);
         ResolutionOptions = options;
         options.PropertyRelated = this;
     }

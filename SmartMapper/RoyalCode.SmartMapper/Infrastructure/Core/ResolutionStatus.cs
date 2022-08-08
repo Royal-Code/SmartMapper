@@ -30,4 +30,8 @@ public enum ResolutionStatus
     /// </summary>
     MappedToProperty,
     
+    /// <summary>
+    /// The inner/internal properties of the source property are mapped to the destination type.
+    /// </summary>
+    MapInnerProperties,
 }

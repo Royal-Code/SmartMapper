@@ -21,9 +21,9 @@ public class AdapterOptionsTests
     public void GetSourceToMethodOptions_Must_ReturnOptions_When_Options()
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
-        options.AddToMethod(new AdapterSourceToMethodOptions());
-        options.AddToMethod(new AdapterSourceToMethodOptions());
-        options.AddToMethod(new AdapterSourceToMethodOptions());
+        options.AddToMethod(new SourceToMethodOptions());
+        options.AddToMethod(new SourceToMethodOptions());
+        options.AddToMethod(new SourceToMethodOptions());
         
         var result = options.GetSourceToMethodOptions();
         

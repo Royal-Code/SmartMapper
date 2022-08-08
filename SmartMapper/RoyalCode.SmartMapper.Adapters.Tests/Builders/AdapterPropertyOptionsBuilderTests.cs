@@ -45,7 +45,10 @@ public class AdapterProTpertyOptionsBuilderTests
         nextBuilder.Should().NotBeNull();
 
         propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MappedToProperty);
-        // TODO: checar o propertyOptions.ResolutionOptions para ser algo PropertyToProperty.
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToPropertyOptions>();
+        
+        var resolutionOptions = (PropertyToPropertyOptions)propertyOptions.ResolutionOptions!;
+        resolutionOptions.PropertyRelated.Should().NotBeNull().And.BeSameAs(propertyOptions);
     }
 
     [Fact]
@@ -58,6 +61,18 @@ public class AdapterProTpertyOptionsBuilderTests
         var act = () => builder.To<string>("InvalidName");
         
         act.Should().Throw<InvalidPropertyNameException>();
+    }
+
+    [Fact]
+    public void To_Must_Throw_When_PropertyTypeIsNotEqualToInformedType()
+    {
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var builder = new AdapterPropertyOptionsBuilder<Foo, Bar, string>(adapterOptions, propertyOptions);
+        
+        var act = () => builder.To<int>("OtherValue");
+        
+        act.Should().Throw<InvalidPropertyTypeException>();
     }
 
     [Fact]
@@ -83,7 +98,10 @@ public class AdapterProTpertyOptionsBuilderTests
         nextBuilder.Should().NotBeNull();
 
         propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MappedToProperty);
-        // TODO: checar o propertyOptions.ResolutionOptions para ser algo PropertyToProperty.
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToPropertyOptions>();
+        
+        var resolutionOptions = (PropertyToPropertyOptions)propertyOptions.ResolutionOptions!;
+        resolutionOptions.PropertyRelated.Should().NotBeNull().And.BeSameAs(propertyOptions);
     }
 
     [Fact]
@@ -108,7 +126,8 @@ public class AdapterProTpertyOptionsBuilderTests
         var nextBuilder = builder.ToConstructor();
         nextBuilder.Should().NotBeNull();
 
-        //propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInternalProperties);
+        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInnerProperties);
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToConstructorOptions>();
     }
 
     [Fact]
@@ -143,7 +162,8 @@ public class AdapterProTpertyOptionsBuilderTests
         var nextBuilder = builder.ToMethod();
         nextBuilder.Should().NotBeNull();
 
-        //propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInternalProperties);
+        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInnerProperties);
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToMethodOptions>();
     }
 
     [Fact]

@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 /// </summary>
 public class ConstructorOptions : OptionsBase
 {
-    private ICollection<PropertyToConstructorOptions>? propertiesOptions;
+    private ICollection<ConstructorParameterOptions>? parametersOptions;
 
     /// <summary>
     /// <para>
@@ -50,15 +50,15 @@ public class ConstructorOptions : OptionsBase
     /// </summary>
     /// <param name="property">The property.</param>
     /// <returns>Options for mapping the property to a constructor parameter.</returns>
-    public PropertyToConstructorOptions GetPropertyToConstructorOptions(PropertyInfo property)
+    public ConstructorParameterOptions GetConstructorParameterOptions(PropertyInfo property)
     {
-        propertiesOptions ??= new List<PropertyToConstructorOptions>();
+        parametersOptions ??= new List<ConstructorParameterOptions>();
 
-        var options = propertiesOptions.FirstOrDefault(p => p.Property == property);
+        var options = parametersOptions.FirstOrDefault(p => p.Property == property);
         if (options is null)
         {
-            options = new PropertyToConstructorOptions(TargetType, property);
-            propertiesOptions.Add(options);
+            options = new ConstructorParameterOptions(TargetType, property);
+            parametersOptions.Add(options);
         }
 
         return options;

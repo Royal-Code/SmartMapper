@@ -10,9 +10,9 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     : IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly AdapterSourceToMethodOptions methodOptions;
+    private readonly SourceToMethodOptions methodOptions;
 
-    public AdapterSourceToMethodOptionsBuilder(AdapterOptions adapterOptions, AdapterSourceToMethodOptions methodOptions)
+    public AdapterSourceToMethodOptionsBuilder(AdapterOptions adapterOptions, SourceToMethodOptions methodOptions)
     {
         this.adapterOptions = adapterOptions;
         this.methodOptions = methodOptions;

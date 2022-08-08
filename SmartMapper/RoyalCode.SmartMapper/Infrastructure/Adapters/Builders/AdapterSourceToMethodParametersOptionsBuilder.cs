@@ -11,11 +11,11 @@ public class AdapterSourceToMethodParametersOptionsBuilder<TSource>
     : IAdapterSourceToMethodParametersOptionsBuilder<TSource>
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly AdapterSourceToMethodOptions methodOptions;
+    private readonly SourceToMethodOptions methodOptions;
 
     public AdapterSourceToMethodParametersOptionsBuilder(
         AdapterOptions adapterOptions,
-        AdapterSourceToMethodOptions methodOptions)
+        SourceToMethodOptions methodOptions)
     {
         this.adapterOptions = adapterOptions;
         this.methodOptions = methodOptions;

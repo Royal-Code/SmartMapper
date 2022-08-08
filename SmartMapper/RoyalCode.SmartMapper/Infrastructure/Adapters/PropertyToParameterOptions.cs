@@ -9,14 +9,14 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 ///     Options for mapping of a source property to a method parameter.
 /// </para>
 /// </summary>
-public class PropertyToParameterOptions : WithAssignmentOptionsBase
+public class PropertyToParameterOptions : TargetRelatedOptionsBase
 {
     /// <summary>
     /// Creates a new instance of <see cref="PropertyToParameterOptions"/>.
     /// </summary>
     /// <param name="methodOptions">The method options.</param>
     /// <param name="property">The property.</param>
-    public PropertyToParameterOptions(AdapterSourceToMethodOptions methodOptions, PropertyInfo property)
+    public PropertyToParameterOptions(SourceToMethodOptions methodOptions, PropertyInfo property)
     {
         MethodOptions = methodOptions;
         Property = property;
@@ -25,7 +25,7 @@ public class PropertyToParameterOptions : WithAssignmentOptionsBase
     /// <summary>
     /// The method options.
     /// </summary>
-    public AdapterSourceToMethodOptions MethodOptions { get; }
+    public SourceToMethodOptions MethodOptions { get; }
 
     /// <summary>
     /// The property that will be mapped to a method parameter.

@@ -10,7 +10,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void GetPropertyToParameterOptions_Must_ReturnTheOptions()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -21,7 +21,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void GetPropertyToParameterOptions_Must_ReturnTheSameOptions()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -34,7 +34,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void TryGetPropertyToParameterOptions_Must_ReturnTheOptions_When_Configured()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -49,7 +49,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void TryGetPropertyToParameterOptions_Must_ReturnFalse_WhenNotConfigured()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -62,7 +62,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void ClearParameters_WhenNotConfigurated_Must_NotThrow()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         sourceToMethodOptions.ClearParameters();
     }
@@ -70,7 +70,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void ClearParameters_Must_ClearTheRelatedOptions()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -88,7 +88,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void ClearParameters_Must_ClearTheInternalCollections()
     {
-            var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+            var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
 
@@ -111,7 +111,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void GetSelectedPropertyToParameterSequence_Must_ReturnEmpty_When_NotConfigurated()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         sourceToMethodOptions.GetSelectedPropertyToParameterSequence().Should().BeEmpty();
     }
@@ -119,7 +119,7 @@ public class AdapterSourceToMethodOptionsTests
     [Fact]
     public void GetSelectedPropertyToParameterSequence_Must_ReturnTheParametersInOrder()
     {
-        var sourceToMethodOptions = new AdapterSourceToMethodOptions();
+        var sourceToMethodOptions = new SourceToMethodOptions();
 
         var propertyInfo1 = typeof(Foo).GetProperty("Value")!;
         var options1 = sourceToMethodOptions.GetPropertyToParameterOptions(propertyInfo1);

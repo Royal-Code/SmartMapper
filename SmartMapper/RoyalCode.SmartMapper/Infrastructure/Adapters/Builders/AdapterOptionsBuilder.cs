@@ -19,7 +19,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
     {
-        var toMethodOptions = new AdapterSourceToMethodOptions();
+        var toMethodOptions = new SourceToMethodOptions();
         options.AddToMethod(toMethodOptions);
         return new AdapterSourceToMethodOptionsBuilder<TSource, TTarget>(options, toMethodOptions);
     }
@@ -31,7 +31,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
         
-        var toMethodOptions = new AdapterSourceToMethodOptions
+        var toMethodOptions = new SourceToMethodOptions
         {
             Method = method
         };
@@ -50,7 +50,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
             throw new InvalidMethodNameException(
                 $"Method '{methodName}' not found on type '{typeof(TTarget).Name}'.", nameof(methodName));
 
-        var toMethodOptions = new AdapterSourceToMethodOptions()
+        var toMethodOptions = new SourceToMethodOptions()
         {
             MethodName = methodName
         };
@@ -87,7 +87,18 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
     {
         if (options.TryGetPropertyOptions(propertyName, out var propertyOptions))
+        {
+            // validate the property type
+            if (propertyOptions.Property.PropertyType != typeof(TProperty))
+                throw new InvalidPropertyTypeException(
+                    $"Property '{propertyName}' on type '{typeof(TSource).Name}' " +
+                    $"is not of type '{typeof(TProperty).Name}', " +
+                    $"but of type '{propertyOptions.Property.PropertyType.Name}'.",
+                    nameof(propertyName));
+            
             return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
+        }
+            
         
         throw new InvalidPropertyNameException(
             $"Property '{propertyName}' not found on type '{typeof(TSource).Name}'.", nameof(propertyName));

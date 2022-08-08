@@ -14,7 +14,7 @@ public class PropertyToParameterOptionsTests
     [InlineData(" ")]
     public void UseParameterName_Must_NotBeNullOrEmpty(string parameterName)
     {
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         var propertyInfo = typeof(Foo).GetProperty(nameof(Foo.Value))!;
         
         var options = new PropertyToParameterOptions(methodOptions, propertyInfo);
@@ -25,7 +25,7 @@ public class PropertyToParameterOptionsTests
     [Fact]
     public void UseParameterName_Must_AcceptAnyParameterName_When_MethodNotSet()
     {
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         var propertyInfo = typeof(Foo).GetProperty(nameof(Foo.Value))!;
         
         var options = new PropertyToParameterOptions(methodOptions, propertyInfo);
@@ -38,7 +38,7 @@ public class PropertyToParameterOptionsTests
     [InlineData("abc", false)]
     public void UseParameterName_Must_ValidateParameterName_When_MethodSet(string parameterName, bool isValid)
     {
-        var methodOptions = new AdapterSourceToMethodOptions
+        var methodOptions = new SourceToMethodOptions
         {
             Method = typeof(Bar).GetMethod("DoSomething") ?? throw new InvalidOperationException()
         };

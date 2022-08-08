@@ -14,7 +14,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Parameter_Must_Throw_When_NotIsAProperty()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -28,7 +28,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Parameter_Must_ReturnTheStrategyBuilder()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -42,7 +42,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     [InlineData("abc", false)]
     public void Parameter_Must_ValidateTheParameterName(string parameterName, bool isValid)
     {
-        var methodOptions = new AdapterSourceToMethodOptions()
+        var methodOptions = new SourceToMethodOptions()
         {
             Method = typeof(Bar).GetMethod("DoSomething") ?? throw new InvalidOperationException()
         };
@@ -63,7 +63,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Parameter_Must_SetPropertyOptionsWithTheParameterOptions()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
 
@@ -78,7 +78,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Parameter_Must_SetMethodOptionsWithParameterOptions()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
 
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -96,7 +96,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Ignore_Must_Throw_When_NotIsAProperty()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);
@@ -110,7 +110,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     public void Ignore_Must_IgnoreThePropertyMapping()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new AdapterSourceToMethodOptions();
+        var methodOptions = new SourceToMethodOptions();
         adapterOptions.AddToMethod(methodOptions);
         
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<Foo>(adapterOptions, methodOptions);

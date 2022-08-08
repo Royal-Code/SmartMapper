@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 /// <summary>
 /// Options containing configuration for the mapping of a source type to a destination type method.
 /// </summary>
-public class AdapterSourceToMethodOptions : OptionsBase
+public class SourceToMethodOptions : OptionsBase
 {
     private ICollection<PropertyToParameterOptions>? propertyToParameterOptions;
     private ICollection<PropertyToParameterOptions>? selectedPropertyToParameterSequence;

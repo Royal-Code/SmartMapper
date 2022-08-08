@@ -11,7 +11,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 /// </summary>
 public class AdapterOptions : OptionsBase
 {
-    private ICollection<AdapterSourceToMethodOptions>? sourceToMethodOptions;
+    private ICollection<SourceToMethodOptions>? sourceToMethodOptions;
     private ConstructorOptions? constructorOptions;
     private ICollection<PropertyOptions>? propertyOptions;
 
@@ -32,9 +32,9 @@ public class AdapterOptions : OptionsBase
     /// <returns>
     ///     All options for mapping a source type to a method or an empty collection if no options have been set.
     /// </returns>
-    public IEnumerable<AdapterSourceToMethodOptions> GetSourceToMethodOptions()
+    public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions()
     {
-        return sourceToMethodOptions ?? Enumerable.Empty<AdapterSourceToMethodOptions>();
+        return sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
     }
 
     /// <summary>
@@ -43,9 +43,9 @@ public class AdapterOptions : OptionsBase
     /// </para>
     /// </summary>
     /// <param name="options">The options for mapping a source type to a method.</param>
-    public void AddToMethod(AdapterSourceToMethodOptions options)
+    public void AddToMethod(SourceToMethodOptions options)
     {
-        sourceToMethodOptions ??= new List<AdapterSourceToMethodOptions>();
+        sourceToMethodOptions ??= new List<SourceToMethodOptions>();
         sourceToMethodOptions.Add(options);
     }
 

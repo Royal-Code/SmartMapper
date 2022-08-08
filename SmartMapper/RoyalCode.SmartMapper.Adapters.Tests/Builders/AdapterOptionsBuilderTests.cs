@@ -176,6 +176,17 @@ public class AdapterOptionsBuilderTests
         
         act.Should().Throw<InvalidPropertyNameException>();
     }
+
+    [Fact]
+    public void Map_Must_Throw_When_PropertyTypeIsNotEqualToInformedType()
+    {
+        var options = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var builder = new AdapterOptionsBuilder<Foo, Bar>(options);
+        
+        Action act = () => builder.Map<int>("Value");
+        
+        act.Should().Throw<InvalidPropertyTypeException>();
+    }
     
     [Fact]
     public void Map_Must_ReturnThePropertyToPropertyBuilder()
