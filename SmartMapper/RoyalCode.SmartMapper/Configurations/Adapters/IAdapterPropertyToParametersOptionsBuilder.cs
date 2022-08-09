@@ -41,5 +41,5 @@ public interface IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProp
     /// <param name="propertySelector">
     ///     An expression to select the property of the source type.
     /// </param>
-    void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
+    void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector);
 }

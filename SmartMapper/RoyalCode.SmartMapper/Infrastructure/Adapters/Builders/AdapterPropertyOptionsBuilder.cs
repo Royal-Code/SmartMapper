@@ -66,7 +66,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IAdapterPropertyToConstructorOptionsBuilder<TSource, TProperty> ToConstructor()
     {
         var constructorOptions = adapterOptions.GetConstructorOptions();
-        var options = new PropertyToConstructorOptions(typeof(TProperty), typeof(TTarget), constructorOptions);
+        var options = new PropertyToConstructorOptions(typeof(TProperty), constructorOptions);
         propertyOptions.MapInnerProperties(options);
         
         return new AdapterPropertyToConstructorOptionsBuilder<TSource, TProperty>(options);

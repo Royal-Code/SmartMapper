@@ -11,7 +11,7 @@ public class AdapterPropertyToConstructorOptionsBuilder<TSource, TProperty>
     /// <summary>
     /// Initializes a new instance of the <see cref="AdapterPropertyToConstructorOptionsBuilder{TSource, TProperty}"/> class.
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="options">The options.</param>
     public AdapterPropertyToConstructorOptionsBuilder(PropertyToConstructorOptions options)
     {
         this.options = options;
@@ -20,6 +20,6 @@ public class AdapterPropertyToConstructorOptionsBuilder<TSource, TProperty>
     /// <inheritdoc />
     public void Parameters(Action<IAdapterPropertyToParametersOptionsBuilder<TSource, TProperty>> configureParameters)
     {
-        
+        configureParameters.Invoke(new AdapterPropertyToParametersOptionsBuilder<TSource, TProperty>(options));
     }
 }
