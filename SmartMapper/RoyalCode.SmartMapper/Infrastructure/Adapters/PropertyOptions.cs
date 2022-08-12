@@ -114,7 +114,7 @@ public class PropertyOptions : OptionsBase
     ///     a new instance of the <see cref="AssignmentStrategyOptions{TProperty}"/> is created.
     /// </para>
     /// </summary>
-    /// <typeparam name="TProperty">The type of the property.</typeparam>
+    /// <typeparam name="TProperty">The type of the source property.</typeparam>
     /// <returns>The <see cref="AssignmentStrategyOptions{TProperty}"/>.</returns>
     public AssignmentStrategyOptions<TProperty> GetOrCreateAssignmentStrategyOptions<TProperty>()
     {

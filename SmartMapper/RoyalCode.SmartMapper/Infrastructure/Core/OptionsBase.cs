@@ -30,13 +30,11 @@ public abstract class OptionsBase
     
     public T? FindAnnotation<T>()
     {
-        var obj = FindAnnotation(typeof(T).Name);
-        return obj is T value ? value : default;
+        return FindAnnotation<T>(typeof(T).Name);
     }
     
     public void SetAnnotation<T>(object value)
     {
-        annotations ??= new();
-        annotations[typeof(T).Name] = value;
+        SetAnnotation(typeof(T).Name, value);
     }
 }

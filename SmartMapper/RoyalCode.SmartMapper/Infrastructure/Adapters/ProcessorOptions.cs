@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 /// <param name="SourceValueType">Type of the source value.</param>
 /// <param name="TargetValueType">Type of the target value.</param>
 /// <param name="ServiceType">Type of the service that is used to process the value.</param>
-/// <param name="processor">
+/// <param name="Processor">
 /// <para>
 ///     Function expression that is used to process the value.
 /// </para>
@@ -23,4 +23,4 @@ public record ProcessorOptions(
     Type SourceValueType,
     Type TargetValueType,
     Type ServiceType,
-    Expression processor);
+    Expression Processor);

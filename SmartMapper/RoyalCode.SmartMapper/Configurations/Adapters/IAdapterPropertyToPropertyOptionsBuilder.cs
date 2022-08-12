@@ -20,7 +20,7 @@ public interface IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TSou
     ///     Continues the mapping of the source property to an internal property of the target property.
     /// </para>
     /// </summary>
-    /// <param name="propertySelection">
+    /// <param name="propertySelector">
     ///     The property selection expression.
     /// </param>
     /// <typeparam name="TNextProperty">
@@ -30,7 +30,7 @@ public interface IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TSou
     ///     The builder to configure the property to property mapping.
     /// </returns>
     IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
-        Expression<Func<TTargetProperty, TNextProperty>> propertySelection);
+        Expression<Func<TTargetProperty, TNextProperty>> propertySelector);
 
     /// <summary>
     /// <para>

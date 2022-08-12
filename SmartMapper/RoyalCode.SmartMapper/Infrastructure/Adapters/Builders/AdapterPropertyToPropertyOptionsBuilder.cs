@@ -1,5 +1,8 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -22,39 +25,52 @@ public class AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty
     /// <inheritdoc />
     public IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> CastValue()
     {
-        throw new NotImplementedException();
+        propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>().UseCast();
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> UseConverter(
         Expression<Func<TProperty, TTargetProperty>> converter)
     {
-        throw new NotImplementedException();
+        propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>().UseConvert(converter);
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> Adapt()
     {
-        throw new NotImplementedException();
+        propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>().UseAdapt();
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> Select()
     {
-        throw new NotImplementedException();
+        propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>().UseSelect();
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> WithService<TService>(
         Expression<Func<TService, TProperty, TTargetProperty>> valueProcessor)
     {
-        throw new NotImplementedException();
+        propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>().UseProcessor(valueProcessor);
+        return this;
     }
 
     /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
-        Expression<Func<TTargetProperty, TNextProperty>> propertySelection)
+        Expression<Func<TTargetProperty, TNextProperty>> propertySelector)
     {
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+        
+        toPropertyOptions.ThenTo(propertyInfo);
+        
         throw new NotImplementedException();
     }
 

@@ -5,6 +5,8 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 
 public class PropertyToPropertyOptions : TargetRelatedOptionsBase
 {
+    private readonly ICollection<ThenToPropertyOptions>? thenToProperties;
+
     public PropertyToPropertyOptions(Type targetType, PropertyInfo targetProperty)
     {
         TargetType = targetType;
@@ -14,5 +16,11 @@ public class PropertyToPropertyOptions : TargetRelatedOptionsBase
     public Type TargetType { get; }
     
     public PropertyInfo TargetProperty { get; }
-    
+
+    public ThenToPropertyOptions ThenTo(PropertyInfo propertyInfo)
+    {
+        
+        
+        throw new NotImplementedException();
+    }
 }
