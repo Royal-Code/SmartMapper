@@ -38,7 +38,6 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
         if (parameterName is not null)
             constructorParameterOptions.UseParameterName(parameterName);
 
-
         var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         return new AdapterParameterStrategyBuilder<TSource, TProperty>(assigmentOptions);
     }

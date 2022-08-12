@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using System.Reflection;
 
@@ -62,5 +63,24 @@ public class ConstructorOptions : OptionsBase
         }
 
         return options;
+    }
+    
+    /// <summary>
+    /// <para>
+    ///     Try get the options for the property to be mapped to a constructor parameter.
+    /// </para>
+    /// <para>
+    ///     The options will be returned if the property was configured to be mapped to a constructor parameter.
+    /// </para>
+    /// </summary>
+    /// <param name="property">The property.</param>
+    /// <param name="options">Options for mapping the property to a constructor parameter.</param>
+    /// <returns>True if the property was configured to be mapped to a constructor parameter.</returns>
+    public bool TryGetConstructorParameterOptions(
+        PropertyInfo property, 
+        [NotNullWhen(true)] out ConstructorParameterOptions? options)
+    {
+        options = parametersOptions?.FirstOrDefault(p => p.Property == property);
+        return options != null;
     }
 }
