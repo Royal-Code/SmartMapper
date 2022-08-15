@@ -1,4 +1,6 @@
+using System;
 using FluentAssertions;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using Xunit;
@@ -121,6 +123,27 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         processorOptions.Should().NotBeNull();
         processorOptions!.Processor.Should().NotBeNull();
     }
+
+    [Fact]
+    public void ThenTo_Must_Throw_When_SelectorIsNotAProperty()
+    {
+            // Arrange
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        propertyOptions.MappedToProperty(propertyToPropertyOptions);
+
+        var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
+            adapterOptions, propertyOptions, propertyToPropertyOptions);
+        
+        // Act
+        Action action = () => builder.ThenTo(q => q.DoSomething());
+        
+        // Assert
+        action.Should().Throw<InvalidPropertySelectorException>();
+    }
+    
+    
     
     public class Foo
     {
@@ -144,6 +167,11 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     public class Baz
     {
         public string Value { get; set; }
+        
+        public string DoSomething()
+        {
+            return string.Empty;
+        }
     }
     
     public class Processor
