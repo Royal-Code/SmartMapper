@@ -10,14 +10,13 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 public class AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>
     : IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>
 {
-    private readonly AdapterOptions adapterOptions;
     private readonly PropertyOptions propertyOptions;
     private readonly PropertyToPropertyOptions toPropertyOptions;
 
-    public AdapterPropertyToPropertyOptionsBuilder(AdapterOptions adapterOptions, PropertyOptions propertyOptions,
+    public AdapterPropertyToPropertyOptionsBuilder(
+        PropertyOptions propertyOptions,
         PropertyToPropertyOptions toPropertyOptions)
     {
-        this.adapterOptions = adapterOptions;
         this.propertyOptions = propertyOptions;
         this.toPropertyOptions = toPropertyOptions;
     }
@@ -68,15 +67,15 @@ public class AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty
 
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
-        
-        toPropertyOptions.ThenTo(propertyInfo);
-        
-        throw new NotImplementedException();
+
+        var thenToOptions = toPropertyOptions.ThenTo(propertyInfo);
+
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }
 
     /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty> Then()
     {
-        throw new NotImplementedException();
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>(toPropertyOptions);
     }
 }

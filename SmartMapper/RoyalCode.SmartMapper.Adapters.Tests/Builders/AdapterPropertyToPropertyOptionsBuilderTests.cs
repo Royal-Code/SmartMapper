@@ -19,7 +19,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         var returned = builder.CastValue();
@@ -40,7 +40,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         var returned = builder.UseConverter(q => new Baz(){ Value = q.Value});
@@ -66,7 +66,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         var returned = builder.Adapt();
@@ -87,7 +87,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         var returned = builder.Select();
@@ -108,7 +108,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         var returned = builder.WithService<Processor>((p, q) => p.Process(q));
@@ -134,7 +134,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
-            adapterOptions, propertyOptions, propertyToPropertyOptions);
+            propertyOptions, propertyToPropertyOptions);
         
         // Act
         Action action = () => builder.ThenTo(q => q.DoSomething());
@@ -143,7 +143,44 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         action.Should().Throw<InvalidPropertySelectorException>();
     }
     
-    
+    [Fact]
+    public void ThenTo_Must_Set_ThenToPropertyOptions_And_ReturnTheBuilder()
+    {
+        // Arrange
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        propertyOptions.MappedToProperty(propertyToPropertyOptions);
+
+        var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
+            propertyOptions, propertyToPropertyOptions);
+        
+        // Act
+        var returned = builder.ThenTo(q => q.Value);
+        
+        // Assert
+        returned.Should().NotBeNull();
+        propertyToPropertyOptions.ThenToPropertyOptions.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Then_Must_ReturnTheBuilder()
+    {
+        // Arrange
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        propertyOptions.MappedToProperty(propertyToPropertyOptions);
+
+        var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
+            propertyOptions, propertyToPropertyOptions);
+        
+        // Act
+        var returned = builder.Then();
+        
+        // Assert
+        returned.Should().NotBeNull();
+    }
     
     public class Foo
     {

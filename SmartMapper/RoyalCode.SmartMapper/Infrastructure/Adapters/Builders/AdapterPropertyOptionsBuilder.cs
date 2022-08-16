@@ -33,7 +33,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
         propertyOptions.MappedToProperty(toPropertyOptions);
         
         return new AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
-            adapterOptions, propertyOptions, toPropertyOptions);
+            propertyOptions, toPropertyOptions);
     }
 
     /// <inheritdoc />
@@ -59,7 +59,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
         propertyOptions.MappedToProperty(toPropertyOptions);
         
         return new AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
-            adapterOptions, propertyOptions, toPropertyOptions);
+            propertyOptions, toPropertyOptions);
     }
 
     /// <inheritdoc />
