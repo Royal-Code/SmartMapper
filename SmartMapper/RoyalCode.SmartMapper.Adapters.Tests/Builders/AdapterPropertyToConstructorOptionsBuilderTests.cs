@@ -12,7 +12,7 @@ public class AdapterPropertyToConstructorOptionsBuilderTests
     {
         var constructorOptions = new ConstructorOptions(typeof(Bar));
         var propertyToConstructorOptions = new PropertyToConstructorOptions(typeof(string), constructorOptions);
-        var builder = new AdapterPropertyToConstructorOptionsBuilder<Foo, string>(propertyToConstructorOptions);
+        var builder = new AdapterPropertyToConstructorOptionsBuilder<string>(propertyToConstructorOptions);
         
         bool called = false;
         builder.Parameters(b => called = b is not null);

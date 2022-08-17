@@ -45,7 +45,7 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     /// <returns>
     ///     The builder to configure the property to constructor mapping.
     /// </returns>
-    IAdapterPropertyToConstructorOptionsBuilder<TSource, TSourceProperty> ToConstructor();
+    IAdapterPropertyToConstructorOptionsBuilder<TSourceProperty> ToConstructor();
 
     /// <summary>
     /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
@@ -53,7 +53,7 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     /// <returns>
     ///     The builder to configure the property to method mapping.
     /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TSourceProperty> ToMethod();
+    IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> ToMethod();
     
     /// <summary>
     /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
@@ -64,6 +64,6 @@ public interface IAdapterPropertyOptionsBuilder<TSource, TTarget, TSourcePropert
     /// <returns>
     ///     The builder to configure the property to method mapping.
     /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TSourceProperty> ToMethod(
+    IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> ToMethod(
         Expression<Func<TTarget, Delegate>> methodSelect);
 }

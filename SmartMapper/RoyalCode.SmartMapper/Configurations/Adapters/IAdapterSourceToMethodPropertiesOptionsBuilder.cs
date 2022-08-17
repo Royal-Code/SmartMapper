@@ -29,7 +29,7 @@ public interface IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the parameter strategy options.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TSource, TProperty> Parameter<TProperty>(
+    IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null);
 

@@ -3,8 +3,8 @@ using RoyalCode.SmartMapper.Configurations.Adapters;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
-public class AdapterPropertyToParametersOptionsBuilder<TSource, TSourceProperty>
-    : IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProperty>
+public class AdapterPropertyToParametersOptionsBuilder<TSourceProperty>
+    : IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>
 {
     private readonly PropertyToConstructorOptions options;
     
@@ -13,7 +13,7 @@ public class AdapterPropertyToParametersOptionsBuilder<TSource, TSourceProperty>
         this.options = options;
     }
 
-    public IAdapterParameterStrategyBuilder<TSourceProperty, TProperty> Parameter<TProperty>(
+    public IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector, string? parameterName = null)
     {
         throw new NotImplementedException();

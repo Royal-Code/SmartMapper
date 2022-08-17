@@ -4,7 +4,7 @@ using RoyalCode.SmartMapper.Configurations.Adapters;
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
 /// <inheritdoc />
-public class AdapterParameterStrategyBuilder<TSource, TProperty> : IAdapterParameterStrategyBuilder<TSource, TProperty>
+public class AdapterParameterStrategyBuilder<TProperty> : IAdapterParameterStrategyBuilder<TProperty>
 {
     private readonly AssignmentStrategyOptions<TProperty> options;
 
@@ -14,14 +14,14 @@ public class AdapterParameterStrategyBuilder<TSource, TProperty> : IAdapterParam
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> CastValue()
+    public IAdapterParameterStrategyBuilder<TProperty> CastValue()
     {
         options.UseCast();
         return this;
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> UseConverter<TParameter>(
+    public IAdapterParameterStrategyBuilder<TProperty> UseConverter<TParameter>(
         Expression<Func<TProperty, TParameter>> converter)
     {
         options.UseConvert(converter);
@@ -29,21 +29,21 @@ public class AdapterParameterStrategyBuilder<TSource, TProperty> : IAdapterParam
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> Adapt()
+    public IAdapterParameterStrategyBuilder<TProperty> Adapt()
     {
         options.UseAdapt();
         return this;
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> Select()
+    public IAdapterParameterStrategyBuilder<TProperty> Select()
     {
         options.UseSelect();
         return this;
     }
 
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> WithService<TService, TParameter>(
+    public IAdapterParameterStrategyBuilder<TProperty> WithService<TService, TParameter>(
         Expression<Func<TService, TProperty, TParameter>> valueProcessor)
     {
         options.UseProcessor(valueProcessor);

@@ -1,81 +1,135 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Extensions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
+/// <inheritdoc />
 public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>
     : IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>
 {
-    private readonly ThenToPropertyOptions options;
+    private readonly ToPropertyTargetRelatedOptionsBase options;
 
-    public AdapterPropertyThenOptionsBuilder(ThenToPropertyOptions options)
+    public AdapterPropertyThenOptionsBuilder(ToPropertyTargetRelatedOptionsBase options)
     {
         this.options = options;
     }
 
+    private AssignmentStrategyOptions<TProperty> AssignmentStrategyOptions
+        => options.PropertyRelated?.GetOrCreateAssignmentStrategyOptions<TProperty>()
+           ?? throw new InvalidOperationException("Property related options not found");
+
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> CastValue()
     {
-        throw new NotImplementedException();
+        AssignmentStrategyOptions.UseCast();
+        return this;
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> UseConverter(
-        Expression<Func<TProperty, TTargetProperty>> converter)
+        Expression<Func<TProperty, TNextProperty>> converter)
     {
-        throw new NotImplementedException();
+        AssignmentStrategyOptions.UseConvert(converter);
+        return this;
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> Adapt()
     {
-        throw new NotImplementedException();
+        AssignmentStrategyOptions.UseAdapt();
+        return this;
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> Select()
     {
-        throw new NotImplementedException();
+        AssignmentStrategyOptions.UseSelect();
+        return this;
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> WithService<TService>(
-        Expression<Func<TService, TProperty, TTargetProperty>> valueProcessor)
+        Expression<Func<TService, TProperty, TNextProperty>> valueProcessor)
     {
-        throw new NotImplementedException();
+        AssignmentStrategyOptions.UseProcessor(valueProcessor);
+        return this;
     }
 
-    public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty> Then()
+    /// <inheritdoc />
+    public IAdapterPropertyThenOptionsBuilder<TProperty, TNextProperty> Then()
     {
-        throw new NotImplementedException();
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TNextProperty>(options);
     }
 }
 
+/// <inheritdoc />
 public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
     : IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
 {
-    private readonly PropertyToPropertyOptions toPropertyOptions;
+    private readonly ToPropertyTargetRelatedOptionsBase options;
 
-    public AdapterPropertyThenOptionsBuilder(PropertyToPropertyOptions toPropertyOptions)
+    public AdapterPropertyThenOptionsBuilder(ToPropertyTargetRelatedOptionsBase options)
     {
-        this.toPropertyOptions = toPropertyOptions;
+        this.options = options;
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> To<TNextProperty>(
-        Expression<Func<TTargetProperty, TNextProperty>> propertySelection)
+        Expression<Func<TTargetProperty, TNextProperty>> propertySelector)
     {
-        throw new NotImplementedException();
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        var thenToOptions = options.ThenTo(propertyInfo);
+
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }
 
+    /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> To<TNextProperty>(
         string propertyName)
     {
-        throw new NotImplementedException();
+        // get target property by name, including inherited type properties
+        var propertyInfo = typeof(TTargetProperty).GetRuntimeProperty(propertyName);
+        
+        if (propertyInfo is null)
+            throw new InvalidPropertyNameException(
+                $"Property '{propertyName}' not found on type '{typeof(TTargetProperty).Name}'.", nameof(propertyName));
+        
+        // validate the property type
+        if (propertyInfo.PropertyType != typeof(TNextProperty))
+            throw new InvalidPropertyTypeException(
+                $"Property '{propertyName}' on type '{typeof(TTargetProperty).Name}' " +
+                $"is not of type '{typeof(TNextProperty).Name}', " +
+                $"but of type '{propertyInfo.PropertyType.Name}'.",
+                nameof(propertyName));
+        
+        var thenToOptions = options.ThenTo(propertyInfo);
+        
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }
 
-    public IAdapterPropertyToMethodOptionsBuilder<TProperty, TTargetProperty, TProperty> ToMethod()
+    /// <inheritdoc />
+    public IAdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty> ToMethod()
     {
-        throw new NotImplementedException();
+        var toMethodOptions = options.ThenToMethod();
+        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(toMethodOptions);
     }
 
-    public IAdapterPropertyToMethodOptionsBuilder<TProperty, TTargetProperty, TProperty> ToMethod(
+    /// <inheritdoc />
+    public IAdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty> ToMethod(
         Expression<Func<TTargetProperty, Delegate>> methodSelect)
     {
-        throw new NotImplementedException();
+        if (!methodSelect.TryGetMethod(out var method) || !method.IsATargetMethod(typeof(TTargetProperty)))
+            throw new InvalidMethodDelegateException(nameof(methodSelect));
+        
+        var toMethodOptions = options.ThenToMethod(method);
+        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(toMethodOptions);
     }
 }

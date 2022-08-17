@@ -22,7 +22,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilder<TSource>
     }
     
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> Parameter<TProperty>(
+    public IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector, string? parameterName = null)
     {
         if (!propertySelector.TryGetMember(out var member))
@@ -39,7 +39,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilder<TSource>
             parameterOptions.UseParameterName(parameterName);
 
         var strategyOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
-        return new AdapterParameterStrategyBuilder<TSource, TProperty>(strategyOptions);
+        return new AdapterParameterStrategyBuilder<TProperty>(strategyOptions);
     }
 
     /// <inheritdoc />

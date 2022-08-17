@@ -13,7 +13,7 @@ public class AdapterParameterStrategyBuilderTetsts
     public void CastValue_Must_SetOptions_And_ReturnTheBuilder()
     {
         var options = new AssignmentStrategyOptions<string>();
-        var builder = new AdapterParameterStrategyBuilder<object, string>(options);
+        var builder = new AdapterParameterStrategyBuilder<string>(options);
 
         var returned = builder.CastValue();
 
@@ -25,7 +25,7 @@ public class AdapterParameterStrategyBuilderTetsts
     public void UseConverter_Must_SetOptions_And_SetAnnotation_And_ReturnTheBuilder()
     {
         var options = new AssignmentStrategyOptions<string>();
-        var builder = new AdapterParameterStrategyBuilder<object, string>(options);
+        var builder = new AdapterParameterStrategyBuilder<string>(options);
 
         var returned = builder.UseConverter(x => int.Parse(x));
 
@@ -39,7 +39,7 @@ public class AdapterParameterStrategyBuilderTetsts
     public void Adapt_Must_SetOptions_And_ReturnTheBuilder()
     {
         var options = new AssignmentStrategyOptions<string>();
-        var builder = new AdapterParameterStrategyBuilder<object, string>(options);
+        var builder = new AdapterParameterStrategyBuilder<string>(options);
 
         var returned = builder.Adapt();
 
@@ -51,7 +51,7 @@ public class AdapterParameterStrategyBuilderTetsts
     public void Select_Must_SetOptions_And_ReturnTheBuilder()
     {
         var options = new AssignmentStrategyOptions<string>();
-        var builder = new AdapterParameterStrategyBuilder<object, string>(options);
+        var builder = new AdapterParameterStrategyBuilder<string>(options);
 
         var returned = builder.Adapt();
 
@@ -63,7 +63,7 @@ public class AdapterParameterStrategyBuilderTetsts
     public void WithService_Must_SetOptions_And_SetAnnotation_And_ReturnTheBuilder()
     {
         var options = new AssignmentStrategyOptions<string>();
-        var builder = new AdapterParameterStrategyBuilder<object, string>(options);
+        var builder = new AdapterParameterStrategyBuilder<string>(options);
 
         var returned = builder.WithService<Processor, int>((p, v) => p.Parse(v));
 

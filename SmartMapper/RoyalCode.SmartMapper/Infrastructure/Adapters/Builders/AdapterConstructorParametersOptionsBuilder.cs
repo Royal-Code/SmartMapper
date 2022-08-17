@@ -21,7 +21,7 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
     }
     
     /// <inheritdoc />
-    public IAdapterParameterStrategyBuilder<TSource, TProperty> Parameter<TProperty>(
+    public IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null)
     {
@@ -39,6 +39,6 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
             constructorParameterOptions.UseParameterName(parameterName);
 
         var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
-        return new AdapterParameterStrategyBuilder<TSource, TProperty>(assigmentOptions);
+        return new AdapterParameterStrategyBuilder<TProperty>(assigmentOptions);
     }
 }

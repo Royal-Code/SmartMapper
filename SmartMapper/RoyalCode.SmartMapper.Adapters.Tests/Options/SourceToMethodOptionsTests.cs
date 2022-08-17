@@ -5,7 +5,7 @@ using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Options;
 
-public class AdapterSourceToMethodOptionsTests
+public class SourceToMethodOptionsTests
 {
     [Fact]
     public void GetPropertyToParameterOptions_Must_ReturnTheOptions()

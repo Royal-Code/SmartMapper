@@ -63,26 +63,26 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     }
 
     /// <inheritdoc />
-    public IAdapterPropertyToConstructorOptionsBuilder<TSource, TProperty> ToConstructor()
+    public IAdapterPropertyToConstructorOptionsBuilder<TProperty> ToConstructor()
     {
         var constructorOptions = adapterOptions.GetConstructorOptions();
         var options = new PropertyToConstructorOptions(typeof(TProperty), constructorOptions);
         propertyOptions.MapInnerProperties(options);
         
-        return new AdapterPropertyToConstructorOptionsBuilder<TSource, TProperty>(options);
+        return new AdapterPropertyToConstructorOptionsBuilder<TProperty>(options);
     }
 
     /// <inheritdoc />
-    public IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TProperty> ToMethod()
+    public IAdapterPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
         var options = new PropertyToMethodOptions();
         propertyOptions.MapInnerProperties(options);
 
-        return new AdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TProperty>(options);
+        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
     }
 
     /// <inheritdoc />
-    public IAdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TProperty> ToMethod(
+    public IAdapterPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod(
         Expression<Func<TTarget, Delegate>> methodSelect)
     {
         if (!methodSelect.TryGetMethod(out var method) || !method.IsATargetMethod(typeof(TTarget)))
@@ -96,6 +96,6 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
             
         propertyOptions.MapInnerProperties(options);
         
-        return new AdapterPropertyToMethodOptionsBuilder<TSource, TTarget, TProperty>(options);
+        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
     }
 }

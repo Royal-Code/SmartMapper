@@ -9,9 +9,8 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 ///     to parameters of a target method.
 /// </para>
 /// </summary>
-/// <typeparam name="TSource">The source type.</typeparam>
 /// <typeparam name="TSourceProperty">The source property.</typeparam>
-public interface IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProperty>
+public interface IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>
 {
     /// <summary>
     /// <para>
@@ -28,7 +27,7 @@ public interface IAdapterPropertyToParametersOptionsBuilder<TSource, TSourceProp
     /// <returns>
     ///     The builder to configure the property to parameter method mapping.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TSourceProperty, TProperty> Parameter<TProperty>(
+    IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector,
         string? parameterName = null);
 

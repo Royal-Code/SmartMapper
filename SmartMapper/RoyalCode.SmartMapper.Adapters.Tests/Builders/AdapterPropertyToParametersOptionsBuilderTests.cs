@@ -10,9 +10,11 @@ public class AdapterPropertyToParametersOptionsBuilderTests
     {
         var constructorOptions = new ConstructorOptions(typeof(Qux));
         var propertyToConstructorOptions = new PropertyToConstructorOptions(typeof(Bar), constructorOptions);
-        var builder = new AdapterPropertyToParametersOptionsBuilder<Foo, Bar>(propertyToConstructorOptions);
+        var builder = new AdapterPropertyToParametersOptionsBuilder<Bar>(propertyToConstructorOptions);
         
         builder.Ignore(b => b.OtherValue);
+        
+        // TODO: Implement test
     }
     
     private class Foo
