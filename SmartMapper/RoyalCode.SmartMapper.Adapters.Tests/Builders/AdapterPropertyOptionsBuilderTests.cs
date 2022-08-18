@@ -126,7 +126,7 @@ public class AdapterProTpertyOptionsBuilderTests
         var nextBuilder = builder.ToConstructor();
         nextBuilder.Should().NotBeNull();
 
-        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInnerProperties);
+        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MappedToConstructor);
         propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToConstructorOptions>();
     }
 
@@ -162,7 +162,7 @@ public class AdapterProTpertyOptionsBuilderTests
         var nextBuilder = builder.ToMethod();
         nextBuilder.Should().NotBeNull();
 
-        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MapInnerProperties);
+        propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.MappedToMethod);
         propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeOfType<PropertyToMethodOptions>();
     }
 

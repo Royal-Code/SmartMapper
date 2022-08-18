@@ -19,8 +19,11 @@ public class ToPropertyTargetRelatedOptionsBase : TargetRelatedOptionsBase
     
     public PropertyToMethodOptions ThenToMethod(MethodInfo? methodInfo = null)
     {
+        var sourceProperty = PropertyRelated?.Property
+            ?? throw new InvalidOperationException("PropertyRelated is null");
+        
         ThenToKind = ThenToKind.Method;
-        PropertyToMethodOptions = new PropertyToMethodOptions();
+        PropertyToMethodOptions = new PropertyToMethodOptions(sourceProperty.PropertyType);
         
         if (methodInfo is not null)
         {

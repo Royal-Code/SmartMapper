@@ -1,5 +1,4 @@
 ﻿using RoyalCode.SmartMapper.Exceptions;
-using RoyalCode.SmartMapper.Infrastructure.Core;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
@@ -9,7 +8,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 ///     Options for mapping of a source property to a constructor parameter.
 /// </para>
 /// </summary>
-public class ConstructorParameterOptions : TargetRelatedOptionsBase
+public class ConstructorParameterOptions : ParameterOptionsBase
 {
     /// <summary>
     /// <para>
@@ -34,23 +33,14 @@ public class ConstructorParameterOptions : TargetRelatedOptionsBase
     /// </summary>
     public PropertyInfo Property { get; }
 
-    /// <summary>
-    /// The parameter name.
-    /// </summary>
-    public string? ParameterName { get; private set; }
-
-    /// <summary>
-    /// Set the constructor parameter name to which this property should be mapped.
-    /// </summary>
-    /// <param name="parameterName">The name of the constructor parameter.</param>
-    /// <exception cref="InvalidParameterNameException">
-    ///     If none parameter exists in all constructors with the provided name.
-    /// </exception>
-    public void UseParameterName(string parameterName)
+    protected override void ParameterNameConfigured()
     {
-        if (!TargetType.GetConstructors().Any(c => c.GetParameters().Any(p => p.Name == parameterName)))
-            throw new InvalidParameterNameException(parameterName, TargetType, nameof(parameterName));
-
-        ParameterName = parameterName;
+        var constructors = TargetType.GetConstructors()
+            .Where(c => c.IsPublic)
+            .Where(c => c.GetParameters().Any(p => p.Name == ParameterName))
+            .ToList();
+        
+        if (constructors.Count is 0)
+            throw new InvalidParameterNameException(ParameterName!, TargetType, nameof(ParameterName));
     }
 }

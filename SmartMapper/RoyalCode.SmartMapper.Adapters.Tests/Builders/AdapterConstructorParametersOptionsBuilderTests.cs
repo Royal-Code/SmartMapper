@@ -81,7 +81,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
 
         // Assert
         propertyOptions.ResolutionOptions.Should().BeOfType<ConstructorParameterOptions>();
-        propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToConstructor);
+        propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToConstructorParameter);
     }
 
     [Fact]

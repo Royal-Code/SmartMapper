@@ -23,7 +23,7 @@ public enum ResolutionStatus
     /// <summary>
     /// The property is mapped to a constructor parameter of the destination type.
     /// </summary>
-    MappedToConstructor,
+    MappedToConstructorParameter,
 
     /// <summary>
     /// The property is mapped to a property of the destination type.
@@ -31,7 +31,15 @@ public enum ResolutionStatus
     MappedToProperty,
     
     /// <summary>
-    /// The inner/internal properties of the source property are mapped to the destination type.
+    /// The property is mapped to a constructor fo the destination type,
+    /// where the inner/internal properties is mapped to the constructor parameter.
     /// </summary>
-    MapInnerProperties,
+    MappedToConstructor,
+    
+    /// <summary>
+    /// The property is mapped to a method of the destination type,
+    /// where the property value is mapped to the method parameter,
+    /// or the inner/internal properties is mapped to the method parameter.
+    /// </summary>
+    MappedToMethod,
 }

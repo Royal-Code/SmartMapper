@@ -1,14 +1,12 @@
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 
-public class PropertyToConstructorOptions : InnerPropertiesOptionsBase
+public class PropertyToConstructorOptions : ToParametersTargetRelatedOptionsBase
 {
     public PropertyToConstructorOptions(Type propertyType, ConstructorOptions constructorOptions)
+        : base(propertyType)
     {
-        PropertyType = propertyType;
         ConstructorOptions = constructorOptions;
     }
     
-    public Type PropertyType { get; }
-
     public ConstructorOptions ConstructorOptions { get; }
 }

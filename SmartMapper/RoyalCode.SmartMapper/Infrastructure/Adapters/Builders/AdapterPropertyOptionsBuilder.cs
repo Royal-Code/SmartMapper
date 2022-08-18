@@ -67,7 +67,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     {
         var constructorOptions = adapterOptions.GetConstructorOptions();
         var options = new PropertyToConstructorOptions(typeof(TProperty), constructorOptions);
-        propertyOptions.MapInnerProperties(options);
+        propertyOptions.MappedToConstructor(options);
         
         return new AdapterPropertyToConstructorOptionsBuilder<TProperty>(options);
     }
@@ -75,8 +75,8 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     /// <inheritdoc />
     public IAdapterPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
-        var options = new PropertyToMethodOptions();
-        propertyOptions.MapInnerProperties(options);
+        var options = new PropertyToMethodOptions(typeof(TProperty));
+        propertyOptions.MappedToMethod(options);
 
         return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
     }
@@ -88,13 +88,13 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
         if (!methodSelect.TryGetMethod(out var method) || !method.IsATargetMethod(typeof(TTarget)))
             throw new InvalidMethodDelegateException(nameof(methodSelect));
         
-        var options = new PropertyToMethodOptions()
+        var options = new PropertyToMethodOptions(typeof(TProperty))
         {
             Method = method,
             MethodName = method.Name
         };
             
-        propertyOptions.MapInnerProperties(options);
+        propertyOptions.MappedToMethod(options);
         
         return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
     }

@@ -62,9 +62,9 @@ public class PropertyOptions : OptionsBase
     /// Sets the mapping of the property to a constructor parameter.
     /// </summary>
     /// <param name="parameterOptions">The options that configure the property to be mapped to a constructor parameter.</param>
-    public void MappedToConstructor(ConstructorParameterOptions parameterOptions)
+    public void MappedToConstructorParameter(ConstructorParameterOptions parameterOptions)
     {
-        UpdateResolutionStatus(ResolutionStatus.MappedToConstructor);
+        UpdateResolutionStatus(ResolutionStatus.MappedToConstructorParameter);
         ResolutionOptions = parameterOptions;
         parameterOptions.PropertyRelated = this;
     }
@@ -80,11 +80,26 @@ public class PropertyOptions : OptionsBase
         toPropertyOptions.PropertyRelated = this;
     }
     
-    public void MapInnerProperties(InnerPropertiesOptionsBase options)
+    /// <summary>
+    /// Sets the mapping of the property to a method of the destination object.
+    /// </summary>
+    /// <param name="methodOptions">The options that configure the property to be mapped to a method of the destination object.</param>
+    public void MappedToMethod(PropertyToMethodOptions methodOptions)
     {
-        UpdateResolutionStatus(ResolutionStatus.MapInnerProperties);
-        ResolutionOptions = options;
-        options.PropertyRelated = this;
+        UpdateResolutionStatus(ResolutionStatus.MappedToMethod);
+        ResolutionOptions = methodOptions;
+        methodOptions.PropertyRelated = this;
+    }
+    
+    /// <summary>
+    /// Sets the mapping of the property to a constructor of the destination object.
+    /// </summary>
+    /// <param name="constructorOptions">The options that configure the property to be mapped to a constructor of the destination object.</param>
+    public void MappedToConstructor(PropertyToConstructorOptions constructorOptions)
+    {
+        UpdateResolutionStatus(ResolutionStatus.MappedToConstructor);
+        ResolutionOptions = constructorOptions;
+        constructorOptions.PropertyRelated = this;
     }
 
     /// <summary>

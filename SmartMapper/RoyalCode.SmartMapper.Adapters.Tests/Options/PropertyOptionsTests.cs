@@ -69,33 +69,33 @@ public class PropertyOptionsTests
     }
 
     [Fact]
-    public void MappedToConstructor_Must_SetPropertyRelated()
+    public void MappedToConstructorParameter_Must_SetPropertyRelated()
     {
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
         var options = new PropertyOptions(propertyInfo);
 
         var propertyToContructor = new ConstructorParameterOptions(typeof(Bar), propertyInfo);
 
-        options.MappedToConstructor(propertyToContructor);
+        options.MappedToConstructorParameter(propertyToContructor);
 
         propertyToContructor.PropertyRelated.Should().NotBeNull().And.BeSameAs(options);
     }
 
     [Fact]
-    public void MappedToConstructor_Must_SetResolutionOptions()
+    public void MappedToConstructorParameter_Must_SetResolutionOptions()
     {
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
         var options = new PropertyOptions(propertyInfo);
 
         var propertyToContructor = new ConstructorParameterOptions(typeof(Bar), propertyInfo);
 
-        options.MappedToConstructor(propertyToContructor);
+        options.MappedToConstructorParameter(propertyToContructor);
 
         options.ResolutionOptions.Should().NotBeNull().And.BeSameAs(propertyToContructor);
     }
 
     [Fact]
-    public void MappedToConstructor_Must_Throw_When_ResolutionStatusIsSetPreviously()
+    public void MappedToConstructorParameter_Must_Throw_When_ResolutionStatusIsSetPreviously()
     {
         var propertyInfo = typeof(Foo).GetProperty("Value")!;
         var options = new PropertyOptions(propertyInfo);
@@ -103,7 +103,7 @@ public class PropertyOptionsTests
 
         var propertyToContructor = new ConstructorParameterOptions(typeof(Bar), propertyInfo);
 
-        var action = () => options.MappedToConstructor(propertyToContructor);
+        var action = () => options.MappedToConstructorParameter(propertyToContructor);
 
         action.Should().Throw<InvalidOperationException>();
     }
@@ -162,6 +162,8 @@ public class PropertyOptionsTests
         
         action.Should().Throw<InvalidOperationException>();
     }
+    
+    // TODO: test for other methods (MappedToMethod, MappedToConstructor)
     
     private class Foo
     {

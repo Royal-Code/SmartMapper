@@ -33,7 +33,7 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
 
         var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
         var constructorParameterOptions = constructorOptions.GetConstructorParameterOptions(propertyInfo);
-        propertyOptions.MappedToConstructor(constructorParameterOptions);
+        propertyOptions.MappedToConstructorParameter(constructorParameterOptions);
 
         if (parameterName is not null)
             constructorParameterOptions.UseParameterName(parameterName);
