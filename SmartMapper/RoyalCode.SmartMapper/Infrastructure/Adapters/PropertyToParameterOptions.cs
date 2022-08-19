@@ -18,7 +18,7 @@ public class PropertyToParameterOptions : ParameterOptionsBase
     /// </summary>
     /// <param name="methodOptions">The method options.</param>
     /// <param name="property">The property.</param>
-    public PropertyToParameterOptions(SourceToMethodOptions methodOptions, PropertyInfo property)
+    public PropertyToParameterOptions(PropertyToMethodOptions methodOptions, PropertyInfo property)
     {
         MethodOptions = methodOptions;
         Property = property;
@@ -27,7 +27,7 @@ public class PropertyToParameterOptions : ParameterOptionsBase
     /// <summary>
     /// The method options.
     /// </summary>
-    public SourceToMethodOptions MethodOptions { get; }
+    public PropertyToMethodOptions MethodOptions { get; }
 
     /// <summary>
     /// The property that will be mapped to a method parameter.

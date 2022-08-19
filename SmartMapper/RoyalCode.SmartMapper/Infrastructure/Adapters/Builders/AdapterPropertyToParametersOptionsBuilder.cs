@@ -9,11 +9,15 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 public class AdapterPropertyToParametersOptionsBuilder<TSourceProperty>
     : IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>
 {
-    private readonly ToParametersTargetRelatedOptionsBase options;
-    
-    public AdapterPropertyToParametersOptionsBuilder(ToParametersTargetRelatedOptionsBase options)
+    private readonly SourceOptionsBase sourceOptions;
+    private readonly ToParametersTargetRelatedOptionsBase toParametersOptions;
+
+    public AdapterPropertyToParametersOptionsBuilder(
+        SourceOptionsBase sourceOptions,
+        ToParametersTargetRelatedOptionsBase toParametersOptions)
     {
-        this.options = options;
+        this.sourceOptions = sourceOptions;
+        this.toParametersOptions = toParametersOptions;
     }
 
     public IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
@@ -25,7 +29,7 @@ public class AdapterPropertyToParametersOptionsBuilder<TSourceProperty>
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
         var constructorParameterOptions = constructorOptions.GetConstructorParameterOptions(propertyInfo);
         propertyOptions.MappedToConstructorParameter(constructorParameterOptions);
 
