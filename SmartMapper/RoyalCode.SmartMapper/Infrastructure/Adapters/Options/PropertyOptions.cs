@@ -1,8 +1,8 @@
 using System.Reflection;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RefactorOptions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
 /// <para>
@@ -12,10 +12,10 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
 ///     Contains the resolution for the mapping of the property.
 /// </para>
 /// </summary>
-public class PropertyOptions : OptionsBase
+public class PropertyOptions
 {
     /// <summary>
-    ///     Creates a new instance of the <see cref="PropertyOptions" /> class.
+    /// Creates a new instance of <see cref="PropertyOptions"/>.
     /// </summary>
     /// <param name="property">The property to map.</param>
     public PropertyOptions(PropertyInfo property)
@@ -24,7 +24,7 @@ public class PropertyOptions : OptionsBase
     }
 
     /// <summary>
-    /// The property of the source object.
+    /// The source property to map.
     /// </summary>
     public PropertyInfo Property { get; }
 
@@ -32,75 +32,75 @@ public class PropertyOptions : OptionsBase
     /// Options of the strategy to be used to assign the property value to the destination counterpart.
     /// </summary>
     public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
-
+    
     /// <summary>
     /// The kind or status of the mapping of the property.
     /// </summary>
     public ResolutionStatus ResolutionStatus { get; private set; }
-    
+
     /// <summary>
-    /// <para>
-    ///     Represents an options for the mapping of the property.
-    /// </para>
-    /// <para>
-    ///     Contains an options related to the resolution of the property.
-    /// </para>
+    /// The resolution options between this source property to some member of the destination.
     /// </summary>
-    public OptionsBase? ResolutionOptions { get; private set; }
-    
+    public ResolutionOptions? ResolutionOptions { get; private set; }
+
     /// <summary>
     /// Sets the mapping of the property to be an method parameter.
     /// </summary>
     /// <param name="options">The options that configure the property to be mapped to a method parameter.</param>
-    public void MappedToMethodParameter(PropertyToParameterOptions options)
+    public void MappedToMethodParameter(ToMethodParameterOptions options)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToMethodParameter);
         ResolutionOptions = options;
-        options.PropertyRelated = this;
+        options.ResolvedProperty = this;
     }
 
     /// <summary>
     /// Sets the mapping of the property to a constructor parameter.
     /// </summary>
     /// <param name="parameterOptions">The options that configure the property to be mapped to a constructor parameter.</param>
-    public void MappedToConstructorParameter(ConstructorParameterOptions parameterOptions)
+    public void MappedToConstructorParameter(ToConstructorParameterOptions parameterOptions)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToConstructorParameter);
         ResolutionOptions = parameterOptions;
-        parameterOptions.PropertyRelated = this;
+        parameterOptions.ResolvedProperty = this;
     }
     
     /// <summary>
     /// Sets the mapping of the property to a property of the destination object.
     /// </summary>
     /// <param name="toPropertyOptions">The options that configure the property to be mapped to a property of the destination object.</param>
-    public void MappedToProperty(PropertyToPropertyOptions toPropertyOptions)
+    public void MappedToProperty(ToPropertyOptions toPropertyOptions)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToProperty);
         ResolutionOptions = toPropertyOptions;
-        toPropertyOptions.PropertyRelated = this;
+        toPropertyOptions.ResolvedProperty = this;
     }
     
     /// <summary>
     /// Sets the mapping of the property to a method of the destination object.
     /// </summary>
     /// <param name="methodOptions">The options that configure the property to be mapped to a method of the destination object.</param>
-    public void MappedToMethod(PropertyToMethodOptions methodOptions)
+    public void MappedToMethod(ToMethodOptions methodOptions)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToMethod);
         ResolutionOptions = methodOptions;
-        methodOptions.PropertyRelated = this;
+        methodOptions.ResolvedProperty = this;
     }
     
     /// <summary>
     /// Sets the mapping of the property to a constructor of the destination object.
     /// </summary>
     /// <param name="constructorOptions">The options that configure the property to be mapped to a constructor of the destination object.</param>
-    public void MappedToConstructor(PropertyToConstructorOptions constructorOptions)
+    public void MappedToConstructor(ToConstructorOptions constructorOptions)
     {
         UpdateResolutionStatus(ResolutionStatus.MappedToConstructor);
         ResolutionOptions = constructorOptions;
-        constructorOptions.PropertyRelated = this;
+        constructorOptions.ResolvedProperty = this;
+    }
+
+    public void ThenMappedTo(ThenToOptions options)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -109,16 +109,6 @@ public class PropertyOptions : OptionsBase
     public void IgnoreMapping()
     {
         UpdateResolutionStatus(ResolutionStatus.Ignored);
-    }
-    
-    /// <summary>
-    /// Resets the mapping configuration of the property.
-    /// </summary>
-    public void ResetMapping()
-    {
-        ResolutionStatus = ResolutionStatus.Undefined;
-        ResolutionOptions = null;
-        AssignmentStrategy = null;
     }
     
     /// <summary>

@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 /// </summary>
 public class SourceOptions
 {
-    private ICollection<RefactorOptions.PropertyOptions>? propertyOptions;
+    private ICollection<PropertyOptions>? propertyOptions;
     
     /// <summary>
     /// Creates a new instance of <see cref="SourceOptions"/>.
@@ -33,7 +33,7 @@ public class SourceOptions
     /// <returns>
     ///     The options for the property of the source type or a new instance if no options have been set.
     /// </returns>
-    public RefactorOptions.PropertyOptions GetPropertyOptions(PropertyInfo property)
+    public PropertyOptions GetPropertyOptions(PropertyInfo property)
     {
         // check property type
         if (!property.DeclaringType?.IsAssignableFrom(SourceType) ?? false)
@@ -43,8 +43,8 @@ public class SourceOptions
         var options = propertyOptions?.FirstOrDefault(x => x.Property == property);
         if (options is null)
         {
-            options = new RefactorOptions.PropertyOptions(property);
-            propertyOptions ??= new List<RefactorOptions.PropertyOptions>();
+            options = new PropertyOptions(property);
+            propertyOptions ??= new List<PropertyOptions>();
             propertyOptions.Add(options);
         }
 
@@ -59,7 +59,7 @@ public class SourceOptions
     /// <param name="propertyName">The name of the property of the source type.</param>
     /// <param name="options">The options for the property of the source type.</param>
     /// <returns>True if exists a property with the given name, otherwise false.</returns>
-    public bool TryGetPropertyOptions(string propertyName, [NotNullWhen(true)] out RefactorOptions.PropertyOptions? options)
+    public bool TryGetPropertyOptions(string propertyName, [NotNullWhen(true)] out PropertyOptions? options)
     {
         options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
         if (options is null)

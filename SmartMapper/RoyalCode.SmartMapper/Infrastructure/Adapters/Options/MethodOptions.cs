@@ -9,15 +9,15 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 ///     Options for mapping the source properties to a method.
 /// </para>
 /// </summary>
-public class MethodOptionsBase : ParametersOptionsBase
+public class MethodOptions : ParametersOptionsBase
 {
     private ICollection<ToMethodParameterOptions>? parametersOptions;
 
     /// <summary>
-    /// Creates a new instance of <see cref="MethodOptionsBase"/>.
+    /// Creates a new instance of <see cref="MethodOptions"/>.
     /// </summary>
     /// <param name="targetType"></param>
-    public MethodOptionsBase(Type targetType) : base(targetType) { }
+    public MethodOptions(Type targetType) : base(targetType) { }
 
     /// <summary>
     /// The defined mapped method.

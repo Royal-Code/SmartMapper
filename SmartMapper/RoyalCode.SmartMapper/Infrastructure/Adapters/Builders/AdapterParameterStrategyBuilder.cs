@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 

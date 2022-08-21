@@ -11,5 +11,5 @@ public class ResolutionOptions
     /// <summary>
     /// The source property related to the assignment.
     /// </summary>
-    internal RefactorOptions.PropertyOptions? ResolvedProperty { get; set; }
+    internal PropertyOptions? ResolvedProperty { get; set; }
 }

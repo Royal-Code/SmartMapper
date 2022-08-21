@@ -13,18 +13,18 @@ public class ToMethodParameterOptions : ToParameterOptionsBase
     /// <summary>
     /// Creates a new instance of <see cref="ToMethodParameterOptions"/>.
     /// </summary>
-    /// <param name="methodOptionsBase">The options for the method.</param>
+    /// <param name="methodOptions">The options for the method.</param>
     /// <param name="sourceProperty">The source property.</param>
-    public ToMethodParameterOptions(MethodOptionsBase methodOptionsBase, PropertyInfo sourceProperty)
+    public ToMethodParameterOptions(MethodOptions methodOptions, PropertyInfo sourceProperty)
         : base(sourceProperty)
     {
-        MethodOptionsBase = methodOptionsBase;
+        MethodOptions = methodOptions;
     }
     
     /// <summary>
     /// The options for the method.
     /// </summary>
-    public MethodOptionsBase MethodOptionsBase { get; }
+    public MethodOptions MethodOptions { get; }
     
     /// <summary>
     /// If the method are defined, check if has a parameter with the defined name.
@@ -34,10 +34,10 @@ public class ToMethodParameterOptions : ToParameterOptionsBase
     /// </exception>
     protected override void ParameterNameConfigured()
     {
-        if (MethodOptionsBase.Method is not null)
+        if (MethodOptions.Method is not null)
         {
-            Parameter = MethodOptionsBase.Method.GetParameters().FirstOrDefault(p => p.Name == ParameterName)
-                        ?? throw new InvalidParameterNameException(ParameterName, MethodOptionsBase.Method, nameof(ParameterName));
+            Parameter = MethodOptions.Method.GetParameters().FirstOrDefault(p => p.Name == ParameterName)
+                        ?? throw new InvalidParameterNameException(ParameterName, MethodOptions.Method, nameof(ParameterName));
         }
     }
 }
