@@ -1,9 +1,11 @@
 using FluentAssertions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
+using PropertyOptions = RoyalCode.SmartMapper.Infrastructure.Adapters.PropertyOptions;
+using SourceToMethodOptions = RoyalCode.SmartMapper.Infrastructure.Adapters.SourceToMethodOptions;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
 
@@ -114,7 +116,7 @@ public class AdapterSourceToMethodOptionsBuilderTests
 
         builder.Parameters(_ => { });
         
-        methodOptions.ParametersStrategy.Should().Be(ParametersStrategy.SelectedParameters);
+        methodOptions.SourceToMethodStrategy.Should().Be(SourceToMethodStrategy.SelectedParameters);
     }
     
     [Fact]
@@ -168,7 +170,7 @@ public class AdapterSourceToMethodOptionsBuilderTests
 
         builder.AllProperties(_ => { });
         
-        methodOptions.ParametersStrategy.Should().Be(ParametersStrategy.AllParameters);
+        methodOptions.SourceToMethodStrategy.Should().Be(SourceToMethodStrategy.AllParameters);
     }
 
     private class Foo

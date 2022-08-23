@@ -1,9 +1,8 @@
-using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 //TODO: Ver se nome continuará ser este. Testes. Documentação.
 public class AdaptersOptions : IAdaptersOptions

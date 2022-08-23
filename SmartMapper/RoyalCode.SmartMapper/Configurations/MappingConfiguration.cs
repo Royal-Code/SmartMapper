@@ -1,5 +1,6 @@
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Configurations;
 

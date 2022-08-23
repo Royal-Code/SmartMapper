@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -22,7 +23,7 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     public void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource>> configureParameters)
     {
         methodOptions.ClearParameters();
-        methodOptions.ParametersStrategy = ParametersStrategy.SelectedParameters;
+        methodOptions.SourceToMethodStrategy = SourceToMethodStrategy.SelectedParameters;
         
         var builder = new AdapterSourceToMethodParametersOptionsBuilder<TSource>(adapterOptions, methodOptions);
         configureParameters(builder);
@@ -32,7 +33,7 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     public void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>> configureProperties)
     {
         methodOptions.ClearParameters();
-        methodOptions.ParametersStrategy = ParametersStrategy.AllParameters;
+        methodOptions.SourceToMethodStrategy = SourceToMethodStrategy.AllParameters;
         
         var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<TSource>(adapterOptions, methodOptions);
         configureProperties(builder);

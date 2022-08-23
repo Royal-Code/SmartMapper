@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -19,8 +20,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
     {
-        var toMethodOptions = new SourceToMethodOptions();
-        options.AddToMethod(toMethodOptions);
+        var toMethodOptions = options.CreateSourceToMethodOptions();
         return new AdapterSourceToMethodOptionsBuilder<TSource, TTarget>(options, toMethodOptions);
     }
 
@@ -31,11 +31,9 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
         
-        var toMethodOptions = new SourceToMethodOptions
-        {
-            Method = method
-        };
-        options.AddToMethod(toMethodOptions);
+        var toMethodOptions = options.CreateSourceToMethodOptions();
+        toMethodOptions.MethodOptions.Method = method;
+        
         return new AdapterSourceToMethodOptionsBuilder<TSource, TTarget>(options, toMethodOptions);
     }
 
@@ -45,26 +43,16 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
         if (string.IsNullOrWhiteSpace(methodName))
             throw new InvalidMethodNameException("Value cannot be null or whitespace.", nameof(methodName));
 
-        var methods = typeof(TTarget).GetMethods().Where(m => m.Name == methodName).ToList();
-        if (methods.Count is 0)
-            throw new InvalidMethodNameException(
-                $"Method '{methodName}' not found on type '{typeof(TTarget).Name}'.", nameof(methodName));
-
-        var toMethodOptions = new SourceToMethodOptions()
-        {
-            MethodName = methodName
-        };
-        if (methods.Count is 1)
-            toMethodOptions.Method = methods[0];
+        var toMethodOptions = options.CreateSourceToMethodOptions();
+        toMethodOptions.MethodOptions.WithMethodName(methodName);
         
-        options.AddToMethod(toMethodOptions);
         return new AdapterSourceToMethodOptionsBuilder<TSource, TTarget>(options, toMethodOptions);
     }
 
     /// <inheritdoc />
     public IAdapterConstructorOptionsBuilder<TSource> Constructor()
     {
-        var constructorOptions = options.GetConstructorOptions();
+        var constructorOptions = options.TargetOptions.GetConstructorOptions();
         return new AdapterConstructorOptionsBuilder<TSource>(options, constructorOptions);
     }
 

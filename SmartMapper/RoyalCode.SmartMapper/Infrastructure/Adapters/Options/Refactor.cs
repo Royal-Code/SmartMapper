@@ -17,3 +17,7 @@ public class ToConstructorOptions : ResolutionOptions
 public class ThenToOptions : ResolutionOptions
 {
 }
+
+public class ToTargetOptions : ResolutionOptions
+{
+}

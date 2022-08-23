@@ -9,6 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 public class SourceOptions
 {
     private ICollection<PropertyOptions>? propertyOptions;
+    private ICollection<SourceToMethodOptions>? sourceToMethodOptions;
     
     /// <summary>
     /// Creates a new instance of <see cref="SourceOptions"/>.
@@ -74,4 +75,23 @@ public class SourceOptions
 
         return options is not null;
     }
+
+    /// <summary>
+    /// Adds a source to method options for this source mapping options.
+    /// </summary>
+    /// <param name="options">The source to method mapping options.</param>
+    public void AddSourceToMethod(SourceToMethodOptions options)
+    {
+        sourceToMethodOptions ??= new List<SourceToMethodOptions>();
+        sourceToMethodOptions.Add(options);
+    }
+    
+    /// <summary>
+    /// Gets all options of source to method.
+    /// </summary>
+    /// <returns>
+    ///     All configured options of source to method or empty.
+    /// </returns>
+    public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions()
+        => sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
 }
