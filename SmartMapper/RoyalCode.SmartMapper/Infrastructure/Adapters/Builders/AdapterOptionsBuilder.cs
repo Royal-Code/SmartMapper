@@ -66,7 +66,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
         
-        var propertyOptions = options.GetPropertyOptions(propertyInfo);
+        var propertyOptions = options.SourceOptions.GetPropertyOptions(propertyInfo);
         
         return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
     }
@@ -74,7 +74,7 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
     /// <inheritdoc />
     public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
     {
-        if (options.TryGetPropertyOptions(propertyName, out var propertyOptions))
+        if (options.SourceOptions.TryGetPropertyOptions(propertyName, out var propertyOptions))
         {
             // validate the property type
             if (propertyOptions.Property.PropertyType != typeof(TProperty))
@@ -86,7 +86,6 @@ public class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TS
             
             return new AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
         }
-            
         
         throw new InvalidPropertyNameException(
             $"Property '{propertyName}' not found on type '{typeof(TSource).Name}'.", nameof(propertyName));

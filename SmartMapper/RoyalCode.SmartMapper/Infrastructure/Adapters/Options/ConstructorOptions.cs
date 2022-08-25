@@ -8,15 +8,15 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 ///     Options for define the target construtor.
 /// </para>
 /// </summary>
-public class ConstructorOptionsBase : ParametersOptionsBase
+public class ConstructorOptions : ParametersOptionsBase
 {
     private ICollection<ToConstructorParameterOptions>? parametersOptions;
 
     /// <summary>
-    /// Creates a new instance of the <see cref="ConstructorOptionsBase"/> class.
+    /// Creates a new instance of the <see cref="ConstructorOptions"/> class.
     /// </summary>
     /// <param name="targetType">The target type to be constructed.</param>
-    public ConstructorOptionsBase(Type targetType) : base(targetType) { }
+    public ConstructorOptions(Type targetType) : base(targetType) { }
     
     /// <summary>
     /// <para>

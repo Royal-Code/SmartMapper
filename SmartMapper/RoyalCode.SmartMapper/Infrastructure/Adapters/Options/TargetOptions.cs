@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 public class TargetOptions
 {
     private ICollection<ToPropertyOptions>? toPropertyOptions;
-    private ConstructorOptionsBase? constructorOptions;
+    private ConstructorOptions? constructorOptions;
     private ICollection<ToMethodOptions>? propertyToMethodOptions;
     private ICollection<MethodOptions>? sourceToMethodOptions;
 
@@ -61,9 +61,9 @@ public class TargetOptions
     /// <returns>
     ///     The options for the constructor of the target type.
     /// </returns>
-    public ConstructorOptionsBase GetConstructorOptions()
+    public ConstructorOptions GetConstructorOptions()
     {
-        constructorOptions ??= new ConstructorOptionsBase(TargetType);
+        constructorOptions ??= new ConstructorOptions(TargetType);
         return constructorOptions;
     }
 }

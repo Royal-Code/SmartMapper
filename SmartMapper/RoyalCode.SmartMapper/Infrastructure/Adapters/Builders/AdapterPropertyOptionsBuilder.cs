@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
