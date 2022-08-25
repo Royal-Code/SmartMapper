@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -31,8 +32,9 @@ public class AdapterConstructorParametersOptionsBuilder<TSource> : IAdapterConst
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
-        var constructorParameterOptions = constructorOptions.GetConstructorParameterOptions(propertyInfo);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var constructorParameterOptions = constructorOptions.GetParameterOptions(propertyInfo);
+        
         propertyOptions.MappedToConstructorParameter(constructorParameterOptions);
 
         if (parameterName is not null)

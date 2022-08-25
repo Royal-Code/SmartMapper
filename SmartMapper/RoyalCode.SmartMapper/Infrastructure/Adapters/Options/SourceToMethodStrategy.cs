@@ -6,6 +6,11 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 public enum SourceToMethodStrategy
 {
     /// <summary>
+    /// Default value, same behaviour as <see cref="AllParameters"/>.
+    /// </summary>
+    Default,
+    
+    /// <summary>
     /// Map only the selected properties as parameters.
     /// </summary>
     SelectedParameters,

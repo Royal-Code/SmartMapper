@@ -8,7 +8,8 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 ///     Base options for mapping the source properties to construtor or methods of the target type.
 /// </para>
 /// </summary>
-public abstract class ParametersOptionsBase
+public abstract class ParametersOptionsBase<TToParameter>
+    where TToParameter : ToParameterOptionsBase
 {
     /// <summary>
     /// Constructor with the target type.
@@ -31,7 +32,7 @@ public abstract class ParametersOptionsBase
     /// <returns>
     ///     The options for mapping a source property to a parameter.
     /// </returns>
-    public abstract ToParameterOptionsBase GetParameterOptions(PropertyInfo sourceProperty);
+    public abstract TToParameter GetParameterOptions(PropertyInfo sourceProperty);
 
     /// <summary>
     /// <para>
@@ -45,5 +46,5 @@ public abstract class ParametersOptionsBase
     /// </returns>
     public abstract bool TryGetParameterOptions(
         PropertyInfo sourceProperty,
-        [NotNullWhen(true)] out ToParameterOptionsBase? parameterOptions);
+        [NotNullWhen(true)] out TToParameter? parameterOptions);
 }

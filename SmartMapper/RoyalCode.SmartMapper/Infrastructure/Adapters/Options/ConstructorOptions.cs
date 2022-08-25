@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 ///     Options for define the target construtor.
 /// </para>
 /// </summary>
-public class ConstructorOptions : ParametersOptionsBase
+public class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOptions>
 {
     private ICollection<ToConstructorParameterOptions>? parametersOptions;
 
@@ -39,7 +39,7 @@ public class ConstructorOptions : ParametersOptionsBase
     public Type[]? ParameterTypes { get; internal set; }
 
     /// <inheritdoc />
-    public override ToParameterOptionsBase GetParameterOptions(PropertyInfo sourceProperty)
+    public override ToConstructorParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
         parametersOptions ??= new List<ToConstructorParameterOptions>();
 
@@ -56,7 +56,7 @@ public class ConstructorOptions : ParametersOptionsBase
     /// <inheritdoc />
     public override bool TryGetParameterOptions(
         PropertyInfo sourceProperty,
-        [NotNullWhen(true)] out ToParameterOptionsBase? parameterOptions)
+        [NotNullWhen(true)] out ToConstructorParameterOptions? parameterOptions)
     {
         parameterOptions = parametersOptions?.FirstOrDefault(p => p.SourceProperty == sourceProperty);
         return parameterOptions != null;

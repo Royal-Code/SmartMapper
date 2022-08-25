@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -31,11 +32,11 @@ public class AdapterSourceToMethodParametersOptionsBuilder<TSource>
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
         
-        var propertyOptions = adapterOptions.GetPropertyOptions(propertyInfo);
-        var parameterOptions = methodOptions.GetPropertyToParameterOptions(propertyInfo);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var parameterOptions = methodOptions.MethodOptions.GetParameterOptions(propertyInfo);
         
         propertyOptions.MappedToMethodParameter(parameterOptions);
-        methodOptions.AddPropertyToParameterSequence(parameterOptions);
+        methodOptions.AddParameterSequence(parameterOptions);
 
         var strategyOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         return new AdapterParameterStrategyBuilder<TProperty>(strategyOptions);

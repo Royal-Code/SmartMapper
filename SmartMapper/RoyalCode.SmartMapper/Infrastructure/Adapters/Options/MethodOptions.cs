@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 ///     Options for mapping the source properties to a method.
 /// </para>
 /// </summary>
-public class MethodOptions : ParametersOptionsBase
+public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
 {
     private ICollection<ToMethodParameterOptions>? parametersOptions;
 
@@ -30,7 +30,7 @@ public class MethodOptions : ParametersOptionsBase
     public string? MethodName { get; internal set; }
     
     /// <inheritdoc />
-    public override ToParameterOptionsBase GetParameterOptions(PropertyInfo sourceProperty)
+    public override ToMethodParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
         parametersOptions ??= new List<ToMethodParameterOptions>();
 
@@ -47,7 +47,7 @@ public class MethodOptions : ParametersOptionsBase
     /// <inheritdoc />
     public override bool TryGetParameterOptions(
         PropertyInfo sourceProperty, 
-        [NotNullWhen(true)] out ToParameterOptionsBase? parameterOptions)
+        [NotNullWhen(true)] out ToMethodParameterOptions? parameterOptions)
     {
         parameterOptions = parametersOptions?.FirstOrDefault(x => x.SourceProperty == sourceProperty);
         return parameterOptions is not null;
@@ -64,6 +64,9 @@ public class MethodOptions : ParametersOptionsBase
     /// </exception>
     public void WithMethodName(string methodName)
     {
+        if (string.IsNullOrWhiteSpace(methodName))
+            throw new InvalidMethodNameException("Value cannot be null or whitespace.", nameof(methodName));
+        
         var methods = TargetType.GetMethods().Where(m => m.Name == methodName).ToList();
         if (methods.Count is 0)
             throw new InvalidMethodNameException(
