@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Reflection;
 using RefactorOptions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
@@ -98,8 +99,16 @@ public class PropertyOptions
         constructorOptions.ResolvedProperty = this;
     }
 
-    public void ThenMappedTo(ThenToOptions options)
+    public void ThenMappedTo(ThenToOptionsBase options)
     {
+        var status = options.Then.Kind == ThenToKind.Property
+            ? ResolutionStatus.MappedToProperty
+            : ResolutionStatus.MappedToMethod;
+        
+        UpdateThenToResolutionStatus(status);
+        ResolutionOptions = options;
+        options.ResolvedProperty = this;
+        
         throw new NotImplementedException();
     }
 
@@ -149,5 +158,22 @@ public class PropertyOptions
             throw new InvalidOperationException(
                 $"The resolution status of the property '{Property.Name}' is already set to '{ResolutionStatus}'" +
                 $" and cannot be changed to '{status}'");
+    }
+
+    private void UpdateThenToResolutionStatus(ResolutionStatus status)
+    {
+        if (ResolutionStatus == ResolutionStatus.MappedToProperty)
+            switch (status)
+            {
+                case ResolutionStatus.MappedToProperty:
+                    return;
+                case ResolutionStatus.MappedToMethod:
+                    ResolutionStatus = status;
+                    return;
+            }
+
+        throw new InvalidOperationException(
+            $"The resolution status of the property '{Property.Name}' is '{ResolutionStatus}'" +
+            $" and the 'then to' cannot change the resolution status to '{status}'");
     }
 }

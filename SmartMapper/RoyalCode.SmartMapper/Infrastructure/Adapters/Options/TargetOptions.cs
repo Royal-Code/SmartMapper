@@ -11,8 +11,7 @@ public class TargetOptions
 {
     private ICollection<ToPropertyOptions>? toPropertyOptions;
     private ConstructorOptions? constructorOptions;
-    private ICollection<ToMethodOptions>? propertyToMethodOptions;
-    private ICollection<MethodOptions>? sourceToMethodOptions;
+    private ICollection<MethodOptions>? methodOptions; // eh necessário ? validações futuras?
 
     /// <summary>
     /// Creates a new instance of <see cref="TargetOptions"/>.
@@ -30,27 +29,14 @@ public class TargetOptions
 
     /// <summary>
     /// <para>
-    ///     Gets the options for mapping a source type to a method.
-    /// </para>
-    /// </summary>
-    /// <returns>
-    ///     All options for mapping a source type to a method or an empty collection if no options have been set.
-    /// </returns>
-    public IEnumerable<MethodOptions> GetSourceToMethodOptions()
-    {
-        return sourceToMethodOptions ?? Enumerable.Empty<MethodOptions>();
-    }
-
-    /// <summary>
-    /// <para>
     ///     Adds an option for mapping a source type to a method.
     /// </para>
     /// </summary>
     /// <param name="optionsBase">The options for mapping a source type to a method.</param>
     public void AddToMethod(MethodOptions optionsBase)
     {
-        sourceToMethodOptions ??= new List<MethodOptions>();
-        sourceToMethodOptions.Add(optionsBase);
+        methodOptions ??= new List<MethodOptions>();
+        methodOptions.Add(optionsBase);
     }
 
     /// <summary>

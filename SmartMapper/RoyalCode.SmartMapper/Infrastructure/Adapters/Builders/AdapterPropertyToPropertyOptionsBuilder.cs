@@ -1,8 +1,10 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using RefactorOptions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -11,11 +13,11 @@ public class AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty
     : IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>
 {
     private readonly PropertyOptions propertyOptions;
-    private readonly PropertyToPropertyOptions toPropertyOptions;
+    private readonly ToPropertyOptions toPropertyOptions;
 
     public AdapterPropertyToPropertyOptionsBuilder(
         PropertyOptions propertyOptions,
-        PropertyToPropertyOptions toPropertyOptions)
+        ToPropertyOptions toPropertyOptions)
     {
         this.propertyOptions = propertyOptions;
         this.toPropertyOptions = toPropertyOptions;

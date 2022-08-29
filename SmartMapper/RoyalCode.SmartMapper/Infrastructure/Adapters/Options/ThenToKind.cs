@@ -1,16 +1,11 @@
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
-/// Used by <see cref="ToPropertyTargetRelatedOptionsBase"/> to specify if the target property has
+/// Used by <see cref="ThenOptions"/> to specify if the target property has
 /// a continuation to another property or method.
 /// </summary>
 public enum ThenToKind
 {
-    /// <summary>
-    /// None continuation is applied.
-    /// </summary>
-    NotApplied,
-    
     /// <summary>
     /// Continues to another property.
     /// </summary>
