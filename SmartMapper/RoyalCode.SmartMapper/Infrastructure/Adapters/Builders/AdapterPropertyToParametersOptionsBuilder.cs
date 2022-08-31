@@ -3,23 +3,27 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
-public class AdapterPropertyToParametersOptionsBuilder<TSourceProperty>
+/// <inheritdoc />
+public abstract class AdapterPropertyToParametersOptionsBuilder<TSourceProperty, TToParameter>
     : IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>
+    where TToParameter : ToParameterOptionsBase
 {
-    private readonly SourceOptionsBase sourceOptions;
-    private readonly ToParametersTargetRelatedOptionsBase toParametersOptions;
+    private readonly SourceOptions sourceOptions;
+    private readonly ParametersOptionsBase<TToParameter> parametersOptions;
 
-    public AdapterPropertyToParametersOptionsBuilder(
-        SourceOptionsBase sourceOptions,
-        ToParametersTargetRelatedOptionsBase toParametersOptions)
+    protected AdapterPropertyToParametersOptionsBuilder(
+        SourceOptions sourceOptions,
+        ParametersOptionsBase<TToParameter> parametersOptions)
     {
         this.sourceOptions = sourceOptions;
-        this.toParametersOptions = toParametersOptions;
+        this.parametersOptions = parametersOptions;
     }
 
+    /// <inheritdoc />
     public IAdapterParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector, string? parameterName = null)
     {
@@ -30,20 +34,34 @@ public class AdapterPropertyToParametersOptionsBuilder<TSourceProperty>
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
         var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
-        var constructorParameterOptions = constructorOptions.GetConstructorParameterOptions(propertyInfo);
-        propertyOptions.MappedToConstructorParameter(constructorParameterOptions);
+        var parameterOptions = parametersOptions.GetParameterOptions(propertyInfo);
+
+        Map(propertyOptions, parameterOptions);
 
         if (parameterName is not null)
-            constructorParameterOptions.UseParameterName(parameterName);
+            parameterOptions.UseParameterName(parameterName);
 
         var assigmentOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         return new AdapterParameterStrategyBuilder<TProperty>(assigmentOptions);
-        
-        throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector)
     {
-        throw new NotImplementedException();
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+        
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
+        propertyOptions.IgnoreMapping();
     }
+
+    /// <summary>
+    /// Apply the mapping of the parameter to the source property.
+    /// </summary>
+    /// <param name="propertyOptions">The source property.</param>
+    /// <param name="parameterOptions">The target parameter.</param>
+    protected abstract void Map(PropertyOptions propertyOptions, TToParameter parameterOptions);
 }

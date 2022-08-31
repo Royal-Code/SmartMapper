@@ -1,4 +1,5 @@
 using RoyalCode.SmartMapper.Configurations.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 
@@ -6,13 +7,13 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 public class AdapterPropertyToConstructorOptionsBuilder<TProperty> 
     : IAdapterPropertyToConstructorOptionsBuilder<TProperty>
 {
-    private readonly PropertyToConstructorOptions options;
+    private readonly ToConstructorOptions options;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="AdapterPropertyToConstructorOptionsBuilder{TProperty}"/> class.
     /// </summary>
     /// <param name="options">The options.</param>
-    public AdapterPropertyToConstructorOptionsBuilder(PropertyToConstructorOptions options)
+    public AdapterPropertyToConstructorOptionsBuilder(ToConstructorOptions options)
     {
         this.options = options;
     }
@@ -20,6 +21,10 @@ public class AdapterPropertyToConstructorOptionsBuilder<TProperty>
     /// <inheritdoc />
     public void Parameters(Action<IAdapterPropertyToParametersOptionsBuilder<TProperty>> configureParameters)
     {
-        configureParameters.Invoke(new AdapterPropertyToParametersOptionsBuilder<TProperty>(options));
+        var builder = new AdapterPropertyToConstructorParametersOptionsBuilder<TProperty>(
+            options.SourceOptions,
+            options.ConstructorOptions);
+        
+        configureParameters.Invoke(builder);
     }
 }

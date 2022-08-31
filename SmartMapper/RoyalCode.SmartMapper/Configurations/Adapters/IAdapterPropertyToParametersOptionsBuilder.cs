@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 /// <summary>
 /// <para>
 ///     A builder to configure the mapping of the internal properties of a source property 
-///     to parameters of a target method.
+///     to parameters of a target method or constructor.
 /// </para>
 /// </summary>
 /// <typeparam name="TSourceProperty">The source property.</typeparam>
@@ -14,7 +14,7 @@ public interface IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>
 {
     /// <summary>
     /// <para>
-    ///     Maps an internal property of the type of the source property to a method parameter.
+    ///     Maps an internal property of the type of the source property to a parameter of method or constructor.
     /// </para>
     /// </summary>
     /// <typeparam name="TProperty">The source property type.</typeparam>

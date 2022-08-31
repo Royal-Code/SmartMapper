@@ -57,7 +57,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
                 $"but of type '{propertyInfo.PropertyType.Name}'.",
                 nameof(propertyName));
         
-        var toPropertyOptions = new PropertyToPropertyOptions(typeof(TTarget), propertyInfo);
+        var toPropertyOptions = new ToPropertyOptions(typeof(TTarget), propertyInfo);
         propertyOptions.MappedToProperty(toPropertyOptions);
         
         return new AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
@@ -68,7 +68,7 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IAdapterPropertyToConstructorOptionsBuilder<TProperty> ToConstructor()
     {
         var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
-        var options = new PropertyToConstructorOptions(typeof(TProperty), constructorOptions);
+        var options = new ToConstructorOptions(propertyOptions, constructorOptions);
         propertyOptions.MappedToConstructor(options);
         
         return new AdapterPropertyToConstructorOptionsBuilder<TProperty>(options);
@@ -77,10 +77,12 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     /// <inheritdoc />
     public IAdapterPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
-        var options = new PropertyToMethodOptions(typeof(TProperty));
-        propertyOptions.MappedToMethod(options);
+        var methodOptions = new MethodOptions(typeof(TTarget));
+        adapterOptions.TargetOptions.AddToMethod(methodOptions);
+        var toMethodOptions = new ToMethodOptions(propertyOptions, methodOptions);
+        propertyOptions.MappedToMethod(toMethodOptions);
 
-        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
+        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(toMethodOptions);
     }
 
     /// <inheritdoc />
@@ -89,15 +91,16 @@ public class AdapterPropertyOptionsBuilder<TSource, TTarget, TProperty>
     {
         if (!methodSelect.TryGetMethod(out var method) || !method.IsATargetMethod(typeof(TTarget)))
             throw new InvalidMethodDelegateException(nameof(methodSelect));
-        
-        var options = new PropertyToMethodOptions(typeof(TProperty))
+
+        var methodOptions = new MethodOptions(typeof(TTarget))
         {
             Method = method,
             MethodName = method.Name
         };
-            
-        propertyOptions.MappedToMethod(options);
+        adapterOptions.TargetOptions.AddToMethod(methodOptions);
+        var toMethodOptions = new ToMethodOptions(propertyOptions, methodOptions);
+        propertyOptions.MappedToMethod(toMethodOptions);
         
-        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(options);
+        return new AdapterPropertyToMethodOptionsBuilder<TTarget, TProperty>(toMethodOptions);
     }
 }

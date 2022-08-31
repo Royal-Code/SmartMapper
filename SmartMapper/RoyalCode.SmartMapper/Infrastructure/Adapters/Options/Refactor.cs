@@ -94,14 +94,6 @@ public class ThenToMethodOptions : ThenToOptionsBase
     public ToMethodOptions ToMethodOptions { get; }
 }
 
-public class ToMethodOptions : ResolutionOptions
-{
-}
-
-public class ToConstructorOptions : ResolutionOptions
-{
-}
-
 public class ToTargetOptions : ResolutionOptions
 {
 }

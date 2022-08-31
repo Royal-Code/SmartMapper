@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 /// </summary>
 public class TargetOptions
 {
-    private ICollection<ToPropertyOptions>? toPropertyOptions;
+    private ICollection<ToPropertyOptions>? toPropertyOptions; // eh necessário ? validações futuras?
     private ConstructorOptions? constructorOptions;
     private ICollection<MethodOptions>? methodOptions; // eh necessário ? validações futuras?
 
