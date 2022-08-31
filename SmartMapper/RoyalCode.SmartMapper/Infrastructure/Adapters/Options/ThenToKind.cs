@@ -1,7 +1,7 @@
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
-/// Used by <see cref="ThenOptions"/> to specify if the target property has
+/// Used by <see cref="ThenToOptionsBase"/> to specify if the target property has
 /// a continuation to another property or method.
 /// </summary>
 public enum ThenToKind

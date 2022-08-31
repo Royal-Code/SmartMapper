@@ -11,15 +11,15 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>
     : IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>
 {
-    private readonly ToPropertyTargetRelatedOptionsBase options;
+    private readonly ThenToPropertyOptions options;
 
-    public AdapterPropertyThenOptionsBuilder(ToPropertyTargetRelatedOptionsBase options)
+    public AdapterPropertyThenOptionsBuilder(ThenToPropertyOptions options)
     {
         this.options = options;
     }
 
     private AssignmentStrategyOptions<TProperty> AssignmentStrategyOptions
-        => options.PropertyRelated?.GetOrCreateAssignmentStrategyOptions<TProperty>()
+        => options.ResolvedProperty?.GetOrCreateAssignmentStrategyOptions<TProperty>()
            ?? throw new InvalidOperationException("Property related options not found");
 
     /// <inheritdoc />
@@ -62,7 +62,7 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNext
     /// <inheritdoc />
     public IAdapterPropertyThenOptionsBuilder<TProperty, TNextProperty> Then()
     {
-        return new AdapterPropertyThenOptionsBuilder<TProperty, TNextProperty>(options);
+        return new AdapterPropertyThenOptionsBuilder<TProperty, TNextProperty>(options.TargetProperty);
     }
 }
 
@@ -70,9 +70,9 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNext
 public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
     : IAdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
 {
-    private readonly ToPropertyTargetRelatedOptionsBase options;
+    private readonly ToPropertyOptions options;
 
-    public AdapterPropertyThenOptionsBuilder(ToPropertyTargetRelatedOptionsBase options)
+    public AdapterPropertyThenOptionsBuilder(ToPropertyOptions options)
     {
         this.options = options;
     }
@@ -87,7 +87,7 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var thenToOptions = options.ThenTo(propertyInfo);
+        var thenToOptions = options.ThenToProperty(propertyInfo);
 
         return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }
@@ -111,7 +111,7 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
                 $"but of type '{propertyInfo.PropertyType.Name}'.",
                 nameof(propertyName));
         
-        var thenToOptions = options.ThenTo(propertyInfo);
+        var thenToOptions = options.ThenToProperty(propertyInfo);
         
         return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }
@@ -119,8 +119,9 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
     /// <inheritdoc />
     public IAdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty> ToMethod()
     {
-        var toMethodOptions = options.ThenToMethod();
-        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(toMethodOptions);
+        var methodOptions = new MethodOptions(typeof(TTargetProperty));
+        var thenToMethodOptions = options.ThenToMethod(methodOptions);
+        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(thenToMethodOptions.ToMethodOptions);
     }
 
     /// <inheritdoc />
@@ -129,8 +130,13 @@ public class AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty>
     {
         if (!methodSelect.TryGetMethod(out var method) || !method.IsATargetMethod(typeof(TTargetProperty)))
             throw new InvalidMethodDelegateException(nameof(methodSelect));
-        
-        var toMethodOptions = options.ThenToMethod(method);
-        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(toMethodOptions);
+
+        var methodOptions = new MethodOptions(typeof(TTargetProperty))
+        {
+            Method = method,
+            MethodName = method.Name
+        };
+        var thenToMethodOptions = options.ThenToMethod(methodOptions);
+        return new AdapterPropertyToMethodOptionsBuilder<TTargetProperty, TProperty>(thenToMethodOptions.ToMethodOptions);
     }
 }

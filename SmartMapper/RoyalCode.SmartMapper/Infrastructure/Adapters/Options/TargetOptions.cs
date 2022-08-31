@@ -1,5 +1,3 @@
-using RefactorOptions;
-
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>

@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using RefactorOptions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;

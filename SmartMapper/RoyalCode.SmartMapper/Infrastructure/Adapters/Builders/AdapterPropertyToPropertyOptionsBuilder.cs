@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using RefactorOptions;
 using RoyalCode.SmartMapper.Configurations.Adapters;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Extensions;
@@ -70,7 +69,7 @@ public class AdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var thenToOptions = toPropertyOptions.ThenTo(propertyInfo);
+        var thenToOptions = toPropertyOptions.ThenToProperty(propertyInfo);
 
         return new AdapterPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToOptions);
     }

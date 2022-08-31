@@ -1,6 +1,4 @@
-using System.Net.NetworkInformation;
 using System.Reflection;
-using RefactorOptions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
@@ -101,15 +99,18 @@ public class PropertyOptions
 
     public void ThenMappedTo(ThenToOptionsBase options)
     {
-        var status = options.Then.Kind == ThenToKind.Property
+        var status = options.Kind == ThenToKind.Property
             ? ResolutionStatus.MappedToProperty
             : ResolutionStatus.MappedToMethod;
         
         UpdateThenToResolutionStatus(status);
+        
+        var previousThenTo = ResolutionOptions as ThenToOptionsBase;
         ResolutionOptions = options;
         options.ResolvedProperty = this;
-        
-        throw new NotImplementedException();
+
+        if (previousThenTo is not null)
+            options.Previous = previousThenTo;
     }
 
     /// <summary>
