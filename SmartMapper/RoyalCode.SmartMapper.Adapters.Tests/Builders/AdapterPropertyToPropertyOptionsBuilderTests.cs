@@ -3,6 +3,7 @@ using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
@@ -14,8 +15,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -32,11 +33,11 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
 
     [Fact]
     public void UseConverter_Must_ConfigureAssignmentStrategy_And_ReturnTheBuilder_And_SetConverterOptionsAnnotation()
-    {
-            // Arrange
+    { 
+        // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -61,8 +62,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -82,8 +83,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -103,8 +104,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -129,8 +130,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
             // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -148,8 +149,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(
@@ -160,7 +161,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         
         // Assert
         returned.Should().NotBeNull();
-        propertyToPropertyOptions.ThenToPropertyOptions.Should().NotBeNull();
+        propertyToPropertyOptions.ThenTo.Should().NotBeNull();
     }
 
     [Fact]
@@ -168,8 +169,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
-        var propertyToPropertyOptions = new PropertyToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
+        var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
         propertyOptions.MappedToProperty(propertyToPropertyOptions);
 
         var builder = new AdapterPropertyToPropertyOptionsBuilder<Foo, Bar, Quux, Baz>(

@@ -4,8 +4,6 @@ using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
-using PropertyOptions = RoyalCode.SmartMapper.Infrastructure.Adapters.PropertyOptions;
-using SourceToMethodOptions = RoyalCode.SmartMapper.Infrastructure.Adapters.SourceToMethodOptions;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
 
@@ -18,8 +16,7 @@ public class AdapterSourceToMethodOptionsBuilderTests
     public void UseMethod_Must_HaveAValidMethodName(string methodName, bool isValid)
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
 
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
@@ -37,40 +34,37 @@ public class AdapterSourceToMethodOptionsBuilderTests
     public void UseMethod_Must_AssignTheMethod_When_HasOnlyOneMethodForTheName(string methodName, bool onlyOneMethod)
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
 
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
         builder.UseMethod(methodName);
 
         if (onlyOneMethod)
-            methodOptions.Method.Should().NotBeNull();
+            methodOptions.MethodOptions.Method.Should().NotBeNull();
         else
-            methodOptions.Method.Should().BeNull();
+            methodOptions.MethodOptions.Method.Should().BeNull();
     }
     
     [Fact]
     public void UseMethod_Must_AcceptValidMethodDelegate()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
 
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
         var act = () => builder.UseMethod(bar => bar.DoSomething);
 
         act.Should().NotThrow();
-        methodOptions.Method.Should().NotBeNull();
+        methodOptions.MethodOptions.Method.Should().NotBeNull();
     }
     
     [Fact]
     public void Parameters_Must_CallTheConfigureAction()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
 
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
@@ -87,44 +81,23 @@ public class AdapterSourceToMethodOptionsBuilderTests
     }
     
     [Fact]
-    public void Parameters_Must_ResetTheMethodOptions()
-    {
-        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
-        var propertyInfo = typeof(Foo).GetProperty("Value")!;
-        var parameterOptions = methodOptions.GetPropertyToParameterOptions(propertyInfo);
-        PropertyOptions propertyOptions = new PropertyOptions(propertyInfo);
-        propertyOptions.MappedToMethodParameter(parameterOptions);
-        propertyOptions.ResolutionOptions.Should().NotBeNull();
-            
-        var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
-
-        builder.Parameters(_ => { });
-        
-        propertyOptions.ResolutionOptions.Should().BeNull();
-    }
-    
-    [Fact]
     public void Parameters_Must_SetParametersStrategy_With_SelectedParameters()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
             
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
         builder.Parameters(_ => { });
         
-        methodOptions.SourceToMethodStrategy.Should().Be(SourceToMethodStrategy.SelectedParameters);
+        methodOptions.Strategy.Should().Be(SourceToMethodStrategy.SelectedParameters);
     }
     
     [Fact]
     public void AllProperties_Must_CallTheConfigureAction()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
 
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
@@ -141,36 +114,16 @@ public class AdapterSourceToMethodOptionsBuilderTests
     }
     
     [Fact]
-    public void AllProperties_Must_ResetTheMethodOptions()
-    {
-        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
-        var propertyInfo = typeof(Foo).GetProperty("Value")!;
-        var parameterOptions = methodOptions.GetPropertyToParameterOptions(propertyInfo);
-        PropertyOptions propertyOptions = new PropertyOptions(propertyInfo);
-        propertyOptions.MappedToMethodParameter(parameterOptions);
-        propertyOptions.ResolutionOptions.Should().NotBeNull();
-            
-        var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
-
-        builder.AllProperties(_ => { });
-        
-        propertyOptions.ResolutionOptions.Should().BeNull();
-    }
-    
-    [Fact]
     public void AllProperties_Must_SetParametersStrategy_With_AllParameters()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var methodOptions = new SourceToMethodOptions();
-        adapterOptions.AddToMethod(methodOptions);
+        var methodOptions = adapterOptions.CreateSourceToMethodOptions();
             
         var builder = new AdapterSourceToMethodOptionsBuilder<Foo, Bar>(adapterOptions, methodOptions);
 
         builder.AllProperties(_ => { });
         
-        methodOptions.SourceToMethodStrategy.Should().Be(SourceToMethodStrategy.AllParameters);
+        methodOptions.Strategy.Should().Be(SourceToMethodStrategy.AllParameters);
     }
 
     private class Foo

@@ -4,6 +4,7 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using System;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
@@ -15,7 +16,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
 
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
 
@@ -31,7 +32,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
 
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         
@@ -49,7 +50,7 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
 
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
 
@@ -72,15 +73,15 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
-        var propertyOptions = adapterOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
 
         // Act
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         builder.Parameter(f => f.Value);
 
         // Assert
-        propertyOptions.ResolutionOptions.Should().BeOfType<ConstructorParameterOptions>();
+        propertyOptions.ResolutionOptions.Should().BeOfType<ToConstructorParameterOptions>();
         propertyOptions.ResolutionStatus.Should().BeOneOf(ResolutionStatus.MappedToConstructorParameter);
     }
 
@@ -89,13 +90,13 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
 
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         builder.Parameter(f => f.Value);
 
         // Act
-        var configured = constructorOptions.TryGetConstructorParameterOptions(
+        var configured = constructorOptions.TryGetParameterOptions(
             typeof(Foo).GetProperty(nameof(Foo.Value))!, 
             out var configuredOptions);
         
@@ -109,13 +110,13 @@ public class AdapterConstructorParametersOptionsBuilderTests
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var constructorOptions = adapterOptions.GetConstructorOptions();
+        var constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
 
         var builder = new AdapterConstructorParametersOptionsBuilder<Foo>(adapterOptions, constructorOptions);
         builder.Parameter(f => f.Value, "value");
 
         // Act
-        var configured = constructorOptions.TryGetConstructorParameterOptions(
+        var configured = constructorOptions.TryGetParameterOptions(
             typeof(Foo).GetProperty(nameof(Foo.Value))!, 
             out var configuredOptions);
         

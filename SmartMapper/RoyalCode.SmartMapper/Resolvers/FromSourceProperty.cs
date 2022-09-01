@@ -1,5 +1,7 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 
@@ -26,7 +28,7 @@ internal class FromSourceProperty
     public void UseOptions(PropertyOptions propertyOptions)
     {
         Options = propertyOptions;
-        State = propertyOptions.Action == PropertyMapAction.Ignore
+        State = propertyOptions.ResolutionStatus == ResolutionStatus.Ignored
             ? ResolutionState.Ignore
             : ResolutionState.Resolved;
     }

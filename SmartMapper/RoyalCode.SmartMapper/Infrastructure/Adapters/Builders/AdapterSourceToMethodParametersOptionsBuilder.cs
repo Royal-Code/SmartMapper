@@ -33,10 +33,8 @@ public class AdapterSourceToMethodParametersOptionsBuilder<TSource>
             throw new InvalidPropertySelectorException(nameof(propertySelector));
         
         var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-        var parameterOptions = methodOptions.MethodOptions.GetParameterOptions(propertyInfo);
         
-        propertyOptions.MappedToMethodParameter(parameterOptions);
-        methodOptions.AddParameterSequence(parameterOptions);
+        methodOptions.AddPropertyToParameterSequence(propertyOptions);
 
         var strategyOptions = propertyOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         return new AdapterParameterStrategyBuilder<TProperty>(strategyOptions);

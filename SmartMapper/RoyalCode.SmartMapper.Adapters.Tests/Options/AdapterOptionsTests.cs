@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Options;
@@ -12,7 +12,7 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        var result = options.GetSourceToMethodOptions();
+        var result = options.SourceOptions.GetSourceToMethodOptions();
         
         result.Should().NotBeNull().And.BeEmpty();
     }
@@ -21,9 +21,9 @@ public class AdapterOptionsTests
     public void GetSourceToMethodOptions_Must_ReturnOptions_When_Options()
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
-        options.AddToMethod(new SourceToMethodOptions());
-        options.AddToMethod(new SourceToMethodOptions());
-        options.AddToMethod(new SourceToMethodOptions());
+        options.CreateSourceToMethodOptions();
+        options.CreateSourceToMethodOptions();
+        options.CreateSourceToMethodOptions();
         
         var result = options.GetSourceToMethodOptions();
         
@@ -35,7 +35,7 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        Action action = () => options.GetPropertyOptions(typeof(Bar).GetProperty("Value")!);
+        Action action = () => options.SourceOptions.GetPropertyOptions(typeof(Bar).GetProperty("Value")!);
         
         action.Should().Throw<ArgumentException>();
     }
@@ -45,7 +45,7 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
 
-        var result = options.GetPropertyOptions(typeof(Quux).GetProperty("Other")!);
+        var result = options.SourceOptions.GetPropertyOptions(typeof(Quux).GetProperty("Other")!);
 
         result.Should().NotBeNull();
         result.Property.Should().NotBeNull();
@@ -57,7 +57,7 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        var result = options.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var result = options.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
         
         result.Should().NotBeNull();
         result.Property.Should().NotBeNull();
@@ -69,8 +69,8 @@ public class AdapterOptionsTests
     {
             var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        var result1 = options.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
-        var result2 = options.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var result1 = options.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
+        var result2 = options.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
         
         result1.Should().BeSameAs(result2);
     }
@@ -80,8 +80,8 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        var result1 = options.GetConstructorOptions();
-        var result2 = options.GetConstructorOptions();
+        var result1 = options.TargetOptions.GetConstructorOptions();
+        var result2 = options.TargetOptions.GetConstructorOptions();
         
         result1.Should().NotBeNull().And.BeSameAs(result2);
     }
@@ -94,7 +94,7 @@ public class AdapterOptionsTests
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         
-        var result = options.TryGetPropertyOptions(propertyName, out var propertyOptions);
+        var result = options.SourceOptions.TryGetPropertyOptions(propertyName, out var propertyOptions);
         
         result.Should().Be(expected);
         if (expected)

@@ -4,6 +4,7 @@ using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
@@ -55,7 +56,7 @@ public class AdapterOptionsBuilderTests
             .Should().NotBeNull()
             .And.HaveCount(1);
         
-        methodOptions.First().Method.Should().NotBeNull();
+        methodOptions.First().MethodOptions.Method.Should().NotBeNull();
     }
     
     [Fact]
@@ -121,8 +122,8 @@ public class AdapterOptionsBuilderTests
             .Should().NotBeNull()
             .And.HaveCount(1);
         
-        methodOptions.First().Method.Should().NotBeNull();
-        methodOptions.First().MethodName.Should().NotBeNullOrWhiteSpace();
+        methodOptions.First().MethodOptions.Method.Should().NotBeNull();
+        methodOptions.First().MethodOptions.MethodName.Should().NotBeNullOrWhiteSpace();
     }
 
     [Fact]
@@ -140,8 +141,8 @@ public class AdapterOptionsBuilderTests
             .Should().NotBeNull()
             .And.HaveCount(1);
         
-        methodOptions.First().Method.Should().BeNull();
-        methodOptions.First().MethodName.Should().NotBeNullOrWhiteSpace();
+        methodOptions.First().MethodOptions.Method.Should().BeNull();
+        methodOptions.First().MethodOptions.MethodName.Should().NotBeNullOrWhiteSpace();
     }
 
     [Fact]

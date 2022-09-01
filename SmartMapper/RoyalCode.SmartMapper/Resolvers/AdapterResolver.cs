@@ -1,26 +1,32 @@
 using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 
 public class AdapterResolver
 {
-    public void TryResolve(Type from, Type to, IMapOptions options) // here, the options must exists for the key FromType, ToType and Adapter Kind !!!
+    public void TryResolve(Type from, Type to, AdapterOptions options)
+        // here, the options must exists for the key FromType, ToType and Adapter Kind !!!
     {
         var fromSourceProperties = FromSourceProperty.FromType(from);
 
+        // full refactor required!
+        
         foreach (var sourceProperty in fromSourceProperties)
         {
-            var propertyOptions = options.GetPropertyOptions(sourceProperty.Property);
-            if (propertyOptions is not null && propertyOptions.TargetProperty != null)
+            if (options.SourceOptions.TryGetPropertyOptions(sourceProperty.Property.Name, out var propertyOptions))
             {
-                if (propertyOptions.Action == PropertyMapAction.Undefined)
-                    ResolveMapAction(propertyOptions);
-                
-                sourceProperty.UseOptions(propertyOptions);
+                if (propertyOptions.ResolutionStatus is not ResolutionStatus.Undefined)
+                    sourceProperty.UseOptions(propertyOptions);
+                else
+                    ResolvePropertyMap(sourceProperty, to, options);
             }
-            
-            ResolvePropertyMap(sourceProperty, to, options);
+            else
+            {
+                ResolveMapAction(propertyOptions);
+            }
         }
         
         // every source property is resolved now,
@@ -34,12 +40,15 @@ public class AdapterResolver
     /// <param name="to"></param>
     /// <param name="options"></param>
     /// <exception cref="NotImplementedException"></exception>
-    private void ResolvePropertyMap(FromSourceProperty sourceProperty, Type to, IMapOptions options)
+    private void ResolvePropertyMap(FromSourceProperty sourceProperty, Type to, AdapterOptions options)
     {
         try
         {
-            var propertyOptions = options.GetOrCreatePropertyOptions(sourceProperty.Property);
-            propertyOptions.TargetProperty = to.SelectProperty(sourceProperty.Property.Name);
+            var propertyOptions = options.SourceOptions.GetPropertyOptions(sourceProperty.Property);
+            
+            // TODO: must select and if selected must configure the right options.
+            //propertyOptions.TargetProperty = to.SelectProperty(sourceProperty.Property.Name);
+            
             ResolveMapAction(propertyOptions);
             
             sourceProperty.UseOptions(propertyOptions);

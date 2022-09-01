@@ -37,7 +37,7 @@ public class ToMethodParameterOptions : ToParameterOptionsBase
         if (MethodOptions.Method is not null)
         {
             Parameter = MethodOptions.Method.GetParameters().FirstOrDefault(p => p.Name == ParameterName)
-                        ?? throw new InvalidParameterNameException(ParameterName, MethodOptions.Method, nameof(ParameterName));
+                        ?? throw new InvalidParameterNameException(ParameterName!, MethodOptions.Method, nameof(ParameterName));
         }
     }
 }

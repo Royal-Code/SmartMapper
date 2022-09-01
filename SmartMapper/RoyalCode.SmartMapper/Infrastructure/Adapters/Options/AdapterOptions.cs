@@ -54,4 +54,12 @@ public class AdapterOptions
         
         return sourceToMethodOptions;
     }
+
+    /// <summary>
+    /// Gets all options of source to method.
+    /// </summary>
+    /// <returns>
+    ///     All configured options of source to method or empty.
+    /// </returns>
+    public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions() => SourceOptions.GetSourceToMethodOptions();
 }

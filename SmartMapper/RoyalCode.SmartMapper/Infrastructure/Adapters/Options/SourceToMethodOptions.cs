@@ -1,4 +1,6 @@
 
+using System.Reflection;
+
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
@@ -53,6 +55,17 @@ public class SourceToMethodOptions
          
          parametersSequence ??= new List<ToMethodParameterOptions>();
          parametersSequence.Add(options);
+     }
+
+     /// <summary>
+     /// Add a source property to a parameter in sequence.
+     /// </summary>
+     /// <param name="options">The source property options.</param>
+     public void AddPropertyToParameterSequence(PropertyOptions options)
+     {
+         var parameterOptions = MethodOptions.GetParameterOptions(options.Property);
+         options.MappedToMethodParameter(parameterOptions);
+         AddParameterSequence(parameterOptions);
      }
      
      /// <summary>

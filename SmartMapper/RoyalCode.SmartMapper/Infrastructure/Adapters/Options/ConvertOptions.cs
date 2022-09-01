@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
 /// <para>

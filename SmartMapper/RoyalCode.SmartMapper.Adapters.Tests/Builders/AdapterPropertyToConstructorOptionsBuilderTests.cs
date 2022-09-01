@@ -1,6 +1,7 @@
 using FluentAssertions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
@@ -10,8 +11,9 @@ public class AdapterPropertyToConstructorOptionsBuilderTests
     [Fact]
     public void Parameters_Must_CallTheConfigureAction()
     {
+        var propertyOptions = new PropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
         var constructorOptions = new ConstructorOptions(typeof(Bar));
-        var propertyToConstructorOptions = new PropertyToConstructorOptions(typeof(string), constructorOptions);
+        var propertyToConstructorOptions = new ToConstructorOptions(propertyOptions, constructorOptions);
         var builder = new AdapterPropertyToConstructorOptionsBuilder<string>(propertyToConstructorOptions);
         
         bool called = false;

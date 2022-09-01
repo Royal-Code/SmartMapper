@@ -7,7 +7,7 @@ public class UnitTest1
     [Fact]
     public void Test1()
     {
-        var configuration = new MapperConfiguration();
+        //var configuration = new MapperConfiguration();
 
         //var options = configuration.Configure<SimplePlainDto, SimplePlainEntity>();
     }

@@ -1,5 +1,6 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 
@@ -11,7 +12,7 @@ namespace RoyalCode.SmartMapper.Resolvers;
 public class PropertyToMethodResolver
 {
 
-    public void Resolve(PropertyToMethodOptions options, Type targetType)
+    public void Resolve(ToMethodOptions options, Type targetType)
     {
         
     }
@@ -26,15 +27,15 @@ public class PropertyToParameterResolver
         this.resolversManager = resolversManager;
     }
 
-    public void Resolve(PropertyToMethodOptions options, IEnumerable<PropertyInfo> properties)
+    public void Resolve(ToMethodOptions options, IEnumerable<PropertyInfo> properties)
     {
-        var method = options.TargetMethod 
+        var method = options.MethodOptions.Method 
             ?? throw new ArgumentException("Target method not resolved", nameof(options));
         var parameters = method.GetParameters();
         
         foreach (var property in properties)
         {
-            PropertyToParameterOptions parameterOptions = options.GetParameterOptions(property);
+            var exists = options.MethodOptions.TryGetParameterOptions(property, out var parameterOptions);
 
             // for each property, try read the PropertyToParameterOptions from the options,
             // if exists, check if the parameter was specified and try resolve the parameter type.
@@ -42,7 +43,7 @@ public class PropertyToParameterResolver
 
             SourceNameHandler? matchNameHandler = null;
             
-            if (parameterOptions.ParameterInfo is null)
+            if (parameterOptions.Parameter is null)
             {
                 var matchParameter = parameters.FirstOrDefault(p => p.Name == property.Name);
                 if (matchParameter is null)
@@ -57,7 +58,7 @@ public class PropertyToParameterResolver
                             {
                                 // here the handler is validated, and it can fail.
                                 // how check this?
-                                sourceNameHandler.Validate(options.SourceProperty, matchParameter.ParameterType);
+                                sourceNameHandler.Validate(options.ResolvedProperty!.Property, matchParameter.ParameterType);
                                 matchNameHandler = sourceNameHandler;
                                 break;
                             }

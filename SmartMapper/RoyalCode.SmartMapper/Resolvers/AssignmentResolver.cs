@@ -1,4 +1,5 @@
 using RoyalCode.SmartMapper.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 
@@ -11,13 +12,13 @@ public class AssignmentResolver
         this.resolversManager = resolversManager;
     }
     
-    public void Resolve(AssignmentOptions options, Type sourceType, Type targetType)
+    public void Resolve(AssignmentStrategyOptions options, Type sourceType, Type targetType)
     {
         foreach (var assignmentStrategy in resolversManager.AssignmentStrategies)
         {
             if (assignmentStrategy.CanResolve(sourceType, targetType, out var assigner))
             {
-                options.Assigner = assigner;
+                //options.Assigner = assigner;
                 return;
             }
         }
