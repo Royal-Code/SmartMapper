@@ -49,7 +49,7 @@ public class AdapterOptions
     {
         var methodOptions = new MethodOptions(TargetType);
         TargetOptions.AddToMethod(methodOptions);
-        var sourceToMethodOptions = new SourceToMethodOptions(this, methodOptions);
+        var sourceToMethodOptions = new SourceToMethodOptions(methodOptions);
         SourceOptions.AddSourceToMethod(sourceToMethodOptions);
         
         return sourceToMethodOptions;

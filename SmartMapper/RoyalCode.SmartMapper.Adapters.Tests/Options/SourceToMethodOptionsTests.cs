@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Adapters.Tests.Options;
 public class SourceToMethodOptionsTests
 {
     [Fact]
-    public void GetSelectedPropertyToParameterSequence_Must_ReturnEmpty_When_NotConfigurated()
+    public void GetAllParameterSequence_Must_ReturnEmpty_When_NotConfigurated()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var sourceToMethodOptions = adapterOptions.CreateSourceToMethodOptions();
@@ -18,7 +18,7 @@ public class SourceToMethodOptionsTests
     }
 
     [Fact]
-    public void GetSelectedPropertyToParameterSequence_Must_ReturnTheParametersInOrder()
+    public void GetAllParameterSequence_Must_ReturnTheParametersInOrder()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var sourceToMethodOptions = adapterOptions.CreateSourceToMethodOptions();

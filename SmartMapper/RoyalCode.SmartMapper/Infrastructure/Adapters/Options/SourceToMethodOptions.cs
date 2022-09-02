@@ -1,6 +1,3 @@
-
-using System.Reflection;
-
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 /// <summary>
@@ -8,7 +5,6 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 /// </summary>
 public class SourceToMethodOptions
 {
-    private readonly AdapterOptions adapterOptions;
     private SourceToMethodStrategy strategy;
     private ICollection<ToMethodParameterOptions>? parametersSequence;
 
@@ -16,11 +12,9 @@ public class SourceToMethodOptions
     /// Creates a new <see cref="SourceToMethodOptions"/> instance with the specified adapter options
     /// and the method options.
     /// </summary>
-    /// <param name="adapterOptions">The adapter options.</param>
     /// <param name="methodOptions">The method options.</param>
-    public SourceToMethodOptions(AdapterOptions adapterOptions, MethodOptions methodOptions)
+    public SourceToMethodOptions(MethodOptions methodOptions)
     {
-        this.adapterOptions = adapterOptions;
         MethodOptions = methodOptions;
     }
     
