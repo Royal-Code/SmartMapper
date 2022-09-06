@@ -114,6 +114,8 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
         propertyOptions.ResolutionStatus.Should().Be(ResolutionStatus.Ignored);
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

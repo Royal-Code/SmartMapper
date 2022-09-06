@@ -65,6 +65,8 @@ public class AdapterSourceToMethodParametersOptionsBuilderTests
         methodOptions.GetAllParameterSequence().Should().HaveCount(1);
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; }

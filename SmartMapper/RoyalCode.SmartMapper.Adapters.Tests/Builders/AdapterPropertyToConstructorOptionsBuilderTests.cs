@@ -22,6 +22,8 @@ public class AdapterPropertyToConstructorOptionsBuilderTests
         called.Should().BeTrue();
     }
 
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

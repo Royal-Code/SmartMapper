@@ -126,6 +126,8 @@ public class AdapterSourceToMethodOptionsBuilderTests
         methodOptions.Strategy.Should().Be(SourceToMethodStrategy.AllParameters);
     }
 
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

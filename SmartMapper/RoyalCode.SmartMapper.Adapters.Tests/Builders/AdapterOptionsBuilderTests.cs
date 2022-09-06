@@ -202,6 +202,8 @@ public class AdapterOptionsBuilderTests
         propertyBuilder.Should().NotBeNull();
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

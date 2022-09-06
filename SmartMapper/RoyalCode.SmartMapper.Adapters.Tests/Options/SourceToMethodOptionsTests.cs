@@ -38,6 +38,8 @@ public class SourceToMethodOptionsTests
         sequence[1].ResolvedProperty.Should().BeSameAs(options2);
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

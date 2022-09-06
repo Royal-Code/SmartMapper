@@ -85,6 +85,8 @@ public class SourceOptionsTests
         }
     }
     
+#pragma warning disable CS8618
+    
     private class Foo : Quux
     {
         public string Value { get; set; }

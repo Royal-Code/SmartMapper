@@ -182,6 +182,8 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         returned.Should().NotBeNull();
     }
     
+#pragma warning disable CS8618
+
     public class Foo
     {
         public string Value { get; set; }

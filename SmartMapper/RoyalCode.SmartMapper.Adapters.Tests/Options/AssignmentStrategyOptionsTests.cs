@@ -15,7 +15,7 @@ public class AssignmentStrategyOptionsTests
 
         var convertOptions = options.FindAnnotation<ConvertOptions>();
         convertOptions.Should().NotBeNull();
-        convertOptions.SourceValueType.Should().Be<Foo>();
+        convertOptions!.SourceValueType.Should().Be<Foo>();
         convertOptions.TargetValueType.Should().Be<string>();
     }
     
@@ -27,7 +27,7 @@ public class AssignmentStrategyOptionsTests
 
         var processorOptions = options.FindAnnotation<ProcessorOptions>();
         processorOptions.Should().NotBeNull();
-        processorOptions.SourceValueType.Should().Be<Foo>();
+        processorOptions!.SourceValueType.Should().Be<Foo>();
         processorOptions.TargetValueType.Should().Be<string>();
         processorOptions.ServiceType.Should().Be<FooProcessor>();
     }

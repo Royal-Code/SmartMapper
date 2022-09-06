@@ -126,6 +126,8 @@ public class AdapterConstructorParametersOptionsBuilderTests
         configuredOptions!.ParameterName.Should().Be("value");
     }
 
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; }

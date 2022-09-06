@@ -268,6 +268,8 @@ public class AdapterPropertyThenOptionsBuilderTests
         processorOptions!.Processor.Should().NotBeNull();
     }
     
+#pragma warning disable CS8618
+
     public class Quux
     {
         public string Value { get; set; }

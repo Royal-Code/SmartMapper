@@ -55,6 +55,8 @@ public class MethodOptionsTests
     
     // TODO: Testar o método WithMethodName
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

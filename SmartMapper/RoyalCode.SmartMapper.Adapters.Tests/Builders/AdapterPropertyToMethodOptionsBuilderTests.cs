@@ -149,6 +149,8 @@ public class AdapterPropertyToMethodOptionsBuilderTests
         toMethod.Strategy.Should().Be(ToParametersStrategy.InnerProperties);
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public string Value { get; set; }

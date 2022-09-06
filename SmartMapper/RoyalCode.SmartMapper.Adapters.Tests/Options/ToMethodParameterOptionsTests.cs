@@ -53,6 +53,8 @@ public class ToMethodParameterOptionsTests
         else
             act.Should().Throw<InvalidParameterNameException>();
     }
+ 
+#pragma warning disable CS8618
     
     private class Foo
     {

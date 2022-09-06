@@ -90,6 +90,8 @@ public class AdapterPropertyToConstructorParametersOptionsBuilderTests
             act.Should().Throw<InvalidParameterNameException>();
     }
     
+#pragma warning disable CS8618
+
     private class Foo
     {
         public Bar Value { get; set; }

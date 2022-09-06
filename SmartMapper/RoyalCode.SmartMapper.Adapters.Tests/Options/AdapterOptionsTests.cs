@@ -29,6 +29,8 @@ public class AdapterOptionsTests
         
         result.Should().NotBeNull().And.HaveCount(3);
     }
+   
+#pragma warning disable CS8618
     
     private class Foo : Quux
     {
