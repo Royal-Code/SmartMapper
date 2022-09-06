@@ -1,4 +1,6 @@
+using System;
 using FluentAssertions;
+using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
@@ -52,8 +54,45 @@ public class MethodOptionsTests
         found.Should().BeFalse();
         options.Should().BeNull();
     }
+
+    [Theory]
+    [InlineData("", false)]
+    [InlineData("NotAMethod", false)]
+    [InlineData("DoSomething", true)]
+    public void WithMethodName_Must_Throw_When_MethodNameIsInvalid(string name, bool isValid)
+    {
+        // arrange
+        var methodOptions = new MethodOptions(typeof(Bar));
+        
+        // act
+        Action act = () => methodOptions.WithMethodName(name);
+
+        // assert
+        if (isValid)
+            act.Should().NotThrow();
+        else
+            act.Should().Throw<InvalidMethodNameException>();
+    }
+
+    [Theory]
+    [InlineData("DoSomething", true)]
+    [InlineData("Otherthing", false)]
+    public void WithMethodName_Must_SelectTheMethod_WhenHaveOnlyOne(string name, bool onlyOne)
+    {
+        // arrange
+        var methodOptions = new MethodOptions(typeof(Bar));
+        
+        // act
+        methodOptions.WithMethodName(name);
+        
+        // assert
+        methodOptions.MethodName.Should().NotBeNull();
+        if (onlyOne)
+            methodOptions.Method.Should().NotBeNull();
+        else
+            methodOptions.Method.Should().BeNull();
+    }
     
-    // TODO: Testar o método WithMethodName
     
 #pragma warning disable CS8618
 
@@ -67,5 +106,11 @@ public class MethodOptionsTests
     {
         public string Value { get; set; }
         public string Description { get; set; }
+        
+        public void DoSomething() { }
+
+        public void Otherthing(int value) { }
+        
+        public void Otherthing(string value) { }
     }
 }

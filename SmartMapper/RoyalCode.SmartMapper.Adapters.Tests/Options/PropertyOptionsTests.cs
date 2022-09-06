@@ -140,7 +140,186 @@ public class PropertyOptionsTests
         action.Should().Throw<InvalidOperationException>();
     }
     
-    // TODO: test for other methods (MappedToMethod, MappedToConstructor, ThenMapTo)
+    [Fact]
+    public void MappedToMethod_Must_SetResolvedProperty()
+    {
+        // arrange
+        var propertyOptions = new PropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+        var methodOptions = new MethodOptions(typeof(Bar));
+        var toMethod = new ToMethodOptions(propertyOptions, methodOptions);
+        
+        // act
+        propertyOptions.MappedToMethod(toMethod);
+
+        // assert
+        toMethod.ResolvedProperty.Should().NotBeNull().And.BeSameAs(propertyOptions);
+    }
+
+    [Fact]
+    public void MappedToMethod_Must_SetResolutionOptions()
+    {
+        // arrange
+        var propertyOptions = new PropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+        var methodOptions = new MethodOptions(typeof(Bar));
+        var toMethod = new ToMethodOptions(propertyOptions, methodOptions);
+        
+        // act
+        propertyOptions.MappedToMethod(toMethod);
+
+        // assert
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeSameAs(toMethod);
+    }
+
+    [Fact]
+    public void MappedToMethod_Must_Throw_When_ResolutionStatusIsSetPreviously()
+    {
+        // arrange
+        var propertyOptions = new PropertyOptions(typeof(Foo).GetProperty(nameof(Foo.Value))!);
+        var methodOptions = new MethodOptions(typeof(Bar));
+        var toMethod = new ToMethodOptions(propertyOptions, methodOptions);
+        propertyOptions.IgnoreMapping();
+        
+        var action = () => propertyOptions.MappedToMethod(toMethod);
+        
+        // assert
+        action.Should().Throw<InvalidOperationException>();
+    }
+    
+    [Fact]
+    public void MappedToConstructor_Must_SetResolvedProperty()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        var targetOptions = new TargetOptions(typeof(Bar));
+        var constructorOptions = targetOptions.GetConstructorOptions();
+        var toConstructor = new ToConstructorOptions(propertyOptions, constructorOptions);
+        
+        // act
+        propertyOptions.MappedToConstructor(toConstructor);
+
+        // assert
+        toConstructor.ResolvedProperty.Should().NotBeNull().And.BeSameAs(propertyOptions);
+    }
+
+    [Fact]
+    public void MappedToConstructor_Must_SetResolutionOptions()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        var targetOptions = new TargetOptions(typeof(Bar));
+        var constructorOptions = targetOptions.GetConstructorOptions();
+        var toConstructor = new ToConstructorOptions(propertyOptions, constructorOptions);
+        
+        // act
+        propertyOptions.MappedToConstructor(toConstructor);
+        
+        // assert
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeSameAs(toConstructor);
+    }
+
+    [Fact]
+    public void MappedToConstructor_Must_Throw_When_ResolutionStatusIsSetPreviously()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        var targetOptions = new TargetOptions(typeof(Bar));
+        var constructorOptions = targetOptions.GetConstructorOptions();
+        var toConstructor = new ToConstructorOptions(propertyOptions, constructorOptions);
+        
+        propertyOptions.IgnoreMapping();
+        
+        // act
+        Action act = () => propertyOptions.MappedToConstructor(toConstructor);
+        
+        // assert
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void ThenMapTo_Must_Throw_IfNotMappedBefore()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+
+        var sourceToProperty = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty(nameof(Bar.Baz))!);
+        var targetToProperty = new ToPropertyOptions(typeof(Baz), typeof(Baz).GetProperty(nameof(Baz.Quux))!);
+        var thenToOptions = new ThenToPropertyOptions(sourceToProperty, targetToProperty);
+        
+        // act
+        Action act = () => propertyOptions.ThenMappedTo(thenToOptions);
+
+        // assert
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void ThenMapTo_Must_Throw_IfNotMappedToPropertyBefore()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        var toConstructorParameter = new ToConstructorParameterOptions(typeof(Bar), property);
+        propertyOptions.MappedToConstructorParameter(toConstructorParameter);
+        
+        var sourceToProperty = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty(nameof(Bar.Baz))!);
+        var targetToProperty = new ToPropertyOptions(typeof(Baz), typeof(Baz).GetProperty(nameof(Baz.Quux))!);
+        var thenToOptions = new ThenToPropertyOptions(sourceToProperty, targetToProperty);
+        
+        // act
+        Action act = () => propertyOptions.ThenMappedTo(thenToOptions);
+
+        // assert
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void ThenMapTo_Must_UpdateResolutionOptions_And_SetResolvedProperty()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        
+        var sourceToProperty = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty(nameof(Bar.Baz))!);
+        var targetToProperty = new ToPropertyOptions(typeof(Baz), typeof(Baz).GetProperty(nameof(Baz.Quux))!);
+        var thenToOptions = new ThenToPropertyOptions(sourceToProperty, targetToProperty);
+        
+        propertyOptions.MappedToProperty(sourceToProperty);
+        
+        // act
+        propertyOptions.ThenMappedTo(thenToOptions);
+        
+        // assert
+        propertyOptions.ResolutionOptions.Should().NotBeNull().And.BeSameAs(thenToOptions);
+        thenToOptions.ResolvedProperty.Should().NotBeNull().And.BeSameAs(propertyOptions);
+    }
+
+    [Fact]
+    public void ThenMapTo_Must_SetPreviousThenTo()
+    {
+        // arrange
+        var property = typeof(Foo).GetProperty(nameof(Foo.Value))!;
+        var propertyOptions = new PropertyOptions(property);
+        
+        var sourceToProperty = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty(nameof(Bar.Baz))!);
+        var targetToProperty = new ToPropertyOptions(typeof(Baz), typeof(Baz).GetProperty(nameof(Baz.Quux))!);
+        var thenToOptions = new ThenToPropertyOptions(sourceToProperty, targetToProperty);
+        
+        var nextTargetToProperty = new ToPropertyOptions(typeof(Quux), typeof(Quux).GetProperty(nameof(Quux.Value))!);
+        var nextThenToOptions = new ThenToPropertyOptions(targetToProperty, nextTargetToProperty);
+        
+        propertyOptions.MappedToProperty(sourceToProperty);
+        propertyOptions.ThenMappedTo(thenToOptions);
+        
+        // act
+        propertyOptions.ThenMappedTo(nextThenToOptions);
+        
+        // assert
+        nextThenToOptions.Previous.Should().NotBeNull();
+    }
     
 #pragma warning disable CS8618
 
@@ -149,5 +328,22 @@ public class PropertyOptionsTests
         public string Value { get; set; }
     }
 
-    private class Bar { }
+    private class Bar
+    {
+        public Baz Baz { get; set; }
+    }
+    
+    private class Baz
+    {
+        public Quux Quux { get; set; }
+        
+        public void DoSomething(string input) { }
+    }
+    
+    private class Quux
+    {
+        public string Value { get; set; }
+
+        public void DoOtherthing(string input) { }
+    }
 }

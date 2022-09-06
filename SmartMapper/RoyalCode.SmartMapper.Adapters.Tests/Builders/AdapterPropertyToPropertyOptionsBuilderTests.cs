@@ -184,26 +184,26 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     
 #pragma warning disable CS8618
 
-    public class Foo
+    private class Foo
     {
         public string Value { get; set; }
 
         public Quux Quux { get; set; }
     }
     
-    public class Bar
+    private class Bar
     {
         public string Value { get; set; }
 
         public Baz Baz { get; set; }
     }
     
-    public class Quux
+    private class Quux
     {
         public string Value { get; set; }
     }
 
-    public class Baz
+    private class Baz
     {
         public string Value { get; set; }
         
@@ -213,7 +213,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
         }
     }
     
-    public class Processor
+    private class Processor
     {
         public Baz Process(Quux quux)
         {

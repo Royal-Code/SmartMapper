@@ -270,29 +270,29 @@ public class AdapterPropertyThenOptionsBuilderTests
     
 #pragma warning disable CS8618
 
-    public class Quux
+    private class Quux
     {
         public string Value { get; set; }
     }
     
-    public class Foo
+    private class Foo
     {
         public Bar Bar { get; set; }
     }
     
-    public class Bar
+    private class Bar
     {
         public Baz Baz { get; set; }
         
         public string DoSomething() => string.Empty;
     }
     
-    public class Baz
+    private class Baz
     {
         public string Value { get; set; }
     }
     
-    public class Processor
+    private class Processor
     {
         public Baz Process(string value)
         {
