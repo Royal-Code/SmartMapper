@@ -190,7 +190,7 @@ public class AdapterOptionsBuilderTests
     }
     
     [Fact]
-    public void Map_Must_ReturnThePropertyToPropertyBuilder()
+    public void Map_Must_ReturnThePropertyOptionsBuilder()
     {
         var options = new AdapterOptions(typeof(Foo), typeof(Bar));
         var builder = new AdapterOptionsBuilder<Foo, Bar>(options);

@@ -118,7 +118,7 @@ public class AdapterProTpertyOptionsBuilderTests
     }
 
     [Fact]
-    public void ToConstructor_Must_ConfigurePropertyOptions_With_MapInternalProperties()
+    public void ToConstructor_Must_ConfigurePropertyOptions_With_MappedToConstructor()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);
@@ -154,7 +154,7 @@ public class AdapterProTpertyOptionsBuilderTests
     }
 
     [Fact]
-    public void ToMethod_Must_ConfigurePropertyOptions_With_MapInternalProperties()
+    public void ToMethod_Must_ConfigurePropertyOptions_With_MappedToMethod()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Value")!);

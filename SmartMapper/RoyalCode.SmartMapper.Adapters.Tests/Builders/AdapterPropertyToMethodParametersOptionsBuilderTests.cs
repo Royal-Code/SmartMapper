@@ -8,16 +8,16 @@ using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;
 
-public class AdapterPropertyToConstructorParametersOptionsBuilderTests
+public class AdapterPropertyToMethodParametersOptionsBuilderTests
 {
     [Fact]
     public void Ignore_Must_ConfigureThePropertyToBeIgnored()
     {
         // arrange
         var sourceOptions = new SourceOptions(typeof(Bar));
-        var constructorOptions = new ConstructorOptions(typeof(Qux));
-        
-        var builder = new AdapterPropertyToConstructorParametersOptionsBuilder<Bar>(sourceOptions, constructorOptions);
+        var methodOptions = new MethodOptions(typeof(Quux));
+
+        var builder = new AdapterPropertyToMethodParametersOptionsBuilder<Bar>(sourceOptions, methodOptions);
         
         // act
         builder.Ignore(b => b.OtherValue);
@@ -28,15 +28,15 @@ public class AdapterPropertyToConstructorParametersOptionsBuilderTests
         options.Should().NotBeNull();
         options!.ResolutionStatus.Should().Be(ResolutionStatus.Ignored);
     }
-
+    
     [Fact]
     public void Parameter_Must_Throw_When_SelectorIsNotAProperty()
     {
         // arrange
         var sourceOptions = new SourceOptions(typeof(Bar));
-        var constructorOptions = new ConstructorOptions(typeof(Qux));
-        
-        var builder = new AdapterPropertyToConstructorParametersOptionsBuilder<Bar>(sourceOptions, constructorOptions);
+        var methodOptions = new MethodOptions(typeof(Quux));
+
+        var builder = new AdapterPropertyToMethodParametersOptionsBuilder<Bar>(sourceOptions, methodOptions);
 
         // act
         Action act = () => builder.Parameter(b => string.Empty);
@@ -44,15 +44,15 @@ public class AdapterPropertyToConstructorParametersOptionsBuilderTests
         // assert
         act.Should().Throw<InvalidPropertySelectorException>();
     }
-
+    
     [Fact]
-    public void Parameter_Must_ConfigureTheProperty_With_MappedToConstructorParameter_And_ReturnTheBuilder()
+    public void Parameter_Must_ConfigureTheProperty_With_MappedToMethodParameter_And_ReturnTheBuilder()
     {
         // arrange
         var sourceOptions = new SourceOptions(typeof(Bar));
-        var constructorOptions = new ConstructorOptions(typeof(Qux));
-        
-        var builder = new AdapterPropertyToConstructorParametersOptionsBuilder<Bar>(sourceOptions, constructorOptions);
+        var methodOptions = new MethodOptions(typeof(Quux));
+
+        var builder = new AdapterPropertyToMethodParametersOptionsBuilder<Bar>(sourceOptions, methodOptions);
         
         // act
         var returned = builder.Parameter(b => b.Value);
@@ -63,23 +63,24 @@ public class AdapterPropertyToConstructorParametersOptionsBuilderTests
         var found = sourceOptions.TryGetPropertyOptions(nameof(Bar.Value), out var propertyOptions);
         found.Should().BeTrue();
         propertyOptions.Should().NotBeNull();
-        propertyOptions!.ResolutionStatus.Should().Be(ResolutionStatus.MappedToConstructorParameter);
+        propertyOptions!.ResolutionStatus.Should().Be(ResolutionStatus.MappedToMethodParameter);
 
-        propertyOptions.ResolutionOptions.Should().BeOfType<ToConstructorParameterOptions>();
+        propertyOptions.ResolutionOptions.Should().BeOfType<ToMethodParameterOptions>();
     }
-
+    
     [Theory]
     [InlineData("", false)]
     [InlineData("NotAParameter", false)]
-    [InlineData("someValue", true)]
+    [InlineData("input", true)]
     public void Parameter_Must_Throw_When_ParameterNameIsInvalid(string name, bool isValid)
     {
         // arrange
         var sourceOptions = new SourceOptions(typeof(Bar));
-        var constructorOptions = new ConstructorOptions(typeof(Qux));
+        var methodOptions = new MethodOptions(typeof(Quux));
+        methodOptions.WithMethodName(nameof(Quux.DoSomething));
         
-        var builder = new AdapterPropertyToConstructorParametersOptionsBuilder<Bar>(sourceOptions, constructorOptions);
-        
+        var builder = new AdapterPropertyToMethodParametersOptionsBuilder<Bar>(sourceOptions, methodOptions);
+
         // act
         Action act = () => builder.Parameter(b => b.Value, name);
         
@@ -92,23 +93,22 @@ public class AdapterPropertyToConstructorParametersOptionsBuilderTests
     
     private class Foo
     {
-        public Bar Value { get; set; }
+        public Bar Bar { get; set; }
     }
-
+    
     private class Bar
     {
         public string Value { get; set; }
-        
+
         public string OtherValue { get; set; }
     }
-    
-    private class Qux
-    {
-        public string SomeValue { get; }
 
-        public Qux(string someValue)
-        {
-            SomeValue = someValue;
-        }
+    private class Quux
+    {
+        public void DoSomething(string input) { }
+        
+        public void OtherMethod() { }
+        
+        public void OtherMethod(int value) { }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
@@ -128,7 +127,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     [Fact]
     public void ThenTo_Must_Throw_When_SelectorIsNotAProperty()
     {
-            // Arrange
+        // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(typeof(Foo).GetProperty("Quux")!);
         var propertyToPropertyOptions = new ToPropertyOptions(typeof(Bar), typeof(Bar).GetProperty("Baz")!);
@@ -145,7 +144,7 @@ public class AdapterPropertyToPropertyOptionsBuilderTests
     }
     
     [Fact]
-    public void ThenTo_Must_Set_ThenToPropertyOptions_And_ReturnTheBuilder()
+    public void ThenTo_Must_Set_ThenToOptions_And_ReturnTheBuilder()
     {
         // Arrange
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));

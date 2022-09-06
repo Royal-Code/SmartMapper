@@ -57,7 +57,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     }
 
     [Fact]
-    public void Parameter_Must_SetPropertyOptionsWithTheParameterOptions()
+    public void Parameter_Must_SetPropertyOptions_With_ToMethodParameterOptions()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var methodOptions = adapterOptions.CreateSourceToMethodOptions();
@@ -71,7 +71,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
     }
 
     [Fact]
-    public void Parameter_Must_SetMethodOptionsWithParameterOptions()
+    public void Parameter_Must_SetMethodOptions_With_ToMethodParameterOptions()
     {
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var methodOptions = adapterOptions.CreateSourceToMethodOptions();
@@ -81,10 +81,10 @@ public class AdapterSourceToMethodPropertiesOptionsBuilderTests
 
         var found = methodOptions.MethodOptions.TryGetParameterOptions(
             typeof(Foo).GetProperty(nameof(Foo.Value))!
-            , out var propertyToParameterOptions);
+            , out var toMethodParameter);
 
         found.Should().BeTrue();
-        propertyToParameterOptions.Should().NotBeNull();
+        toMethodParameter.Should().NotBeNull();
     }
 
     [Fact]

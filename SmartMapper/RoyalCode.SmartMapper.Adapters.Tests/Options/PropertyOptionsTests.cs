@@ -1,6 +1,5 @@
 using System;
 using FluentAssertions;
-using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using Xunit;
 
