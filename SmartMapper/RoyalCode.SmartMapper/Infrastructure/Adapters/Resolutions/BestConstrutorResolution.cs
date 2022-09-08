@@ -1,45 +1,38 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 
-/// <summary>
-/// <para>
-///     Esta resolução tenta obter o melhor construtor possível para a classe de destino.
-/// </para>
-/// <para>
-///     Ela terá uma resolution <see cref="ConstrutorParametersResolution"/>
-///     para construtor elegível da classe de destino.
-/// </para>
-/// <para>
-///     Uma construtor elegível deve ser público e atender os requisitos confirados nas opções
-///     <see cref="ConstructorOptions"/>
-/// </para>
-/// </summary>
-public class BestConstrutorResolution
+public class ConstructorResolver
 {
-    private readonly ConstructorOptions options;
-
-    public BestConstrutorResolution(ConstructorOptions options)
+    public ConstrutorResolution Resolve(AdapterResolutionContext context)
     {
-        this.options = options;
+        var ctorElegible = GetElegibleConstructors(context.GetConstructorOptions());
+
+        // deve ser validado se existe algum ctor elegivel.
+        
+        var parametersResolutions = ctorElegible.Select(c => new ConstrutorParametersResolver(c))
+            .Select(r => r.Resolve(context))
+            .ToList();
+        
+        // se não tiver resoluções com sucesso, registra o erro e encerra.
+        
+        // filtra as resoluções com sucesso e ordena ao estilo best constructor selector.
+        
+        // agora deve ser validada as resoluções, se as opções pré-configuradas está atendendo parametros do ctor resolvido?
+        
+        // elimina os ctor inválidos.
+        
+        // caso não sobre nenhum, registra o erro de configuração.
+        
+        // por fim, pega o melhor construtor e gera um sucesso.
+        // o resolver do adaptador deverá pegar a resolução do ctor e aplicar os valores corretos nas opções.
+        
+        throw new NotImplementedException();
     }
-
-    public void Resolve()
-    {
-        var constructors = GetElegibleConstructors();
-
-        if (constructors.Length == 0)
-        {
-            // registra mensagem de erro
-            return;
-        }
-
-        var resolutions = constructors.Select(c => new ConstrutorParametersResolution(options, c)).ToList();
-       
-    }
-
-    internal ConstructorInfo[] GetElegibleConstructors()
+    
+    internal ConstructorInfo[] GetElegibleConstructors(ConstructorOptions options)
     {
         if (options.ParameterTypes is not null)
         {
@@ -62,28 +55,83 @@ public class BestConstrutorResolution
     }
 }
 
+public class ConstrutorResolution
+{
+    
+}
+
 /// <summary>
 /// <para>
 ///     Esta resolução tenta resolver um construtor, parâmetro por parâmetro.
 /// </para>
 /// </summary>
-public class ConstrutorParametersResolution
+public class ConstrutorParametersResolver
 {
-    private readonly ConstructorOptions options;
     private readonly ConstructorInfo constructorInfo;
 
-    public ConstrutorParametersResolution(ConstructorOptions options, ConstructorInfo constructorInfo)
+    public ConstrutorParametersResolver(ConstructorInfo constructorInfo)
     {
-        this.options = options;
         this.constructorInfo = constructorInfo;
+    }
+
+    public ConstrutorParametersResolution Resolve(AdapterResolutionContext context)
+    {
+        var constructorOptions = context.GetConstructorOptions();
+        var properties = context.GetPropertyOptions(
+            ResolutionStatus.MappedToConstructor,
+            ResolutionStatus.MappedToConstructorParameter);
+            
+
+        foreach (var propertyOption in properties)
+        {
+            
+        }
+        
+        throw new NotImplementedException();
     }
 }
 
-public class ConstructorResolver
+public class ConstrutorParametersResolution
 {
-    public void Resolve(AdapterOptions adapterOptions)
+    
+}
+
+public class ParameterResolver
+{
+    private readonly ParameterInfo parameterInfo;
+
+    public ParameterResolver(ParameterInfo parameterInfo)
+    {
+        this.parameterInfo = parameterInfo;
+    }
+
+    public ParameterResolution Resolve(ToParameterOptionsBase options)
     {
         
+        throw new NotImplementedException();
     }
-    
+}
+
+public class ParameterResolution
+{
+
+}
+
+public class AdapterResolutionContext
+{
+    private readonly AdapterOptions adapterOptions;
+    private readonly PropertyInfo[] propertyInfos;
+
+    public AdapterResolutionContext(AdapterOptions adapterOptions)
+    {
+        this.adapterOptions = adapterOptions;
+        propertyInfos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
+    }
+
+    public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
+
+    public IEnumerable<PropertyOptions> GetPropertyOptions(params ResolutionStatus[] statuses) 
+        => adapterOptions.SourceOptions.GetPropertiesByStatus();
+
+    public PropertyInfo[] GetProperties() => propertyInfos;
 }

@@ -11,17 +11,24 @@ public class BestConstrutorResolutionTests
     public void GetElegibleConstructors_Must_FindDefaultConstructor()
     {
         // arrange
-        var constructorOptions = new ConstructorOptions(typeof(Foo));
-        var resolution = new BestConstrutorResolution(constructorOptions);
+        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
+        var adapterContext = new AdapterResolutionContext(adapterOptions);
+
+        var resolver = new ConstructorResolver();
 
         // act
-        var constructors = resolution.GetElegibleConstructors();
+        var constructors = resolver.GetElegibleConstructors(adapterContext.GetConstructorOptions());
 
         // assert
         constructors.Should().HaveCount(1);
     }
     
     private class Foo
+    {
+        public string Value { get; set; }
+    }
+    
+    private class Bar
     {
         public string Value { get; set; }
     }

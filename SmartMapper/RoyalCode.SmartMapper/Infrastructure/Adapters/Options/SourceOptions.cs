@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
@@ -51,7 +52,18 @@ public class SourceOptions
 
         return options;
     }
-    
+
+    /// <summary>
+    /// Gets all configured properties with the specified statuses.
+    /// </summary>
+    /// <param name="statuses">The resolution status.</param>
+    /// <returns>Enumerable of <see cref="PropertyOptions"/>.</returns>
+    public IEnumerable<PropertyOptions> GetPropertiesByStatus(params ResolutionStatus[] statuses)
+    {
+        // TODO: requer testes unitários
+        return propertyOptions.Where(option => statuses.Contains(option.ResolutionStatus));
+    }
+
     /// <summary>
     /// <para>
     ///     Gets or create the options for a property of the source type.
