@@ -120,12 +120,16 @@ public class ParameterResolution
 public class AdapterResolutionContext
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly PropertyInfo[] propertyInfos;
+    private readonly SourceProperty[] properties;
 
     public AdapterResolutionContext(AdapterOptions adapterOptions)
     {
         this.adapterOptions = adapterOptions;
-        propertyInfos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
+
+        foreach (var propertyInfo in adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties())
+        {
+            
+        }
     }
 
     public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
@@ -133,5 +137,14 @@ public class AdapterResolutionContext
     public IEnumerable<PropertyOptions> GetPropertyOptions(params ResolutionStatus[] statuses) 
         => adapterOptions.SourceOptions.GetPropertiesByStatus();
 
-    public PropertyInfo[] GetProperties() => propertyInfos;
+    public IEnumerable<SourceProperty> GetProperties() => properties;
+}
+
+public class SourceProperty
+{
+    public PropertyInfo PropertyInfo { get; }
+    
+    public bool PreConfigured { get; }
+
+    public PropertyOptions Options { get; }
 }
