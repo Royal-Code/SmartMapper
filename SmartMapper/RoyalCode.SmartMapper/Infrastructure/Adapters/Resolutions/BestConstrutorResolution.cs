@@ -126,10 +126,20 @@ public class AdapterResolutionContext
     {
         this.adapterOptions = adapterOptions;
 
-        foreach (var propertyInfo in adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties())
+        var infos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
+        properties = new SourceProperty[infos.Length];
+        for (int i = 0; i < infos.Length; i++)
         {
-            
+            var info = infos[i];
+            var preConfigured = adapterOptions.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
+            properties[i] = new SourceProperty()
+            {
+                PropertyInfo = info,
+                PreConfigured = preConfigured,
+                Options = option ?? new PropertyOptions(info)
+            };
         }
+        
     }
 
     public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
@@ -142,9 +152,9 @@ public class AdapterResolutionContext
 
 public class SourceProperty
 {
-    public PropertyInfo PropertyInfo { get; }
+    public PropertyInfo PropertyInfo { get; init; }
     
-    public bool PreConfigured { get; }
+    public bool PreConfigured { get; init; }
 
-    public PropertyOptions Options { get; }
+    public PropertyOptions Options { get; init; }
 }
