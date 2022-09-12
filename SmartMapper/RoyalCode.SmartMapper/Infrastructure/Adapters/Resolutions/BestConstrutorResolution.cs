@@ -77,12 +77,11 @@ public class ConstrutorParametersResolver
     public ConstrutorParametersResolution Resolve(AdapterResolutionContext context)
     {
         var constructorOptions = context.GetConstructorOptions();
-        var properties = context.GetPropertyOptions(
+        var properties = context.GetPropertiesByStatus(
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter);
-            
 
-        foreach (var propertyOption in properties)
+        foreach (var property in properties)
         {
             
         }
@@ -144,8 +143,13 @@ public class AdapterResolutionContext
 
     public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
 
-    public IEnumerable<PropertyOptions> GetPropertyOptions(params ResolutionStatus[] statuses) 
-        => adapterOptions.SourceOptions.GetPropertiesByStatus();
+    public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
+    {
+        return properties.Where(p => statuses.Contains(p.Options.ResolutionStatus));
+    }
+
+    public IEnumerable<SourceProperty> GetPropertiesUnresolved()
+        => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
 
     public IEnumerable<SourceProperty> GetProperties() => properties;
 }
