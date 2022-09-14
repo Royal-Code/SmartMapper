@@ -14,7 +14,7 @@ public class BestConstrutorResolutionTests
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var adapterContext = new AdapterResolutionContext(adapterOptions);
 
-        var resolver = new ConstructorResolver();
+        var resolver = new ActivationResolver();
 
         // act
         var constructors = resolver.GetElegibleConstructors(adapterContext.GetConstructorOptions());

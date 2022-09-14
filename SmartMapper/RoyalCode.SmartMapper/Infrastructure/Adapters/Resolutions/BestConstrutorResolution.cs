@@ -4,15 +4,15 @@ using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 
-public class ConstructorResolver
+public class ActivationResolver
 {
-    public ConstrutorResolution Resolve(AdapterResolutionContext context)
+    public ActivationResolution Resolve(AdapterResolutionContext context)
     {
         var ctorElegible = GetElegibleConstructors(context.GetConstructorOptions());
 
         // deve ser validado se existe algum ctor elegivel.
         
-        var parametersResolutions = ctorElegible.Select(c => new ConstrutorParametersResolver(c))
+        var construtorResolutions = ctorElegible.Select(c => new ConstrutorResolver(c))
             .Select(r => r.Resolve(context))
             .ToList();
         
@@ -55,7 +55,7 @@ public class ConstructorResolver
     }
 }
 
-public class ConstrutorResolution
+public class ActivationResolution
 {
     
 }
@@ -65,19 +65,21 @@ public class ConstrutorResolution
 ///     Esta resolução tenta resolver um construtor, parâmetro por parâmetro.
 /// </para>
 /// </summary>
-public class ConstrutorParametersResolver
+public class ConstrutorResolver
 {
     private readonly ConstructorInfo constructorInfo;
 
-    public ConstrutorParametersResolver(ConstructorInfo constructorInfo)
+    public ConstrutorResolver(ConstructorInfo constructorInfo)
     {
         this.constructorInfo = constructorInfo;
     }
 
-    public ConstrutorParametersResolution Resolve(AdapterResolutionContext context)
+    public ConstrutorResolution Resolve(AdapterResolutionContext context)
     {
         var constructorOptions = context.GetConstructorOptions();
+        
         var properties = context.GetPropertiesByStatus(
+            ResolutionStatus.Undefined,
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter);
 
@@ -90,7 +92,7 @@ public class ConstrutorParametersResolver
     }
 }
 
-public class ConstrutorParametersResolution
+public class ConstrutorResolution
 {
     
 }
@@ -145,7 +147,9 @@ public class AdapterResolutionContext
 
     public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
     {
-        return properties.Where(p => statuses.Contains(p.Options.ResolutionStatus));
+        return properties
+            .Where(p => !p.Resolved)    
+            .Where(p => statuses.Contains(p.Options.ResolutionStatus));
     }
 
     public IEnumerable<SourceProperty> GetPropertiesUnresolved()
@@ -161,4 +165,6 @@ public class SourceProperty
     public bool PreConfigured { get; init; }
 
     public PropertyOptions Options { get; init; }
+    
+    public bool Resolved { get; internal set; }
 }
