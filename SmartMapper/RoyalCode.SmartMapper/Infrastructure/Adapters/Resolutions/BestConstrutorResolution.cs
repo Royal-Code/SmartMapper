@@ -68,10 +68,15 @@ public class ActivationResolution
 public class ConstrutorResolver
 {
     private readonly ConstructorInfo constructorInfo;
+    private readonly List<ConstructorParameterResolver> parameterResolvers;
 
     public ConstrutorResolver(ConstructorInfo constructorInfo)
     {
         this.constructorInfo = constructorInfo;
+
+        parameterResolvers = constructorInfo.GetParameters()
+            .Select(p => new ConstructorParameterResolver(p))
+            .ToList();
     }
 
     public ConstrutorResolution Resolve(AdapterResolutionContext context)
@@ -83,12 +88,25 @@ public class ConstrutorResolver
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter);
 
-        foreach (var property in properties)
-        {
-            
-        }
+        var ctorContext = new ConstructorResolutionContext(properties, context);
+
+        parameterResolvers.ForEach(r => r.Resolve(ctorContext));
         
         throw new NotImplementedException();
+    }
+}
+
+public class ConstructorResolutionContext
+{
+    private readonly AdapterResolutionContext adapterResolutionContext;
+    private readonly IEnumerable<SourceProperty> properties;
+
+    public ConstructorResolutionContext(
+        IEnumerable<SourceProperty> properties,
+        AdapterResolutionContext adapterResolutionContext)
+    {
+        this.properties = properties;
+        this.adapterResolutionContext = adapterResolutionContext;
     }
 }
 
@@ -97,16 +115,16 @@ public class ConstrutorResolution
     
 }
 
-public class ParameterResolver
+public class ConstructorParameterResolver
 {
     private readonly ParameterInfo parameterInfo;
 
-    public ParameterResolver(ParameterInfo parameterInfo)
+    public ConstructorParameterResolver(ParameterInfo parameterInfo)
     {
         this.parameterInfo = parameterInfo;
     }
 
-    public ParameterResolution Resolve(ToParameterOptionsBase options)
+    public ParameterResolution Resolve(ConstructorResolutionContext context)
     {
         
         throw new NotImplementedException();
