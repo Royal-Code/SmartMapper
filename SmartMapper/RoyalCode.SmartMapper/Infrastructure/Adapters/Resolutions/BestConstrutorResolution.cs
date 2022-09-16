@@ -82,8 +82,6 @@ public class ConstrutorResolver
 
     public ConstrutorResolution Resolve(AdapterResolutionContext context)
     {
-        var constructorOptions = context.GetConstructorOptions();
-        
         var properties = context.GetPropertiesByStatus(
             ResolutionStatus.Undefined,
             ResolutionStatus.MappedToConstructor,
@@ -152,10 +150,11 @@ public class ConstructorParameterResolver
 
             var sourceProperty = context.GetSourceProperty(propertyOptions.Property);
 
-            var sssignmentStrategy = propertyOptions.AssignmentStrategy?.Strategy 
-                ?? ValueAssignmentStrategy.Undefined;
-
-            context.GetAssignmentStrategyResolver();
+            var assignmentResolver = context.GetAssignmentStrategyResolver();
+            var assignmentResolution = assignmentResolver.Resolve(
+                propertyOptions.Property.PropertyType,
+                toParameterOptions.TargetType,
+                propertyOptions.AssignmentStrategy);
         }
 
         throw new NotImplementedException();
@@ -165,51 +164,6 @@ public class ConstructorParameterResolver
 public class ParameterResolution
 {
 
-}
-
-public class AdapterResolutionContext
-{
-    private readonly AdapterOptions adapterOptions;
-    private readonly SourceProperty[] properties;
-
-    public AdapterResolutionContext(AdapterOptions adapterOptions)
-    {
-        this.adapterOptions = adapterOptions;
-
-        var infos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
-        properties = new SourceProperty[infos.Length];
-        for (int i = 0; i < infos.Length; i++)
-        {
-            var info = infos[i];
-            var preConfigured = adapterOptions.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
-            properties[i] = new SourceProperty()
-            {
-                PropertyInfo = info,
-                PreConfigured = preConfigured,
-                Options = option ?? new PropertyOptions(info)
-            };
-        }
-        
-    }
-
-    public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
-
-    public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
-    {
-        return properties
-            .Where(p => !p.Resolved)    
-            .Where(p => statuses.Contains(p.Options.ResolutionStatus));
-    }
-
-    public IEnumerable<SourceProperty> GetPropertiesUnresolved()
-        => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
-
-    public IEnumerable<SourceProperty> GetProperties() => properties;
-
-    public AssignmentStrategyResolver GetAssignmentStrategyResolver()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class SourceProperty
