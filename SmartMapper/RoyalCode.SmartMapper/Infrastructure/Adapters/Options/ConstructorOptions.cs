@@ -39,6 +39,10 @@ public class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOp
     public Type[]? ParameterTypes { get; internal set; }
 
     /// <inheritdoc />
+    protected override IEnumerable<ToConstructorParameterOptions> Parameters 
+        => parametersOptions ?? Enumerable.Empty<ToConstructorParameterOptions>();
+
+    /// <inheritdoc />
     public override ToConstructorParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
         parametersOptions ??= new List<ToConstructorParameterOptions>();
@@ -51,14 +55,5 @@ public class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOp
         }
 
         return options;
-    }
-
-    /// <inheritdoc />
-    public override bool TryGetParameterOptions(
-        PropertyInfo sourceProperty,
-        [NotNullWhen(true)] out ToConstructorParameterOptions? parameterOptions)
-    {
-        parameterOptions = parametersOptions?.FirstOrDefault(p => p.SourceProperty == sourceProperty);
-        return parameterOptions != null;
     }
 }

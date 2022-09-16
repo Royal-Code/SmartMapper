@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Core;
@@ -100,14 +101,33 @@ public class ConstructorResolutionContext
 {
     private readonly AdapterResolutionContext adapterResolutionContext;
     private readonly IEnumerable<SourceProperty> properties;
-
+    private readonly ConstructorOptions constructorOptions;
     public ConstructorResolutionContext(
         IEnumerable<SourceProperty> properties,
         AdapterResolutionContext adapterResolutionContext)
     {
         this.properties = properties;
         this.adapterResolutionContext = adapterResolutionContext;
+        constructorOptions = adapterResolutionContext.GetConstructorOptions();
     }
+
+    public bool TryGetParameterOptionsByName(string name, [NotNullWhen(true)] out ToConstructorParameterOptions? options)
+    {
+        return constructorOptions.TryGetParameterOptions(name, out options);
+    }
+
+    public SourceProperty GetSourceProperty(PropertyInfo propertyInfo)
+    {
+        var sourceProperty = properties.FirstOrDefault(p => p.PropertyInfo == propertyInfo);
+        if (sourceProperty is null)
+            throw new InvalidOperationException($"The property '{propertyInfo.Name}' is not a valid source property");
+
+        return sourceProperty;
+    }
+
+    public AssignmentStrategyResolver GetAssignmentStrategyResolver()
+        => adapterResolutionContext.GetAssignmentStrategyResolver();
+
 }
 
 public class ConstrutorResolution
@@ -126,7 +146,18 @@ public class ConstructorParameterResolver
 
     public ParameterResolution Resolve(ConstructorResolutionContext context)
     {
-        
+        if(context.TryGetParameterOptionsByName(parameterInfo.Name!, out var toParameterOptions))
+        {
+            var propertyOptions = toParameterOptions.ResolvedProperty!;
+
+            var sourceProperty = context.GetSourceProperty(propertyOptions.Property);
+
+            var sssignmentStrategy = propertyOptions.AssignmentStrategy?.Strategy 
+                ?? ValueAssignmentStrategy.Undefined;
+
+            context.GetAssignmentStrategyResolver();
+        }
+
         throw new NotImplementedException();
     }
 }
@@ -174,6 +205,11 @@ public class AdapterResolutionContext
         => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
 
     public IEnumerable<SourceProperty> GetProperties() => properties;
+
+    public AssignmentStrategyResolver GetAssignmentStrategyResolver()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class SourceProperty

@@ -25,6 +25,8 @@ public abstract class ParametersOptionsBase<TToParameter>
     /// </summary>
     public Type TargetType { get; }
 
+    protected abstract IEnumerable<TToParameter> Parameters { get; }
+
     /// <summary>
     /// Gets the options for mapping a source property to a parameter.
     /// </summary>
@@ -44,7 +46,42 @@ public abstract class ParametersOptionsBase<TToParameter>
     /// <returns>
     ///     <c>true</c> if the options for mapping a source property to a parameter were found; otherwise, <c>false</c>.
     /// </returns>
-    public abstract bool TryGetParameterOptions(
+    public virtual bool TryGetParameterOptions(
         PropertyInfo sourceProperty,
-        [NotNullWhen(true)] out TToParameter? parameterOptions);
+        [NotNullWhen(true)] out TToParameter? parameterOptions)
+    {
+        parameterOptions = Parameters.FirstOrDefault(x => x.SourceProperty == sourceProperty);
+        return parameterOptions is not null;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Try to get the options for mapping a source property to a parameter.
+    /// </para>
+    /// </summary>
+    /// <param name="parameterName">The parameter name.</param>
+    /// <param name="parameterOptions">The options for mapping a source property to a parameter.</param>
+    /// <returns>
+    ///     <c>true</c> if the options for mapping a source property to a parameter were found; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     If has more then one property mapped to the same parameter.
+    /// </exception>
+    public virtual bool TryGetParameterOptions(
+        string parameterName,
+        [NotNullWhen(true)] out TToParameter? parameterOptions)
+    {
+        // TODO: require unit tests (TryGetParameterOptions)
+        try
+        {
+            parameterOptions = Parameters.Where(p => p.ParameterName == parameterName).SingleOrDefault();
+            return parameterOptions is not null;
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new InvalidOperationException(
+                "Multiple properties are mapped to the same parameter",
+                ex);
+        }
+    }
 }

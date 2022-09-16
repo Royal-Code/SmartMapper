@@ -28,7 +28,11 @@ public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
     /// The defined mapped method name.
     /// </summary>
     public string? MethodName { get; internal set; }
-    
+
+    /// <inheritdoc />
+    protected override IEnumerable<ToMethodParameterOptions> Parameters
+        => parametersOptions ?? Enumerable.Empty<ToMethodParameterOptions>();
+
     /// <inheritdoc />
     public override ToMethodParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
@@ -42,15 +46,6 @@ public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
         }
 
         return options;
-    }
-
-    /// <inheritdoc />
-    public override bool TryGetParameterOptions(
-        PropertyInfo sourceProperty, 
-        [NotNullWhen(true)] out ToMethodParameterOptions? parameterOptions)
-    {
-        parameterOptions = parametersOptions?.FirstOrDefault(x => x.SourceProperty == sourceProperty);
-        return parameterOptions is not null;
     }
     
     /// <summary>
