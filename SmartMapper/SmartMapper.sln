@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.Exten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.Adapters.Tests", "RoyalCode.SmartMapper.Adapters.Tests\RoyalCode.SmartMapper.Adapters.Tests.csproj", "{AFEE4A08-4E5F-4172-AF2A-674FED06C541}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.AssignmentStrategy.Tests", "RoyalCode.SmartMapper.AssignmentStrategy.Tests\RoyalCode.SmartMapper.AssignmentStrategy.Tests.csproj", "{8E381CDC-58EB-4BF9-978F-39252D6DC59B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +42,16 @@ Global
 		{AFEE4A08-4E5F-4172-AF2A-674FED06C541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFEE4A08-4E5F-4172-AF2A-674FED06C541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFEE4A08-4E5F-4172-AF2A-674FED06C541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{98AFB620-A4C8-46A8-9107-777EDA78E7A1} = {B1FCDFBE-E2D2-4C70-A55A-6B0F6172575E}
 		{E5E0EC2B-E231-4A93-89C0-CB01453137DF} = {60458330-D26A-442E-994D-52E04D788849}
 		{E728CBFF-856D-48D6-B40B-465972542A17} = {60458330-D26A-442E-994D-52E04D788849}
 		{AFEE4A08-4E5F-4172-AF2A-674FED06C541} = {60458330-D26A-442E-994D-52E04D788849}
+		{8E381CDC-58EB-4BF9-978F-39252D6DC59B} = {60458330-D26A-442E-994D-52E04D788849}
 	EndGlobalSection
 EndGlobal
