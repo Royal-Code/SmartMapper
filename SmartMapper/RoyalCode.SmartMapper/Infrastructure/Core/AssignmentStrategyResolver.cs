@@ -58,6 +58,26 @@ public class AssignmentStrategyResolver
     }
 }
 
+public interface IValueAssignmentStrategy
+{
+    ValueAssignmentStrategy Strategy { get; }
+    
+    /// <summary>
+    /// Checa se pode resolver, criar o resultado.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    AssignmentResolution Resolve(AssignmentContext context);
+    
+    /// <summary>
+    /// Chega se pode resolver, se pode, cria o resultado, caso contrário retorna false sem criar resultado.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="resolution"></param>
+    /// <returns></returns>
+    bool TryResolve(AssignmentContext context, out AssignmentResolution? resolution);
+}
+
 public class AssignmentContext
 {
     public Type From { get; init; }

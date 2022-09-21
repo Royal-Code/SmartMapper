@@ -5,5 +5,6 @@ public class AssignmentStrategyResolverTests
     [Fact]
     public void Test1()
     {
+        
     }
 }
