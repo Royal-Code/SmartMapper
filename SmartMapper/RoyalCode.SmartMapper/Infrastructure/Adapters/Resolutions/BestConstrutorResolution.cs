@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;

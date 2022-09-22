@@ -1,8 +1,7 @@
-﻿
+﻿using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-
-namespace RoyalCode.SmartMapper.Infrastructure.Core;
+namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 
 public class AssignmentStrategyResolver
 {
@@ -56,47 +55,4 @@ public class AssignmentStrategyResolver
             FailureMessages = new []{ $"The type {context.To.Name} is not assignable from type {context.From.Name}" }
         };
     }
-}
-
-public interface IValueAssignmentStrategy
-{
-    ValueAssignmentStrategy Strategy { get; }
-    
-    /// <summary>
-    /// Checa se pode resolver, criar o resultado.
-    /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    AssignmentResolution Resolve(AssignmentContext context);
-    
-    /// <summary>
-    /// Chega se pode resolver, se pode, cria o resultado, caso contrário retorna false sem criar resultado.
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="resolution"></param>
-    /// <returns></returns>
-    bool TryResolve(AssignmentContext context, out AssignmentResolution? resolution);
-}
-
-public class AssignmentContext
-{
-    public Type From { get; init; }
-
-    public Type To { get; init; }
-
-    public AssignmentStrategyOptions? StrategyOptions { get; init; }
-    
-    
-}
-
-public class AssignmentResolution : ResolutionBase
-{
-    public ValueAssignmentStrategy Strategy { get; init; }
-}
-
-public abstract class ResolutionBase
-{
-    public bool Resolved { get; init; }
-    
-    public IEnumerable<string>? FailureMessages { get; init; }
 }

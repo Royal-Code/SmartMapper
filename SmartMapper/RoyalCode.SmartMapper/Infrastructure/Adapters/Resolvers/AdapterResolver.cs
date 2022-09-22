@@ -1,5 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Configurations;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolutions;
 
@@ -22,6 +23,16 @@ public class AdapterResolver
     {
         this.mappingConfiguration = mappingConfiguration;
     }
+
+    public AdapterResolution Resolve(AdapterResolverContext context)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryResolve(AdapterResolverContext context, [NotNullWhen(true)] out AdapterResolution resolution)
+    {
+        throw new NotImplementedException();
+    }
     
     public IAdapterResolution<TSource, TTarget> GetResolution<TSource, TTarget>()
     {
@@ -38,26 +49,9 @@ public class AdapterResolver
 
     private object CreateResolution(MapKey key)
     {
-        var options = mappingConfiguration.AdaptersOptions.GetOptions(key);
-        var context = new ResolverContext(key, options, mappingConfiguration);
+        var context = new AdapterResolverContext(key, null);
         
         
         throw new NotImplementedException();
-    }
-}
-
-public class ResolverContext
-{
-    public MapKey Key { get; }
-    
-    public AdapterOptions Options { get; }
-    
-    public MappingConfiguration MappingConfiguration { get; }
-    
-    public ResolverContext(MapKey key, AdapterOptions options, MappingConfiguration mappingConfiguration)
-    {
-        Key = key;
-        Options = options;
-        MappingConfiguration = mappingConfiguration;
     }
 }

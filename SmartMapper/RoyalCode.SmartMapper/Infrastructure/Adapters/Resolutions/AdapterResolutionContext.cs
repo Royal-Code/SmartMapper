@@ -1,5 +1,6 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
@@ -7,10 +8,10 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 public class AdapterResolutionContext
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly AdapterConfigurations configurations;
+    private readonly ResolutionConfiguration configurations;
     private readonly SourceProperty[] properties;
 
-    public AdapterResolutionContext(AdapterOptions adapterOptions, AdapterConfigurations configurations)
+    public AdapterResolutionContext(AdapterOptions adapterOptions, ResolutionConfiguration configurations)
     {
         this.adapterOptions = adapterOptions;
         this.configurations = configurations;
@@ -21,7 +22,7 @@ public class AdapterResolutionContext
         {
             var info = infos[i];
             var preConfigured = adapterOptions.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
-            properties[i] = new SourceProperty()
+            properties[i] = new ()
             {
                 PropertyInfo = info,
                 PreConfigured = preConfigured,

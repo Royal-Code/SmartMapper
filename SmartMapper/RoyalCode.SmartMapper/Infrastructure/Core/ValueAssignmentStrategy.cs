@@ -1,4 +1,4 @@
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+namespace RoyalCode.SmartMapper.Infrastructure.Core;
 
 /// <summary>
 /// Defines the strategy for dealing with the assignment between source type and destination type in a mapping.

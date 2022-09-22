@@ -3,6 +3,7 @@ using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Builders;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Builders;

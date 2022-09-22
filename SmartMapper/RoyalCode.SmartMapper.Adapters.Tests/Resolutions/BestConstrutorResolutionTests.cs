@@ -1,7 +1,7 @@
 using FluentAssertions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Resolutions;
@@ -12,7 +12,7 @@ public class BestConstrutorResolutionTests
     public void GetElegibleConstructors_Must_FindDefaultConstructor()
     {
         // arrange
-        var configs = new AdapterConfigurations();
+        var configs = new ResolutionConfiguration();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
 

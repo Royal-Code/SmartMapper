@@ -1,9 +1,15 @@
 using System.Linq.Expressions;
 using FastExpressionCompiler;
 using RoyalCode.SmartMapper.Exceptions;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolutions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+
+public class AdapterResolution : ResolutionBase
+{
+    
+}
 
 public class AdapterResolution<TSource, TTarget> : IAdapterResolution<TSource, TTarget>
 {

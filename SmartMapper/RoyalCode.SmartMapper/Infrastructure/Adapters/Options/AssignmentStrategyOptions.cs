@@ -15,6 +15,7 @@ public class AssignmentStrategyOptions : OptionsBase
     public void UseCast()
     {
         Strategy = ValueAssignmentStrategy.Cast;
+        SetAnnotation<ValueAssignmentStrategy>(Strategy);
     }
 
     public void UseAdapt()
