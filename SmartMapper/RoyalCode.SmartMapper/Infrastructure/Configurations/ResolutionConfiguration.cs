@@ -1,6 +1,5 @@
-using RoyalCode.SmartMapper.Configurations;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Core;
+namespace RoyalCode.SmartMapper.Infrastructure.Configurations;
 
 public class ResolutionConfiguration
 {

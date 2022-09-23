@@ -1,10 +1,10 @@
-using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
-public class AdapterResolverContext
+public class AdapterContext
 {
     public MapKey Key { get; }
 
@@ -12,7 +12,7 @@ public class AdapterResolverContext
 
     public ResolutionConfiguration ResolutionConfiguration { get; }
     
-    public AdapterResolverContext(
+    public AdapterContext(
         MapKey key,
         ResolutionConfiguration resolutionConfiguration)
     {

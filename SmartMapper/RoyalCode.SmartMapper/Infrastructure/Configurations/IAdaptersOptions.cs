@@ -1,7 +1,7 @@
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Configurations.Adapters;
+namespace RoyalCode.SmartMapper.Infrastructure.Configurations;
 
 /// <summary>
 /// <para>
@@ -10,6 +10,6 @@ namespace RoyalCode.SmartMapper.Configurations.Adapters;
 /// </summary>
 public interface IAdaptersOptions
 {
-    // TODO: Rever namespaces, está consumindo e retornado do Infrastructure.
+    // TODO: Rever se continuará existindo a interface, visto que é referênciado pelo Mappings e agora é infra.
     AdapterOptions GetOptions(MapKey key);
 }

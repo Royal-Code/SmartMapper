@@ -11,6 +11,7 @@ public class AdapterResolution : ResolutionBase
     
 }
 
+// TODO: Isso aqui em baixo deverá ser outra coisa, outro nome, outro componente.
 public class AdapterResolution<TSource, TTarget> : IAdapterResolution<TSource, TTarget>
 {
     private Func<TSource, IServiceProvider?, TTarget>? resolution;

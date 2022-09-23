@@ -1,8 +1,8 @@
+using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Configurations.Adapters;
-using RoyalCode.SmartMapper.Infrastructure.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
-namespace RoyalCode.SmartMapper.Configurations;
+namespace RoyalCode.SmartMapper.Infrastructure.Configurations;
 
 /// <summary>
 /// <para>
@@ -26,23 +26,10 @@ public class MappingConfiguration
     /// </summary>
     public IConfigure Configure { get; }
 
-    // talvez essa interface pode ser removida, porque podemos criar um método para obter as opções de adaptadores.
+    /// <summary>
+    /// Conjunto de opções configuradas manualmente para adaptadores.
+    /// </summary>
     public IAdaptersOptions AdaptersOptions => adaptersOptions;
-
-    public interface IConfigure
-    {
-        IConfigureAdapter Adapter { get; }
-    }
-
-    public interface IConfigureAdapter
-    {
-        IConfigureAdapter<TSource> From<TSource>();
-    }
-
-    public interface IConfigureAdapter<TSource>
-    {
-        IAdapterOptionsBuilder<TSource, TTarget> To<TTarget>();
-    }
 
     private class InternalConfigure : IConfigure
     {
@@ -55,6 +42,12 @@ public class MappingConfiguration
         }
 
         public IConfigureAdapter Adapter { get; }
+        
+        public IConfigureMapper Mapper { get; }
+        
+        public IConfigureSelector Selector { get; }
+        
+        public IConfigureSpecifier Specifier { get; }
     }
 
     private class InternalConfigureAdapter : IConfigureAdapter
