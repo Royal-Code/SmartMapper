@@ -17,21 +17,56 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 public class AdapterResolver
 {
     private readonly Dictionary<MapKey, object> resolutions = new();
-    private readonly MappingConfiguration mappingConfiguration;
     
-    public AdapterResolver(MappingConfiguration mappingConfiguration)
-    {
-        this.mappingConfiguration = mappingConfiguration;
-    }
-
     public AdapterResolution Resolve(AdapterContext context)
     {
+        if (context.Configuration.Cache.TryGetAdapter(context.Key, out var resolution))
+            return resolution;
+
+        var adapterResolutionContext = new AdapterResolutionContext(context.Options, context.Configuration);
+
+        var activationResolver = context.Configuration.GetResolver<ActivationResolver>();
+        var activationResolution = activationResolver.Resolve(adapterResolutionContext);
+
+        if (!activationResolution.Resolved) 
+            return CreateFailure(context, activationResolution.FailureMessages);
+
+        var callerResolver = context.Configuration.GetResolver<CallerResolver>();
+        // seguir com a lógica de caller
+
+
+        var setterResolver = context.Configuration.GetResolver<SetterResolver>();
+        // seguir com a lógica de setter;
+
+
+        if(adapterResolutionContext.Validate(out var failures))
+            return CreateFailure(context, failures);
+        
+        // criar resolução de sucesso
+        
         throw new NotImplementedException();
     }
 
-    public bool TryResolve(AdapterContext context, [NotNullWhen(true)] out AdapterResolution resolution)
+    public bool TryResolve(AdapterContext context, [NotNullWhen(true)] out AdapterResolution? resolution)
     {
+        // deve ser executado uma série de try para cada etapa ?
+        
         throw new NotImplementedException();
+    }
+
+    private AdapterResolution CreateFailure(AdapterContext context, IEnumerable<string> failures)
+    {
+        var resolution = new AdapterResolution()
+        {
+            Resolved = false,
+            FailureMessages = new[] 
+                    { $"Adapter cannot be created from type {context.Key.SourceType} to type {context.Key.TargetType}" }
+                .Concat(failures)
+        };
+        
+        context.Configuration.Cache.Store(context.Key, resolution);
+
+        return resolution;
     }
     
     // TODO: Daqui para baixo não deverá ficar por aqui

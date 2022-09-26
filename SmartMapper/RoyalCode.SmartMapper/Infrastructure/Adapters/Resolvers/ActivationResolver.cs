@@ -4,6 +4,11 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
+/// <summary>
+/// <para>
+///     Resolver para descobrir e criar a resolução de construtor.
+/// </para>
+/// </summary>
 public class ActivationResolver
 {
     public ActivationResolution Resolve(AdapterResolutionContext resolutionContext)

@@ -52,4 +52,13 @@ public class AdapterResolutionContext
     {
         return configurations.GetResolver<AssignmentStrategyResolver>();
     }
+
+    public bool Validate(out IEnumerable<string> failures)
+    {
+        // Valida se todas propriedades estão concluídas.
+        
+        // Em caso de algumas propriedades não poderem ser resolvidas, gerar falhas.
+        
+        throw new NotImplementedException();
+    }
 }

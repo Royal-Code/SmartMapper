@@ -3,12 +3,11 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
-using RoyalCode.SmartMapper.Infrastructure.Core;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Resolutions;
 
-public class BestConstrutorResolutionTests
+public class ActivationResolutionTests
 {
     [Fact]
     public void GetElegibleConstructors_Must_FindDefaultConstructor()

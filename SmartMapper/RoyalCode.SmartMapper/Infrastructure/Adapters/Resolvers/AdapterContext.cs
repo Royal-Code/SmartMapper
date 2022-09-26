@@ -8,15 +8,15 @@ public class AdapterContext
 {
     public MapKey Key { get; }
 
-    public AdapterOptions Options => ResolutionConfiguration.MappingConfiguration.AdaptersOptions.GetOptions(Key);
+    public AdapterOptions Options => Configuration.Mappings.AdaptersOptions.GetOptions(Key);
 
-    public ResolutionConfiguration ResolutionConfiguration { get; }
+    public ResolutionConfiguration Configuration { get; }
     
     public AdapterContext(
         MapKey key,
-        ResolutionConfiguration resolutionConfiguration)
+        ResolutionConfiguration configuration)
     {
         Key = key;
-        ResolutionConfiguration = resolutionConfiguration;
+        Configuration = configuration;
     }
 }
