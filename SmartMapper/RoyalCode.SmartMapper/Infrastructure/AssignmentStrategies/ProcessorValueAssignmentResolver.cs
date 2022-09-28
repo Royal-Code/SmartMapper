@@ -1,28 +1,27 @@
 using System.Diagnostics.CodeAnalysis;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 
-public class ConvertValueAssignmentResolver : IValueAssignmentResolver
+public class ProcessorValueAssignmentResolver : IValueAssignmentResolver
 {
-    public ValueAssignmentStrategy Strategy => ValueAssignmentStrategy.Convert;
+    public ValueAssignmentStrategy Strategy => ValueAssignmentStrategy.Processor;
     
-    private bool CanResolve(AssignmentContext context, [NotNullWhen(true)] out ConvertOptions? convertOptions)
+    private bool CanResolve(AssignmentContext context, [NotNullWhen(true)] out ProcessorOptions? processor)
     {
-        convertOptions = null;
-        context.StrategyOptions?.TryFindAnnotation(out convertOptions);
-        if (convertOptions is null)
-            context.Configuration.Converters.TryGetConverter(context.From, context.To, out convertOptions);
+        processor = null;
+        context.StrategyOptions?.TryFindAnnotation(out processor);
 
-        return convertOptions is not null;
+        return processor is not null;
     }
     
-    private AssignmentResolution CreateSuccess(AssignmentContext context, ConvertOptions convertOptions)
+    private AssignmentResolution CreateSuccess(AssignmentContext context, ProcessorOptions processor)
     {
         return new()
         {
             Resolved = true,
-            Strategy = ValueAssignmentStrategy.Convert
+            Strategy = ValueAssignmentStrategy.Processor
         };
     }
     
@@ -34,7 +33,7 @@ public class ConvertValueAssignmentResolver : IValueAssignmentResolver
         return new()
         {
             Resolved = false,
-            FailureMessages = new[] { $"The {context.From.Name} type cannot be converted to the {context.To.Name} type" }
+            FailureMessages = new[] { $"The {context.From.Name} type cannot be processed to the {context.To.Name} type" }
         };
     }
 

@@ -26,17 +26,19 @@ public enum ValueAssignmentStrategy
     Convert,
     
     /// <summary>
+    /// Uses a service to process the source type value to generate a target type value.
+    /// </summary>
+    Processor,
+    
+    /// <summary>
     /// Adapt the source type to the target type.
     /// </summary>
     Adapt,
+    
+    // TODO: MapOrAdapt,
     
     /// <summary>
     /// Select the target type from the source type.
     /// </summary>
     Select,
-    
-    /// <summary>
-    /// Uses a service to process the source type value to generate a target type value.
-    /// </summary>
-    Processor,
 }
