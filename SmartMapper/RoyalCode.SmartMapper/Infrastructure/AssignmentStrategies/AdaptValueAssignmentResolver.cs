@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 

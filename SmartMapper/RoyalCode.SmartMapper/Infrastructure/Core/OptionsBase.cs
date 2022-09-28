@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace RoyalCode.SmartMapper.Infrastructure.Core;
 
 /// <summary>
@@ -36,5 +38,11 @@ public abstract class OptionsBase
     public void SetAnnotation<T>(object value)
     {
         SetAnnotation(typeof(T).Name, value);
+    }
+    
+    public bool TryFindAnnotation<T>([NotNullWhen(true)] out T? annotation)
+    {
+        annotation = FindAnnotation<T>(typeof(T).Name);
+        return annotation is not null;
     }
 }

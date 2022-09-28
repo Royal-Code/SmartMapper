@@ -9,6 +9,8 @@ public class ResolutionConfiguration
     
     public ResolutionCache Cache { get; }
     
+    public Converters Converters { get; }
+    
     public T GetResolver<T>()
     {
         throw new NotImplementedException();
