@@ -30,6 +30,9 @@ public class MappingConfiguration
     /// Conjunto de opções configuradas manualmente para adaptadores.
     /// </summary>
     public IAdaptersOptions AdaptersOptions => adaptersOptions;
+    
+    // TODO: Implementar ISelectorsOptions
+    public ISelectorsOptions SelectorsOptions { get; }
 
     private class InternalConfigure : IConfigure
     {
