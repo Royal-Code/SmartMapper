@@ -32,7 +32,7 @@ public class ConstrutorResolver
 
         var ctorContext = new ConstructorResolutionContext(properties, resolutionContext);
 
-        parameterResolvers.ForEach(r => r.Resolve(ctorContext));
+        var parametersResults = parameterResolvers.Select(r => r.Resolve(ctorContext));
         
         throw new NotImplementedException();
     }

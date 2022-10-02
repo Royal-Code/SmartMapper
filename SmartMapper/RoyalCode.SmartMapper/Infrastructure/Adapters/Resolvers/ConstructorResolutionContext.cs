@@ -33,7 +33,7 @@ public class ConstructorResolutionContext
     {
         return constructorOptions.TryGetParameterOptions(name, out options);
     }
-
+    
     public SourceProperty GetSourceProperty(PropertyInfo propertyInfo)
     {
         var sourceProperty = properties.FirstOrDefault(p => p.PropertyInfo == propertyInfo);
@@ -46,4 +46,11 @@ public class ConstructorResolutionContext
     public AssignmentStrategyResolver GetAssignmentStrategyResolver()
         => adapterResolutionContext.GetAssignmentStrategyResolver();
 
+    public bool TryGetPropertyForParameter(ParameterInfo parameter, 
+        [NotNullWhen(true)]out SourceProperty sourceProperty)
+    {
+        
+        
+        throw new NotImplementedException();
+    }
 }

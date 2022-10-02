@@ -74,7 +74,7 @@ public abstract class ParametersOptionsBase<TToParameter>
         // TODO: require unit tests (TryGetParameterOptions)
         try
         {
-            parameterOptions = Parameters.Where(p => p.ParameterName == parameterName).SingleOrDefault();
+            parameterOptions = Parameters.SingleOrDefault(p => p.ParameterName == parameterName);
             return parameterOptions is not null;
         }
         catch (InvalidOperationException ex)

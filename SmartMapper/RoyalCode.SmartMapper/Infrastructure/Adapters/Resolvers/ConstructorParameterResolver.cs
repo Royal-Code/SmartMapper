@@ -50,6 +50,10 @@ public class ConstructorParameterResolver
                 ToParameterOptions = toParameterOptions
             };
         }
+        else if (context.TryGetPropertyForParameter(parameterInfo, out var sourceProperty))
+        {
+            
+        }
 
         throw new NotImplementedException();
     }
