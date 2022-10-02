@@ -1,58 +1,41 @@
-﻿using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Core;
+﻿using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 
 public class AssignmentStrategyResolver
 {
-    public AssignmentResolution Resolve(Type fromType, Type toType, AssignmentStrategyOptions? assignmentStrategy)
+    private readonly ICollection<IValueAssignmentResolver> resolvers;
+
+    public AssignmentStrategyResolver(ICollection<IValueAssignmentResolver> resolvers)
     {
-        throw new NotImplementedException();
+        this.resolvers = resolvers;
     }
 
     public AssignmentResolution Resolve(AssignmentContext context)
     {
         var strategy = context.StrategyOptions?.Strategy ?? ValueAssignmentStrategy.Undefined;
-        switch (strategy)
+        if (strategy == ValueAssignmentStrategy.Undefined)
         {
-            case ValueAssignmentStrategy.Undefined:
-                break;
-            
-            case ValueAssignmentStrategy.Adapt:
-                break;
-            
-            case ValueAssignmentStrategy.Convert:
-                break;
-            
-            case ValueAssignmentStrategy.Direct:
-                return ResolveDirect(context);
-                
-            case ValueAssignmentStrategy.Processor:
-                break;
-            
-            case ValueAssignmentStrategy.Select:
-                break;
-            
-            default:
-                throw new NotSupportedException($"The Strategy '{strategy}' is not supported");
-        }
-        
-        throw new NotImplementedException();
-    }
-
-    private AssignmentResolution ResolveDirect(AssignmentContext context)
-    {
-        if (context.To.IsAssignableFrom(context.From))
-            return new AssignmentResolution
+            foreach (var resolver in resolvers)
             {
-                Resolved = true,
-                Strategy = ValueAssignmentStrategy.Direct
+                if(resolver.TryResolve(context, out var resolution))
+                    return resolution;
+            }
+
+            return new()
+            {
+                Resolved = false,
+                Strategy = ValueAssignmentStrategy.Undefined,
+                FailureMessages = new[] { $"The {context.From.Name} type cannot be assigned to {context.To.Name} type" }
             };
-        
-        return new AssignmentResolution
+        }
+        else
         {
-            Resolved = false,
-            FailureMessages = new []{ $"The type {context.To.Name} is not assignable from type {context.From.Name}" }
-        };
+            var resolver = resolvers.FirstOrDefault(r => r.Strategy == strategy);
+            if (resolver is null)
+                throw new NotSupportedException($"The value assignment strategy {strategy} is not suported");
+
+            return resolver.Resolve(context);
+        }
     }
 }

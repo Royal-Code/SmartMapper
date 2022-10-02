@@ -8,4 +8,9 @@ public static class ReflectionExtensions
     {
         return method.DeclaringType == targetType && method.IsPublic && !method.IsStatic;
     }
+
+    public static string GetPathName(this PropertyInfo property)
+    {
+        return $"{property.DeclaringType?.Name}.{property.Name}";
+    }
 }

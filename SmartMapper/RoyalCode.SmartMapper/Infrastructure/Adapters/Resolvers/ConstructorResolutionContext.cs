@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+using RoyalCode.SmartMapper.Infrastructure.Configurations;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
@@ -18,9 +19,17 @@ public class ConstructorResolutionContext
         this.properties = properties;
         this.adapterResolutionContext = adapterResolutionContext;
         constructorOptions = adapterResolutionContext.GetConstructorOptions();
+        Configuration = adapterResolutionContext.Configuration;
     }
 
-    public bool TryGetParameterOptionsByName(string name, [NotNullWhen(true)] out ToConstructorParameterOptions? options)
+    public ResolutionConfiguration Configuration { get; }
+
+    public Type SourceType => adapterResolutionContext.SourceType;
+
+    public Type TargetType => adapterResolutionContext.TargetType;
+
+    public bool TryGetParameterOptionsByName(string name,
+        [NotNullWhen(true)] out ToConstructorParameterOptions? options)
     {
         return constructorOptions.TryGetParameterOptions(name, out options);
     }

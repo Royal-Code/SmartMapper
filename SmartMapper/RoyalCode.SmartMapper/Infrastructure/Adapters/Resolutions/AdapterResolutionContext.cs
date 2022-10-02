@@ -10,13 +10,12 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 public class AdapterResolutionContext
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly ResolutionConfiguration configurations;
     private readonly SourceProperty[] properties;
 
     public AdapterResolutionContext(AdapterOptions adapterOptions, ResolutionConfiguration configurations)
     {
         this.adapterOptions = adapterOptions;
-        this.configurations = configurations;
+        Configuration = configurations;
 
         var infos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
         properties = new SourceProperty[infos.Length];
@@ -34,6 +33,12 @@ public class AdapterResolutionContext
         
     }
 
+    public ResolutionConfiguration Configuration { get; }
+
+    public Type SourceType => adapterOptions.SourceType;
+
+    public Type TargetType => adapterOptions.TargetType;
+
     public ConstructorOptions GetConstructorOptions() => adapterOptions.TargetOptions.GetConstructorOptions();
 
     public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
@@ -50,7 +55,7 @@ public class AdapterResolutionContext
 
     public AssignmentStrategyResolver GetAssignmentStrategyResolver()
     {
-        return configurations.GetResolver<AssignmentStrategyResolver>();
+        return Configuration.GetResolver<AssignmentStrategyResolver>();
     }
 
     public bool Validate(out IEnumerable<string> failures)
