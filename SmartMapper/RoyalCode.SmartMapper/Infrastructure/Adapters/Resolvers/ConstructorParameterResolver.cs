@@ -2,6 +2,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
@@ -50,9 +51,19 @@ public class ConstructorParameterResolver
                 ToParameterOptions = toParameterOptions
             };
         }
-        else if (context.TryGetPropertyForParameter(parameterInfo, out var sourceProperty))
+        else
         {
-            
+            var discoveryContext = context.CreateDiscoveryContext(parameterInfo);
+            var ctorParamDiscovery = context.Configuration.GetResolver<ConstructorParameterDiscovery>();
+
+            if (ctorParamDiscovery.TryGetPropertyForParameter(discoveryContext, out var property))
+            {
+
+            }
+            else
+            {
+                // return error
+            }
         }
 
         throw new NotImplementedException();

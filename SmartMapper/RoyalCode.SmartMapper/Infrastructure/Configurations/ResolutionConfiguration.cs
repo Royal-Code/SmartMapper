@@ -15,4 +15,9 @@ public class ResolutionConfiguration
     {
         throw new NotImplementedException();
     }
+
+    public T GetDiscovery<T>()
+    {
+        throw new NotImplementedException();
+    }
 }

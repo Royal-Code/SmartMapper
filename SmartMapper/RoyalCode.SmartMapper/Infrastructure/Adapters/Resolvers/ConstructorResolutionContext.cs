@@ -4,6 +4,8 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
@@ -46,11 +48,6 @@ public class ConstructorResolutionContext
     public AssignmentStrategyResolver GetAssignmentStrategyResolver()
         => adapterResolutionContext.GetAssignmentStrategyResolver();
 
-    public bool TryGetPropertyForParameter(ParameterInfo parameter, 
-        [NotNullWhen(true)]out SourceProperty sourceProperty)
-    {
-        
-        
-        throw new NotImplementedException();
-    }
+    public ConstructorParameterDiscoveryContext CreateDiscoveryContext(ParameterInfo parameterInfo)
+        => new ConstructorParameterDiscoveryContext(properties, parameterInfo, Configuration);
 }

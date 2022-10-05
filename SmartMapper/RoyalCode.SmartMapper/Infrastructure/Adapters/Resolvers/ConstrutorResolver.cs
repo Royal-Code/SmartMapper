@@ -34,35 +34,7 @@ public class ConstrutorResolver
 
         var parametersResults = parameterResolvers.Select(r => r.Resolve(ctorContext));
 
-        // Plano B, mapear props para os parâmetros()
-
-        var paramsContext = new ParametersResolutionContext(parameterResolvers);
-        foreach (var property in properties)
-        {
-            if (property.Options.ResolutionStatus == ResolutionStatus.Undefined)
-            {
-
-            }
-            else if (property.Options.ResolutionStatus == ResolutionStatus.MappedToConstructor)
-            {
-
-            }
-            else if (property.Options.ResolutionStatus == ResolutionStatus.MappedToConstructorParameter)
-            {
-
-            }
-        }
 
         throw new NotImplementedException();
-    }
-}
-
-public class ParametersResolutionContext
-{
-    private readonly List<ConstructorParameterResolver> constructorParameterResolvers;
-
-    public ParametersResolutionContext(List<ConstructorParameterResolver> constructorParameterResolvers)
-    {
-        this.constructorParameterResolvers = constructorParameterResolvers;
     }
 }
