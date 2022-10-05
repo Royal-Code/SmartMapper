@@ -23,14 +23,8 @@ public class AdapterResolutionContext
         {
             var info = infos[i];
             var preConfigured = adapterOptions.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
-            properties[i] = new ()
-            {
-                PropertyInfo = info,
-                PreConfigured = preConfigured,
-                Options = option ?? new PropertyOptions(info)
-            };
+            properties[i] = new(info, preConfigured, option ?? new PropertyOptions(info));
         }
-        
     }
 
     public ResolutionConfiguration Configuration { get; }

@@ -9,6 +9,7 @@ using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
+// TODO: Remover este contexto, não é mais usado, passar operações para ConstrutorParameterContext
 public class ConstructorResolutionContext
 {
     private readonly AdapterResolutionContext adapterResolutionContext;
@@ -48,6 +49,6 @@ public class ConstructorResolutionContext
     public AssignmentStrategyResolver GetAssignmentStrategyResolver()
         => adapterResolutionContext.GetAssignmentStrategyResolver();
 
-    public ConstructorParameterDiscoveryContext CreateDiscoveryContext(ParameterInfo parameterInfo)
-        => new ConstructorParameterDiscoveryContext(properties, parameterInfo, Configuration);
+    public ConstructorParameterDiscoveryContext CreateDiscoveryContext(IEnumerable<TargetParameter> parameters)
+        => new ConstructorParameterDiscoveryContext(properties, parameters, Configuration);
 }

@@ -1,15 +1,12 @@
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 public class ConstructorParameterDiscovery
 {
-    public bool TryGetPropertyForParameter(ConstructorParameterDiscoveryContext context,
-        [NotNullWhen(true)] out SourceProperty? sourceProperty)
+    public ConstructorParameterDiscovered Discover(ConstructorParameterDiscoveryContext context)
     {
         foreach (var property in context.SourceProperties)
         {
@@ -27,12 +24,13 @@ public class ConstructorParameterDiscovery
             }
         }
 
-        sourceProperty = null;
-        return false;
+        return new ConstructorParameterDiscovered();
     }
 }
 
 public record ConstructorParameterDiscoveryContext(
     IEnumerable<SourceProperty> SourceProperties,
-    ParameterInfo Parameter,
+    IEnumerable<TargetParameter> Parameters,
     ResolutionConfiguration Configuration);
+    
+public record ConstructorParameterDiscovered();

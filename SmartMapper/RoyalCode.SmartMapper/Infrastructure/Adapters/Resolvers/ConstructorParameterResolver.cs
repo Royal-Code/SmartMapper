@@ -1,71 +1,61 @@
-using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
-using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
 public class ConstructorParameterResolver
 {
-    private readonly ParameterInfo parameterInfo;
-
-    public ConstructorParameterResolver(ParameterInfo parameterInfo)
+    public bool TryResolve(
+        ConstrutorParameterContext context,
+        [NotNullWhen(true)] out ParameterResolution? resolution)
     {
-        this.parameterInfo = parameterInfo;
-    }
-
-    public ParameterResolution Resolve(ConstructorResolutionContext context)
-    {
-        if(context.TryGetParameterOptionsByName(parameterInfo.Name!, out var toParameterOptions))
+        var ctorContext = context.ConstructorContext;
+        var parameterName = context.Parameter.ParameterInfo.Name!;
+        
+        if(ctorContext.TryGetParameterOptionsByName(
+               parameterName,
+            out var toParameterOptions))
         {
             var propertyOptions = toParameterOptions.ResolvedProperty!;
 
-            var sourceProperty = context.GetSourceProperty(propertyOptions.Property);
+            var sourceProperty = ctorContext.GetSourceProperty(propertyOptions.Property);
 
-            var assignmentResolver = context.GetAssignmentStrategyResolver();
+            var assignmentResolver = ctorContext.GetAssignmentStrategyResolver();
             var assignmentContext = new AssignmentContext(
                 propertyOptions.Property.PropertyType,
                 toParameterOptions.TargetType,
                 propertyOptions.AssignmentStrategy,
-                context.Configuration);
+                ctorContext.Configuration);
 
             var assignmentResolution = assignmentResolver.Resolve(assignmentContext);
             if (!assignmentResolution.Resolved)
             {
-                return new ParameterResolution
+                resolution = new ParameterResolution
                 {
                     Resolved = false,
+                    SourceProperty = sourceProperty,
                     FailureMessages = new[]
-                        { $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterInfo.Name!} of {context.TargetType} type" }
+                            { $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {ctorContext.TargetType} type" }
                         .Concat(assignmentResolution.FailureMessages)
                 };
+
+                return true;
             }
 
-            return new ParameterResolution
+            resolution = new ParameterResolution
             {
                 Resolved = true,
                 SourceProperty = sourceProperty,
                 AssignmentResolution = assignmentResolution,
-                ParameterInfo = parameterInfo,
+                Parameter = context.Parameter,
                 ToParameterOptions = toParameterOptions
             };
-        }
-        else
-        {
-            var discoveryContext = context.CreateDiscoveryContext(parameterInfo);
-            var ctorParamDiscovery = context.Configuration.GetResolver<ConstructorParameterDiscovery>();
-
-            if (ctorParamDiscovery.TryGetPropertyForParameter(discoveryContext, out var property))
-            {
-
-            }
-            else
-            {
-                // return error
-            }
+            return true;
         }
 
-        throw new NotImplementedException();
+        resolution = null;
+        return false;
     }
 }

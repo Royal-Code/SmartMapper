@@ -3,13 +3,11 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
-public class SourceProperty
+public record SourceProperty(PropertyInfo PropertyInfo,
+    bool PreConfigured,
+    PropertyOptions Options)
 {
-    public PropertyInfo PropertyInfo { get; init; }
-    
-    public bool PreConfigured { get; init; }
+    private SourcePropertyResolution Resolution { get; } = new();
 
-    public PropertyOptions Options { get; init; }
-    
-    public bool Resolved { get; internal set; }
+    public bool Resolved => Resolution.Resolved;
 }
