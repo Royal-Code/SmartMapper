@@ -1,4 +1,5 @@
 using System.Linq;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolvers;
 using Xunit;
 

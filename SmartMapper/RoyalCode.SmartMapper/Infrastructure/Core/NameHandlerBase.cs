@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Core;
 
 public class NameHandlerBase
 {
@@ -29,7 +29,7 @@ public class NameHandlerBase
             yield return name[Prefix!.Length..^Suffix!.Length];
     }
 
-    public virtual void Validate(PropertyInfo sourceProperty, Type targetType)
+    public virtual bool Validate(PropertyInfo sourceProperty, Type targetType)
     {
         // it's not clair about what will be doned here.
         // how it will instruct about how the strategy must be used for set the value.
@@ -37,5 +37,17 @@ public class NameHandlerBase
         // use cases:
         // on adapt, a property with Id, must use a EntityProviderService to load the entity.
         // on select, a property with First, must use the First method of an IEnumerable extension.
+
+        return true;
     }
+}
+
+public class SourceNameHandler : NameHandlerBase
+{
+    
+}
+
+public class TargetNameHandler : NameHandlerBase
+{
+    
 }

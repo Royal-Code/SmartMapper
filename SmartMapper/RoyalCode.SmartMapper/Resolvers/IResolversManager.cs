@@ -1,4 +1,4 @@
-using RoyalCode.SmartMapper.Resolvers.Assigners;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 
@@ -23,12 +23,3 @@ public class ResolveResult
     public bool Success { get; internal set; }
 }
 
-public class SourceNameHandler : NameHandlerBase
-{
-    
-}
-
-public class TargetNameHandler : NameHandlerBase
-{
-    
-}

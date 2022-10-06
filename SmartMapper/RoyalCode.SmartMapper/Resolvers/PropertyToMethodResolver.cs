@@ -1,6 +1,7 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 

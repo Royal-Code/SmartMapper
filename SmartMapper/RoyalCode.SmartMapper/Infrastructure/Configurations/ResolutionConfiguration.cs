@@ -10,6 +10,8 @@ public class ResolutionConfiguration
     public ResolutionCache Cache { get; }
     
     public Converters Converters { get; }
+
+    public NameHandlers NameHandlers { get; }
     
     public T GetResolver<T>()
     {
