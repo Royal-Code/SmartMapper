@@ -9,27 +9,30 @@ using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
-// TODO: Remover este contexto, não é mais usado, passar operações para ConstrutorParameterContext
 public class ConstructorResolutionContext
 {
-    private readonly AdapterResolutionContext adapterResolutionContext;
+    private readonly AdapterResolutionContext resolutionContext;
     private readonly IEnumerable<SourceProperty> properties;
+    private readonly IEnumerable<TargetParameter> parameters;
     private readonly ConstructorOptions constructorOptions;
+    
     public ConstructorResolutionContext(
         IEnumerable<SourceProperty> properties,
-        AdapterResolutionContext adapterResolutionContext)
+        IEnumerable<TargetParameter> parameters,
+        AdapterResolutionContext resolutionContext)
     {
         this.properties = properties;
-        this.adapterResolutionContext = adapterResolutionContext;
-        constructorOptions = adapterResolutionContext.GetConstructorOptions();
-        Configuration = adapterResolutionContext.Configuration;
+        this.parameters = parameters;
+        this.resolutionContext = resolutionContext;
+        constructorOptions = resolutionContext.GetConstructorOptions();
+        Configuration = resolutionContext.Configuration;
     }
 
     public ResolutionConfiguration Configuration { get; }
 
-    public Type SourceType => adapterResolutionContext.SourceType;
+    public Type SourceType => resolutionContext.SourceType;
 
-    public Type TargetType => adapterResolutionContext.TargetType;
+    public Type TargetType => resolutionContext.TargetType;
 
     public bool TryGetParameterOptionsByName(string name,
         [NotNullWhen(true)] out ToConstructorParameterOptions? options)
@@ -46,9 +49,9 @@ public class ConstructorResolutionContext
         return sourceProperty;
     }
 
+    
+    
+    [Obsolete]
     public AssignmentStrategyResolver GetAssignmentStrategyResolver()
-        => adapterResolutionContext.GetAssignmentStrategyResolver();
-
-    public ConstructorParameterDiscoveryContext CreateDiscoveryContext(IEnumerable<TargetParameter> parameters)
-        => new ConstructorParameterDiscoveryContext(properties, parameters, Configuration);
+        => resolutionContext.GetAssignmentStrategyResolver();
 }

@@ -15,10 +15,20 @@ public class ActivationResolver
     {
         var ctorElegible = GetElegibleConstructors(resolutionContext.GetConstructorOptions());
 
-        // deve ser validado se existe algum ctor elegivel.
+        // must be validated if any eligible ctor exists.
+        if (ctorElegible.Length is 0)
+        {
+            return new ActivationResolution()
+            {
+                Resolved = false,
+                FailureMessages = new[] { $"None elegible constructor for adapt {resolutionContext.SourceType.Name} type to {resolutionContext.TargetType.Name} type." }
+            };
+        }
+
+        var ctorResolver = resolutionContext.Configuration.GetResolver<ConstrutorResolver>();
         
-        var construtorResolutions = ctorElegible.Select(c => new ConstrutorResolver(c))
-            .Select(r => r.Resolve(resolutionContext))
+        var construtorResolutions = ctorElegible.Select(c => new ConstructorContext(resolutionContext, c))
+            .Select(c => ctorResolver.Resolve(c))
             .ToList();
         
         // se não tiver resoluções com sucesso, registra o erro e encerra.

@@ -7,6 +7,11 @@ using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 
+/// <summary>
+/// <para>
+///     Arch Context for the adapter resolution process.
+/// </para>
+/// </summary>
 public class AdapterResolutionContext
 {
     private readonly AdapterOptions adapterOptions;

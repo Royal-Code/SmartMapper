@@ -1,12 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
-using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolutions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
 /// <summary>
+/// <para>
+///     Arch Resolver for Adapters.
+/// </para>
 /// <para>
 ///     Responsible for resolving the adapter type mapping between the source type and the destination type.
 /// </para>

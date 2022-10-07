@@ -8,7 +8,7 @@ public class ConstructorParameterDiscovery
 {
     // ConstructorParameterMatch
     
-    public ConstructorParameterDiscovered Discover(ConstructorParameterDiscoveryContext context)
+    public ConstructorParameterDiscovered Discover(ConstructorResolutionContext context)
     {
         var nameHandlers = context.Configuration.NameHandlers.SourceNameHandlers;
         

@@ -1,4 +1,3 @@
-using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
@@ -12,28 +11,19 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 /// </summary>
 public class ConstrutorResolver
 {
-    private readonly ConstructorInfo constructorInfo;
-    private readonly List<TargetParameter> targetParameters;
-
-    public ConstrutorResolver(ConstructorInfo constructorInfo)
+    public ConstrutorResolution Resolve(ConstructorContext context)
     {
-        this.constructorInfo = constructorInfo;
-
-        targetParameters = constructorInfo.GetParameters()
+        var targetParameters = context.Constructor.GetParameters()
             .Select(p => new TargetParameter(p))
             .ToList();
-    }
-
-    public ConstrutorResolution Resolve(AdapterResolutionContext resolutionContext)
-    {
-        var properties = resolutionContext.GetPropertiesByStatus(
+        
+        var properties = context.ResolutionContext.GetPropertiesByStatus(
             ResolutionStatus.Undefined,
             ResolutionStatus.MappedToConstructor,
-            ResolutionStatus.MappedToConstructorParameter)
-            .ToList();
+            ResolutionStatus.MappedToConstructorParameter).ToList();
 
-        var parameterResolver = resolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
-        var ctorContext = new ConstructorResolutionContext(properties, resolutionContext);
+        var parameterResolver = context.ResolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
+        var ctorContext = new ConstructorResolutionContext(properties, targetParameters, context.ResolutionContext);
 
         foreach (var parameter in targetParameters)
         {
@@ -55,7 +45,7 @@ public class ConstrutorResolver
             // gerar sucesso.
         }
 
-        var discovery = resolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
+        var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
         
         var discoveryContext = new ConstructorParameterDiscoveryContext(properties, 
             targetParameters.Where(p => p.Unresolved).ToList(),
