@@ -1,3 +1,5 @@
+using RoyalCode.SmartMapper.Extensions;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
@@ -17,13 +19,37 @@ public class ConstrutorResolver
             .Select(p => new TargetParameter(p))
             .ToList();
         
-        var properties = context.ResolutionContext.GetPropertiesByStatus(
+        var sourceProperties = context.ResolutionContext.GetPropertiesByStatus(
             ResolutionStatus.Undefined,
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter).ToList();
 
+        var availableProperties = new List<AvailableSourceProperty>();
+        foreach (var sourceProperty in sourceProperties)
+        {
+            if (sourceProperty.Options.ResolutionStatus == ResolutionStatus.MappedToConstructor)
+            {
+                var group = new InnerSourcePropertiesGroup(sourceProperty);
+                var resolution = sourceProperty.Options.GetToConstructorOptionsResolution();
+                resolution.SourceOptions.SourceType.GetReadableProperties()
+                    .Select(info =>
+                    {
+                        var preConfigured = resolution.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
+                        return new SourceProperty(info, preConfigured, option ?? new PropertyOptions(info));
+                    })
+                    .Where(s => s.Options.ResolutionStatus != ResolutionStatus.Ignored)
+                    .Select(s => new AvailableSourceProperty(s, group))
+                    .ForEach(availableProperties.Add);
+            }
+            else
+            {
+                availableProperties.Add(new(sourceProperty));
+            }
+        }
+        
+
         var parameterResolver = context.ResolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
-        var ctorContext = new ConstructorResolutionContext(properties, targetParameters, context.ResolutionContext);
+        var ctorContext = new ConstructorResolutionContext(availableProperties, targetParameters, context.ResolutionContext);
 
         foreach (var parameter in targetParameters)
         {
@@ -31,7 +57,7 @@ public class ConstrutorResolver
             if (parameterResolver.TryResolve(parameterContext, out var resolution))
             {
                 parameter.ResolvedBy(resolution);
-                properties.Remove(resolution.SourceProperty);
+                sourceProperties.Remove(resolution.SourceProperty);
             }
         }
 
@@ -47,15 +73,52 @@ public class ConstrutorResolver
 
         var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
         
-        var discoveryContext = new ConstructorParameterDiscoveryContext(properties, 
+        var discoveryContext = new ConstructorParameterDiscoveryContext(sourceProperties, 
             targetParameters.Where(p => p.Unresolved).ToList(),
             context.ResolutionContext.Configuration);
         
         var discoverd = discovery.Discover(discoveryContext);
         
-        
         throw new NotImplementedException();
     }
 }
 
-public record ConstrutorParameterContext(ConstructorResolutionContext ConstructorContext, TargetParameter Parameter);
+public class AvailableSourceProperty
+{
+    public AvailableSourceProperty(SourceProperty sourceProperty, InnerSourcePropertiesGroup? group = null)
+    {
+        SourceProperty = sourceProperty;
+        Group = group;
+        group?.Add(this);
+    }
+
+    public SourceProperty SourceProperty { get; }
+
+    public InnerSourcePropertiesGroup? Group { get; }
+    
+    public TargetParameter? TargetParameter { get; private set; }
+
+    public bool IsResolved { get; private set; }
+    
+    public void ResolvedBy(TargetParameter targetParameter)
+    {
+        TargetParameter = targetParameter;
+        IsResolved = true;
+    }
+}
+
+public class InnerSourcePropertiesGroup
+{
+    private readonly List<AvailableSourceProperty> properties = new();
+
+    public InnerSourcePropertiesGroup(SourceProperty sourceProperty)
+    {
+        SourceProperty = sourceProperty;
+    }
+
+    public SourceProperty SourceProperty { get; }
+    
+    public bool IsResolved => properties.All(p => p.IsResolved);
+    
+    public void Add(AvailableSourceProperty property) => properties.Add(property);
+}

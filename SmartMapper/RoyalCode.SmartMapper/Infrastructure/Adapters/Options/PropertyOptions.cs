@@ -146,6 +146,16 @@ public class PropertyOptions
 
         return strategyOptions;
     }
+
+    public ToConstructorOptions GetToConstructorOptionsResolution()
+    {
+        if (ResolutionStatus != ResolutionStatus.MappedToConstructor)
+            throw new InvalidOperationException(
+                "To retrieve 'ToConstructorOptions' the status must be 'MappedToConstructor'" +
+                $" and the current status is '{ResolutionStatus}'");
+
+        return (ToConstructorOptions)ResolutionOptions!;
+    }
     
     private void UpdateResolutionStatus(ResolutionStatus status)
     {

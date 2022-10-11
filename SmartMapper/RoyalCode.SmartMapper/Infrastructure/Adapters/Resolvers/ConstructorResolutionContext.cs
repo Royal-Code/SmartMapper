@@ -12,12 +12,12 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 public class ConstructorResolutionContext
 {
     private readonly AdapterResolutionContext resolutionContext;
-    private readonly IEnumerable<SourceProperty> properties;
+    private readonly IEnumerable<AvailableSourceProperty> properties;
     private readonly IEnumerable<TargetParameter> parameters;
     private readonly ConstructorOptions constructorOptions;
     
     public ConstructorResolutionContext(
-        IEnumerable<SourceProperty> properties,
+        IEnumerable<AvailableSourceProperty> properties,
         IEnumerable<TargetParameter> parameters,
         AdapterResolutionContext resolutionContext)
     {
@@ -42,11 +42,11 @@ public class ConstructorResolutionContext
     
     public SourceProperty GetSourceProperty(PropertyInfo propertyInfo)
     {
-        var sourceProperty = properties.FirstOrDefault(p => p.PropertyInfo == propertyInfo);
-        if (sourceProperty is null)
+        var property = properties.FirstOrDefault(p => p.SourceProperty.PropertyInfo == propertyInfo);
+        if (property is null)
             throw new InvalidOperationException($"The property '{propertyInfo.Name}' is not a valid source property");
 
-        return sourceProperty;
+        return property.SourceProperty;
     }
 }
 

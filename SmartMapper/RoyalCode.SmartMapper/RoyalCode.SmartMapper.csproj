@@ -12,4 +12,8 @@
     <PackageReference Include="RoyalCode.Extensions.PropertySelection" Version="1.0.0-preview2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Obsolete" />
+  </ItemGroup>
+
 </Project>

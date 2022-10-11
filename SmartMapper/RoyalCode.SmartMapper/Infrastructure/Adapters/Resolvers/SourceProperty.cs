@@ -10,4 +10,6 @@ public record SourceProperty(PropertyInfo PropertyInfo,
     private SourcePropertyResolution Resolution { get; } = new();
 
     public bool Resolved => Resolution.Resolved;
+    
+    // preciso de outra classe que trate hierarqui, pais e filhos.
 }
