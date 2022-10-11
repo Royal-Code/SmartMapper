@@ -13,4 +13,17 @@ public static class ReflectionExtensions
     {
         return $"{property.DeclaringType?.Name}.{property.Name}";
     }
+
+    public static string GetTypeName(this Type type)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static PropertyInfo[] GetReadableProperties(this Type type)
+    {
+        return type.GetTypeInfo()
+            .GetRuntimeProperties()
+            .Where(t => t.CanRead)
+            .ToArray();
+    }
 }

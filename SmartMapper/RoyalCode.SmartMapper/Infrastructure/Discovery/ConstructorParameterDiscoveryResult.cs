@@ -1,0 +1,3 @@
+namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
+
+public record ConstructorParameterDiscoveryResult(IEnumerable<ConstructorParameterMatch> Matches);

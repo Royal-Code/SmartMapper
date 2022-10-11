@@ -1,6 +1,5 @@
 using System.Linq;
-using RoyalCode.SmartMapper.Infrastructure.Core;
-using RoyalCode.SmartMapper.Resolvers;
+using RoyalCode.SmartMapper.Infrastructure.Naming;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Configurations.Tests.Resolvers;
@@ -10,10 +9,7 @@ public class NameHandlerTests
     [Fact]
     public void MustRemovePrefixOfName()
     {
-        var handler = new NameHandlerBase
-        {
-            Prefix = "Key"
-        };
+        var handler = new NameHandlerForTest("Key", null);
         
         var found = handler.GetNames("KeyTest").ToList();
         Assert.Single(found);
@@ -24,10 +20,7 @@ public class NameHandlerTests
     [Fact]
     public void MustRemoveSuffixOfName()
     {
-        var handler = new NameHandlerBase
-        {
-            Suffix = "Key"
-        };
+        var handler = new NameHandlerForTest(null, "Key");
         
         var found = handler.GetNames("TestKey").ToList();
         Assert.Single(found);
@@ -38,11 +31,7 @@ public class NameHandlerTests
     [Fact]
     public void MustRemovePrefixAndSuffixOfName()
     {
-        var handler = new NameHandlerBase
-        {
-            Prefix = "key",
-            Suffix = "Key"
-        };
+        var handler = new NameHandlerForTest("key", "Key");
         
         var found = handler.GetNames("KeyTestKey").ToList();
         Assert.Equal(3, found.Count);
@@ -57,10 +46,7 @@ public class NameHandlerTests
     [InlineData("Id", "EntityId", false)]
     public void SimplePrefixTests(string prefix, string name, bool match)
     {
-        var handler = new NameHandlerBase
-        {
-            Prefix = prefix
-        };
+        var handler = new NameHandlerForTest(prefix, null);
 
         var found = handler.GetNames(name).Any();
 
@@ -74,10 +60,7 @@ public class NameHandlerTests
     [InlineData("ID", "entityid", true)]
     public void SimpleSuffixTests(string suffix, string name, bool match)
     {
-        var handler = new NameHandlerBase
-        {
-            Suffix = suffix
-        };
+        var handler = new NameHandlerForTest(null, suffix);
 
         var found = handler.GetNames(name).Any();
 
@@ -92,14 +75,21 @@ public class NameHandlerTests
     [InlineData("Key", "Id", "KeyValue", 1)]
     public void PrefixAndSuffixTests(string prefix, string suffix, string name, int count)
     {
-        var handler = new NameHandlerBase
-        {
-            Prefix = prefix,
-            Suffix = suffix
-        };
+        var handler = new NameHandlerForTest(prefix, suffix);
 
         var found = handler.GetNames(name).Count();
 
         Assert.Equal(count, found);
+    }
+    
+    private class NameHandlerForTest : NameHandlerBase
+    {
+        public NameHandlerForTest(string? prefix, string? suffix)
+        {
+            Prefix = prefix;
+            Suffix = suffix;
+        }
+        
+        public override void Validate(NamingContext context) { }
     }
 }

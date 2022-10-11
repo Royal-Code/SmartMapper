@@ -1,11 +1,9 @@
-using System.Reflection;
+using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
-using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
 /// <summary>
 /// <para>
@@ -22,7 +20,7 @@ public class AdapterResolutionContext
         this.adapterOptions = adapterOptions;
         Configuration = configurations;
 
-        var infos = adapterOptions.SourceType.GetTypeInfo().GetRuntimeProperties().ToArray();
+        var infos = adapterOptions.SourceType.GetReadableProperties();
         properties = new SourceProperty[infos.Length];
         for (int i = 0; i < infos.Length; i++)
         {
@@ -51,11 +49,6 @@ public class AdapterResolutionContext
         => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
 
     public IEnumerable<SourceProperty> GetProperties() => properties;
-
-    public AssignmentStrategyResolver GetAssignmentStrategyResolver()
-    {
-        return Configuration.GetResolver<AssignmentStrategyResolver>();
-    }
 
     public bool Validate(out IEnumerable<string> failures)
     {

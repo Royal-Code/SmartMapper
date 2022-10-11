@@ -22,10 +22,4 @@ public class Converters
         => TryGetConverter(new MapKey(source, target), out convertOptions);
 
     public void AddConverter(MapKey key, ConvertOptions options) => converters[key] = options;
-
-    public void AddConverter(ConvertOptions options) =>
-        AddConverter(new MapKey(options.SourceValueType, options.TargetValueType), options);
-
-    public void AddConverter<TSourceType, TTargetType>(Expression<Func<TSourceType, TTargetType>> converter)
-        => AddConverter(new ConvertOptions(typeof(TSourceType), typeof(TTargetType), converter));
 }

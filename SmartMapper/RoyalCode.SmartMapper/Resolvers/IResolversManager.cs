@@ -1,4 +1,5 @@
 using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Naming;
 
 namespace RoyalCode.SmartMapper.Resolvers;
 

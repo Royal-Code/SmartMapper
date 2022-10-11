@@ -1,6 +1,7 @@
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
-using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Naming;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
 
@@ -8,15 +9,16 @@ public class ConstructorParameterDiscovery
 {
     // ConstructorParameterMatch
     
-    public ConstructorParameterDiscovered Discover(ConstructorResolutionContext context)
+    public ConstructorParameterDiscoveryResult Discover(ConstructorParameterDiscoveryContext context)
     {
         var nameHandlers = context.Configuration.NameHandlers.SourceNameHandlers;
+        var matches = new LinkedList<ConstructorParameterMatch>();
         
         foreach (var property in context.SourceProperties)
         {
             var propertyName = property.PropertyInfo.Name;
             
-            if (property.Options.ResolutionStatus == ResolutionStatus.MappedToConstructorParameter)
+            if (property.Options.ResolutionStatus == ResolutionStatus.MappedToConstructor)
             {
 
             }
@@ -25,6 +27,8 @@ public class ConstructorParameterDiscovery
                 if (property.Options.ResolutionStatus == ResolutionStatus.MappedToConstructorParameter)
                 {
                     // pegar options pq é pré-configurado
+                    var opt = property.Options.ResolutionOptions as ToConstructorParameterOptions;
+                    
                 }
                 
                 // match with the source name handler
@@ -37,11 +41,19 @@ public class ConstructorParameterDiscovery
                         matchParameter = context.Parameters.FirstOrDefault(p => p.ParameterInfo.Name == name);
                         if (matchParameter is not null)
                         {
-                            if (sourceNameHandler.Validate(property.PropertyInfo,
-                                    matchParameter.ParameterInfo.ParameterType))
+                            var namingContext = new NamingContext(property.PropertyInfo,
+                                matchParameter.ParameterInfo.ParameterType,
+                                context.Configuration);
+                            
+                            sourceNameHandler.Validate(namingContext);
+                            
+                            if (namingContext.IsValid)
                             {
-                                // TODO: aqui deve ser obtido um componente que irá configurar a atribuíção.
-                                matchNameHandler = sourceNameHandler;
+                                var match = new ConstructorParameterMatch(
+                                    property, matchParameter, namingContext.Resolution);
+
+                                matches.AddLast(match);
+                                
                                 break;
                             }
 
@@ -53,20 +65,9 @@ public class ConstructorParameterDiscovery
                         break;
                     }
                 }
-                
-                // se temos match, retornamos um objeto de sucesso.
             }
         }
 
-        return new ConstructorParameterDiscovered();
+        return new ConstructorParameterDiscoveryResult(matches);
     }
-    
-    
 }
-
-public record ConstructorParameterDiscoveryContext(
-    IEnumerable<SourceProperty> SourceProperties,
-    IEnumerable<TargetParameter> Parameters,
-    ResolutionConfiguration Configuration);
-    
-public record ConstructorParameterDiscovered();

@@ -48,10 +48,16 @@ public class ConstructorResolutionContext
 
         return sourceProperty;
     }
+}
 
+public enum ConstructorResolutionPropertyKind
+{
+    
+}
+
+public class ConstructorResolutionProperty
+{
+    public SourceProperty SourceProperty { get; set; }
     
     
-    [Obsolete]
-    public AssignmentStrategyResolver GetAssignmentStrategyResolver()
-        => resolutionContext.GetAssignmentStrategyResolver();
 }

@@ -49,7 +49,7 @@ public class ConstrutorResolver
         
         var discoveryContext = new ConstructorParameterDiscoveryContext(properties, 
             targetParameters.Where(p => p.Unresolved).ToList(),
-            resolutionContext.Configuration);
+            context.ResolutionContext.Configuration);
         
         var discoverd = discovery.Discover(discoveryContext);
         

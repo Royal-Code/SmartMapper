@@ -22,7 +22,7 @@ public class ConstructorParameterResolver
 
             var sourceProperty = ctorContext.GetSourceProperty(propertyOptions.Property);
 
-            var assignmentResolver = ctorContext.GetAssignmentStrategyResolver();
+            var assignmentResolver = context.ConstructorContext.Configuration.GetResolver<AssignmentStrategyResolver>();
             var assignmentContext = new AssignmentContext(
                 propertyOptions.Property.PropertyType,
                 toParameterOptions.TargetType,

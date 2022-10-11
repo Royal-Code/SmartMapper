@@ -13,7 +13,7 @@ public class ActivationResolutionTests
     public void GetElegibleConstructors_Must_FindDefaultConstructor()
     {
         // arrange
-        var configs = new ResolutionConfiguration();
+        var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
 
