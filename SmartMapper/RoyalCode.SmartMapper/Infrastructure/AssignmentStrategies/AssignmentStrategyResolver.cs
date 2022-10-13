@@ -2,17 +2,27 @@
 
 namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 
+/// <summary>
+/// <para>
+///     This resolver attempts to resolve the strategy that will be used to assign the value of the source property
+///     to the target member (property or parameter).
+/// </para>
+/// </summary>
 public class AssignmentStrategyResolver
 {
-    private readonly ICollection<IValueAssignmentResolver> resolvers;
-
-    public AssignmentStrategyResolver(ICollection<IValueAssignmentResolver> resolvers)
-    {
-        this.resolvers = resolvers;
-    }
-
+    /// <summary>
+    /// <para>
+    ///     Resolves the assignment strategy between a source property and a target member.
+    /// </para>
+    /// </summary>
+    /// <param name="context">Context of assignment to be resolved.</param>
+    /// <returns>
+    ///     The resolution, which can be successful or unsuccessful.
+    /// </returns>
     public AssignmentResolution Resolve(AssignmentContext context)
     {
+        var resolvers = context.Configuration.GetResolver<IEnumerable<IValueAssignmentResolver>>();
+        
         var strategy = context.StrategyOptions?.Strategy ?? ValueAssignmentStrategy.Undefined;
         if (strategy == ValueAssignmentStrategy.Undefined)
         {

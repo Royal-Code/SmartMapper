@@ -52,4 +52,20 @@ public class ConfigurationBuilder
     public void AddDiscovery<TDiscovery>(TDiscovery discovery) 
         where TDiscovery : class
         => discoveries[typeof(TDiscovery)] = discovery;
+
+    public void AddManyResolver<TResolver>(params TResolver[] resolvers)
+        where TResolver : class
+    {
+        var type = typeof(IEnumerable<TResolver>);
+        List<TResolver> list;
+        if (this.resolvers.ContainsKey(type))
+            list = (List<TResolver>) this.resolvers[type];
+        else
+        {
+            list = new List<TResolver>();
+            this.resolvers[type] = list;
+        }
+        
+        list.AddRange(resolvers);
+    }        
 }

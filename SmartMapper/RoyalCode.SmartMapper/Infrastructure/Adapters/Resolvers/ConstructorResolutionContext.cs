@@ -2,9 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
-using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
-using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
@@ -13,15 +11,18 @@ public class ConstructorResolutionContext
 {
     private readonly AdapterResolutionContext resolutionContext;
     private readonly IEnumerable<AvailableSourceProperty> properties;
+    private readonly IEnumerable<InnerSourcePropertiesGroup> groups;
     private readonly IEnumerable<TargetParameter> parameters;
     private readonly ConstructorOptions constructorOptions;
     
     public ConstructorResolutionContext(
         IEnumerable<AvailableSourceProperty> properties,
+        IEnumerable<InnerSourcePropertiesGroup> groups,
         IEnumerable<TargetParameter> parameters,
         AdapterResolutionContext resolutionContext)
     {
         this.properties = properties;
+        this.groups = groups;
         this.parameters = parameters;
         this.resolutionContext = resolutionContext;
         constructorOptions = resolutionContext.GetConstructorOptions();
@@ -40,13 +41,56 @@ public class ConstructorResolutionContext
         return constructorOptions.TryGetParameterOptions(name, out options);
     }
     
-    public SourceProperty GetSourceProperty(PropertyInfo propertyInfo)
+    public bool TryGetAvailableSourceProperty(PropertyInfo propertyInfo, 
+        [NotNullWhen(true)] out AvailableSourceProperty? property,
+        [NotNullWhen(false)] out string? failureReason)
     {
-        var property = properties.FirstOrDefault(p => p.SourceProperty.PropertyInfo == propertyInfo);
+        failureReason = null;
+        property = properties.FirstOrDefault(p => p.SourceProperty.PropertyInfo == propertyInfo);
+        
         if (property is null)
-            throw new InvalidOperationException($"The property '{propertyInfo.Name}' is not a valid source property");
+            failureReason = $"The property '{propertyInfo.Name}' is not a valid source property";
+        
+        if (property.IsResolved)
+        {
+            failureReason = $"The property '{propertyInfo.Name}' was resolved before";
+            property = null;
+        }
 
-        return property.SourceProperty;
+        return property is not null;
+    }
+
+    public void Resolved(TargetParameter parameter, ParameterResolution resolution)
+    {
+        parameter.ResolvedBy(resolution);
+        resolution.AvailableSourceProperty.ResolvedBy(parameter);
+    }
+
+    public void Resolved(ConstructorParameterMatch match)
+    {
+        var resolution = new ParameterResolution()
+        {
+            Resolved = true,
+            Parameter = match.Parameter,
+            AssignmentResolution = match.AssignmentResolution,
+            AvailableSourceProperty = match.Property
+        };
+
+        Resolved(match.Parameter, resolution);
+    }
+
+    public bool HasFailure => parameters.Any(p => p.HasFailure);
+
+    public bool IsParametersResolved => parameters.All(p => !p.Unresolved);
+
+    public bool IsSuccessfullyResolved => IsParametersResolved && groups.All(g => g.IsResolved) && !HasFailure;
+    
+    public ConstrutorResolution GetResolution()
+    {
+        // TODO: processar a resolução. O objeto de retorno ainda não tem informações.
+        
+        
+        throw new NotImplementedException();
     }
 }
 

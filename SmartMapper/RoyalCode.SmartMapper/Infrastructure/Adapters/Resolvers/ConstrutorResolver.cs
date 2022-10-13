@@ -8,13 +8,28 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
 /// <summary>
 /// <para>
-///     Esta resolução tenta resolver um construtor, parâmetro por parâmetro.
+///     This resolver attempts to resolve a constructor, parameter by parameter.
 /// </para>
 /// </summary>
 public class ConstrutorResolver
 {
+    /// <summary>
+    /// <para>
+    ///     Resolves a constructor of a target class, used by adapters.
+    /// </para>
+    /// <para>
+    ///     If the resolution is successful, the target class can be instantiated.
+    /// </para>
+    /// <para>
+    ///     If the source properties do not match the constructor parameters, the resolution will fail.
+    /// </para>
+    /// </summary>
+    /// <param name="context">The constructor context to be resolved.</param>
+    /// <returns>The resolution.</returns>
     public ConstrutorResolution Resolve(ConstructorContext context)
     {
+        // part 1 - get parameters and source properties
+        
         var targetParameters = context.Constructor.GetParameters()
             .Select(p => new TargetParameter(p))
             .ToList();
@@ -24,7 +39,10 @@ public class ConstrutorResolver
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter).ToList();
 
+        // part 2 - create context and contextual properties
+        
         var availableProperties = new List<AvailableSourceProperty>();
+        var groups = new List<InnerSourcePropertiesGroup>();
         foreach (var sourceProperty in sourceProperties)
         {
             if (sourceProperty.Options.ResolutionStatus == ResolutionStatus.MappedToConstructor)
@@ -46,79 +64,44 @@ public class ConstrutorResolver
                 availableProperties.Add(new(sourceProperty));
             }
         }
+
+        var ctorContext = new ConstructorResolutionContext(availableProperties, groups, targetParameters, context.ResolutionContext);
+
+        // Part 3 - Resolved pré-configured properties.
         
-
         var parameterResolver = context.ResolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
-        var ctorContext = new ConstructorResolutionContext(availableProperties, targetParameters, context.ResolutionContext);
-
         foreach (var parameter in targetParameters)
         {
             var parameterContext = new ConstrutorParameterContext(ctorContext, parameter);
             if (parameterResolver.TryResolve(parameterContext, out var resolution))
             {
-                parameter.ResolvedBy(resolution);
-                sourceProperties.Remove(resolution.SourceProperty);
+                ctorContext.Resolved(parameter, resolution);
             }
         }
 
-        if (targetParameters.Any(p => p.HasFailure))
+        if (ctorContext.HasFailure || ctorContext.IsParametersResolved)
         {
-            // gerar erro
+            return ctorContext.GetResolution();
         }
 
-        if (targetParameters.TrueForAll(p => !p.Unresolved))
-        {
-            // gerar sucesso.
-        }
-
-        var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
+        // Part 4 - Discovery mapping from source properties to target constructor parameters.
         
-        var discoveryContext = new ConstructorParameterDiscoveryContext(sourceProperties, 
+        var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
+
+        var discoveryContext = new ConstructorParameterDiscoveryContext(
+            availableProperties.Where(p => !p.IsResolved).ToList(), 
             targetParameters.Where(p => p.Unresolved).ToList(),
             context.ResolutionContext.Configuration);
         
-        var discoverd = discovery.Discover(discoveryContext);
+        var result = discovery.Discover(discoveryContext);
+
+        foreach (var match in result.Matches)
+        {
+            ctorContext.Resolved(match);
+        }
+
+        // produce a result e return it.
         
-        throw new NotImplementedException();
+        return ctorContext.GetResolution();
     }
-}
-
-public class AvailableSourceProperty
-{
-    public AvailableSourceProperty(SourceProperty sourceProperty, InnerSourcePropertiesGroup? group = null)
-    {
-        SourceProperty = sourceProperty;
-        Group = group;
-        group?.Add(this);
-    }
-
-    public SourceProperty SourceProperty { get; }
-
-    public InnerSourcePropertiesGroup? Group { get; }
-    
-    public TargetParameter? TargetParameter { get; private set; }
-
-    public bool IsResolved { get; private set; }
-    
-    public void ResolvedBy(TargetParameter targetParameter)
-    {
-        TargetParameter = targetParameter;
-        IsResolved = true;
-    }
-}
-
-public class InnerSourcePropertiesGroup
-{
-    private readonly List<AvailableSourceProperty> properties = new();
-
-    public InnerSourcePropertiesGroup(SourceProperty sourceProperty)
-    {
-        SourceProperty = sourceProperty;
-    }
-
-    public SourceProperty SourceProperty { get; }
-    
-    public bool IsResolved => properties.All(p => p.IsResolved);
-    
-    public void Add(AvailableSourceProperty property) => properties.Add(property);
 }
