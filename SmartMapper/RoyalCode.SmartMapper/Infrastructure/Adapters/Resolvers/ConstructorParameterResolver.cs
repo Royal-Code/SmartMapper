@@ -44,22 +44,19 @@ public class ConstructorParameterResolver
     {
         var ctorContext = context.ConstructorContext;
         var parameterName = context.Parameter.ParameterInfo.Name!;
-        
-        if(ctorContext.TryGetParameterOptionsByName(
-               parameterName,
+
+        if (ctorContext.TryGetParameterOptionsByName(
+            parameterName,
             out var toParameterOptions))
         {
             var propertyOptions = toParameterOptions.ResolvedProperty!;
 
-            if (!ctorContext.TryGetAvailableSourceProperty(propertyOptions.Property,
-                    out var availableProperty,
-                    out var failureReason))
+            if (!ctorContext.TryGetAvailableSourceProperty(
+                propertyOptions.Property,
+                out var availableProperty,
+                out _))
             {
-                resolution = new ParameterResolution
-                {
-                    Resolved = true,
-                    FailureMessages = new[]{failureReason}
-                };
+                resolution = null;
                 return false;
             }
 
@@ -73,22 +70,22 @@ public class ConstructorParameterResolver
             var assignmentResolution = assignmentResolver.Resolve(assignmentContext);
             if (!assignmentResolution.Resolved)
             {
-                resolution = new ParameterResolution
+                resolution = new ParameterResolution(availableProperty)
                 {
                     Resolved = false,
-                    AvailableSourceProperty = availableProperty,
                     FailureMessages = new[]
-                            { $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {ctorContext.TargetType} type" }
+                        {
+                            $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {ctorContext.TargetType} type"
+                        }
                         .Concat(assignmentResolution.FailureMessages)
                 };
 
                 return true;
             }
 
-            resolution = new ParameterResolution
+            resolution = new ParameterResolution(availableProperty)
             {
                 Resolved = true,
-                AvailableSourceProperty = availableProperty,
                 AssignmentResolution = assignmentResolution,
                 Parameter = context.Parameter,
                 ToParameterOptions = toParameterOptions

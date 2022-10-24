@@ -68,12 +68,11 @@ public class ConstructorResolutionContext
 
     public void Resolved(ConstructorParameterMatch match)
     {
-        var resolution = new ParameterResolution()
+        var resolution = new ParameterResolution(match.Property)
         {
             Resolved = true,
             Parameter = match.Parameter,
             AssignmentResolution = match.AssignmentResolution,
-            AvailableSourceProperty = match.Property
         };
 
         Resolved(match.Parameter, resolution);
@@ -87,21 +86,32 @@ public class ConstructorResolutionContext
     
     public ConstrutorResolution GetResolution()
     {
+        if (HasFailure)
+        {
+            return new ConstrutorResolution
+            {
+                Resolved = false,
+                FailureMessages = parameters.Where(p => p.HasFailure)
+                    .SelectMany(p => p.Resolution!.FailureMessages!)
+            };
+        }
+
+        if (!IsSuccessfullyResolved)
+        {
+            // pegar os parâmetros não resolvidos e gerar uma mensagem.
+            
+            
+            // pegar os grupos não resolvidos, e gerar uma mensagem para cada, incluindo os nomes das
+            // propriedades internas não resolvidas.
+            
+            
+        }
+        
+        // processar sucesso.
+        
         // TODO: processar a resolução. O objeto de retorno ainda não tem informações.
         
         
         throw new NotImplementedException();
     }
-}
-
-public enum ConstructorResolutionPropertyKind
-{
-    
-}
-
-public class ConstructorResolutionProperty
-{
-    public SourceProperty SourceProperty { get; set; }
-    
-    
 }

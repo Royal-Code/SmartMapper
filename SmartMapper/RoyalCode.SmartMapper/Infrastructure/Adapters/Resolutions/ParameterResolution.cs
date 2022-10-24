@@ -7,7 +7,12 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 
 public class ParameterResolution : ResolutionBase
 {
-    public AvailableSourceProperty AvailableSourceProperty { get; init; }
+    public ParameterResolution(AvailableSourceProperty availableSourceProperty)
+    {
+        AvailableSourceProperty = availableSourceProperty;
+    }
+    
+    public AvailableSourceProperty AvailableSourceProperty { get; }
     public AssignmentResolution? AssignmentResolution { get; init; }
     public TargetParameter? Parameter { get; init; }
     public ToConstructorParameterOptions? ToParameterOptions { get; init; }

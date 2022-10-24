@@ -56,6 +56,8 @@ public class AdapterResolutionContext
         
         // Em caso de algumas propriedades não poderem ser resolvidas, gerar falhas.
         
+        // OBS.: em vez de validar, poderia ter um GetResolution igualmente ao ConstructorResolutionContext
+        
         throw new NotImplementedException();
     }
 }
