@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6;net7</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FastExpressionCompiler" Version="3.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="RoyalCode.Extensions.PropertySelection" Version="1.0.0-preview2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Obsolete" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="FastExpressionCompiler" Version="3.3.0" />
+		<PackageReference Include="RoyalCode.Extensions.PropertySelection" Version="1.0.0-preview2.0" />
+		
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection">
+			<Version Condition="'$(TargetFramework)' == 'net6'">6.0.0</Version>
+			<Version Condition="'$(TargetFramework)' == 'net7'">7.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
 </Project>

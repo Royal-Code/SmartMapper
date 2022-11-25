@@ -11,7 +11,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 ///     This resolver attempts to resolve a constructor, parameter by parameter.
 /// </para>
 /// </summary>
-public class ConstrutorResolver
+public class ConstructorResolver
 {
     /// <summary>
     /// <para>
