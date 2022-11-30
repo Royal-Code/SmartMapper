@@ -53,7 +53,9 @@ public class ConstructorResolver
                     .Select(info =>
                     {
                         var preConfigured = resolution.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
-                        return new SourceProperty(info, preConfigured, option ?? new PropertyOptions(info));
+                        var child = new SourceProperty(info, preConfigured, option ?? new PropertyOptions(info));
+                        sourceProperty.Hierarchy.AddChild(child);
+                        return child;
                     })
                     .Where(s => s.Options.ResolutionStatus != ResolutionStatus.Ignored)
                     .Select(s => new AvailableSourceProperty(s, group))

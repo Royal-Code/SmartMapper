@@ -3,13 +3,30 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
-public record SourceProperty(PropertyInfo PropertyInfo,
-    bool PreConfigured,
-    PropertyOptions Options)
+public class SourceProperty
 {
+    public SourceProperty(
+        PropertyInfo propertyInfo,
+        bool preConfigured,
+        PropertyOptions options)
+    {
+        Hierarchy = new(this);
+        PropertyInfo = propertyInfo;
+        PreConfigured = preConfigured;
+        Options = options;
+    }
+    
     private SourcePropertyResolution Resolution { get; } = new();
 
     public bool Resolved => Resolution.Resolved;
+
+    public SourcePropertyHierarchy Hierarchy { get; }
     
-    // preciso de outra classe que trate hierarqui, pais e filhos.
+    public PropertyInfo PropertyInfo { get; }
+    
+    public bool PreConfigured { get; }
+    
+    public PropertyOptions Options { get; }
+
+    public string GetPropertyPathString() => Hierarchy.GetPropertyPathString();
 }

@@ -99,19 +99,27 @@ public class ConstructorResolutionContext
         if (!IsSuccessfullyResolved)
         {
             // pegar os parâmetros não resolvidos e gerar uma mensagem.
-            
-            
+            var unresolvedParametersMessages = parameters.Where(p => p.Unresolved)
+                .Select(p => "The parameter '" + p.ParameterInfo.Name + "' is not resolved");
+
             // pegar os grupos não resolvidos, e gerar uma mensagem para cada, incluindo os nomes das
             // propriedades internas não resolvidas.
-            
-            
+            var unresolvedGroupsMessages = groups.Where(g => !g.IsResolved)
+                .Select(g => g.GetFailureMessage());
+
+            return new ConstrutorResolution
+            {
+                Resolved = false,
+                FailureMessages = unresolvedParametersMessages.Concat(unresolvedGroupsMessages)
+            };
         }
-        
+
         // processar sucesso.
-        
+        var resolutions = parameters.Select(p => p.Resolution!).ToList();
+
         // TODO: processar a resolução. O objeto de retorno ainda não tem informações.
-        
-        
+
+
         throw new NotImplementedException();
     }
 }
