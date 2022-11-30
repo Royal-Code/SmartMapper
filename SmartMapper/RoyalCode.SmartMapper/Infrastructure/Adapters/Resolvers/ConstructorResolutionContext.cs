@@ -14,12 +14,13 @@ public class ConstructorResolutionContext
     private readonly IEnumerable<InnerSourcePropertiesGroup> groups;
     private readonly IEnumerable<TargetParameter> parameters;
     private readonly ConstructorOptions constructorOptions;
-    
+
     public ConstructorResolutionContext(
         IEnumerable<AvailableSourceProperty> properties,
         IEnumerable<InnerSourcePropertiesGroup> groups,
         IEnumerable<TargetParameter> parameters,
-        AdapterResolutionContext resolutionContext)
+        AdapterResolutionContext resolutionContext,
+        ConstructorInfo constructorInfo)
     {
         this.properties = properties;
         this.groups = groups;
@@ -27,6 +28,7 @@ public class ConstructorResolutionContext
         this.resolutionContext = resolutionContext;
         constructorOptions = resolutionContext.GetConstructorOptions();
         Configuration = resolutionContext.Configuration;
+        ConstructorInfo = constructorInfo;
     }
 
     public ResolutionConfiguration Configuration { get; }
@@ -34,6 +36,8 @@ public class ConstructorResolutionContext
     public Type SourceType => resolutionContext.SourceType;
 
     public Type TargetType => resolutionContext.TargetType;
+
+    public ConstructorInfo ConstructorInfo { get; }
 
     public bool TryGetParameterOptionsByName(string name,
         [NotNullWhen(true)] out ToConstructorParameterOptions? options)
@@ -88,12 +92,9 @@ public class ConstructorResolutionContext
     {
         if (HasFailure)
         {
-            return new ConstrutorResolution
-            {
-                Resolved = false,
-                FailureMessages = parameters.Where(p => p.HasFailure)
-                    .SelectMany(p => p.Resolution!.FailureMessages!)
-            };
+            return new ConstrutorResolution(
+                ConstructorInfo,
+                parameters.Where(p => p.HasFailure).SelectMany(p => p.Resolution!.FailureMessages!));
         }
 
         if (!IsSuccessfullyResolved)
@@ -107,19 +108,14 @@ public class ConstructorResolutionContext
             var unresolvedGroupsMessages = groups.Where(g => !g.IsResolved)
                 .Select(g => g.GetFailureMessage());
 
-            return new ConstrutorResolution
-            {
-                Resolved = false,
-                FailureMessages = unresolvedParametersMessages.Concat(unresolvedGroupsMessages)
-            };
+            return new ConstrutorResolution(
+                ConstructorInfo,
+                unresolvedParametersMessages.Concat(unresolvedGroupsMessages));
         }
 
         // processar sucesso.
         var resolutions = parameters.Select(p => p.Resolution!).ToList();
 
-        // TODO: processar a resolução. O objeto de retorno ainda não tem informações.
-
-
-        throw new NotImplementedException();
+        return new ConstrutorResolution(resolutions, ConstructorInfo);
     }
 }

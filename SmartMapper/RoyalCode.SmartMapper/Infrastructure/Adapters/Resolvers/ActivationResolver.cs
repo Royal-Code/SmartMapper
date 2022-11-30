@@ -32,24 +32,29 @@ public class ActivationResolver
 
         var construtorResolutions = ctorElegible.Select(c => new ConstructorContext(resolutionContext, c))
                 .Select(ctorResolver.Resolve)
-                .ToSpanMarshal();
+                .ToList();
 
-        
+
 
         // se não tiver resoluções com sucesso, registra o erro e encerra.
+        if (construtorResolutions.All(c => !c.Resolved))
+        {
+            return new ActivationResolution()
+            {
+                Resolved = false,
+                FailureMessages = Enumerable.Concat(
+                    new string[] { $"None elegible constructor for adapt {resolutionContext.SourceType.Name} type to {resolutionContext.TargetType.Name} type." },
+                    construtorResolutions.SelectMany(c => c.FailureMessages!))               
+            };
+        }
 
         // filtra as resoluções com sucesso e ordena ao estilo best constructor selector.
-
-        // agora deve ser validada as resoluções, se as opções pré-configuradas está atendendo parametros do ctor resolvido?
-
-        // elimina os ctor inválidos.
-
-        // caso não sobre nenhum, registra o erro de configuração.
-
-        // por fim, pega o melhor construtor e gera um sucesso.
-        // o resolver do adaptador deverá pegar a resolução do ctor e aplicar os valores corretos nas opções.
-
-        throw new NotImplementedException();
+        var bestConstructorResolution = construtorResolutions
+            .Where(c => c.Resolved)
+            .OrderByDescending(c => c.Parameters.Length)
+            .First();
+        
+        return new ActivationResolution(bestConstructorResolution.Constructor, bestConstructorResolution.ParameterResolution);
     }
 
     internal ConstructorInfo[] GetElegibleConstructors(ConstructorOptions options)

@@ -15,5 +15,7 @@ public class ParameterResolution : ResolutionBase
     public AvailableSourceProperty AvailableSourceProperty { get; }
     public AssignmentResolution? AssignmentResolution { get; init; }
     public TargetParameter? Parameter { get; init; }
+
+    
     public ToConstructorParameterOptions? ToParameterOptions { get; init; }
 }

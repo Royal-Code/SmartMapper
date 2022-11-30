@@ -1,5 +1,7 @@
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Infrastructure.Attributes;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
@@ -10,6 +12,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 ///     Arch Context for the adapter resolution process.
 /// </para>
 /// </summary>
+[ArchContext]
 public class AdapterResolutionContext
 {
     private readonly AdapterOptions adapterOptions;
@@ -50,6 +53,14 @@ public class AdapterResolutionContext
 
     public IEnumerable<SourceProperty> GetProperties() => properties;
 
+
+
+    public void UseActivator(ActivationResolution resolution)
+    {
+        throw new NotImplementedException();
+    }
+
+    
     public bool Validate(out IEnumerable<string> failures)
     {
         // Valida se todas propriedades estão concluídas.

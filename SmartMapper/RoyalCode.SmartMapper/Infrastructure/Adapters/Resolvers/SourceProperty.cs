@@ -1,8 +1,10 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Attributes;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
+[ResolvableMember]
 public class SourceProperty
 {
     public SourceProperty(

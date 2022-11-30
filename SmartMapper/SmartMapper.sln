@@ -1,29 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper", "RoyalCode.SmartMapper\RoyalCode.SmartMapper.csproj", "{98AFB620-A4C8-46A8-9107-777EDA78E7A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalCode.SmartMapper", "RoyalCode.SmartMapper\RoyalCode.SmartMapper.csproj", "{98AFB620-A4C8-46A8-9107-777EDA78E7A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{60458330-D26A-442E-994D-52E04D788849}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{B1FCDFBE-E2D2-4C70-A55A-6B0F6172575E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.Configurations.Tests", "RoyalCode.SmartMapper.Configurations.Tests\RoyalCode.SmartMapper.Configurations.Tests.csproj", "{E5E0EC2B-E231-4A93-89C0-CB01453137DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalCode.SmartMapper.Configurations.Tests", "RoyalCode.SmartMapper.Configurations.Tests\RoyalCode.SmartMapper.Configurations.Tests.csproj", "{E5E0EC2B-E231-4A93-89C0-CB01453137DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.Extensions.Tests", "RoyalCode.SmartMapper.Extensions.Tests\RoyalCode.SmartMapper.Extensions.Tests.csproj", "{E728CBFF-856D-48D6-B40B-465972542A17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalCode.SmartMapper.Extensions.Tests", "RoyalCode.SmartMapper.Extensions.Tests\RoyalCode.SmartMapper.Extensions.Tests.csproj", "{E728CBFF-856D-48D6-B40B-465972542A17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.Adapters.Tests", "RoyalCode.SmartMapper.Adapters.Tests\RoyalCode.SmartMapper.Adapters.Tests.csproj", "{AFEE4A08-4E5F-4172-AF2A-674FED06C541}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalCode.SmartMapper.Adapters.Tests", "RoyalCode.SmartMapper.Adapters.Tests\RoyalCode.SmartMapper.Adapters.Tests.csproj", "{AFEE4A08-4E5F-4172-AF2A-674FED06C541}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartMapper.AssignmentStrategy.Tests", "RoyalCode.SmartMapper.AssignmentStrategy.Tests\RoyalCode.SmartMapper.AssignmentStrategy.Tests.csproj", "{8E381CDC-58EB-4BF9-978F-39252D6DC59B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalCode.SmartMapper.AssignmentStrategy.Tests", "RoyalCode.SmartMapper.AssignmentStrategy.Tests\RoyalCode.SmartMapper.AssignmentStrategy.Tests.csproj", "{8E381CDC-58EB-4BF9-978F-39252D6DC59B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".items", ".items", "{55F37796-7F87-4FE3-B49D-93A40CB52FE4}"
+	ProjectSection(SolutionItems) = preProject
+		base.targets = base.targets
+		versions.targets = versions.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{98AFB620-A4C8-46A8-9107-777EDA78E7A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -47,11 +50,17 @@ Global
 		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E381CDC-58EB-4BF9-978F-39252D6DC59B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{98AFB620-A4C8-46A8-9107-777EDA78E7A1} = {B1FCDFBE-E2D2-4C70-A55A-6B0F6172575E}
 		{E5E0EC2B-E231-4A93-89C0-CB01453137DF} = {60458330-D26A-442E-994D-52E04D788849}
 		{E728CBFF-856D-48D6-B40B-465972542A17} = {60458330-D26A-442E-994D-52E04D788849}
 		{AFEE4A08-4E5F-4172-AF2A-674FED06C541} = {60458330-D26A-442E-994D-52E04D788849}
 		{8E381CDC-58EB-4BF9-978F-39252D6DC59B} = {60458330-D26A-442E-994D-52E04D788849}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C2EB054-06F6-46B1-99A0-6FAFB187A3C5}
 	EndGlobalSection
 EndGlobal

@@ -67,7 +67,12 @@ public class ConstructorResolver
             }
         }
 
-        var ctorContext = new ConstructorResolutionContext(availableProperties, groups, targetParameters, context.ResolutionContext);
+        var ctorContext = new ConstructorResolutionContext(
+            availableProperties,
+            groups,
+            targetParameters,
+            context.ResolutionContext,
+            context.Constructor);
 
         // Part 3 - Resolved pré-configured properties.
         

@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Infrastructure.Attributes;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolutions;
 
@@ -16,6 +17,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 ///     Once solved, the result is stored internally.
 /// </para>
 /// </summary>
+[ArchResolver]
 public class AdapterResolver
 {
     private readonly Dictionary<MapKey, object> resolutions = new();
@@ -30,8 +32,10 @@ public class AdapterResolver
         var activationResolver = context.Configuration.GetResolver<ActivationResolver>();
         var activationResolution = activationResolver.Resolve(adapterResolutionContext);
 
-        if (!activationResolution.Resolved) 
+        if (!activationResolution.Resolved)
             return CreateFailure(context, activationResolution.FailureMessages);
+        else
+            adapterResolutionContext.UseActivator(activationResolution);
 
         var callerResolver = context.Configuration.GetResolver<CallerResolver>();
         // seguir com a lógica de caller

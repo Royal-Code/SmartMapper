@@ -1,4 +1,5 @@
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Configurations;
 
@@ -11,6 +12,9 @@ public static class DefaultConfigurations
         builder.AddResolver(new ConstructorResolver());
         builder.AddResolver(new ConstructorParameterResolver());
 
+
+        builder.AddDiscovery(new ConstructorParameterDiscovery());
+        
         return builder;
     }
 }

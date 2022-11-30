@@ -1,0 +1,22 @@
+<Project>
+	<PropertyGroup>
+		<TargetFrameworks>net6;net7</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<DocumentationFile>$(BaseOutputPath)\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+		<Authors>Royal Code</Authors>
+		<Copyright>Royal Code Copyright ©  2023</Copyright>
+		<RepositoryUrl>https://github.com/Royal-Code/SmartMapper</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="../icon.png" Pack="true" PackagePath="/"/>
+	</ItemGroup>
+</Project>
