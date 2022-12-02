@@ -24,9 +24,9 @@ public class ConstructorResolver
     ///     If the source properties do not match the constructor parameters, the resolution will fail.
     /// </para>
     /// </summary>
-    /// <param name="context">The constructor context to be resolved.</param>
+    /// <param name="request">The request for the constructor resolution.</param>
     /// <returns>The resolution.</returns>
-    public ConstrutorResolution Resolve(ConstructorContext context)
+    public ConstrutorResolution Resolve(ConstructorRequest request)
     {
         // part 1 - get parameters and source properties
         

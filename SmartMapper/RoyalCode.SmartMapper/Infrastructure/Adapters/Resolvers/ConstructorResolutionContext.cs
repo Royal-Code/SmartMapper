@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
 public class ConstructorResolutionContext
 {
-    private readonly AdapterResolutionContext resolutionContext;
+    private readonly AdapterContext resolutionContext;
     private readonly IEnumerable<AvailableSourceProperty> properties;
     private readonly IEnumerable<InnerSourcePropertiesGroup> groups;
     private readonly IEnumerable<TargetParameter> parameters;
@@ -19,7 +19,7 @@ public class ConstructorResolutionContext
         IEnumerable<AvailableSourceProperty> properties,
         IEnumerable<InnerSourcePropertiesGroup> groups,
         IEnumerable<TargetParameter> parameters,
-        AdapterResolutionContext resolutionContext,
+        AdapterContext resolutionContext,
         ConstructorInfo constructorInfo)
     {
         this.properties = properties;

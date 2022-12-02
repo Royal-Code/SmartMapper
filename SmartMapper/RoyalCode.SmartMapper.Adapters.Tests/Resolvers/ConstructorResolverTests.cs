@@ -15,7 +15,7 @@ public class ConstructorResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
         var contructorContext = new ConstructorContext(adapterContext, typeof(Bar).GetConstructor(Type.EmptyTypes)!);
 
         var resolver = new ConstructorResolver();
@@ -34,7 +34,7 @@ public class ConstructorResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Baz));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
         var contructorContext = new ConstructorContext(adapterContext, typeof(Baz).GetConstructor(new[] { typeof(string) })!);
 
         var resolver = new ConstructorResolver();

@@ -17,50 +17,50 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 ///     Once solved, the result is stored internally.
 /// </para>
 /// </summary>
-[ArchResolver]
 public class AdapterResolver
 {
     private readonly Dictionary<MapKey, object> resolutions = new();
     
-    public AdapterResolution Resolve(AdapterContext context)
+    public AdapterResolution Resolve(AdapterRequest request)
     {
-        if (context.Configuration.Cache.TryGetAdapter(context.Key, out var resolution))
+        if (request.Configuration.Cache.TryGetAdapter(request.Key, out var resolution))
             return resolution;
 
-        var adapterResolutionContext = new AdapterResolutionContext(context.Options, context.Configuration);
+        var context = request.CreateContext();
 
-        var activationResolver = context.Configuration.GetResolver<ActivationResolver>();
-        var activationResolution = activationResolver.Resolve(adapterResolutionContext);
+        var activationResolver = request.Configuration.GetResolver<ActivationResolver>();
+        var activationRequest = context.CreateActivationRequest();
+        var activationResolution = activationResolver.Resolve(activationRequest);
 
         if (!activationResolution.Resolved)
-            return CreateFailure(context, activationResolution.FailureMessages);
+            return CreateFailure(request, activationResolution.FailureMessages);
         else
-            adapterResolutionContext.UseActivator(activationResolution);
+            context.UseActivator(activationResolution);
 
-        var callerResolver = context.Configuration.GetResolver<CallerResolver>();
+        var callerResolver = request.Configuration.GetResolver<CallerResolver>();
         // seguir com a lógica de caller
 
 
-        var setterResolver = context.Configuration.GetResolver<SetterResolver>();
+        var setterResolver = request.Configuration.GetResolver<SetterResolver>();
         // seguir com a lógica de setter;
 
 
-        if(adapterResolutionContext.Validate(out var failures))
-            return CreateFailure(context, failures);
+        if(context.Validate(out var failures))
+            return CreateFailure(request, failures);
         
         // criar resolução de sucesso
         
         throw new NotImplementedException();
     }
 
-    public bool TryResolve(AdapterContext context, [NotNullWhen(true)] out AdapterResolution? resolution)
+    public bool TryResolve(AdapterRequest context, [NotNullWhen(true)] out AdapterResolution? resolution)
     {
         // deve ser executado uma série de try para cada etapa ?
         
         throw new NotImplementedException();
     }
 
-    private AdapterResolution CreateFailure(AdapterContext context, IEnumerable<string> failures)
+    private AdapterResolution CreateFailure(AdapterRequest context, IEnumerable<string> failures)
     {
         var resolution = new AdapterResolution()
         {
@@ -91,7 +91,7 @@ public class AdapterResolver
 
     private object CreateResolution(MapKey key)
     {
-        var context = new AdapterContext(key, null);
+        var context = new AdapterRequest(key, null);
         
         
         throw new NotImplementedException();

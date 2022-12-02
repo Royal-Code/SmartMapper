@@ -13,6 +13,11 @@ public class MappingConfiguration
 {
     private readonly AdaptersOptions adaptersOptions;
 
+    /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="MappingConfiguration"/>.
+    /// </para>
+    /// </summary>
     public MappingConfiguration()
     {
         adaptersOptions = new AdaptersOptions();

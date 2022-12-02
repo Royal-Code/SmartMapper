@@ -11,7 +11,7 @@ public class AdaptValueAssignmentResolver : IValueAssignmentResolver
     public AssignmentResolution Resolve(AssignmentContext context)
     {
         var adapterResolver = context.Configuration.GetResolver<AdapterResolver>();
-        var adapterContext = new AdapterContext(new MapKey(context.From, context.To), context.Configuration);
+        var adapterContext = new AdapterRequest(new MapKey(context.From, context.To), context.Configuration);
         var adapterResolution = adapterResolver.Resolve(adapterContext);
         
         if (adapterResolution.Resolved)
@@ -33,7 +33,7 @@ public class AdaptValueAssignmentResolver : IValueAssignmentResolver
     public bool TryResolve(AssignmentContext context, [NotNullWhen(true)] out AssignmentResolution? resolution)
     {
         var adapterResolver = context.Configuration.GetResolver<AdapterResolver>();
-        var adapterContext = new AdapterContext(new MapKey(context.From, context.To), context.Configuration);
+        var adapterContext = new AdapterRequest(new MapKey(context.From, context.To), context.Configuration);
         
         if (adapterResolver.TryResolve(adapterContext, out var adapterResolution))
         {

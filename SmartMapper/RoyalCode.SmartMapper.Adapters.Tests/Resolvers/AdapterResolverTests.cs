@@ -14,7 +14,7 @@ public class AdapterResolverTests
     {
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
-        var adapterContext = new AdapterContext(new MapKey(typeof(Foo), typeof(Bar)), configs);
+        var adapterContext = new AdapterRequest(new MapKey(typeof(Foo), typeof(Bar)), configs);
 
         var resolver = new AdapterResolver();
 

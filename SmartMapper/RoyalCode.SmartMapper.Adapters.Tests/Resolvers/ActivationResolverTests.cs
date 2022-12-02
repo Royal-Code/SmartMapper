@@ -14,7 +14,7 @@ public class ActivationResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
 
         var resolver = new ActivationResolver();
 
@@ -31,7 +31,7 @@ public class ActivationResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Baz));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
 
         var resolver = new ActivationResolver();
 
@@ -48,7 +48,7 @@ public class ActivationResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Qux));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
 
         var ctorOptions = adapterContext.GetConstructorOptions();
         ctorOptions.ParameterTypes = new[] { typeof(string) };
@@ -68,7 +68,7 @@ public class ActivationResolverTests
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var adapterContext = new AdapterResolutionContext(adapterOptions, configs);
+        var adapterContext = new AdapterContext(adapterOptions, configs);
 
         var resolver = new ActivationResolver();
 

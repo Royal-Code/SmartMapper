@@ -14,23 +14,19 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 /// </summary>
 public class ActivationResolver
 {
-    public ActivationResolution Resolve(AdapterResolutionContext resolutionContext)
+    public ActivationResolution Resolve(ActivationRequest request)
     {
-        var ctorElegible = GetElegibleConstructors(resolutionContext.GetConstructorOptions());
+        var context = request.CreateContext();
 
         // must be validated if any eligible ctor exists.
-        if (ctorElegible.Length is 0)
+        if (!context.HasEligibleConstructors)
         {
-            return new ActivationResolution()
-            {
-                Resolved = false,
-                FailureMessages = new[] { $"None elegible constructor for adapt {resolutionContext.SourceType.Name} type to {resolutionContext.TargetType.Name} type." }
-            };
+            return context.GetResolution();
         }
 
-        var ctorResolver = resolutionContext.Configuration.GetResolver<ConstructorResolver>();
-
-        var construtorResolutions = ctorElegible.Select(c => new ConstructorContext(resolutionContext, c))
+        var ctorResolver = request.Configuration.GetResolver<ConstructorResolver>();
+        
+        var construtorResolutions = context.Constructors.Select(c => c)
                 .Select(ctorResolver.Resolve)
                 .ToList();
 

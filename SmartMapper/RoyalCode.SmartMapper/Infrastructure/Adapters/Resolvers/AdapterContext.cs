@@ -1,24 +1,66 @@
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Attributes;
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 
-[Context]
+/// <summary>
+/// <para>
+///     Arch Context for the adapter resolution process.
+/// </para>
+/// </summary>
 public class AdapterContext
 {
-    public MapKey Key { get; }
+    private readonly SourceProperty[] properties;
 
-    public AdapterOptions Options => Configuration.Mappings.AdaptersOptions.GetOptions(Key);
+    public AdapterContext(AdapterOptions adapterOptions, ResolutionConfiguration configurations)
+    {
+        Options = adapterOptions;
+        Configuration = configurations;
+
+        properties = adapterOptions.CreateSourceProperties();
+    }
+
+    public AdapterOptions Options { get; }
 
     public ResolutionConfiguration Configuration { get; }
-    
-    public AdapterContext(
-        MapKey key,
-        ResolutionConfiguration configuration)
+
+    [Obsolete("Use the property 'Options' instead.")]
+    public Type SourceType => Options.SourceType;
+
+    [Obsolete("Use the property 'Options' instead.")]
+    public Type TargetType => Options.TargetType;
+
+    [Obsolete("Use the property 'Options' instead.")]
+    public ConstructorOptions GetConstructorOptions() => Options.TargetOptions.GetConstructorOptions();
+
+    public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
     {
-        Key = key;
-        Configuration = configuration;
+        return properties
+            .Where(p => !p.Resolved)    
+            .Where(p => statuses.Contains(p.Options.ResolutionStatus));
+    }
+
+    public IEnumerable<SourceProperty> GetPropertiesUnresolved()
+        => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
+
+    public IEnumerable<SourceProperty> GetProperties() => properties;
+    
+    public void UseActivator(ActivationResolution resolution)
+    {
+        throw new NotImplementedException();
+    }
+
+    
+    public bool Validate(out IEnumerable<string> failures)
+    {
+        // Valida se todas propriedades estão concluídas.
+        
+        // Em caso de algumas propriedades não poderem ser resolvidas, gerar falhas.
+        
+        // OBS.: em vez de validar, poderia ter um GetResolution igualmente ao ConstructorResolutionContext
+        
+        throw new NotImplementedException();
     }
 }
