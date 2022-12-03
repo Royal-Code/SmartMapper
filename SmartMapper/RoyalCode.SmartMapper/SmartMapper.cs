@@ -28,10 +28,10 @@ public class SmartMapper : IAdaptationMapper, ISelectionMapper, IFilterSpecifier
         throw new NotImplementedException();
     }
 
-    public void Select<TSource, TTarget>(TSource source, TTarget target)
-    {
-        throw new NotImplementedException();
-    }
+    //public void Select<TSource, TTarget>(TSource source, TTarget target)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     public IQueryable<TModel> Specify<TModel>(IQueryable<TModel> query, object filter, Type? type = null)
     {

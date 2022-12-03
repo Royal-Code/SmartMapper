@@ -2,7 +2,7 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 
 // TODO: Transformar em record
 

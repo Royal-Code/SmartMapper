@@ -3,7 +3,7 @@ using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// <para>

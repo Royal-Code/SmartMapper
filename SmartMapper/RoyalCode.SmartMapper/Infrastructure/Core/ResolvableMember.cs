@@ -13,11 +13,37 @@ public abstract class ResolvableMember
 {
     /// <summary>
     /// <para>
-    ///     Determine if the member was resolved.
+    ///     Determines whether the member has been resolved.
     /// </para>
     /// </summary>
     public bool Resolved { get; protected set; }
-    
+}
+
+/// <summary>
+/// <para>
+///     Represents a member that can be resolved.
+/// </para>
+/// </summary>
+/// <typeparam name="TMember">The type of the member.</typeparam>
+public abstract class ResolvableMember<TMember> : ResolvableMember
+{
+    /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="ResolvableMember{TMember}"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="memberInfo">The member information.</param>
+    protected ResolvableMember(TMember memberInfo)
+    {
+        MemberInfo = memberInfo;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     The member information, from reflection.
+    /// </para>
+    /// </summary>
+    public TMember MemberInfo { get; }
 }
 
 /// <summary>
@@ -27,7 +53,7 @@ public abstract class ResolvableMember
 /// </summary>
 /// <typeparam name="TMember">The type of the member.</typeparam>
 /// <typeparam name="TOption">The type of the options.</typeparam>
-public abstract class ResolvableMember<TMember, TOption> : ResolvableMember
+public abstract class ResolvableMember<TMember, TOption> : ResolvableMember<TMember>
 {
     /// <summary>
     /// Creates a new instance of <see cref="ResolvableMember{TMember, TOption}"/>.
@@ -36,18 +62,11 @@ public abstract class ResolvableMember<TMember, TOption> : ResolvableMember
     /// <param name="options">The options.</param>
     /// <param name="preConfigured">Determine if the member is pre-configured.</param>
     protected ResolvableMember(TMember memberInfo, TOption options, bool preConfigured)
+        : base(memberInfo)
     {
-        MemberInfo = memberInfo;
         Options = options;
         PreConfigured = preConfigured;
     }
-
-    /// <summary>
-    /// <para>
-    ///     The member information, from reflection.
-    /// </para>
-    /// </summary>
-    public TMember MemberInfo { get; }
 
     /// <summary>
     /// <para>

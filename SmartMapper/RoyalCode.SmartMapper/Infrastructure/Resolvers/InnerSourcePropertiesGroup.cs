@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 public class InnerSourcePropertiesGroup
 {
@@ -12,9 +12,9 @@ public class InnerSourcePropertiesGroup
     }
 
     public SourceProperty SourceProperty { get; }
-    
+
     public bool IsResolved => properties.All(p => p.IsResolved);
-    
+
     public void Add(AvailableSourceProperty property) => properties.Add(property);
 
     public string GetFailureMessage()
@@ -24,9 +24,9 @@ public class InnerSourcePropertiesGroup
         sb.AppendLine("The following properties must be resolved:");
         foreach (var property in properties.Where(p => !p.IsResolved))
         {
-            sb.AppendLine($"- {property.SourceProperty.PropertyInfo.Name}");
+            sb.AppendLine($"- {property.SourceProperty.MemberInfo.Name}");
         }
 
-        return sb .ToString();
+        return sb.ToString();
     }
 }

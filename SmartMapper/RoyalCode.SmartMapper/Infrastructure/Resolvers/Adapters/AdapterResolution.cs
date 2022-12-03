@@ -4,11 +4,11 @@ using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Resolutions;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 
 public class AdapterResolution : ResolutionBase
 {
-    
+
 }
 
 // TODO: Isso aqui em baixo deverá ser outra coisa, outro nome, outro componente.

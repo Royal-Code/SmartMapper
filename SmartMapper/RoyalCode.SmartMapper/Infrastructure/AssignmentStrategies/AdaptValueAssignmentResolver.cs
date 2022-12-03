@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 
 namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 

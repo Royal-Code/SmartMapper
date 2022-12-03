@@ -2,7 +2,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// Represents a property of the source type as a resolvable member.

@@ -1,12 +1,13 @@
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
 /// <summary>
 /// Resolution for one constructor.
 /// </summary>
-public class ConstrutorResolution : ResolutionBase
+public class ConstructorResolution : ResolutionBase
 {
     private ParameterInfo[]? parameters;
 
@@ -15,7 +16,7 @@ public class ConstrutorResolution : ResolutionBase
     /// </summary>
     /// <param name="constructor">The constructor.</param>
     /// <param name="failureMessages">The failure messages.</param>
-    public ConstrutorResolution(ConstructorInfo constructor, IEnumerable<string> failureMessages)
+    public ConstructorResolution(ConstructorInfo constructor, IEnumerable<string> failureMessages)
     {
         Resolved = false;
         ParameterResolution = Enumerable.Empty<ParameterResolution>();
@@ -28,7 +29,7 @@ public class ConstrutorResolution : ResolutionBase
     /// </summary>
     /// <param name="rarameterResolution">The parameters resolutions.</param>
     /// <param name="constructor">The constructor.</param>
-    public ConstrutorResolution(IEnumerable<ParameterResolution> rarameterResolution, ConstructorInfo constructor)
+    public ConstructorResolution(IEnumerable<ParameterResolution> rarameterResolution, ConstructorInfo constructor)
     {
         Resolved = true;
         ParameterResolution = rarameterResolution;

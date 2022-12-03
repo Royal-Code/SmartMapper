@@ -1,9 +1,9 @@
 ﻿using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// <para>
@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 /// </summary>
 public class EligibleConstructor : ResolvableMember<ConstructorInfo, ConstructorOptions>
 {
-    private ConstrutorResolution? resolution;
+    private ConstructorResolution? resolution;
 
     /// <summary>
     /// <para>
@@ -24,8 +24,8 @@ public class EligibleConstructor : ResolvableMember<ConstructorInfo, Constructor
     /// <param name="preConfigured">Indicates whether the options were pre-configured.</param>
     public EligibleConstructor(
         ConstructorInfo memberInfo,
-        ConstructorOptions options, 
-        bool preConfigured) 
+        ConstructorOptions options,
+        bool preConfigured)
         : base(memberInfo, options, preConfigured)
     { }
 
@@ -41,9 +41,9 @@ public class EligibleConstructor : ResolvableMember<ConstructorInfo, Constructor
     ///     Gets the resolution of the constructor.
     /// </para>
     /// </summary>
-    public ConstrutorResolution Resolution
+    public ConstructorResolution Resolution
     {
-        get => resolution ?? new ConstrutorResolution(MemberInfo, new string[] { "The resolution is not defined." });
+        get => resolution ?? new ConstructorResolution(MemberInfo, new string[] { "The resolution is not defined." });
         set => resolution = value;
     }
 }

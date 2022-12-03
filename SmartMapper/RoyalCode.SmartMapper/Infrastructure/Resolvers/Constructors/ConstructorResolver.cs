@@ -1,10 +1,9 @@
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
 /// <summary>
 /// <para>
@@ -26,21 +25,21 @@ public class ConstructorResolver
     /// </summary>
     /// <param name="request">The request for the constructor resolution.</param>
     /// <returns>The resolution.</returns>
-    public ConstrutorResolution Resolve(ConstructorRequest request)
+    public ConstructorResolution Resolve(ConstructorRequest request)
     {
         // part 1 - get parameters and source properties
-        
+
         var targetParameters = context.Constructor.GetParameters()
             .Select(p => new TargetParameter(p))
             .ToList();
-        
+
         var sourceProperties = context.ResolutionContext.GetPropertiesByStatus(
             ResolutionStatus.Undefined,
             ResolutionStatus.MappedToConstructor,
             ResolutionStatus.MappedToConstructorParameter).ToList();
 
         // part 2 - create context and contextual properties
-        
+
         var availableProperties = new List<AvailableSourceProperty>();
         var groups = new List<InnerSourcePropertiesGroup>();
         foreach (var sourceProperty in sourceProperties)
@@ -75,7 +74,7 @@ public class ConstructorResolver
             context.Constructor);
 
         // Part 3 - Resolved pré-configured properties.
-        
+
         var parameterResolver = context.ResolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
         foreach (var parameter in targetParameters)
         {
@@ -92,14 +91,14 @@ public class ConstructorResolver
         }
 
         // Part 4 - Discovery mapping from source properties to target constructor parameters.
-        
+
         var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
 
         var discoveryContext = new ConstructorParameterDiscoveryContext(
-            availableProperties.Where(p => !p.IsResolved).ToList(), 
+            availableProperties.Where(p => !p.IsResolved).ToList(),
             targetParameters.Where(p => p.Unresolved).ToList(),
             context.ResolutionContext.Configuration);
-        
+
         var result = discovery.Discover(discoveryContext);
 
         foreach (var match in result.Matches)
@@ -108,7 +107,7 @@ public class ConstructorResolver
         }
 
         // produce a result e return it.
-        
+
         return ctorContext.GetResolution();
     }
 }

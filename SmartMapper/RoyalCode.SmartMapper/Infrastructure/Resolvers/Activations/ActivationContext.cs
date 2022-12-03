@@ -1,6 +1,6 @@
-﻿using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
+﻿using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
 
 /// <summary>
 /// Context for the activator resolution process.
@@ -53,12 +53,14 @@ public class ActivationContext
     }
 
     /// <summary>
-    /// 
+    /// <para>
+    ///     Creates a new instance of <see cref="ActivationResolution" /> with the result of the computation.
+    /// </para>
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <returns>A new instance of <see cref="ActivationResolution" />.</returns>
     internal ActivationResolution GetResolution()
     {
+        // must be validated if any eligible ctor exists.
         if (!HasEligibleConstructors)
         {
             return new ActivationResolution()
@@ -68,6 +70,20 @@ public class ActivationContext
             };
         }
 
-        
+        // check if has any resolved constructor.
+        var bestConstructor = GetBestConstructor();
+        if (bestConstructor is null)
+        {
+            return new ActivationResolution()
+            {
+                Resolved = false,
+                FailureMessages = new[]
+                {
+                    $"None elegible constructor for adapt {AdapterContext.Options.SourceType.Name} type to {AdapterContext.Options.TargetType.Name} type."
+                }
+            };
+        }
+
+        return new ActivationResolution(bestConstructor.Resolution);
     }
 }

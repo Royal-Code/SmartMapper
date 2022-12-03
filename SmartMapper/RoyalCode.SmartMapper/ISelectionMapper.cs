@@ -6,5 +6,5 @@ public interface ISelectionMapper
 
     TTo Select<TFrom, TTo>(TFrom from);
 
-    void Select<TSource, TTarget>(TSource source, TTarget target);
+    //void Select<TSource, TTarget>(TSource source, TTarget target);
 }

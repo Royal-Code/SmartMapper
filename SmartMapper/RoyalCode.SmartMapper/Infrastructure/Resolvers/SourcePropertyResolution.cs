@@ -1,11 +1,11 @@
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 public class SourcePropertyResolution
 {
     public ResolutionBase? Resolution { get; private set; }
-    
+
     public bool Resolved { get; private set; }
 
     public void ResolvedBy(ResolutionBase resolution)

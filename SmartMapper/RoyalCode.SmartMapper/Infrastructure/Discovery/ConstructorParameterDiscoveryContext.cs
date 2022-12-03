@@ -1,5 +1,5 @@
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
 

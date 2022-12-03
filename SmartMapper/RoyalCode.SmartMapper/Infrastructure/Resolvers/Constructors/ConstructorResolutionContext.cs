@@ -4,8 +4,9 @@ using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
 public class ConstructorResolutionContext
 {
@@ -44,17 +45,17 @@ public class ConstructorResolutionContext
     {
         return constructorOptions.TryGetParameterOptions(name, out options);
     }
-    
-    public bool TryGetAvailableSourceProperty(PropertyInfo propertyInfo, 
+
+    public bool TryGetAvailableSourceProperty(PropertyInfo propertyInfo,
         [NotNullWhen(true)] out AvailableSourceProperty? property,
         [NotNullWhen(false)] out string? failureReason)
     {
         failureReason = null;
         property = properties.FirstOrDefault(p => p.SourceProperty.PropertyInfo == propertyInfo);
-        
+
         if (property is null)
             failureReason = $"The property '{propertyInfo.Name}' is not a valid source property";
-        
+
         if (property.IsResolved)
         {
             failureReason = $"The property '{propertyInfo.Name}' was resolved before";
@@ -87,12 +88,12 @@ public class ConstructorResolutionContext
     public bool IsParametersResolved => parameters.All(p => !p.Unresolved);
 
     public bool IsSuccessfullyResolved => IsParametersResolved && groups.All(g => g.IsResolved) && !HasFailure;
-    
-    public ConstrutorResolution GetResolution()
+
+    public ConstructorResolution GetResolution()
     {
         if (HasFailure)
         {
-            return new ConstrutorResolution(
+            return new ConstructorResolution(
                 ConstructorInfo,
                 parameters.Where(p => p.HasFailure).SelectMany(p => p.Resolution!.FailureMessages!));
         }
@@ -108,7 +109,7 @@ public class ConstructorResolutionContext
             var unresolvedGroupsMessages = groups.Where(g => !g.IsResolved)
                 .Select(g => g.GetFailureMessage());
 
-            return new ConstrutorResolution(
+            return new ConstructorResolution(
                 ConstructorInfo,
                 unresolvedParametersMessages.Concat(unresolvedGroupsMessages));
         }
@@ -116,6 +117,6 @@ public class ConstructorResolutionContext
         // processar sucesso.
         var resolutions = parameters.Select(p => p.Resolution!).ToList();
 
-        return new ConstrutorResolution(resolutions, ConstructorInfo);
+        return new ConstructorResolution(resolutions, ConstructorInfo);
     }
 }

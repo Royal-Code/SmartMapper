@@ -1,5 +1,7 @@
-﻿
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+﻿using RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
+
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// <para>

@@ -1,9 +1,10 @@
-﻿
-using RoyalCode.SmartMapper.Extensions;
+﻿using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Callers;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// <para>
@@ -21,7 +22,7 @@ public static class ResolvableMembersFactory
     /// <returns>A collection of <see cref="SourceProperty"/>.</returns>
     public static SourceProperty[] CreateSourceProperties(this AdapterContext adapterContext)
         => adapterContext.Options.CreateSourceProperties();
-        
+
     /// <summary>
     /// <para>
     ///     For each property of the source type, creates a new instance of <see cref="SourceProperty"/>.
@@ -31,7 +32,7 @@ public static class ResolvableMembersFactory
     /// <returns>A collection of <see cref="SourceProperty"/>.</returns>
     public static SourceProperty[] CreateSourceProperties(this AdapterOptions adapterOptions)
         => adapterOptions.SourceOptions.CreateSourceProperties();
-    
+
     /// <summary>
     /// <para>
     ///     For each property of the source type, creates a new instance of <see cref="SourceProperty"/>.
@@ -103,4 +104,24 @@ public static class ResolvableMembersFactory
 
         return constructors.Select(ctor => new EligibleConstructor(ctor, options, false)).ToArray();
     }
+
+    /// <summary>
+    /// <para>
+    ///     For each parameter in an invocable (constructor or method) of target type,
+    ///     creates a new instance of <see cref="TargetParameter"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="request">The request resolve a invocable member.</param>
+    /// <returns>A collection of <see cref="TargetParameter"/>.</returns>
+    public static TargetParameter[] CreateTargetParameters(this IInvocableRequest request)
+    {
+        var parameterInfos = request.GetParameters();
+        var targetParameters = new TargetParameter[parameterInfos.Length];
+        for (int i = 0; i < parameterInfos.Length; i++)
+        {
+            targetParameters[i] = new(parameterInfos[i]);
+        }
+        return targetParameters;
+    }
+        
 }

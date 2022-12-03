@@ -1,4 +1,4 @@
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
 /// <summary>
 /// <para>
@@ -7,5 +7,5 @@ namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 /// </summary>
 public class SetterResolver
 {
-    
+
 }
