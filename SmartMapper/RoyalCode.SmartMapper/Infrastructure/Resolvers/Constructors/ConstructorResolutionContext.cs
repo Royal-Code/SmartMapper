@@ -87,7 +87,7 @@ public class ConstructorResolutionContext
 
     public bool IsParametersResolved => parameters.All(p => !p.Unresolved);
 
-    public bool IsSuccessfullyResolved => IsParametersResolved && groups.All(g => g.IsResolved) && !HasFailure;
+    public bool IsSuccessfullyResolved => IsParametersResolved && groups.All(g => g.Resolved) && !HasFailure;
 
     public ConstructorResolution GetResolution()
     {
@@ -106,7 +106,7 @@ public class ConstructorResolutionContext
 
             // pegar os grupos não resolvidos, e gerar uma mensagem para cada, incluindo os nomes das
             // propriedades internas não resolvidas.
-            var unresolvedGroupsMessages = groups.Where(g => !g.IsResolved)
+            var unresolvedGroupsMessages = groups.Where(g => !g.Resolved)
                 .Select(g => g.GetFailureMessage());
 
             return new ConstructorResolution(

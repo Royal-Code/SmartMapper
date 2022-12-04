@@ -1,5 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Callers;
 using System.Reflection;
@@ -113,7 +114,7 @@ public static class ResolvableMembersFactory
     /// </summary>
     /// <param name="request">The request resolve a invocable member.</param>
     /// <returns>A collection of <see cref="TargetParameter"/>.</returns>
-    public static TargetParameter[] CreateTargetParameters(this IInvocableRequest request)
+    public static IEnumerable<TargetParameter> CreateTargetParameters(this IInvocableRequest request)
     {
         var parameterInfos = request.GetParameters();
         var targetParameters = new TargetParameter[parameterInfos.Length];
@@ -123,5 +124,49 @@ public static class ResolvableMembersFactory
         }
         return targetParameters;
     }
+
+    /// <summary>
+    /// <para>
+    ///     For each source property provided by the invocable request,
+    ///     creates a new instance of <see cref="AvailableSourceProperty"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="request">The request resolve a invocable member.</param>
+    /// <param name="resolutionStatus">The resolution status for the invocable member (constructor or method).</param>
+    /// <param name="groups">A collection of properties groups.</param>
+    /// <returns>A collection of <see cref="AvailableSourceProperty"/>.</returns>
+    public static IEnumerable<AvailableSourceProperty> CreateAvailableSourceProperties(this IInvocableRequest request,
+        ResolutionStatus resolutionStatus, ICollection<InnerSourcePropertiesGroup>? groups = null)
+    {
+        var sourceProperties = request.GetSourceProperties().ToList();
+        var availableSourceProperties = new List<AvailableSourceProperty>();
         
+        foreach (var sourceProperty in sourceProperties)
+        {
+            if (sourceProperty.Options.ResolutionStatus == resolutionStatus)
+            {
+                var group = new InnerSourcePropertiesGroup(sourceProperty);
+                groups?.Add(group);
+                
+                var resolution = sourceProperty.Options.GetToConstructorOptionsResolution();
+                resolution.SourceOptions.SourceType.GetReadableProperties()
+                    .Select(info =>
+                    {
+                        var preConfigured = resolution.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
+                        var child = new SourceProperty(info, preConfigured, option ?? new PropertyOptions(info));
+                        sourceProperty.AddChild(child);
+                        return child;
+                    })
+                    .Where(s => s.Options.ResolutionStatus != ResolutionStatus.Ignored)
+                    .Select(s => new AvailableSourceProperty(s, group))
+                    .ForEach(availableSourceProperties.Add);
+            }
+            else
+            {
+                availableSourceProperties.Add(new(sourceProperty));
+            }
+        }
+
+        return availableSourceProperties;
+    }
 }
