@@ -24,3 +24,7 @@ Second, selectors can only assign properties, you cannot map them to constructor
 The source of the selectors are filter objects, and the target is queryable models, such as entities.
 <br/>
 Instead of assigning values between properties, specifiers apply the **Where** condition of an **IQueryable**, comparing the values of the filter (source) and the entity (target).
+
+## Stats
+
+![Alt](https://repobeats.axiom.co/api/embed/7a40a95757f9d974e0fcbf4348c9615f6004cf15.svg "Repobeats analytics image")
