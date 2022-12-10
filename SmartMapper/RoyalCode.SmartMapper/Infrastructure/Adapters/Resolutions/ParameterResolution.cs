@@ -17,5 +17,5 @@ public class ParameterResolution : ResolutionBase
     public TargetParameter? Parameter { get; init; }
 
     
-    public ToConstructorParameterOptions? ToParameterOptions { get; init; }
+    //public ToConstructorParameterOptions? ToParameterOptions { get; init; }
 }

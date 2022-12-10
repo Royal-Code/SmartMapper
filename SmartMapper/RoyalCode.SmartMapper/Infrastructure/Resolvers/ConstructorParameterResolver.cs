@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Invocables;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 
@@ -32,40 +33,39 @@ public class ConstructorParameterResolver
     ///     because of incompatible data types.
     /// </para>
     /// </summary>
-    /// <param name="context">The constructor parameter contexto to by resolved.</param>
+    /// <param name="request">The parameter request to by resolved.</param>
     /// <param name="resolution">The resolution, if possible.</param>
     /// <returns>
     ///     True if a source property with the parameter name exists or the parameter is preconfigured,
     ///     false when direct mapping between a source property and parameter is not possible.
     /// </returns>
     public bool TryResolve(
-        ConstrutorParameterContext context,
+        IParameterRequest request,
         [NotNullWhen(true)] out ParameterResolution? resolution)
     {
-        var ctorContext = context.ConstructorContext;
-        var parameterName = context.Parameter.ParameterInfo.Name!;
-
-        if (ctorContext.TryGetParameterOptionsByName(
+        var parameterName = request.Parameter.MemberInfo.Name!;
+        var targetType = request.Parameter.MemberInfo.Member.DeclaringType!;
+        
+        if (request.TryGetParameterOptionsByName(
             parameterName,
             out var toParameterOptions))
         {
             var propertyOptions = toParameterOptions.ResolvedProperty!;
 
-            if (!ctorContext.TryGetAvailableSourceProperty(
+            if (!request.TryGetAvailableSourceProperty(
                 propertyOptions.Property,
-                out var availableProperty,
-                out _))
+                out var availableProperty))
             {
                 resolution = null;
                 return false;
             }
 
-            var assignmentResolver = context.ConstructorContext.Configuration.GetResolver<AssignmentStrategyResolver>();
+            var assignmentResolver = request.Configuration.GetResolver<AssignmentStrategyResolver>();
             var assignmentContext = new AssignmentContext(
                 propertyOptions.Property.PropertyType,
-                toParameterOptions.TargetType,
+                targetType,
                 propertyOptions.AssignmentStrategy,
-                ctorContext.Configuration);
+                request.Configuration);
 
             var assignmentResolution = assignmentResolver.Resolve(assignmentContext);
             if (!assignmentResolution.Resolved)
@@ -75,7 +75,7 @@ public class ConstructorParameterResolver
                     Resolved = false,
                     FailureMessages = new[]
                         {
-                            $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {ctorContext.TargetType} type"
+                            $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {targetType} type"
                         }
                         .Concat(assignmentResolution.FailureMessages)
                 };
@@ -87,8 +87,8 @@ public class ConstructorParameterResolver
             {
                 Resolved = true,
                 AssignmentResolution = assignmentResolution,
-                Parameter = context.Parameter,
-                ToParameterOptions = toParameterOptions
+                Parameter = request.Parameter,
+                //ToParameterOptions = toParameterOptions
             };
             return true;
         }

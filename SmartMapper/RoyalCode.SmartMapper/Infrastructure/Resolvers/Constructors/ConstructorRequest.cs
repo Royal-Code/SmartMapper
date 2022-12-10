@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Infrastructure.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Callers;
 using System.Reflection;
@@ -22,6 +23,13 @@ public record ConstructorRequest(
         return Constructor.MemberInfo.GetParameters();
     }
 
+    /// <inheritdoc />
+    public IEnumerable<SourceProperty> GetSourceProperties() 
+        => ActivationContext.AdapterContext.GetPropertiesByStatus(
+            ResolutionStatus.Undefined,
+            ResolutionStatus.MappedToConstructor,
+            ResolutionStatus.MappedToConstructorParameter);
+    
     /// <summary>
     /// <para>
     ///     The configuration used to resolve the constructor.

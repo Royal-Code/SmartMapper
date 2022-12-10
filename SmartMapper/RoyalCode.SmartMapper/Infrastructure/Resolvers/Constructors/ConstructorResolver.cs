@@ -27,56 +27,13 @@ public class ConstructorResolver
     /// <returns>The resolution.</returns>
     public ConstructorResolution Resolve(ConstructorRequest request)
     {
-        // part 1 - get parameters and source properties
+        // part 1 - create a context for the resolution
+        var context = request.CreateContext();
+        
+        // Part 2 - Resolved pré-configured properties.
 
-        var targetParameters = context.Constructor.GetParameters()
-            .Select(p => new TargetParameter(p))
-            .ToList();
-
-        var sourceProperties = context.ResolutionContext.GetPropertiesByStatus(
-            ResolutionStatus.Undefined,
-            ResolutionStatus.MappedToConstructor,
-            ResolutionStatus.MappedToConstructorParameter).ToList();
-
-        // part 2 - create context and contextual properties
-
-        var availableProperties = new List<AvailableSourceProperty>();
-        var groups = new List<InnerSourcePropertiesGroup>();
-        foreach (var sourceProperty in sourceProperties)
-        {
-            if (sourceProperty.Options.ResolutionStatus == ResolutionStatus.MappedToConstructor)
-            {
-                var group = new InnerSourcePropertiesGroup(sourceProperty);
-                var resolution = sourceProperty.Options.GetToConstructorOptionsResolution();
-                resolution.SourceOptions.SourceType.GetReadableProperties()
-                    .Select(info =>
-                    {
-                        var preConfigured = resolution.SourceOptions.TryGetPropertyOptions(info.Name, out var option);
-                        var child = new SourceProperty(info, preConfigured, option ?? new PropertyOptions(info));
-                        sourceProperty.Hierarchy.AddChild(child);
-                        return child;
-                    })
-                    .Where(s => s.Options.ResolutionStatus != ResolutionStatus.Ignored)
-                    .Select(s => new AvailableSourceProperty(s, group))
-                    .ForEach(availableProperties.Add);
-            }
-            else
-            {
-                availableProperties.Add(new(sourceProperty));
-            }
-        }
-
-        var ctorContext = new ConstructorResolutionContext(
-            availableProperties,
-            groups,
-            targetParameters,
-            context.ResolutionContext,
-            context.Constructor);
-
-        // Part 3 - Resolved pré-configured properties.
-
-        var parameterResolver = context.ResolutionContext.Configuration.GetResolver<ConstructorParameterResolver>();
-        foreach (var parameter in targetParameters)
+        var parameterResolver = request.Configuration.GetResolver<ConstructorParameterResolver>();
+        foreach (var parameter in context.TargetParameters)
         {
             var parameterContext = new ConstrutorParameterContext(ctorContext, parameter);
             if (parameterResolver.TryResolve(parameterContext, out var resolution))

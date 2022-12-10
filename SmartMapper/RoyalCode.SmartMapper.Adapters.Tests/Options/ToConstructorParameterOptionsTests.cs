@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using RoyalCode.SmartMapper.Exceptions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;

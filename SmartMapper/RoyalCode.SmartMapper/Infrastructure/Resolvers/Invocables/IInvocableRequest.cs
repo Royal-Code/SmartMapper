@@ -1,4 +1,5 @@
 ﻿
+using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Callers;
@@ -21,4 +22,11 @@ public interface IInvocableRequest
     /// </summary>
     /// <returns></returns>
     IEnumerable<SourceProperty> GetSourceProperties();
+
+    /// <summary>
+    /// <para>
+    ///     The configuration used to resolve the invocable member (method or constructor).
+    /// </para>
+    /// </summary>
+    ResolutionConfiguration Configuration { get; }
 }

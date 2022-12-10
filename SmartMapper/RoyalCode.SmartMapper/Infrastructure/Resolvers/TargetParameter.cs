@@ -7,11 +7,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 public class TargetParameter : ResolvableMember<ParameterInfo>
 {
     public TargetParameter(ParameterInfo parameterInfo) : base(parameterInfo) { }
-
-
-
-
-    
+   
     public ParameterResolution? Resolution { get; private set; }
 
     public bool Unresolved => Resolution is null;
