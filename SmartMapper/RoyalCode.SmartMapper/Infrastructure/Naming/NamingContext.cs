@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Naming;
 

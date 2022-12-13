@@ -1,3 +1,4 @@
+using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
@@ -15,11 +16,11 @@ public class AvailableSourceProperty : ResolvableMember
 
     public InnerSourcePropertiesGroup? Group { get; }
 
-    public TargetParameter? TargetParameter { get; private set; }
+    public ParameterResolution? Resolution { get; private set; }
 
-    public void ResolvedBy(TargetParameter targetParameter)
+    public void ResolvedBy(ParameterResolution resolution)
     {
-        TargetParameter = targetParameter;
+        Resolution = resolution;
         Resolved = true;
     }
 }

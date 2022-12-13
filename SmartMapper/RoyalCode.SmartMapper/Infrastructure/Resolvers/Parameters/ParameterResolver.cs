@@ -1,10 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
-using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Invocables;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Parameters;
 
 /// <summary>
 /// <para>
@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
 ///     based on the parameter name and/or pre-configured options.
 /// </para>
 /// </summary>
-public class ConstructorParameterResolver
+public class ParameterResolver
 {
     /// <summary>
     /// <para>
@@ -45,7 +45,7 @@ public class ConstructorParameterResolver
     {
         var parameterName = request.Parameter.MemberInfo.Name!;
         var targetType = request.Parameter.MemberInfo.Member.DeclaringType!;
-        
+
         if (request.TryGetParameterOptionsByName(
             parameterName,
             out var toParameterOptions))
@@ -61,13 +61,13 @@ public class ConstructorParameterResolver
             }
 
             var assignmentResolver = request.Configuration.GetResolver<AssignmentStrategyResolver>();
-            var assignmentContext = new AssignmentContext(
+            var assignmentRequest = new AssignmentRequest(
                 propertyOptions.Property.PropertyType,
                 targetType,
                 propertyOptions.AssignmentStrategy,
                 request.Configuration);
 
-            var assignmentResolution = assignmentResolver.Resolve(assignmentContext);
+            var assignmentResolution = assignmentResolver.Resolve(assignmentRequest);
             if (!assignmentResolution.Resolved)
             {
                 resolution = new ParameterResolution(availableProperty)
@@ -87,8 +87,7 @@ public class ConstructorParameterResolver
             {
                 Resolved = true,
                 AssignmentResolution = assignmentResolution,
-                Parameter = request.Parameter,
-                //ToParameterOptions = toParameterOptions
+                Parameter = request.Parameter
             };
             return true;
         }

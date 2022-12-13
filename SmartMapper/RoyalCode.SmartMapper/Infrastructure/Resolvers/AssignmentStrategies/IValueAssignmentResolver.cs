@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 /// <summary>
 /// <para>
@@ -16,20 +16,25 @@ namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 /// </summary>
 public interface IValueAssignmentResolver
 {
+    /// <summary>
+    /// <para>
+    ///     Estratégia de atribuição de valores.
+    /// </para>
+    /// </summary>
     ValueAssignmentStrategy Strategy { get; }
 
     /// <summary>
     /// Checa se pode resolver, criar o resultado.
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="request"></param>
     /// <returns></returns>
-    AssignmentResolution Resolve(AssignmentContext context);
+    AssignmentResolution Resolve(AssignmentRequest request);
 
     /// <summary>
     /// Chega se pode resolver, se pode, cria o resultado, caso contrário retorna false sem criar resultado.
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="request"></param>
     /// <param name="resolution"></param>
     /// <returns></returns>
-    bool TryResolve(AssignmentContext context, [NotNullWhen(true)] out AssignmentResolution? resolution);
+    bool TryResolve(AssignmentRequest request, [NotNullWhen(true)] out AssignmentResolution? resolution);
 }

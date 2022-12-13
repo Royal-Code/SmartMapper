@@ -1,7 +1,7 @@
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 

@@ -10,6 +10,5 @@
 
 	<ItemGroup>
 	  <Folder Include="Infrastructure\Resolvers\Methods\" />
-	  <Folder Include="Infrastructure\Resolvers\Parameters\" />
 	</ItemGroup>
 </Project>

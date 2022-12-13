@@ -1,6 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 /// <summary>
 /// <para>
@@ -15,20 +15,20 @@ public class AssignmentStrategyResolver
     ///     Resolves the assignment strategy between a source property and a target member.
     /// </para>
     /// </summary>
-    /// <param name="context">Context of assignment to be resolved.</param>
+    /// <param name="request">Context of assignment to be resolved.</param>
     /// <returns>
     ///     The resolution, which can be successful or unsuccessful.
     /// </returns>
-    public AssignmentResolution Resolve(AssignmentContext context)
+    public AssignmentResolution Resolve(AssignmentRequest request)
     {
-        var resolvers = context.Configuration.GetResolver<IEnumerable<IValueAssignmentResolver>>();
-        
-        var strategy = context.StrategyOptions?.Strategy ?? ValueAssignmentStrategy.Undefined;
+        var resolvers = request.Configuration.GetResolver<IEnumerable<IValueAssignmentResolver>>();
+
+        var strategy = request.StrategyOptions?.Strategy ?? ValueAssignmentStrategy.Undefined;
         if (strategy == ValueAssignmentStrategy.Undefined)
         {
             foreach (var resolver in resolvers)
             {
-                if(resolver.TryResolve(context, out var resolution))
+                if (resolver.TryResolve(request, out var resolution))
                     return resolution;
             }
 
@@ -36,7 +36,7 @@ public class AssignmentStrategyResolver
             {
                 Resolved = false,
                 Strategy = ValueAssignmentStrategy.Undefined,
-                FailureMessages = new[] { $"The {context.From.Name} type cannot be assigned to {context.To.Name} type" }
+                FailureMessages = new[] { $"The {request.From.Name} type cannot be assigned to {request.To.Name} type" }
             };
         }
         else
@@ -45,7 +45,7 @@ public class AssignmentStrategyResolver
             if (resolver is null)
                 throw new NotSupportedException($"The value assignment strategy {strategy} is not suported");
 
-            return resolver.Resolve(context);
+            return resolver.Resolve(request);
         }
     }
 }

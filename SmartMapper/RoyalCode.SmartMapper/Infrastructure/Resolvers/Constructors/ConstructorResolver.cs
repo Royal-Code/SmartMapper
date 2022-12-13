@@ -2,6 +2,7 @@ using RoyalCode.SmartMapper.Extensions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Parameters;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
@@ -31,23 +32,21 @@ public class ConstructorResolver
         var context = request.CreateContext();
         
         // Part 2 - Resolved pré-configured properties.
-
-        var parameterResolver = request.Configuration.GetResolver<ConstructorParameterResolver>();
-        foreach (var parameter in context.TargetParameters)
+        var parameterResolver = request.Configuration.GetResolver<ParameterResolver>();
+        foreach (var parameterRequest in context.ConstrutorParameterRequests())
         {
-            var parameterContext = new ConstrutorParameterContext(ctorContext, parameter);
-            if (parameterResolver.TryResolve(parameterContext, out var resolution))
+            if (parameterResolver.TryResolve(parameterRequest, out var resolution))
             {
-                ctorContext.Resolved(parameter, resolution);
+                resolution.AvailableSourceProperty.ResolvedBy(resolution);
             }
         }
 
-        if (ctorContext.HasFailure || ctorContext.IsParametersResolved)
+        if (context.HasFailure || context.IsParametersResolved)
         {
-            return ctorContext.GetResolution();
+            return context.GetResolution();
         }
 
-        // Part 4 - Discovery mapping from source properties to target constructor parameters.
+        // Part 3 - Discovery mapping from source properties to target constructor parameters.
 
         var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
 

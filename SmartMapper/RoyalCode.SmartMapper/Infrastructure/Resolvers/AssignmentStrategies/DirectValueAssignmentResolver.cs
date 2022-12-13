@@ -1,14 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Infrastructure.Core;
 
-namespace RoyalCode.SmartMapper.Infrastructure.AssignmentStrategies;
+namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 public class DirectValueAssignmentResolver : IValueAssignmentResolver
 {
     public ValueAssignmentStrategy Strategy => ValueAssignmentStrategy.Direct;
 
-    private bool CanResolve(AssignmentContext context)
-        => context.To.IsAssignableFrom(context.From);
+    private bool CanResolve(AssignmentRequest request)
+        => request.To.IsAssignableFrom(request.From);
 
     private AssignmentResolution CreateResolution() => new()
     {
@@ -16,28 +16,28 @@ public class DirectValueAssignmentResolver : IValueAssignmentResolver
         Strategy = ValueAssignmentStrategy.Direct
     };
 
-    public AssignmentResolution Resolve(AssignmentContext context)
+    public AssignmentResolution Resolve(AssignmentRequest request)
     {
-        if (CanResolve(context))
+        if (CanResolve(request))
             return CreateResolution();
 
         return new()
         {
             Resolved = false,
-            FailureMessages = new[] { $"The type {context.To.Name} is not assignable from type {context.From.Name}" }
+            FailureMessages = new[] { $"The type {request.To.Name} is not assignable from type {request.From.Name}" }
         };
     }
 
     public bool TryResolve(
-        AssignmentContext context,
+        AssignmentRequest request,
         [NotNullWhen(true)] out AssignmentResolution? resolution)
     {
-        if (CanResolve(context))
+        if (CanResolve(request))
         {
             resolution = CreateResolution();
             return true;
         }
-        
+
         resolution = null;
         return false;
     }
