@@ -1,7 +1,9 @@
 using FluentAssertions;
 using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Resolvers;
@@ -9,71 +11,18 @@ namespace RoyalCode.SmartMapper.Adapters.Tests.Resolvers;
 public class ActivationResolverTests
 {
     [Fact]
-    public void GetElegibleConstructors_Must_FindDefaultConstructor()
-    {
-        // arrange
-        var configs = ConfigurationBuilder.CreateDefault().Build();
-        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
-        var adapterContext = new AdapterContext(adapterOptions, configs);
-
-        var resolver = new ActivationResolver();
-
-        // act
-        var constructors = resolver.GetElegibleConstructors(adapterContext.GetConstructorOptions());
-
-        // assert
-        constructors.Should().HaveCount(1);
-    }
-
-    [Fact]
-    public void GetElegibleConstructors_Must_FindMultiplesConstructors()
-    {
-        // arrange
-        var configs = ConfigurationBuilder.CreateDefault().Build();
-        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Baz));
-        var adapterContext = new AdapterContext(adapterOptions, configs);
-
-        var resolver = new ActivationResolver();
-
-        // act
-        var constructors = resolver.GetElegibleConstructors(adapterContext.GetConstructorOptions());
-
-        // assert
-        constructors.Should().HaveCount(2);
-    }
-
-    [Fact]
-    public void GetElegibleConstructors_Must_NotIncludeNotElegibleConstructors()
-    {
-        // arrange
-        var configs = ConfigurationBuilder.CreateDefault().Build();
-        var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Qux));
-        var adapterContext = new AdapterContext(adapterOptions, configs);
-
-        var ctorOptions = adapterContext.GetConstructorOptions();
-        ctorOptions.ParameterTypes = new[] { typeof(string) };
-
-        var resolver = new ActivationResolver();
-
-        // act
-        var constructors = resolver.GetElegibleConstructors(adapterContext.GetConstructorOptions());
-
-        // assert
-        constructors.Should().HaveCount(1);
-    }
-
-    [Fact]
     public void Resolve_Must_CreateSuccessResolution_ForDefaultConstructor()
     {
         // arrange
         var configs = ConfigurationBuilder.CreateDefault().Build();
         var adapterOptions = new AdapterOptions(typeof(Foo), typeof(Bar));
         var adapterContext = new AdapterContext(adapterOptions, configs);
+        var activationRequest = adapterContext.CreateActivationRequest();
 
         var resolver = new ActivationResolver();
 
         // act
-        var resolution = resolver.Resolve(adapterContext);
+        var resolution = resolver.Resolve(activationRequest);
 
         // assert
         resolution.Resolved.Should().BeTrue();

@@ -1,7 +1,7 @@
 using FluentAssertions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Infrastructure.Configurations;
 using RoyalCode.SmartMapper.Infrastructure.Core;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 using Xunit;
 
 namespace RoyalCode.SmartMapper.Adapters.Tests.Resolvers;

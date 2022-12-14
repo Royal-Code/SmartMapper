@@ -1,5 +1,0 @@
-using RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
-
-namespace RoyalCode.SmartMapper.Infrastructure.Resolvers;
-
-public record ConstrutorParameterContext(ConstructorResolutionContext ConstructorContext, TargetParameter Parameter);

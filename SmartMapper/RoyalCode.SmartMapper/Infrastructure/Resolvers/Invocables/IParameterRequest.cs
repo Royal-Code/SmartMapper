@@ -28,6 +28,17 @@ public interface IParameterRequest
     ///     Try get an available source property.
     /// </para>
     /// </summary>
+    /// <param name="propertyName">The source property name.</param>
+    /// <param name="property">The available property, if found.</param>
+    /// <returns>True if the property is found, false otherwise.</returns>
+    bool TryGetAvailableSourceProperty(string propertyName,
+        [NotNullWhen(true)] out AvailableSourceProperty? property);
+    
+    /// <summary>
+    /// <para>
+    ///     Try get an available source property.
+    /// </para>
+    /// </summary>
     /// <param name="propertyInfo">The property information.</param>
     /// <param name="property">The available property, if found.</param>
     /// <returns>True if the property is found, false otherwise.</returns>

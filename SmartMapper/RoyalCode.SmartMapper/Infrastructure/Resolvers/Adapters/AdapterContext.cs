@@ -27,12 +27,6 @@ public class AdapterContext
     public ResolutionConfiguration Configuration { get; }
 
     [Obsolete("Use the property 'Options' instead.")]
-    public Type SourceType => Options.SourceType;
-
-    [Obsolete("Use the property 'Options' instead.")]
-    public Type TargetType => Options.TargetType;
-
-    [Obsolete("Use the property 'Options' instead.")]
     public ConstructorOptions GetConstructorOptions() => Options.TargetOptions.GetConstructorOptions();
 
     public IEnumerable<SourceProperty> GetPropertiesByStatus(params ResolutionStatus[] statuses)
@@ -41,11 +35,6 @@ public class AdapterContext
             .Where(p => !p.Resolved)
             .Where(p => statuses.Contains(p.Options.ResolutionStatus));
     }
-
-    public IEnumerable<SourceProperty> GetPropertiesUnresolved()
-        => properties.Where(p => p.Options.ResolutionStatus == ResolutionStatus.Undefined);
-
-    public IEnumerable<SourceProperty> GetProperties() => properties;
 
     public void UseActivator(ActivationResolution resolution)
     {

@@ -9,6 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Infrastructure\Adapters\Resolutions\" />
 	  <Folder Include="Infrastructure\Resolvers\Methods\" />
 	</ItemGroup>
 </Project>

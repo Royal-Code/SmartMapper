@@ -1,18 +1,19 @@
 using RoyalCode.SmartMapper.Infrastructure.Naming;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers;
+using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
 
-public class ConstructorParameterDiscovery
+public class ParameterDiscovery
 {
-    public ConstructorParameterDiscoveryResult Discover(ConstructorParameterDiscoveryContext context)
+    public ParameterDiscoveryResult Discover(ParameterDiscoveryRequest request)
     {
-        var nameHandlers = context.Configuration.NameHandlers.SourceNameHandlers;
-        var matches = new LinkedList<ConstructorParameterMatch>();
+        var nameHandlers = request.Configuration.NameHandlers.SourceNameHandlers;
+        var matches = new LinkedList<ParameterMatch>();
         
-        foreach (var property in context.AvailableProperties)
+        foreach (var property in request.AvailableProperties)
         {
-            var propertyInfo = property.SourceProperty.PropertyInfo;
+            var propertyInfo = property.SourceProperty.MemberInfo;
             var propertyName = propertyInfo.Name;
             
             TargetParameter? matchParameter = null;
@@ -20,18 +21,18 @@ public class ConstructorParameterDiscovery
             {
                 foreach (var name in sourceNameHandler.GetNames(propertyName))
                 {
-                    matchParameter = context.Parameters.FirstOrDefault(p => p.ParameterInfo.Name == name);
+                    matchParameter = request.Parameters.FirstOrDefault(p => p.MemberInfo.Name == name);
                     if (matchParameter is not null)
                     {
                         var namingContext = new NamingContext(propertyInfo,
-                            matchParameter.ParameterInfo.ParameterType,
-                            context.Configuration);
+                            matchParameter.MemberInfo.ParameterType,
+                            request.Configuration);
                             
                         sourceNameHandler.Validate(namingContext);
                             
                         if (namingContext.IsValid)
                         {
-                            var match = new ConstructorParameterMatch(
+                            var match = new ParameterMatch(
                                 property, matchParameter, namingContext.Resolution);
 
                             matches.AddLast(match);
@@ -49,6 +50,6 @@ public class ConstructorParameterDiscovery
             }
         }
 
-        return new ConstructorParameterDiscoveryResult(matches);
+        return new ParameterDiscoveryResult(matches);
     }
 }

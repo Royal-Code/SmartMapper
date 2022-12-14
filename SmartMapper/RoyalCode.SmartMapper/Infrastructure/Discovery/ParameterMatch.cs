@@ -3,7 +3,7 @@ using RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Discovery;
 
-public record ConstructorParameterMatch(
+public record ParameterMatch(
     AvailableSourceProperty Property,
     TargetParameter Parameter,
     AssignmentResolution AssignmentResolution);

@@ -44,12 +44,23 @@ public class ConstrutorParameterRequest : IParameterRequest
     }
 
     /// <inheritdoc/>
+    public bool TryGetAvailableSourceProperty(
+        string propertyName, 
+        [NotNullWhen(true)] out AvailableSourceProperty? property)
+    {
+        property = constructorContext.AvailableSourceProperties
+            .Where(p => !p.Resolved && p.SourceProperty.MemberInfo.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault();
+        return property is not null;
+    }
+
+    /// <inheritdoc/>
     public bool TryGetParameterOptionsByName(
         string name, 
         [NotNullWhen(true)] out ToParameterOptionsBase? options)
     {
-        constructorContext.ConstructorOptions.TryGetParameterOptions(name, out var ctorParamOptions);
+        var found = constructorContext.ConstructorOptions.TryGetParameterOptions(name, out var ctorParamOptions);
         options = ctorParamOptions;
-        return options is not null;
+        return found;
     }
 }

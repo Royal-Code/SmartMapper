@@ -1,8 +1,6 @@
-using RoyalCode.SmartMapper.Extensions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
-using RoyalCode.SmartMapper.Infrastructure.Core;
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Parameters;
+using System.Text.RegularExpressions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
@@ -37,7 +35,7 @@ public class ConstructorResolver
         {
             if (parameterResolver.TryResolve(parameterRequest, out var resolution))
             {
-                resolution.AvailableSourceProperty.ResolvedBy(resolution);
+                context.Resolved(resolution);
             }
         }
 
@@ -48,22 +46,16 @@ public class ConstructorResolver
 
         // Part 3 - Discovery mapping from source properties to target constructor parameters.
 
-        var discovery = context.ResolutionContext.Configuration.GetDiscovery<ConstructorParameterDiscovery>();
+        var discovery = context.Configuration.GetDiscovery<ParameterDiscovery>();
+        var discoveryRequest = context.CreateParameterDiscoveryRequest();
+        var discoveryResult = discovery.Discover(discoveryRequest);
 
-        var discoveryContext = new ConstructorParameterDiscoveryContext(
-            availableProperties.Where(p => !p.IsResolved).ToList(),
-            targetParameters.Where(p => p.Unresolved).ToList(),
-            context.ResolutionContext.Configuration);
-
-        var result = discovery.Discover(discoveryContext);
-
-        foreach (var match in result.Matches)
+        foreach (var match in discoveryResult.Matches)
         {
-            ctorContext.Resolved(match);
+            context.Resolved(match);
         }
 
         // produce a result e return it.
-
-        return ctorContext.GetResolution();
+        return context.GetResolution();
     }
 }

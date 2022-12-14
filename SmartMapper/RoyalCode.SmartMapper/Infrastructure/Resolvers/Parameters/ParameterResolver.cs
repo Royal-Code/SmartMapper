@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using RoyalCode.SmartMapper.Extensions;
-using RoyalCode.SmartMapper.Infrastructure.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.AssignmentStrategies;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Invocables;
 
@@ -45,6 +45,7 @@ public class ParameterResolver
     {
         var parameterName = request.Parameter.MemberInfo.Name!;
         var targetType = request.Parameter.MemberInfo.Member.DeclaringType!;
+        var parameterType = request.Parameter.MemberInfo.ParameterType;
 
         if (request.TryGetParameterOptionsByName(
             parameterName,
@@ -60,39 +61,59 @@ public class ParameterResolver
                 return false;
             }
 
-            var assignmentResolver = request.Configuration.GetResolver<AssignmentStrategyResolver>();
             var assignmentRequest = new AssignmentRequest(
                 propertyOptions.Property.PropertyType,
-                targetType,
+                parameterType,
                 propertyOptions.AssignmentStrategy,
                 request.Configuration);
 
-            var assignmentResolution = assignmentResolver.Resolve(assignmentRequest);
-            if (!assignmentResolution.Resolved)
-            {
-                resolution = new ParameterResolution(availableProperty)
-                {
-                    Resolved = false,
-                    FailureMessages = new[]
-                        {
-                            $"The property {propertyOptions.Property.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {targetType} type"
-                        }
-                        .Concat(assignmentResolution.FailureMessages)
-                };
+            resolution = ProcessResolution(request, assignmentRequest, availableProperty, propertyOptions.Property, parameterName, targetType);
+            return true;
+        }
 
-                return true;
-            }
+        if (request.TryGetAvailableSourceProperty(
+                parameterName,
+                out var available))
+        {
+            var propertyInfo = available.SourceProperty.MemberInfo;
 
-            resolution = new ParameterResolution(availableProperty)
-            {
-                Resolved = true,
-                AssignmentResolution = assignmentResolution,
-                Parameter = request.Parameter
-            };
+            var assignmentRequest = new AssignmentRequest(
+                propertyInfo.PropertyType,
+                parameterType,
+                null,
+                request.Configuration);
+
+            resolution = ProcessResolution(request, assignmentRequest, available, propertyInfo, parameterName, targetType);
             return true;
         }
 
         resolution = null;
         return false;
+    }
+
+    private ParameterResolution ProcessResolution(
+        IParameterRequest request,
+        AssignmentRequest assignmentRequest,
+        AvailableSourceProperty availableProperty,
+        PropertyInfo propertyInfo, string parameterName, Type targetType)
+    {
+        var assignmentResolver = request.Configuration.GetResolver<AssignmentStrategyResolver>();
+        var assignmentResolution = assignmentResolver.Resolve(assignmentRequest);
+        return assignmentResolution.Resolved
+            ? new ParameterResolution(availableProperty)
+            {
+                Resolved = true,
+                AssignmentResolution = assignmentResolution,
+                Parameter = request.Parameter
+            }
+            : new ParameterResolution(availableProperty)
+            {
+                Resolved = false,
+                FailureMessages = new[]
+                {
+                    $"The property {propertyInfo.GetPathName()} cannot be assigned to the constructor parameter {parameterName} of {targetType} type"
+                }
+                .Concat(assignmentResolution.FailureMessages)
+            };
     }
 }

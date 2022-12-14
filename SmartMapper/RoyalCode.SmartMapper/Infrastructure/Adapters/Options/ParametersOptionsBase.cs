@@ -25,6 +25,9 @@ public abstract class ParametersOptionsBase<TToParameter>
     /// </summary>
     public Type TargetType { get; }
 
+    /// <summary>
+    /// The invocable parameters.
+    /// </summary>
     protected abstract IEnumerable<TToParameter> Parameters { get; }
 
     /// <summary>

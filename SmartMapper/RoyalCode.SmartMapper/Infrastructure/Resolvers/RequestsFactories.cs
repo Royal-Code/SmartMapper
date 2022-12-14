@@ -1,4 +1,5 @@
-﻿using RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
+﻿using RoyalCode.SmartMapper.Infrastructure.Discovery;
+using RoyalCode.SmartMapper.Infrastructure.Resolvers.Activations;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Adapters;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 
@@ -34,5 +35,20 @@ public static class RequestsFactories
     public static ConstructorRequest CreateConstructorRequest(this EligibleConstructor constructor, ActivationContext context)
     {
         return new ConstructorRequest(context, constructor);
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="ParameterDiscoveryRequest"/> for discovery of the parameters of a constructor.
+    /// </para>
+    /// </summary>
+    /// <param name="context">The context of the adapter resolution process.</param>
+    /// <returns>A new instance of <see cref="ParameterDiscoveryRequest"/>.</returns>
+    public static ParameterDiscoveryRequest CreateParameterDiscoveryRequest(this ConstructorContext context)
+    {
+        return new ParameterDiscoveryRequest(
+            context.AvailableSourceProperties, 
+            context.TargetParameters,
+            context.Configuration);
     }
 }
