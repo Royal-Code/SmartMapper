@@ -96,7 +96,7 @@ public static class ResolvableMembersFactory
 
             return constructor is null
                 ? Array.Empty<EligibleConstructor>()
-                : new[] { new EligibleConstructor(constructor, options, true) };
+                : [new EligibleConstructor(constructor, options, true)];
         }
 
         var constructors = options.TargetType.GetTypeInfo().DeclaredConstructors;

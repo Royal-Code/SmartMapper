@@ -1,0 +1,12 @@
+<Project>
+	<PropertyGroup>
+		<TargetVer>net6;net7;net8</TargetVer>
+		<AspNetVer Condition="'$(TargetFramework)' == 'net6'">6.0.0</AspNetVer>
+		<AspNetVer Condition="'$(TargetFramework)' == 'net7'">7.0.0</AspNetVer>
+		<AspNetVer Condition="'$(TargetFramework)' == 'net8'">8.0.0</AspNetVer>
+	</PropertyGroup>
+	<PropertyGroup>
+		<FastExpressionCompilerVer>4.1.0</FastExpressionCompilerVer>
+		<PropertySelectionVer>1.0.2</PropertySelectionVer>
+	</PropertyGroup>
+</Project>

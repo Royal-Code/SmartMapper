@@ -21,10 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RoyalCode.SmartMapper\RoyalCode.SmartMapper.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Adapters\**" />
     </ItemGroup>
 
@@ -34,6 +30,10 @@
 
     <ItemGroup>
       <None Remove="Adapters\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RoyalCode.SmartMapper.Old\RoyalCode.SmartMapper.Old.csproj" />
     </ItemGroup>
 
 </Project>

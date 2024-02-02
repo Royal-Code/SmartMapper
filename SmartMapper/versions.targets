@@ -1,19 +1,14 @@
 <Project>
 	<Import Project=".\base.targets"/>
-	
-	<PropertyGroup>
-		<Version>1.0.0-preview-1</Version>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
-		<FileVersion>1.0.0</FileVersion>
-	</PropertyGroup>
-	
-	<PropertyGroup>
-		<AspNetVer Condition="'$(TargetFramework)' == 'net6'">6.0.0</AspNetVer>
-		<AspNetVer Condition="'$(TargetFramework)' == 'net7'">7.0.0</AspNetVer>
-	</PropertyGroup>
 
 	<PropertyGroup>
-		<FastExpressionCompilerVer>3.3.0</FastExpressionCompilerVer>
-		<PropertySelectionVer>1.0.0-preview2.0</PropertySelectionVer>
-	</PropertyGroup>	
+		<BaseVer>1.0.0</BaseVer>
+		<PrevVer>-preview-1</PrevVer>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<Version>$(BaseVer)$(PrevVer)</Version>
+		<AssemblyVersion>$(BaseVer)</AssemblyVersion>
+		<FileVersion>$(BaseVer)</FileVersion>
+	</PropertyGroup>
 </Project>
