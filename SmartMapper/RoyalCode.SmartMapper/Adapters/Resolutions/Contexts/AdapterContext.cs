@@ -1,15 +1,14 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Extensions;
 using RoyalCode.SmartMapper.Core.Configurations;
-using RoyalCode.SmartMapper.Core.Resolutions;
-
-using RoyalCode.SmartMapper.Adapters.Resolvers;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
-internal class AdapterResolutionContext
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+internal sealed class AdapterContext
 {
-    public static AdapterResolutionContext Create(AdapterOptions options)
+    public static AdapterContext Create(AdapterOptions options)
     {
         var sourceType = options.SourceType;
 
@@ -22,23 +21,26 @@ internal class AdapterResolutionContext
             .ToList();
 
         // creates the context for the adapter resolution
-        return new AdapterResolutionContext
+        return new AdapterContext
         {
             PropertyOptions = propertyOptions,
-            SourceOptions = options.SourceOptions,
-            TargetOptions = options.TargetOptions
+            Options = options
         };
     }
+
+    private AdapterContext() { }
+
+    public AdapterOptions Options { get; private init; }
 
     /// <summary>
     /// Contains the options for the source properties of the mapping.
     /// </summary>
-    public SourceOptions SourceOptions { get; private init; }
+    public SourceOptions SourceOptions => Options.SourceOptions;
 
     /// <summary>
     /// Contains the options for the target members of the mapping.
     /// </summary>
-    public TargetOptions TargetOptions { get; private init; }
+    public TargetOptions TargetOptions => Options.TargetOptions;
 
     /// <summary>
     /// Contains the options for all properties of the source type.
@@ -49,32 +51,30 @@ internal class AdapterResolutionContext
     {
         // event: resolution started. here the interceptor can be called in future versions
 
+        // a struct to store the resolutions
         var resolutions = new Resolutions();
 
-        // get eligible target constructors
-        var targetConstructor = EligibleConstructor.Create(TargetOptions.GetConstructorOptions());
-
-        // if none constructor is eligible, generate a failure resolution
-        if (targetConstructor.Count is 0)
-        {
-            return new AdapterResolution(new ResolutionFailure($"None elegible constructor for adapt {SourceOptions.SourceType.Name} type to {TargetOptions.TargetType.Name} type."));
-        }
-
-        // if has a single empty constructor, then create a resolution for the constructor
-        if (EligibleConstructor.HasSingleEmptyConstructor(targetConstructor, out var eligible))
-        {
-            resolutions.ConstructorResolution = new([], eligible.Info);
-        }
+        // resolve the activator/constructor
+        var activationContext = ActivationContext.Create(this);
+        var activationResolution = activationContext.CreateResolution(configurations);
+        if (activationResolution.Resolved)
+            resolutions.ActivationResolution = activationResolution;
         else
-        {
-            // for each eligible constructor, try to resolve the constructor
-        }
+            return new AdapterResolution(activationResolution.Failure);
+
+        // resolve methods mapping
+
+
+
+        // resolve properties mapping
+
+
 
         throw new NotImplementedException();
     }
 
     private struct Resolutions
     {
-        public ConstructorResolution? ConstructorResolution { get; set; }
+        public ActivationResolution? ActivationResolution { get; set; }
     }
 }

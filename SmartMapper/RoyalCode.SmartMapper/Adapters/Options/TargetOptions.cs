@@ -7,9 +7,11 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// </summary>
 public class TargetOptions
 {
-    private ICollection<ToPropertyOptions>? toPropertyOptions; // eh necessário ? validações futuras?
+    ////private ICollection<ToPropertyOptions>? toPropertyOptions; // eh necessário ? validações futuras?
+
     private ConstructorOptions? constructorOptions;
-    private ICollection<MethodOptions>? methodOptions; // eh necessário ? validações futuras?
+
+    ////private ICollection<MethodOptions>? methodOptions; // eh necessário ? validações futuras?
 
     /// <summary>
     /// Creates a new instance of <see cref="TargetOptions"/>.
@@ -25,17 +27,17 @@ public class TargetOptions
     /// </summary>
     public Type TargetType { get; }
 
-    /// <summary>
-    /// <para>
-    ///     Adds an option for mapping a source type to a method.
-    /// </para>
-    /// </summary>
-    /// <param name="optionsBase">The options for mapping a source type to a method.</param>
-    public void AddToMethod(MethodOptions optionsBase)
-    {
-        methodOptions ??= new List<MethodOptions>();
-        methodOptions.Add(optionsBase);
-    }
+    /////// <summary>
+    /////// <para>
+    ///////     Adds an option for mapping a source type to a method.
+    /////// </para>
+    /////// </summary>
+    /////// <param name="optionsBase">The options for mapping a source type to a method.</param>
+    ////public void AddToMethod(MethodOptions optionsBase)
+    ////{
+    ////    methodOptions ??= new List<MethodOptions>();
+    ////    methodOptions.Add(optionsBase);
+    ////}
 
     /// <summary>
     /// <para>

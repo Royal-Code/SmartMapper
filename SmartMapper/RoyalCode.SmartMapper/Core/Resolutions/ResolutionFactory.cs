@@ -36,7 +36,7 @@ public sealed class ResolutionFactory
     /// </exception>
     public AdapterResolution CreateAdapterResolution(AdapterOptions adapterOptions)
     {
-        var context = AdapterResolutionContext.Create(adapterOptions);
+        var context = AdapterContext.Create(adapterOptions);
 
         var resolution = context.CreateResolution(configurations);
 
