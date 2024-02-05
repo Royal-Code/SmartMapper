@@ -11,7 +11,13 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 public abstract class ResolutionOptionsBase
 {
     /// <summary>
-    /// Base constructor for the resolution options.
+    /// <para>
+    ///     Base constructor for the resolution options.
+    /// </para>
+    /// <para>
+    ///     Call <see cref="PropertyOptions.ResolvedBy(ResolutionOptionsBase)"/> to add the current instance
+    ///     as a resolution of the source property.
+    /// </para>
     /// </summary>
     /// <param name="resolvedProperty">The source property related to the assignment.</param>
     protected ResolutionOptionsBase(PropertyOptions resolvedProperty)
@@ -34,7 +40,7 @@ public abstract class ResolutionOptionsBase
     /// <summary>
     /// Options of the strategy to be used to assign the property value to the destination counterpart.
     /// </summary>
-    public AssignmentStrategyOptions? AssignmentStrategy { get; set; }
+    public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
 
     /// <summary>
     /// <para>

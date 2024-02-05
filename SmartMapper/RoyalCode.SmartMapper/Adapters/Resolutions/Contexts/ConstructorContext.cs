@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Resolvers;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
@@ -25,6 +26,17 @@ internal sealed class ConstructorContext
 
     public ConstructorResolution CreateResolution(MapperConfigurations configurations)
     {
+        // 1 - get the target parameters and the available source items for constructors.
+        var targetParameters = EligibleConstructor.CreateTargetParameters();
+        var availableSourceItems = AvailableSourceItems.CreateAvailableSourceItemsForConstructors(AdapterContext.SourceItems);
 
+        // 2 - create the parameter context for each target parameter.
+        var parametersContext = targetParameters.Select(p => ParameterContext.Create(p, availableSourceItems)).ToList();
+
+        // 3 - resolve each parameter context.
+        foreach (var parameterContext in parametersContext)
+        {
+            var parameterResolution = parameterContext.CreateResolution(configurations);
+        }
     }
 }

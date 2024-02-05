@@ -1,6 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Core.Extensions;
 using RoyalCode.SmartMapper.Core.Configurations;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
@@ -10,20 +10,13 @@ internal sealed class AdapterContext
 {
     public static AdapterContext Create(AdapterOptions options)
     {
-        var sourceType = options.SourceType;
-
-        // gets the properties of the source that should be mapped
-        var sourceProperties = sourceType.GetSourceProperties();
-
-        // gets the source property options
-        var propertyOptions = sourceProperties
-            .Select(options.SourceOptions.GetPropertyOptions)
-            .ToList();
+        // gets the source property options and creates the source items
+        var items = SourceItem.Create(options.SourceType, options.SourceOptions);
 
         // creates the context for the adapter resolution
         return new AdapterContext
         {
-            PropertyOptions = propertyOptions,
+            SourceItems = items,
             Options = options
         };
     }
@@ -45,7 +38,7 @@ internal sealed class AdapterContext
     /// <summary>
     /// Contains the options for all properties of the source type.
     /// </summary>
-    public List<PropertyOptions> PropertyOptions { get; private init; }
+    public IEnumerable<SourceItem> SourceItems { get; private init; }
 
     public AdapterResolution CreateResolution(MapperConfigurations configurations)
     {

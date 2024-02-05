@@ -1,4 +1,5 @@
 using System.Reflection;
+using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
@@ -43,6 +44,25 @@ public class PropertyOptions
                 $"The property '{Property.Name}' is already resolved by '{ResolutionOptions.GetType().Name}'");
 
         ResolutionOptions = resolutionOptionsBase;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Try get the <see cref="SourceOptions"/> of the inner properties.
+    /// </para>
+    /// <para>
+    ///     The value will not be null if the <see cref="ResolutionOptions"/> is an instance of
+    ///     <see cref="InnerPropertiesResolutionOptionsBase"/>. Otherwise, the value will be null.
+    ///     The <see cref="ResolutionOptions"/> is set by the method <see cref="ResolvedBy"/>,
+    ///     so the property must be resolved with some resolution that supports inner properties.
+    /// </para>
+    /// </summary>
+    /// <returns></returns>
+    internal SourceOptions? GetInnerPropertiesSourceOptions()
+    {
+        return ResolutionOptions is InnerPropertiesResolutionOptionsBase innerPropertiesResolutionOptions
+            ? innerPropertiesResolutionOptions.InnerSourceOptions
+            : null;
     }
 
     /////// <summary>

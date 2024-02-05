@@ -1,31 +1,55 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
+using RoyalCode.SmartMapper.Adapters.Resolutions;
 using System.Text;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 
+/// <summary>
+/// A group of inner properties that are available for mapping, from a parent source property.
+/// </summary>
 public class AvaliableInnerSourceProperties
 {
     private readonly List<AvailableSourceProperty> properties = [];
 
-    public AvaliableInnerSourceProperties(PropertyOptions options)
+    /// <summary>
+    /// Create a new instance of <see cref="AvaliableInnerSourceProperties"/>.
+    /// </summary>
+    /// <param name="parentSourceProperty">The available parent source property.</param>
+    public AvaliableInnerSourceProperties(AvailableSourceProperty parentSourceProperty)
     {
-        Options = options;
+        ParentSourceProperty = parentSourceProperty;
     }
 
-    public PropertyOptions Options { get; }
+    /// <summary>
+    /// The available parent source property.
+    /// </summary>
+    public AvailableSourceProperty ParentSourceProperty { get; }
 
-    public bool Resolved => properties.All(p => p.Resolved);
+    /// <summary>
+    /// The source item of the parent source property.
+    /// </summary>
+    public SourceItem SourceItem => ParentSourceProperty.SourceItem;
+
+    /// <summary>
+    /// The property options of the parent source property.
+    /// </summary>
+    public PropertyOptions Options => SourceItem.Options;
+
+    /// <summary>
+    /// Check in all inner properties are resolved.
+    /// </summary>
+    public bool Resolved => properties.TrueForAll(static p => p.Resolved);
 
     public void Add(AvailableSourceProperty property) => properties.Add(property);
 
     public string GetFailureMessage()
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"The inner property '{Options..GetPropertyPathString()}' is not resolved.");
+        sb.AppendLine($"The inner property '{ParentSourceProperty.GetPropertyPathString()}' is not resolved.");
         sb.AppendLine("The following properties must be resolved:");
         foreach (var property in properties.Where(p => !p.Resolved))
         {
-            sb.AppendLine($"- {property.SourceProperty.MemberInfo.Name}");
+            sb.AppendLine($"- {property.Options.Property.Name}");
         }
 
         return sb.ToString();

@@ -1,6 +1,7 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Adapters.Resolutions.Targets;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -101,5 +102,23 @@ public sealed class EligibleConstructor
     {
         get => resolution ?? new ConstructorResolution(Info, new("The resolution is not defined."));
         set => resolution = value;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     For each parameter in the constructor of target type,
+    ///     creates a new instance of <see cref="TargetParameter"/>.
+    /// </para>
+    /// </summary>
+    /// <returns>A collection of <see cref="TargetParameter"/>.</returns>
+    public IEnumerable<TargetParameter> CreateTargetParameters()
+    {
+        var parameterInfos = Info.GetParameters();
+        var targetParameters = new TargetParameter[parameterInfos.Length];
+        for (int i = 0; i < parameterInfos.Length; i++)
+        {
+            targetParameters[i] = new(parameterInfos[i]);
+        }
+        return targetParameters;
     }
 }

@@ -1,6 +1,5 @@
 using RoyalCode.SmartMapper.Infrastructure.Discovery;
 using RoyalCode.SmartMapper.Infrastructure.Resolvers.Parameters;
-using System.Text.RegularExpressions;
 
 namespace RoyalCode.SmartMapper.Infrastructure.Resolvers.Constructors;
 

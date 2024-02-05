@@ -3,18 +3,25 @@
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 /// <summary>
-/// Options that container information about how to resolve a parameter.
+/// Options that contains the resolution of a property to a constructor parameter.
 /// </summary>
-public class ToParameterResolutionOptions : ResolutionOptionsBase
+public class ToConstructorParameterResolutionOptions : ParameterResolutionOptionsBase
 {
     /// <summary>
-    /// Creates a new instance of <see cref="ToParameterResolutionOptions"/>.
+    /// <para>
+    ///     Creates a new instance of <see cref="ToConstructorParameterResolutionOptions"/>.
+    /// </para>
+    /// <para>
+    ///     Call <see cref="PropertyOptions.ResolvedBy(ResolutionOptionsBase)"/> to add the current instance
+    ///     as a resolution of the source property.
+    /// </para>
     /// </summary>
     /// <param name="resolvedProperty">The resolved property.</param>
     /// <param name="toConstructorParameterOptions">The options for the constructor parameter.</param>
-    public ToParameterResolutionOptions(
+    public ToConstructorParameterResolutionOptions(
         PropertyOptions resolvedProperty, 
-        ToConstructorParameterOptions toConstructorParameterOptions) : base(resolvedProperty)
+        ToConstructorParameterOptions toConstructorParameterOptions) 
+        : base(resolvedProperty, toConstructorParameterOptions)
     {
         ToConstructorParameterOptions = toConstructorParameterOptions;
         Status = ResolutionStatus.MappedToConstructorParameter;

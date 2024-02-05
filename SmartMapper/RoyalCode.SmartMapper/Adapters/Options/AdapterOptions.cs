@@ -21,6 +21,14 @@ public class AdapterOptions
         TargetOptions = new TargetOptions(targetType);
     }
 
+    internal AdapterOptions(SourceOptions sourceOptions, TargetOptions targetOptions)
+    {
+        SourceType = sourceOptions.SourceType;
+        TargetType = targetOptions.TargetType;
+        SourceOptions = sourceOptions;
+        TargetOptions = targetOptions;
+    }
+
     /// <summary>
     /// The source type of the mapping.
     /// </summary>

@@ -39,4 +39,29 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null);
+
+    /// <summary>
+    /// <para>
+    ///     Map the inner properties of the source property to the constructor parameters of the target type.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TInnerProperty">The source property type.</typeparam>
+    /// <param name="propertySelector">An expression to select the property of the source type.</param>
+    /// <returns>
+    ///     A builder to configure the inner properties and parameters strategy options.
+    /// </returns>
+    IConstructorParametersOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+               Expression<Func<TSource, TInnerProperty>> propertySelector);
+
+    /// <summary>
+    /// <para>
+    ///     Map the inner properties of the source property to the constructor parameters of the target type.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TInnerProperty">The source property type.</typeparam>
+    /// <param name="propertySelector">An expression to select the property of the source type.</param>
+    /// <param name="configureInnerProperties">An action to configure the inner properties and parameters strategy options.</param>
+    void InnerProperties<TInnerProperty>(
+        Expression<Func<TSource, TInnerProperty>> propertySelector,
+        Action<IConstructorParametersOptionsBuilder<TInnerProperty>> configureInnerProperties);
 }

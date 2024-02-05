@@ -6,14 +6,12 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <summary>
 /// Base class for options where the source property is mapped to a method ou constructor parameter.
 /// </summary>
-public abstract class ToParameterOptionsBase : ResolutionOptionsBase
+public abstract class ToParameterOptionsBase
 {
     /// <summary>
-    /// <para>
-    ///     Constructor with the source property.
-    /// </para>
+    /// Base constructor with the source property.
     /// </summary>
-    /// <param name="sourceProperty">The source property.</param>
+    /// <param name="sourceProperty">The source property mapped to a method or constructor parameter.</param>
     protected ToParameterOptionsBase(PropertyInfo sourceProperty)
     {
         SourceProperty = sourceProperty;
