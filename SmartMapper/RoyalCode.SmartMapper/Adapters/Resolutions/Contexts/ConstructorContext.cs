@@ -1,6 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Resolvers;
 using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 using RoyalCode.SmartMapper.Core.Configurations;
+using RoyalCode.SmartMapper.Core.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
@@ -34,9 +35,43 @@ internal sealed class ConstructorContext
         var parametersContext = targetParameters.Select(p => ParameterContext.Create(p, availableSourceItems)).ToList();
 
         // 3 - resolve each parameter context.
-        foreach (var parameterContext in parametersContext)
+        var parametersResolutions = parametersContext.Select(p => p.CreateResolution(configurations)).ToList();
+
+        // 4 - check if all parameters are resolved.
+        if (!parametersResolutions.TrueForAll(static p => p.Resolved))
         {
-            var parameterResolution = parameterContext.CreateResolution(configurations);
+            // when not resolved, return a not resolved resolution.
+            var failure = new ResolutionFailure(
+                $"The constructor for type '{AdapterContext.Options.TargetType.Name}' can't be resolved, " +
+                $"some parameters don't have a resolution.");
+
+            foreach (var p in parametersResolutions)
+            {
+                if (!p.Resolved)
+                    failure.AddMessages(p.Failure.Messages);
+            }
+
+            return new ConstructorResolution(EligibleConstructor.Info, failure);
         }
+
+        // 5 - check if all required source items are resolved.
+        if (!availableSourceItems.AllRequiredItemsResolved)
+        {
+            // when not resolved, return a not resolved resolution.
+            var failure = new ResolutionFailure(
+                $"The constructor for type '{AdapterContext.Options.TargetType.Name}' was resolved, " +
+                $"but some properties mapped to the constructor are not resolved.");
+
+            foreach (var required in availableSourceItems.RequiredSourceProperties)
+            {
+                if (!required.Resolved)
+                    failure.AddMessage(required.GetFailureMessage());
+            }
+
+            return new ConstructorResolution(EligibleConstructor.Info, failure);
+        }
+
+        // 6 - create the resolution.
+        return new ConstructorResolution(EligibleConstructor.Info, parametersResolutions);
     }
 }

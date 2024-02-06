@@ -40,8 +40,16 @@ public class AvaliableInnerSourceProperties
     /// </summary>
     public bool Resolved => properties.TrueForAll(static p => p.Resolved);
 
+    /// <summary>
+    /// Add a new inner property.
+    /// </summary>
+    /// <param name="property">The available inner property.</param>
     public void Add(AvailableSourceProperty property) => properties.Add(property);
 
+    /// <summary>
+    /// Create a message that describes the failure of the resolution, informing the properties that can't be resolved.
+    /// </summary>
+    /// <returns></returns>
     public string GetFailureMessage()
     {
         var sb = new StringBuilder();

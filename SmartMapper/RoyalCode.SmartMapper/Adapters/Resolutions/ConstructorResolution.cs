@@ -26,9 +26,9 @@ public class ConstructorResolution : ResolutionBase
     /// <summary>
     /// Creates new resolution for success.
     /// </summary>
-    /// <param name="parameterResolution">The parameters resolutions.</param>
     /// <param name="constructor">The constructor.</param>
-    public ConstructorResolution(IEnumerable<ParameterResolution> parameterResolution, ConstructorInfo constructor)
+    /// <param name="parameterResolution">The parameters resolutions.</param>
+    public ConstructorResolution(ConstructorInfo constructor, IEnumerable<ParameterResolution> parameterResolution)
     {
         Resolved = true;
         ParameterResolution = parameterResolution;

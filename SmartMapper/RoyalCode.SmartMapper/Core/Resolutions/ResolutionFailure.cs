@@ -8,12 +8,17 @@ namespace RoyalCode.SmartMapper.Core.Resolutions;
 /// </summary>
 public sealed class ResolutionFailure
 {
-    private readonly ICollection<string> messages = [];
+    private readonly List<string> messages = [];
 
     /// <summary>
     /// Create a new instance of <see cref="ResolutionFailure"/>.
     /// </summary>
     public ResolutionFailure() { }
+
+    /// <summary>
+    /// Get the messages of the failure.
+    /// </summary>
+    public IEnumerable<string> Messages => messages;
 
     /// <summary>
     /// Create a new instance of <see cref="ResolutionFailure"/> with a message.
@@ -31,6 +36,15 @@ public sealed class ResolutionFailure
     public void AddMessage(string message)
     {
         messages.Add(message);
+    }
+
+    /// <summary>
+    /// Add messages to the failure.
+    /// </summary>
+    /// <param name="messages">A collection of messages to add.</param>
+    public void AddMessages(IEnumerable<string> messages)
+    {
+        this.messages.AddRange(messages);
     }
 
     /// <summary>

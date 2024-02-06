@@ -1,5 +1,4 @@
-﻿
-namespace RoyalCode.SmartMapper.Adapters.Resolutions;
+﻿namespace RoyalCode.SmartMapper.Core.Resolutions;
 
 /// <summary>
 /// Defines the resolution for dealing with the assignment between source type and destination type in a mapping.

@@ -17,27 +17,27 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
         return new ConstructorOptionsBuilder<TSource>(options);
     }
 
-    public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
+    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
     {
         throw new NotImplementedException();
     }
 
-    public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
+    public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
     {
         throw new NotImplementedException();
     }

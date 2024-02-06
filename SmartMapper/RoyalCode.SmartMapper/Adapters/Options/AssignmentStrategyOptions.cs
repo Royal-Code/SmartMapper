@@ -1,5 +1,4 @@
-﻿
-using RoyalCode.SmartMapper.Adapters.Resolutions;
+﻿using RoyalCode.SmartMapper.Core.Resolutions;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
@@ -23,9 +22,9 @@ public class AssignmentStrategyOptions
     public ValueAssignmentResolution Resolution { get; internal set; }
 
     /// <summary>
-    /// A converter options, used to convert the value of the source type to the target type.
+    /// A converter, used to convert the value of the source type to the target type.
     /// </summary>
-    public ConvertOptions? ConvertOptions { get; internal set; }
+    public ValueAssignmentConverter? Converter { get; internal set; }
 
     /// <summary>
     /// Defines the resolution of the assignment as direct.
@@ -75,6 +74,6 @@ public class AssignmentStrategyOptions<TProperty> : AssignmentStrategyOptions
     {
         Resolution = ValueAssignmentResolution.Convert;
 
-        ConvertOptions = new ConvertOptions(typeof(TProperty), typeof(TParameter), converter);
+        Converter = new ValueAssignmentConverter(typeof(TProperty), typeof(TParameter), converter);
     }
 }

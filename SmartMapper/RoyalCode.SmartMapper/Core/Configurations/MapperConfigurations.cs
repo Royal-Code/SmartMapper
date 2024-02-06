@@ -40,7 +40,7 @@ public class MapperConfigurations
         this.expressionGenerator = expressionGenerator ?? throw new ArgumentNullException(nameof(expressionGenerator));
 
         resolutionFactory = new(this);
-        discovery = new(this);
+        discovery = new();
     }
 
     /// <summary>

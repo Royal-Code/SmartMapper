@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Core.Resolutions;
 
 /// <summary>
 /// <para>
@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <param name="Converter">
 ///     The converter expression. It is a lamdba function that takes a source value and returns a target value.
 /// </param>
-public record ConvertOptions(
+public record ValueAssignmentConverter(
     Type SourceValueType,
     Type TargetValueType,
     Expression Converter);

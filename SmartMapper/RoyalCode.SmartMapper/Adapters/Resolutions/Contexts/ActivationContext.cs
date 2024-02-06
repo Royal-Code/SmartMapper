@@ -30,7 +30,7 @@ internal sealed class ActivationContext
     {
         // event: activation resolution started. here the interceptor can be called in future versions
 
-        // get eligible target constructors
+        // 1 - get eligible target constructors
         var targetConstructor = EligibleConstructor.Create(Options.TargetOptions.GetConstructorOptions());
 
         // if none constructor is eligible, generate a failure resolution
@@ -39,26 +39,38 @@ internal sealed class ActivationContext
             return new(new ResolutionFailure($"None elegible constructor for adapt {Options.SourceType.Name} type to {Options.TargetType.Name} type."));
         }
 
-        // if has a single empty constructor, then create a resolution for the constructor
+        // 2 - check if has a single empty constructor, then create a resolution for the constructor
         if (EligibleConstructor.HasSingleEmptyConstructor(targetConstructor, out var eligible))
         {
-            return new(new ConstructorResolution([], eligible.Info));
+            return new(new ConstructorResolution(eligible.Info, []));
         }
-        else
+
+        // a list of failures
+        List<ResolutionFailure>? failures = null;
+
+        // 3 - for each eligible constructor, try to resolve the constructor
+        foreach (var ctor in targetConstructor)
         {
-            // for each eligible constructor, try to resolve the constructor
-            foreach (var ctor in targetConstructor)
-            {
-                var ctorContext = ConstructorContext.Create(AdapterContext, ctor);
-                var ctorResolution = ctorContext.CreateResolution(configurations);
-                if (ctorResolution.Resolved)
-                {
-                    return new(ctorResolution);
-                }
-            }
+            var ctorContext = ConstructorContext.Create(AdapterContext, ctor);
+            var ctorResolution = ctorContext.CreateResolution(configurations);
+            
+            // if resolved, return the resolution
+            if (ctorResolution.Resolved)
+                return new(ctorResolution);
+
+            // otherwise, add the failure to the list
+            failures ??= [];
+            failures.Add(ctorResolution.Failure);
         }
 
         // if none constructor is resolved, generate a failure resolution
-        return new(new ResolutionFailure($"None constructor for adapt {Options.SourceType.Name} type to {Options.TargetType.Name} type was resolved."));
+        var failure = new ResolutionFailure(
+            $"None constructor for adapt {Options.SourceType.Name} type " +
+            $"to {Options.TargetType.Name} type was resolved.");
+
+        foreach (var f in failures!)
+            failure.AddMessages(f.Messages);
+
+        return new(failure);
     }
 }

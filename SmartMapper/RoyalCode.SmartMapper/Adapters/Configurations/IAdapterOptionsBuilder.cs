@@ -64,7 +64,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
+    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
 
     /// <summary>
     /// <para>
@@ -80,7 +80,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
+    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 
     /// <summary>
     /// <para>
@@ -96,7 +96,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
+    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
 
     /// <summary>
     /// <para>
@@ -112,7 +112,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the property mapping options.
     /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
+    IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
 
     /// <summary>
     /// <para>
@@ -128,70 +128,5 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the property mapping options.
     /// </returns>
-    IAdapterPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
-}
-
-public static class ConfigureSample
-{
-    public static void Configure(IAdapterOptionsBuilder builder)
-    {
-        builder.Configure<MyDto, MyEntity>(b =>
-        {
-            b.Map(d => d.Id).To(e => e.Id);
-        });
-
-        builder.Configure<MyDto, MyEntity>(b =>
-        {
-            b.MapToMethod(e => e.DoSomething)
-                .Parameters(b2 =>
-                {
-                    b2.Parameter(e => e.Id);
-                });
-            
-            b.Map(d => d.ValueObject).ToMethod(e => e.DoSomething);
-
-            b.Constructor().Parameters(b2 =>
-            {
-                b2.Parameter(e => e.Id);
-            });
-
-            b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
-            {
-                b2.Parameter(e => e.Value);
-            });
-        });
-    }
-
-    public class MyEntity
-    {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-
-        public MyEntity() { }
-
-        public MyEntity(Guid id)
-        {
-            Id = id;
-        }
-        
-        public void DoSomething(string value)
-        {
-            Console.WriteLine(value);
-        }
-    }
-
-    public class MyDto
-    {
-        public string Id { get; set; }
-
-        public string Name { get; set; }
-
-        public SomeValueObject ValueObject { get; set; }
-    }
-    
-    public class SomeValueObject
-    {
-        public string Value { get; set; }
-    }
+    IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
 }

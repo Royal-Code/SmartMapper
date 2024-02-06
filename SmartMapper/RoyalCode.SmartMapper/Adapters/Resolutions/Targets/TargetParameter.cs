@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Targets;
@@ -21,21 +20,4 @@ public class TargetParameter
     /// The parameter information.
     /// </summary>
     public ParameterInfo ParameterInfo { get; }
-
-    /// <summary>
-    /// The resolution of the parameter.
-    /// </summary>
-    public ParameterResolution? Resolution { get; private set; }
-
-    /// <summary>
-    /// Determines if the parameter is resolved.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(Resolution))]
-    public bool IsResolved => Resolution is not null;
-    
-    /// <summary>
-    /// Marks the parameter as resolved.
-    /// </summary>
-    /// <param name="resolution">The resolution.</param>
-    public void ResolvedBy(ParameterResolution resolution) => Resolution = resolution;
 }

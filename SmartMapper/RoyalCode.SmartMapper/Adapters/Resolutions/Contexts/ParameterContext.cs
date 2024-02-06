@@ -1,6 +1,9 @@
-﻿using RoyalCode.SmartMapper.Adapters.Resolutions.Targets;
+﻿using RoyalCode.SmartMapper.Adapters.Discovery.Parameters;
+using RoyalCode.SmartMapper.Adapters.Resolutions.Targets;
 using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 using RoyalCode.SmartMapper.Core.Configurations;
+using RoyalCode.SmartMapper.Core.Discovery.Assignment;
+using RoyalCode.SmartMapper.Core.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
@@ -27,8 +30,6 @@ internal sealed class ParameterContext
     public ParameterResolution CreateResolution(MapperConfigurations configurations)
     {
         var parameterName = TargetParameter.ParameterInfo.Name!;
-        var targetType = TargetParameter.ParameterInfo.Member.DeclaringType!;
-        var parameterType = TargetParameter.ParameterInfo.ParameterType;
 
         // 1 - try get a pre-configured property mapped to the parameter.
         if (AvailableSourceItems.TryGetAvailableSourcePropertyToParameter(parameterName,
@@ -39,17 +40,51 @@ internal sealed class ParameterContext
                 toParameterResolutionOptions.AssignmentStrategy.Resolution != ValueAssignmentResolution.Undefined)
             {
                 // use the pre-configured assignment strategy.
+                var assignmentStrategyResolution = new AssignmentStrategyResolution(
+                    toParameterResolutionOptions.AssignmentStrategy.Resolution,
+                    toParameterResolutionOptions.AssignmentStrategy.Converter);
+
+                return new ParameterResolution(availableSourceProperty, TargetParameter, assignmentStrategyResolution);
+            }
+            
+            // discover the assignment strategy.
+            var request = new AssignmentDiscoveryRequest(
+                configurations,
+                availableSourceProperty.SourceItem.Options.Property.PropertyType,
+                TargetParameter.ParameterInfo.ParameterType);
+
+            var result = configurations.Discovery.Assignment.Discover(request);
+
+            // when the assignment strategy is resolved, return the resolution.
+            if (result.IsResolved)
+            {
+                return new ParameterResolution(availableSourceProperty, TargetParameter, result.Resolution);
             }
             else
             {
-                // discover the assignment strategy.
-                var assignmentResult = configurations.Discovery.Assignment.Discover(
-                    availableSourceProperty.SourceItem.Options.Property.PropertyType,
-                    parameterType);
+                // when the assignment strategy is not resolved, return the failure,
+                // adding the messages from the resolution failure.
+
+                ResolutionFailure failure = new(
+                    "The assignment strategy between the source property " +
+                    $"({availableSourceProperty.GetPropertyPathString()}) " +
+                    $"and the constructor parameter ({parameterName}) could not be resolved.");
+
+                failure.AddMessages(result.Failure.Messages);
+
+                return new ParameterResolution(failure);
             }
-            
         }
 
-        throw new NotImplementedException();
+        // 2 - discover the source property to the parameter.
+        var discoveryRequest = new ToParameterDiscoveryRequest(configurations, TargetParameter, AvailableSourceItems);
+        var discoveryResult = configurations.Discovery.ToParameter.Discover(discoveryRequest);
+
+        // when the source property is resolved, return the resolution.
+        if (discoveryResult.IsResolved)
+            return discoveryResult.Resolution;
+
+        // when the source property is not resolved, return the failure,
+        return new ParameterResolution(discoveryResult.Failure);
     }
 }
