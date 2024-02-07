@@ -1,5 +1,5 @@
 ﻿
-namespace RoyalCode.SmartMapper.Adapters.Testings.UseCases;
+namespace RoyalCode.SmartMapper.Tests.UseCases;
 
 public static class DIContainer
 {

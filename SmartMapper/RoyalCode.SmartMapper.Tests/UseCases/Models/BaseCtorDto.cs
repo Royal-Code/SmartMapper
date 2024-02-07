@@ -1,5 +1,5 @@
 ﻿
-namespace RoyalCode.SmartMapper.Adapters.Testings.UseCases.Models;
+namespace RoyalCode.SmartMapper.Tests.UseCases.Models;
 
 public class BaseCtorDto
 {

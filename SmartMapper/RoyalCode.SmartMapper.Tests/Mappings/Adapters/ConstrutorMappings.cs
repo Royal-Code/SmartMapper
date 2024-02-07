@@ -1,7 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Testings.UseCases.Models;
 
-namespace RoyalCode.SmartMapper.Adapters.Testings.Mappings.Adapters;
+namespace RoyalCode.SmartMapper.Tests.Mappings.Adapters;
 
 public sealed class ConstrutorMappings
 {

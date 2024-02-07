@@ -1,5 +1,5 @@
 
-using RoyalCode.SmartMapper.Adapters.Testings.UseCases.Models;
+using RoyalCode.SmartMapper.Tests.UseCases.Models;
 
 namespace RoyalCode.SmartMapper.Adapters.Testings.UseCases.Tests;
 
