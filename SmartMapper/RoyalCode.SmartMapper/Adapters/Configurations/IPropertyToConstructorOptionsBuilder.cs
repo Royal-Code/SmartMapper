@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
-public interface IAdapterPropertyToConstructorOptionsBuilder<TSourceProperty>
+public interface IPropertyToConstructorOptionsBuilder<TSourceProperty>
 {
     /// <summary>
     /// In this option, the internal properties of the source type property
@@ -17,5 +17,5 @@ public interface IAdapterPropertyToConstructorOptionsBuilder<TSourceProperty>
     /// <param name="configureParameters">
     ///     A function to configure the constructor parameters. 
     /// </param>
-    void Parameters(Action<IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters);
+    void Parameters(Action<IPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters);
 }

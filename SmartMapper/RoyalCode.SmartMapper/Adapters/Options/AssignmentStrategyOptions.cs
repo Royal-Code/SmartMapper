@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <summary>
 /// The options of the strategy used to assign the value of the source property to the destination property or parameter.
 /// </summary>
-public class AssignmentStrategyOptions
+public sealed class AssignmentStrategyOptions
 {
     /// <summary>
     /// Creates a new instance of <see cref="AssignmentStrategyOptions"/>.

@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Options for mapping of a source property to a constructor parameter.
 /// </para>
 /// </summary>
-public class ToConstructorParameterOptions : ToParameterOptionsBase
+public sealed class ToConstructorParameterOptions : ToParameterOptionsBase
 {
     /// <summary>
     /// <para>

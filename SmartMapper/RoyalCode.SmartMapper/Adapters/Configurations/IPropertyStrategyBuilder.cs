@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// <typeparam name="TSourceProperty">The type of the source property.</typeparam>
 /// <typeparam name="TTargetProperty">The type of the destination property.</typeparam>
 /// <typeparam name="TOptionsBuilder">The options builder type.</typeparam>
-public interface IAdapterPropertyStrategyBuilder<TSourceProperty, TTargetProperty, TOptionsBuilder>
+public interface IPropertyStrategyBuilder<TSourceProperty, TTargetProperty, TOptionsBuilder>
 {
     /// <summary>
     /// <para>

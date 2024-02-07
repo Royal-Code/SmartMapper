@@ -7,7 +7,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Options for define the target construtor.
 /// </para>
 /// </summary>
-public class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOptions>
+public sealed class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOptions>
 {
     private ICollection<ToConstructorParameterOptions>? parametersOptions;
 

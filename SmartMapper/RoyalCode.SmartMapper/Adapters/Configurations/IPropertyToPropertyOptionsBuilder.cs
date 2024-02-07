@@ -12,8 +12,8 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// <typeparam name="TTarget">The destination type.</typeparam>
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
 /// <typeparam name="TTargetProperty">The destination property type.</typeparam>
-public interface IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>
-    : IAdapterPropertyStrategyBuilder<TSourceProperty, TTargetProperty, IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>>
+public interface IPropertyToPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>
+    : IPropertyStrategyBuilder<TSourceProperty, TTargetProperty, IPropertyToPropertyOptionsBuilder<TSource, TTarget, TSourceProperty, TTargetProperty>>
 {
     /// <summary>
     /// <para>
@@ -40,5 +40,5 @@ public interface IAdapterPropertyToPropertyOptionsBuilder<TSource, TTarget, TSou
     /// <returns>
     ///     The builder to configure the property to property mapping.
     /// </returns>
-    IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty> Then();
+    IPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty> Then();
 }

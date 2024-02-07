@@ -17,20 +17,22 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
         return new ConstructorOptionsBuilder<TSource>(options);
     }
 
-    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
+    {
 
-    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
-    //{
-    //    throw new NotImplementedException();
-    //}
 
-    //public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
-    //{
-    //    throw new NotImplementedException();
-    //}
+        throw new NotImplementedException();
+    }
+
+    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
+    {
+        throw new NotImplementedException();
+    }
 
     public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
     {

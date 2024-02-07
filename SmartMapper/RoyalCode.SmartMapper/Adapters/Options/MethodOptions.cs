@@ -1,19 +1,19 @@
+﻿using RoyalCode.SmartMapper.Core.Exceptions;
 using System.Reflection;
-using RoyalCode.SmartMapper.Exceptions;
 
-namespace RoyalCode.SmartMapper.Infrastructure.Adapters.Options;
+namespace RoyalCode.SmartMapper.Adapters.Options;
 
 /// <summary>
 /// <para>
-///     Options for mapping the source properties to a method.
+///     Options for define the mapping of a source properties to a target method.
 /// </para>
 /// </summary>
-public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
+public sealed class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
 {
     private ICollection<ToMethodParameterOptions>? parametersOptions;
 
     /// <summary>
-    /// Creates a new instance of <see cref="MethodOptions"/>.
+    /// 
     /// </summary>
     /// <param name="targetType"></param>
     public MethodOptions(Type targetType) : base(targetType) { }
@@ -22,14 +22,14 @@ public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
     /// The defined mapped method.
     /// </summary>
     public MethodInfo? Method { get; internal set; }
-    
+
     /// <summary>
     /// The defined mapped method name.
     /// </summary>
     public string? MethodName { get; internal set; }
 
     /// <inheritdoc />
-    protected override IEnumerable<ToMethodParameterOptions> Parameters
+    protected override IEnumerable<ToMethodParameterOptions> Parameters 
         => parametersOptions ?? Enumerable.Empty<ToMethodParameterOptions>();
 
     /// <inheritdoc />
@@ -46,7 +46,7 @@ public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
 
         return options;
     }
-    
+
     /// <summary>
     /// <para>
     ///     Defines the name of the method of the mapping.
@@ -60,15 +60,15 @@ public class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
     {
         if (string.IsNullOrWhiteSpace(methodName))
             throw new InvalidMethodNameException("Value cannot be null or whitespace.", nameof(methodName));
-        
+
         var methods = TargetType.GetMethods().Where(m => m.Name == methodName).ToList();
         if (methods.Count is 0)
             throw new InvalidMethodNameException(
                 $"Method '{methodName}' not found on type '{TargetType.Name}'.", nameof(methodName));
-        
+
         if (methods.Count is 1)
             Method = methods[0];
-        
+
         MethodName = methodName;
     }
 }

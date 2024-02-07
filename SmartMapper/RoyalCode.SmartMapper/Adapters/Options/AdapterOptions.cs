@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Contains all the options for a single mapping between a source and target type.
 /// </para>
 /// </summary>
-public class AdapterOptions
+public sealed class AdapterOptions
 {
     /// <summary>
     /// Creates a new instance of <see cref="AdapterOptions"/>.

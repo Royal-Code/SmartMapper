@@ -64,7 +64,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
+    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
 
     /// <summary>
     /// <para>
@@ -80,7 +80,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
+    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 
     /// <summary>
     /// <para>
@@ -96,7 +96,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    //IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
+    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
 
     /// <summary>
     /// <para>

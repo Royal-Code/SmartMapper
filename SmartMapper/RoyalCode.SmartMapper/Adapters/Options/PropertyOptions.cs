@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Contains the resolution for the mapping of the property.
 /// </para>
 /// </summary>
-public class PropertyOptions
+public sealed class PropertyOptions
 {
     /// <summary>
     /// Creates a new instance of <see cref="PropertyOptions"/>.

@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </summary>
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
 /// <typeparam name="TTargetProperty">The destination property type.</typeparam>
-public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty>
+public interface IPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty>
 {
     /// <summary>
     /// <para>
@@ -43,7 +43,7 @@ public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProp
     /// <returns>
     ///     The builder to configure the property to method mapping.
     /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod();
+    IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod();
 
     /// <summary>
     /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
@@ -54,7 +54,7 @@ public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProp
     /// <returns>
     ///     The builder to configure the property to method mapping.
     /// </returns>
-    IAdapterPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod(
+    IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod(
         Expression<Func<TTargetProperty, Delegate>> methodSelect);
 }
 
@@ -67,7 +67,7 @@ public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProp
 /// <typeparam name="TTargetProperty">The destination property type.</typeparam>
 /// <typeparam name="TNextProperty">The next destination property type.</typeparam>
 public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>
-    : IAdapterPropertyStrategyBuilder<TSourceProperty, TNextProperty, IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>>
+    : IPropertyStrategyBuilder<TSourceProperty, TNextProperty, IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>>
 {
     /// <summary>
     /// <para>
@@ -77,6 +77,6 @@ public interface IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProp
     /// <returns>
     ///     The builder to configure the property to property mapping.
     /// </returns>
-    IAdapterPropertyThenOptionsBuilder<TSourceProperty, TNextProperty> Then();
+    IPropertyThenOptionsBuilder<TSourceProperty, TNextProperty> Then();
 }
 

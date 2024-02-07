@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </summary>
 /// <typeparam name="TTarget">The destination type.</typeparam>
 /// <typeparam name="TSourceProperty">The source property type.</typeparam>
-public interface IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
+public interface IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
 {
     /// <summary>
     /// <para>
@@ -19,7 +19,7 @@ public interface IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty
     /// </summary>
     /// <param name="configureParameters"></param>
     /// <returns></returns>
-    void Parameters(Action<IAdapterPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters);
+    void Parameters(Action<IPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters);
 
     /// <summary>
     /// <para>
@@ -28,7 +28,7 @@ public interface IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty
     /// </para>
     /// </summary>
     /// <param name="configureProperty"></param>
-    void Value(Action<IAdapterParameterStrategyBuilder<TSourceProperty>> configureProperty);
+    void Value(Action<IParameterStrategyBuilder<TSourceProperty>> configureProperty);
 
     /// <summary>
     /// <para>
@@ -37,7 +37,7 @@ public interface IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty
     /// </summary>
     /// <param name="name">The name of method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(string name);
+    IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(string name);
 
     /// <summary>
     /// <para>
@@ -46,6 +46,6 @@ public interface IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty
     /// </summary>
     /// <param name="methodSelector">An expression that select the target method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    IAdapterPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(
+    IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(
         Expression<Func<TTarget, Delegate>> methodSelector);
 }

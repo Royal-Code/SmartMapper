@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TProperty">The source property type</typeparam>
-public interface IAdapterParameterStrategyBuilder<TProperty>
+public interface IParameterStrategyBuilder<TProperty>
 {
     /// <summary>
     /// <para>
@@ -20,7 +20,7 @@ public interface IAdapterParameterStrategyBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TProperty> CastValue();
+    IParameterStrategyBuilder<TProperty> CastValue();
 
     /// <summary>
     /// <para>
@@ -36,7 +36,7 @@ public interface IAdapterParameterStrategyBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TProperty> UseConverter<TParameter>(
+    IParameterStrategyBuilder<TProperty> UseConverter<TParameter>(
         Expression<Func<TProperty, TParameter>> converter);
 
     /// <summary>
@@ -47,7 +47,7 @@ public interface IAdapterParameterStrategyBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TProperty> Adapt();
+    IParameterStrategyBuilder<TProperty> Adapt();
 
     /// <summary>
     /// <para>
@@ -57,7 +57,7 @@ public interface IAdapterParameterStrategyBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TProperty> Select();
+    IParameterStrategyBuilder<TProperty> Select();
 
     /// <summary>
     /// <para>
@@ -76,7 +76,7 @@ public interface IAdapterParameterStrategyBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IAdapterParameterStrategyBuilder<TProperty> WithService<TService, TParameter>(
+    IParameterStrategyBuilder<TProperty> WithService<TService, TParameter>(
         Expression<Func<TService, TProperty, TParameter>> valueProcessor);
 }
 

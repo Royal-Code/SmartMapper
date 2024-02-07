@@ -5,7 +5,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Contains options for configured for mapping of a target type.
 /// </para>
 /// </summary>
-public class TargetOptions
+public sealed class TargetOptions
 {
     ////private ICollection<ToPropertyOptions>? toPropertyOptions; // eh necessário ? validações futuras?
 
