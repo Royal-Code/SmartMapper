@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <summary>
 /// The options of the strategy used to assign the value of the source property to the destination property or parameter.
 /// </summary>
-public sealed class AssignmentStrategyOptions
+public abstract class AssignmentStrategyOptions
 {
     /// <summary>
     /// Creates a new instance of <see cref="AssignmentStrategyOptions"/>.
@@ -63,8 +63,13 @@ public sealed class AssignmentStrategyOptions
 /// The options of the strategy used to assign the value of the source property to the destination property or parameter.
 /// </summary>
 /// <typeparam name="TProperty">The type of the source property.</typeparam>
-public class AssignmentStrategyOptions<TProperty> : AssignmentStrategyOptions
+public sealed class AssignmentStrategyOptions<TProperty> : AssignmentStrategyOptions
 {
+    /// <summary>
+    /// Creates a new instance of <see cref="AssignmentStrategyOptions"/>.
+    /// </summary>
+    public AssignmentStrategyOptions() : base() { }
+
     /// <summary>
     /// Define the resolution of the assignment to convert the value of the source type to the target type.
     /// </summary>

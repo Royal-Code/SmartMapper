@@ -10,8 +10,7 @@ public sealed class TargetOptions
     ////private ICollection<ToPropertyOptions>? toPropertyOptions; // eh necessário ? validações futuras?
 
     private ConstructorOptions? constructorOptions;
-
-    ////private ICollection<MethodOptions>? methodOptions; // eh necessário ? validações futuras?
+    private ICollection<MethodOptions>? methodOptions;
 
     /// <summary>
     /// Creates a new instance of <see cref="TargetOptions"/>.
@@ -26,18 +25,20 @@ public sealed class TargetOptions
     /// The target type.
     /// </summary>
     public Type TargetType { get; }
-
-    /////// <summary>
-    /////// <para>
-    ///////     Adds an option for mapping a source type to a method.
-    /////// </para>
-    /////// </summary>
-    /////// <param name="optionsBase">The options for mapping a source type to a method.</param>
-    ////public void AddToMethod(MethodOptions optionsBase)
-    ////{
-    ////    methodOptions ??= new List<MethodOptions>();
-    ////    methodOptions.Add(optionsBase);
-    ////}
+   
+    /// <summary>
+    /// <para>
+    ///     Create a new instance of <see cref="MethodOptions"/> for the target type.
+    /// </para>
+    /// </summary>
+    /// <returns>A new instance of <see cref="MethodOptions"/> for the target type.</returns>
+    public MethodOptions CreateMethodOptions()
+    {
+        var options = new MethodOptions(TargetType);
+        methodOptions ??= [];
+        methodOptions.Add(options);
+        return options;
+    }
 
     /// <summary>
     /// <para>

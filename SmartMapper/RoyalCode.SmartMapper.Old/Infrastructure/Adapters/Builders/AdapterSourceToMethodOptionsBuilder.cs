@@ -11,36 +11,41 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
     : IAdapterSourceToMethodOptionsBuilder<TSource, TTarget>
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly SourceToMethodOptions methodOptions;
+    private readonly SourceToMethodOptions sourceToMethodOptions;
 
-    public AdapterSourceToMethodOptionsBuilder(AdapterOptions adapterOptions, SourceToMethodOptions methodOptions)
+    /// <summary>
+    /// Create a new instance of <see cref="AdapterSourceToMethodOptionsBuilder{TSource,TTarget}"/>.
+    /// </summary>
+    /// <param name="adapterOptions">The adapter options.</param>
+    /// <param name="sourceToMethodOptions">The source to method options.</param>
+    public AdapterSourceToMethodOptionsBuilder(AdapterOptions adapterOptions, SourceToMethodOptions sourceToMethodOptions)
     {
         this.adapterOptions = adapterOptions;
-        this.methodOptions = methodOptions;
+        this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
     /// <inheritdoc />
     public void Parameters(Action<IAdapterSourceToMethodParametersOptionsBuilder<TSource>> configureParameters)
     {
-        methodOptions.Strategy = SourceToMethodStrategy.SelectedParameters;
+        sourceToMethodOptions.Strategy = SourceToMethodStrategy.SelectedParameters;
         
-        var builder = new AdapterSourceToMethodParametersOptionsBuilder<TSource>(adapterOptions, methodOptions);
+        var builder = new AdapterSourceToMethodParametersOptionsBuilder<TSource>(adapterOptions, sourceToMethodOptions);
         configureParameters(builder);
     }
 
     /// <inheritdoc />
     public void AllProperties(Action<IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>> configureProperties)
     {
-        methodOptions.Strategy = SourceToMethodStrategy.AllParameters;
+        sourceToMethodOptions.Strategy = SourceToMethodStrategy.AllParameters;
         
-        var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<TSource>(adapterOptions, methodOptions);
+        var builder = new AdapterSourceToMethodPropertiesOptionsBuilder<TSource>(adapterOptions, sourceToMethodOptions);
         configureProperties(builder);
     }
 
     /// <inheritdoc />
     public IAdapterSourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name)
     {
-        methodOptions.MethodOptions.WithMethodName(name);
+        sourceToMethodOptions.MethodOptions.WithMethodName(name);
         return this;
     }
 
@@ -50,7 +55,7 @@ public class AdapterSourceToMethodOptionsBuilder<TSource, TTarget>
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
         
-        methodOptions.MethodOptions.Method = method;
+        sourceToMethodOptions.MethodOptions.Method = method;
         
         return this;
     }

@@ -25,6 +25,6 @@ public interface ISourceToMethodParametersOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the parameter mapping options.
     /// </returns>
-    IParameterStrategyBuilder<TProperty> Parameter<TProperty>(
+    IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector);
 }

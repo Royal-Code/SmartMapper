@@ -65,6 +65,11 @@ public sealed class PropertyOptions
             : null;
     }
 
+    internal void IgnoreMapping()
+    {
+        throw new NotImplementedException();
+    }
+
     /////// <summary>
     /////// Sets the mapping of the property to be an method parameter.
     /////// </summary>

@@ -12,14 +12,19 @@ public class AdapterSourceToMethodPropertiesOptionsBuilder<TSource>
     : IAdapterSourceToMethodPropertiesOptionsBuilder<TSource>
 {
     private readonly AdapterOptions adapterOptions;
-    private readonly SourceToMethodOptions methodOptions;
+    private readonly SourceToMethodOptions sourceToMethodOptions;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="AdapterSourceToMethodPropertiesOptionsBuilder{TSource}"/>.
+    /// </summary>
+    /// <param name="adapterOptions">The adapter options.</param>
+    /// <param name="sourceToMethodOptions">The source to method options.</param>
     public AdapterSourceToMethodPropertiesOptionsBuilder(
         AdapterOptions adapterOptions,
-        SourceToMethodOptions methodOptions)
+        SourceToMethodOptions sourceToMethodOptions)
     {
         this.adapterOptions = adapterOptions;
-        this.methodOptions = methodOptions;
+        this.sourceToMethodOptions = sourceToMethodOptions;
     }
     
     /// <inheritdoc />
@@ -33,7 +38,7 @@ public class AdapterSourceToMethodPropertiesOptionsBuilder<TSource>
             throw new InvalidPropertySelectorException(nameof(propertySelector));
         
         var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-        var parameterOptions = methodOptions.MethodOptions.GetParameterOptions(propertyInfo);
+        var parameterOptions = sourceToMethodOptions.MethodOptions.GetParameterOptions(propertyInfo);
         propertyOptions.MappedToMethodParameter(parameterOptions);
 
         if (parameterName is not null)

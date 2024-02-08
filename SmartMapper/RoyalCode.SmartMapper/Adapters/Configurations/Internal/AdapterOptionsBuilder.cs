@@ -19,19 +19,20 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
 
     public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
     {
-
-
-        throw new NotImplementedException();
+        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options);
+        return builder;
     }
 
     public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
     {
-        throw new NotImplementedException();
+        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, methodSelector);
+        return builder;
     }
 
     public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
     {
-        throw new NotImplementedException();
+        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, methodName);
+        return builder;
     }
 
     public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)

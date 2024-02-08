@@ -1,5 +1,4 @@
-﻿
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations;
 
@@ -58,25 +57,5 @@ public interface IParameterStrategyBuilder<TProperty>
     ///     The same instance for chained calls.
     /// </returns>
     IParameterStrategyBuilder<TProperty> Select();
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to process the source value with a service to retreive the destination value.
-    /// </para>
-    /// </summary>
-    /// <param name="valueProcessor">
-    ///     The service to use to process the source value.
-    /// </param>
-    /// <typeparam name="TService">
-    ///     The service type.
-    /// </typeparam>
-    /// <typeparam name="TParameter">
-    ///     The method parameter type.
-    /// </typeparam>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    IParameterStrategyBuilder<TProperty> WithService<TService, TParameter>(
-        Expression<Func<TService, TProperty, TParameter>> valueProcessor);
 }
 

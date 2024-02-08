@@ -46,7 +46,7 @@ public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureProperties">
     ///     A function to configure the properties of the source type.
     /// </param>
-    void AllProperties(Action<ISourceToMethodPropertiesOptionsBuilder<TSource>> configureProperties);
+    void AllProperties(Action<ISourceToMethodPropertiesOptionsBuilder<TSource>>? configureProperties = null);
 
     /// <summary>
     /// <para>

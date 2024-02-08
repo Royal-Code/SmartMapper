@@ -77,16 +77,6 @@ public sealed class SourceOptions
     }
 
     /// <summary>
-    /// Adds a source to method options for this source mapping options.
-    /// </summary>
-    /// <param name="options">The source to method mapping options.</param>
-    public void AddSourceToMethod(SourceToMethodOptions options)
-    {
-        sourceToMethodOptions ??= new List<SourceToMethodOptions>();
-        sourceToMethodOptions.Add(options);
-    }
-
-    /// <summary>
     /// Gets all options of source to method.
     /// </summary>
     /// <returns>
@@ -94,4 +84,19 @@ public sealed class SourceOptions
     /// </returns>
     public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions()
         => sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
+
+    /// <summary>
+    /// <para>
+    ///     Create a source to method options for the given method options.
+    /// </para>
+    /// </summary>
+    /// <param name="methodOptions">The method options.</param>
+    /// <returns>A new instance of the <see cref="SourceToMethodOptions"/> class.</returns>
+    public SourceToMethodOptions CreateSourceToMethodOptions(MethodOptions methodOptions)
+    {
+        var options = new SourceToMethodOptions(methodOptions);
+        sourceToMethodOptions ??= [];
+        sourceToMethodOptions.Add(options);
+        return options;
+    }
 }

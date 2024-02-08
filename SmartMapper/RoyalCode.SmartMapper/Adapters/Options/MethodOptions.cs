@@ -35,7 +35,7 @@ public sealed class MethodOptions : ParametersOptionsBase<ToMethodParameterOptio
     /// <inheritdoc />
     public override ToMethodParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
-        parametersOptions ??= new List<ToMethodParameterOptions>();
+        parametersOptions ??= [];
 
         var options = parametersOptions.FirstOrDefault(x => x.SourceProperty == sourceProperty);
         if (options is null)

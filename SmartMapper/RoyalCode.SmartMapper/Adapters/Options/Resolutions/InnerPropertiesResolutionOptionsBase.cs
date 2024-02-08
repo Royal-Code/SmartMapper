@@ -6,6 +6,8 @@ namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 /// </summary>
 public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBase
 {
+    private readonly ICollection<ResolutionOptionsBase> innerPropertiesResolutions = [];
+
     /// <summary>
     /// <para>
     ///     Base constructor for the resolution options that contains inner properties.
@@ -25,4 +27,27 @@ public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBa
     /// The source options for the inner properties.
     /// </summary>
     public SourceOptions InnerSourceOptions { get; }
+
+    /// <summary>
+    /// Adds a resolution for an inner property.
+    /// </summary>
+    /// <param name="resolution"></param>
+    public void AddInnerPropertyResolution(ResolutionOptionsBase resolution)
+    {
+        if (innerPropertiesResolutions.Contains(resolution))
+            return;
+
+        innerPropertiesResolutions.Add(resolution);
+    }
+
+    /// <summary>
+    /// Get the inner properties resolutions.
+    /// </summary>
+    /// <returns>
+    ///     An enumerable of <see cref="ResolutionOptionsBase"/>.
+    /// </returns>
+    public IEnumerable<ResolutionOptionsBase> GetInnerPropertiesResolutions()
+    {
+        return innerPropertiesResolutions;
+    }
 }

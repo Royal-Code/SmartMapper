@@ -1,4 +1,6 @@
 ﻿
+using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
 /// <summary>
@@ -56,11 +58,16 @@ public sealed class SourceToMethodOptions
     /// Add a source property to a parameter in sequence.
     /// </summary>
     /// <param name="options">The source property options.</param>
-    public void AddPropertyToParameterSequence(PropertyOptions options)
+    public ToMethodParameterResolutionOptions AddPropertyToParameterSequence(PropertyOptions options)
     {
         var parameterOptions = MethodOptions.GetParameterOptions(options.Property);
-        options.MappedToMethodParameter(parameterOptions);
+
+        // when created the resolution options, the options are resolved by the resolution.
+        var resolution = new ToMethodParameterResolutionOptions(options, parameterOptions);
+
         AddParameterSequence(parameterOptions);
+
+        return resolution;
     }
 
     /// <summary>
