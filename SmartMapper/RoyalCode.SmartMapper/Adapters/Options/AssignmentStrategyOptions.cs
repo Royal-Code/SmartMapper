@@ -75,7 +75,7 @@ public sealed class AssignmentStrategyOptions<TProperty> : AssignmentStrategyOpt
     /// </summary>
     /// <typeparam name="TParameter">The target type.</typeparam>
     /// <param name="converter">The converter expression.</param>
-    public void UseConvert<TParameter>(Expression<Func<TProperty, TParameter>> converter)
+    public void UseConverter<TParameter>(Expression<Func<TProperty, TParameter>> converter)
     {
         Resolution = ValueAssignmentResolution.Convert;
 

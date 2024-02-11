@@ -29,7 +29,7 @@ public interface IPropertyToPropertyOptionsBuilder<TSource, TTarget, TSourceProp
     /// <returns>
     ///     The builder to configure the property to property mapping.
     /// </returns>
-    IAdapterPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
+    IPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
         Expression<Func<TTargetProperty, TNextProperty>> propertySelector);
 
     /// <summary>

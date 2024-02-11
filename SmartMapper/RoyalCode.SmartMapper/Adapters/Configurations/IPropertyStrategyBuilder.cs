@@ -54,20 +54,4 @@ public interface IPropertyStrategyBuilder<TSourceProperty, TTargetProperty, TOpt
     ///     The same instance for chained calls.
     /// </returns>
     TOptionsBuilder Select();
-
-    /// <summary>
-    /// <para>
-    ///     Configure the assignment strategy to process the source value with a service to retreive the destination value.
-    /// </para>
-    /// </summary>
-    /// <param name="valueProcessor">
-    ///     The service to use to process the source value.
-    /// </param>
-    /// <typeparam name="TService">
-    ///     The service type.
-    /// </typeparam>
-    /// <returns>
-    ///     The same instance for chained calls.
-    /// </returns>
-    TOptionsBuilder WithService<TService>(Expression<Func<TService, TSourceProperty, TTargetProperty>> valueProcessor);
 }

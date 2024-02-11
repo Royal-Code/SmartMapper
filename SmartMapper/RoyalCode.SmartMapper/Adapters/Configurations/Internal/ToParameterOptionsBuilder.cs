@@ -36,7 +36,7 @@ internal sealed class ToParameterOptionsBuilder<TProperty> : IToParameterOptions
     public IToParameterOptionsBuilder<TProperty> UseConverter<TParameter>(Expression<Func<TProperty, TParameter>> converter)
     {
         var assigmentOptions = resolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
-        assigmentOptions.UseConvert(converter);
+        assigmentOptions.UseConverter(converter);
         return this;
     }
 }

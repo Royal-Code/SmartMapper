@@ -2,6 +2,12 @@
 
 	<Import Project="..\versions.targets" />
 
+	<PropertyGroup>
+		<DocumentationFile></DocumentationFile>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="FastExpressionCompiler" Version="$(FastExpressionCompilerVer)" />
 		<PackageReference Include="RoyalCode.Extensions.PropertySelection" Version="$(PropertySelectionVer)" />

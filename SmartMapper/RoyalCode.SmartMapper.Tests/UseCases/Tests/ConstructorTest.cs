@@ -1,7 +1,6 @@
-
 using RoyalCode.SmartMapper.Tests.UseCases.Models;
 
-namespace RoyalCode.SmartMapper.Adapters.Testings.UseCases.Tests;
+namespace RoyalCode.SmartMapper.Tests.UseCases.Tests;
 
 public class ConstructorTest
 {

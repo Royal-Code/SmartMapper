@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
+/// <inheritdoc />
 internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TSource, TTarget>
 {
     private readonly AdapterOptions options;
