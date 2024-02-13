@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using RoyalCode.SmartMapper.Core.Exceptions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
@@ -58,22 +59,24 @@ public sealed class SourceOptions
     /// </para>
     /// </summary>
     /// <param name="propertyName">The name of the property of the source type.</param>
-    /// <param name="options">The options for the property of the source type.</param>
-    /// <returns>True if exists a property with the given name, otherwise false.</returns>
-    public bool TryGetPropertyOptions(string propertyName, [NotNullWhen(true)] out PropertyOptions? options)
+    /// <returns>The options for the property of the source type or a new instance if no options have been set.</returns>
+    public PropertyOptions GetPropertyOptions(string propertyName)
     {
-        options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
+        var options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
         if (options is null)
         {
             // get source property by name, including inherited type properties
             var propertyInfo = SourceType.GetRuntimeProperty(propertyName);
 
-            //var propertyInfo = SourceType.GetProperty(propertyName);
             if (propertyInfo is not null)
                 options = GetPropertyOptions(propertyInfo);
         }
 
-        return options is not null;
+        if (options is null)
+            throw new InvalidPropertyNameException(
+                $"Property '{propertyName}' not found on type '{SourceType.Name}'.", nameof(propertyName));
+        
+        return options;
     }
 
     /// <summary>
