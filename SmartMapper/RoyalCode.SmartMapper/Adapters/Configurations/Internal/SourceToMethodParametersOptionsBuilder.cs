@@ -19,6 +19,19 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
         this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
+    public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
+    {
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+
+        propertyOptions.IgnoreMapping();
+    }
+
     public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector)
     {

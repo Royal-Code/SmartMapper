@@ -65,9 +65,15 @@ public sealed class PropertyOptions
             : null;
     }
 
+    /// <summary>
+    /// <para>
+    ///     Resolve ignoring the property.
+    /// </para>
+    /// </summary>
     internal void IgnoreMapping()
     {
-        throw new NotImplementedException();
+        // when created the resolution options, this property options will be resolved by the resolution.
+        _ = new IgnoreResolutionOptions(this);
     }
 
     /////// <summary>

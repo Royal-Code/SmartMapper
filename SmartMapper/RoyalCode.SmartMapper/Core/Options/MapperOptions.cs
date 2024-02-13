@@ -1,6 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 
-namespace RoyalCore.SmartMapper.Core.Options;
+namespace RoyalCode.SmartMapper.Core.Options;
 
 /// <summary>
 /// <para>

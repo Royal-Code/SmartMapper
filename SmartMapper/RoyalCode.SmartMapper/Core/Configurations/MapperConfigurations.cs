@@ -2,10 +2,9 @@
 using FastExpressionCompiler;
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
-using RoyalCore.SmartMapper.Core.Resolutions;
-using RoyalCore.SmartMapper.Core.Options;
-using RoyalCode.SmartMapper.Core.Gererators;
 using RoyalCode.SmartMapper.Core.Resolutions;
+using RoyalCode.SmartMapper.Core.Options;
+using RoyalCode.SmartMapper.Core.Gererators;
 using RoyalCode.SmartMapper.Core.Discovery;
 
 namespace RoyalCode.SmartMapper.Core.Configurations;

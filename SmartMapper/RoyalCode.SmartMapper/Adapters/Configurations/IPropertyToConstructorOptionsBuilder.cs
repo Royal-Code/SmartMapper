@@ -11,11 +11,13 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 public interface IPropertyToConstructorOptionsBuilder<TSourceProperty>
 {
     /// <summary>
-    /// In this option, the internal properties of the source type property
-    /// are mapped as parameters of the target type constructor.
+    /// <para>
+    ///     In this option, the internal properties of the source type property
+    ///     are mapped as parameters of the target type constructor.
+    /// </para>
     /// </summary>
-    /// <param name="configureParameters">
+    /// <param name="configurePrameters">
     ///     A function to configure the constructor parameters. 
     /// </param>
-    void Parameters(Action<IPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters);
+    void Parameters(Action<IConstructorParametersOptionsBuilder<TSourceProperty>> configurePrameters);
 }

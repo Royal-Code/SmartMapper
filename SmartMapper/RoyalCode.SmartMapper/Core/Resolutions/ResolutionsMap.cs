@@ -2,7 +2,7 @@
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using System.Linq.Expressions;
 
-namespace RoyalCore.SmartMapper.Core.Resolutions;
+namespace RoyalCode.SmartMapper.Core.Resolutions;
 
 /// <summary>
 /// <para>

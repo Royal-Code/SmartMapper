@@ -64,4 +64,15 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     void InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector,
         Action<IConstructorParametersOptionsBuilder<TInnerProperty>> configureInnerProperties);
+
+    /// <summary>
+    /// <para>
+    ///     Ignore the selected property.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TProperty">The source property type.</typeparam>
+    /// <param name="propertySelector">
+    ///     An expression to select the property of the source type.
+    /// </param>
+    void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
 }

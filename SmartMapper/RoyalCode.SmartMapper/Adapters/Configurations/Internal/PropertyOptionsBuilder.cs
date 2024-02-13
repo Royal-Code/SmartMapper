@@ -42,18 +42,46 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty> : IPro
     public IPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> To<TTargetProperty>(
         string propertyName)
     {
-        throw new NotImplementedException();
+        // get target property by name, including inherited type properties
+        var propertyInfo = typeof(TTargetProperty).GetRuntimeProperty(propertyName);
+
+        // check if property exists
+        if (propertyInfo is null)
+            throw new InvalidPropertyNameException(
+                $"The type '{typeof(TTarget).Name}' does not have a property with name '{propertyName}'.",
+                nameof(propertyName));
+
+        // validate the property type
+        if (propertyInfo.PropertyType != typeof(TTargetProperty))
+            throw new InvalidPropertyTypeException(
+                $"Property '{propertyName}' on type '{typeof(TTarget).Name}' " +
+                $"is not of type '{typeof(TTargetProperty).Name}', " +
+                $"but of type '{propertyInfo.PropertyType.Name}'.",
+                nameof(propertyName));
+
+        var resolution = new ToPropertyResolutionOptions(propertyOptions, propertyInfo);
+
+        var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
+            adapterOptions,
+            resolution);
+
+        return builder;
     }
 
     /// <inheritdoc />
     public IPropertyToConstructorOptionsBuilder<TProperty> ToConstructor()
     {
-        throw new NotImplementedException();
+        var resolutionOptions = new ToConstructorResolutionOptions(propertyOptions);
+        var innerAdapterOptions = new AdapterOptions(resolutionOptions.InnerSourceOptions, adapterOptions.TargetOptions);
+        return new PropertyToConstructorOptionsBuilder<TProperty>(resolutionOptions, innerAdapterOptions);
     }
 
     /// <inheritdoc />
     public IPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
+        var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
+
+
         throw new NotImplementedException();
     }
 

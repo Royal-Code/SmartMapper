@@ -25,6 +25,16 @@ public interface ISourceToMethodParametersOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the parameter mapping options.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
-        Expression<Func<TSource, TProperty>> propertySelector);
+    IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
+
+    /// <summary>
+    /// <para>
+    ///     Ignore the selected property.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TProperty">The source property type.</typeparam>
+    /// <param name="propertySelector">
+    ///     An expression to select the property of the source type.
+    /// </param>
+    void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
 }

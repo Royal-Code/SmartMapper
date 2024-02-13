@@ -60,7 +60,7 @@ internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProper
     }
 
     /// <inheritdoc />
-    public IPropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
+    public IPropertyThenToOptionsBuilder<TProperty, TTargetProperty, TNextProperty> ThenTo<TNextProperty>(
         Expression<Func<TTargetProperty, TNextProperty>> propertySelector)
     {
         if (!propertySelector.TryGetMember(out var member))
@@ -70,13 +70,89 @@ internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProper
             throw new InvalidPropertySelectorException(nameof(propertySelector));
         
         var thenToPropertyOptions = propertyResolutionOptions.ThenTo(propertyInfo);
-        var builder = new PropertyThenOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToPropertyOptions);
+        var builder = new PropertyThenToOptionsBuilder<TProperty, TTargetProperty, TNextProperty>(thenToPropertyOptions);
         return builder;
     }
 
     /// <inheritdoc />
     public IPropertyThenOptionsBuilder<TProperty, TTargetProperty> Then()
     {
-        throw new NotImplementedException();
+        return new InternalPropertyThenOptionsBuilder<TProperty, TTargetProperty>(adapterOptions, propertyResolutionOptions);
+    }
+
+    /// <inheritdoc />
+    private sealed class InternalPropertyThenOptionsBuilder<TTProperty, TTTargetProperty>
+        : IPropertyThenOptionsBuilder<TTProperty, TTTargetProperty>
+    {
+        private readonly AdapterOptions adapterOptions;
+        private readonly ToPropertyResolutionOptions propertyResolutionOptions;
+
+        /// <summary>
+        /// Crea
+        /// </summary>
+        /// <param name="adapterOptions"></param>
+        /// <param name="propertyResolutionOptions"></param>
+        public InternalPropertyThenOptionsBuilder(
+            AdapterOptions adapterOptions, 
+            ToPropertyResolutionOptions propertyResolutionOptions)
+        {
+            this.adapterOptions = adapterOptions;
+            this.propertyResolutionOptions = propertyResolutionOptions;
+        }
+
+        /// <inheritdoc />
+        public IPropertyThenToOptionsBuilder<TTProperty, TTTargetProperty, TNextProperty> To<TNextProperty>(
+            Expression<Func<TTTargetProperty, TNextProperty>> propertySelector)
+        {
+            if (!propertySelector.TryGetMember(out var member))
+                throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+            if (member is not PropertyInfo propertyInfo)
+                throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+            var thenToPropertyOptions = propertyResolutionOptions.ThenTo(propertyInfo);
+            var builder = new PropertyThenToOptionsBuilder<TTProperty, TTTargetProperty, TNextProperty>(thenToPropertyOptions);
+            return builder;
+        }
+
+        /// <inheritdoc />
+        public IPropertyThenToOptionsBuilder<TTProperty, TTTargetProperty, TNextProperty> To<TNextProperty>(
+            string propertyName)
+        {
+            // get target property by name, including inherited type properties
+            var propertyInfo = typeof(TTargetProperty).GetRuntimeProperty(propertyName);
+
+            // check if property exists
+            if (propertyInfo is null)
+                throw new InvalidPropertyNameException(
+                    $"The type '{typeof(TTTargetProperty).Name}' does not have a property with name '{propertyName}'.",
+                    nameof(propertyName));
+
+            // validate the property type
+            if (propertyInfo.PropertyType != typeof(TNextProperty))
+                throw new InvalidPropertyTypeException(
+                    $"Property '{propertyName}' on type '{typeof(TTTargetProperty).Name}' " +
+                    $"is not of type '{typeof(TNextProperty).Name}', " +
+                    $"but of type '{propertyInfo.PropertyType.Name}'.",
+                    nameof(propertyName));
+
+            var thenToPropertyOptions = propertyResolutionOptions.ThenTo(propertyInfo);
+            var builder = new PropertyThenToOptionsBuilder<TTProperty, TTTargetProperty, TNextProperty>(thenToPropertyOptions);
+            return builder;
+        }
+
+        /// <inheritdoc />
+        public IPropertyToMethodOptionsBuilder<TTTargetProperty, TTProperty> ToMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IPropertyToMethodOptionsBuilder<TTTargetProperty, TTProperty> ToMethod(
+            Expression<Func<TTTargetProperty, Delegate>> methodSelect)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
