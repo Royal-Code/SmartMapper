@@ -6,8 +6,6 @@ namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 /// </summary>
 public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBase
 {
-    private readonly ICollection<ResolutionOptionsBase> innerPropertiesResolutions = [];
-
     /// <summary>
     /// <para>
     ///     Base constructor for the resolution options that contains inner properties.
@@ -20,25 +18,25 @@ public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBa
     /// <param name="resolvedProperty">The source property related to the assignment.</param>
     protected InnerPropertiesResolutionOptionsBase(PropertyOptions resolvedProperty) : base(resolvedProperty)
     {
-        InnerSourceOptions = new SourceOptions(resolvedProperty.Property.PropertyType);
+        InnerPropertiesOptions = new(resolvedProperty);
     }
+
+    /// <summary>
+    /// The inner property options.
+    /// </summary>
+    public InnerPropertiesOptions InnerPropertiesOptions { get; }
 
     /// <summary>
     /// The source options for the inner properties.
     /// </summary>
-    public SourceOptions InnerSourceOptions { get; }
+    public SourceOptions InnerSourceOptions => InnerPropertiesOptions.InnerSourceOptions;
 
     /// <summary>
     /// Adds a resolution for an inner property.
     /// </summary>
     /// <param name="resolution"></param>
     public void AddInnerPropertyResolution(ResolutionOptionsBase resolution)
-    {
-        if (innerPropertiesResolutions.Contains(resolution))
-            return;
-
-        innerPropertiesResolutions.Add(resolution);
-    }
+        => InnerPropertiesOptions.AddInnerPropertyResolution(resolution);
 
     /// <summary>
     /// Get the inner properties resolutions.
@@ -47,7 +45,5 @@ public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBa
     ///     An enumerable of <see cref="ResolutionOptionsBase"/>.
     /// </returns>
     public IEnumerable<ResolutionOptionsBase> GetInnerPropertiesResolutions()
-    {
-        return innerPropertiesResolutions;
-    }
+        => InnerPropertiesOptions.GetInnerPropertiesResolutions();
 }

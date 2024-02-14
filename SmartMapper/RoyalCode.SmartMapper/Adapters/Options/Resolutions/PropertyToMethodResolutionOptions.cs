@@ -24,6 +24,26 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     public MethodOptions MethodOptions { get; }
 
     /// <summary>
+    /// <para>
+    ///     The options for the method parameter.
+    /// </para>
+    /// <para>
+    ///     The value will be informed when the <see cref="Strategy"/> be <see cref="ToMethodStrategy.Value"/>.
+    /// </para>
+    /// </summary>
+    public ToMethodParameterOptions? ValueOptions { get; private set; }
+
+    /// <summary>
+    /// <para>
+    ///     The inner property options.
+    /// </para>
+    /// <para>
+    ///     The value will be informed when the <see cref="Strategy"/> be <see cref="ToMethodStrategy.InnerProperties"/>.
+    /// </para>
+    /// </summary>
+    public InnerPropertiesOptions? InnerPropertiesOptions { get; private set; }
+
+    /// <summary>
     /// The strategy to map the property to a target method.
     /// </summary>
     public ToMethodStrategy Strategy { get; internal set; }
@@ -31,6 +51,7 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     internal void MapAsParameter()
     {
         Status = ResolutionStatus.MappedToMethodParameter;
+        ValueOptions = new ToMethodParameterOptions(MethodOptions, ResolvedProperty.Property);
     }
 
     internal void MapInnerParameters()
