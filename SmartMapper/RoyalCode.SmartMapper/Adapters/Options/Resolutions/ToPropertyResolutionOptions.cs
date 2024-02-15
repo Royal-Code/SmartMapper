@@ -24,7 +24,12 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     /// The target property.
     /// </summary>
     public PropertyInfo TargetProperty { get; }
-    
+
+    /// <summary>
+    /// The resolution strategy for the target property.
+    /// </summary>
+    public ToPropertyResolutionStrategy Strategy { get; private set; } = ToPropertyResolutionStrategy.SetValue;
+
     /// <summary>
     /// The inner target property mapping.
     /// </summary>
@@ -37,6 +42,7 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     /// <returns>The options to resolve a source property to a target property.</returns>
     public ThenToPropertyOptions ThenTo(PropertyInfo targetProperty)
     {
+        Strategy = ToPropertyResolutionStrategy.AccessInnerProperty;
         ThenToProperty = new(this, targetProperty);
         return ThenToProperty;
     }
