@@ -18,7 +18,7 @@ public abstract class InnerPropertiesResolutionOptionsBase : ResolutionOptionsBa
     /// <param name="resolvedProperty">The source property related to the assignment.</param>
     protected InnerPropertiesResolutionOptionsBase(PropertyOptions resolvedProperty) : base(resolvedProperty)
     {
-        InnerPropertiesOptions = new(resolvedProperty);
+        InnerPropertiesOptions = new(resolvedProperty.Property);
     }
 
     /// <summary>

@@ -1,4 +1,6 @@
 ﻿
+using System.Reflection;
+
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
 /// <summary>
@@ -11,10 +13,10 @@ public sealed class InnerPropertiesOptions
     /// <summary>
     /// Creates a new <see cref="InnerPropertiesOptions"/>.
     /// </summary>
-    /// <param name="propertyOptions"></param>
-    public InnerPropertiesOptions(PropertyOptions propertyOptions)
+    /// <param name="property">The property info.</param>
+    public InnerPropertiesOptions(PropertyInfo property)
     {
-        InnerSourceOptions = new SourceOptions(propertyOptions.Property.PropertyType);
+        InnerSourceOptions = new SourceOptions(property.PropertyType);
     }
 
     /// <summary>

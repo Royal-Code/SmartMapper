@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using RoyalCode.SmartMapper.Adapters.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
@@ -15,6 +16,7 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     public ToPropertyResolutionOptions(PropertyOptions resolvedProperty, PropertyInfo targetProperty)
         : base(resolvedProperty)
     {
+        Status = ResolutionStatus.MappedToProperty;
         TargetProperty = targetProperty;
     }
     

@@ -10,7 +10,8 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     /// <summary>
     /// Creates a new instance of <see cref="PropertyToMethodResolutionOptions"/>.
     /// </summary>
-    /// <param name="resolvedProperty">The resolved property.
+    /// <param name="resolvedProperty">The resolved property.</param>
+    /// <param name="methodOptions">The method options.</param>
     public PropertyToMethodResolutionOptions(PropertyOptions resolvedProperty, MethodOptions methodOptions) 
         : base(resolvedProperty)
     {
@@ -46,16 +47,31 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     /// <summary>
     /// The strategy to map the property to a target method.
     /// </summary>
-    public ToMethodStrategy Strategy { get; internal set; }
+    public ToMethodStrategy Strategy { get; private set; }
 
     internal void MapAsParameter()
     {
+        if (Strategy is ToMethodStrategy.InnerProperties)
+            throw new InvalidOperationException(
+                $"The property '{ResolvedProperty.Property.Name}' of type " +
+                $"'{ResolvedProperty.Property.DeclaringType?.Name}' was mapped as inner properties " +
+                $"and it is not possible to map as value.");
+            
         Status = ResolutionStatus.MappedToMethodParameter;
+        Strategy = ToMethodStrategy.Value;
         ValueOptions = new ToMethodParameterOptions(MethodOptions, ResolvedProperty.Property);
     }
 
     internal void MapInnerParameters()
     {
+        if (Strategy is ToMethodStrategy.Value)
+            throw new InvalidOperationException(
+                $"The property '{ResolvedProperty.Property.Name}' of type " +
+                $"'{ResolvedProperty.Property.DeclaringType?.Name}' was mapped as value " +
+                $"and it is not possible to map as inner properties.");
+        
         Status = ResolutionStatus.MappedToMethod;
+        Strategy = ToMethodStrategy.InnerProperties;
+        InnerPropertiesOptions = new InnerPropertiesOptions(ResolvedProperty.Property);
     }
 }

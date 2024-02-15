@@ -25,6 +25,11 @@ public sealed class ThenToPropertyOptions
     public ToPropertyResolutionOptions PropertyResolutionOptions { get; }
 
     /// <summary>
+    /// The source property options.
+    /// </summary>
+    public PropertyOptions SourcePropertyOptions => PropertyResolutionOptions.ResolvedProperty;
+    
+    /// <summary>
     /// The target property.
     /// </summary>
     public PropertyInfo TargetProperty { get; }
