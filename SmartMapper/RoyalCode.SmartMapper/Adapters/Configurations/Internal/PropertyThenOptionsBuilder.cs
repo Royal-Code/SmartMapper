@@ -30,7 +30,7 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var nextThenTo = thenToPropertyOptions.ThenTo<TNextProperty>(propertyInfo);
+        var nextThenTo = thenToPropertyOptions.ThenTo(propertyInfo);
         var builder = new PropertyThenToOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>(nextThenTo);
         return builder;
     }
@@ -55,7 +55,7 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
                 $"but of type '{propertyInfo.PropertyType.Name}'.",
                 nameof(propertyName));
 
-        var nextThenTo = thenToPropertyOptions.ThenTo<TNextProperty>(propertyInfo);
+        var nextThenTo = thenToPropertyOptions.ThenTo(propertyInfo);
         var builder = new PropertyThenToOptionsBuilder<TSourceProperty, TTargetProperty, TNextProperty>(nextThenTo);
         return builder;
     }
@@ -65,14 +65,22 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
         // here is required a ThenToMethodOptions that contains the MethodOptions for the target property
         // The ThenToPropertyOptions should be used to create a new ThenToMethodOptions
 
-        ThenToMethodOptions options = thenToPropertyOptions.ThenToMethod();
-            
+        ToMethodOptions options = thenToPropertyOptions.ThenCall();
+
+        var builder = new PropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
+
         throw new NotImplementedException();
     }
 
     public IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod(
-        Expression<Func<TTargetProperty, Delegate>> methodSelect)
+        Expression<Func<TTargetProperty, Delegate>> methodSelector)
     {
+        if (!methodSelector.TryGetMethod(out var method))
+            throw new InvalidMethodDelegateException(nameof(methodSelector));
+
+        //sourceToMethodOptions.MethodOptions.Method = method;
+        //sourceToMethodOptions.MethodOptions.MethodName = method.Name;
+
         throw new NotImplementedException();
     }
 }

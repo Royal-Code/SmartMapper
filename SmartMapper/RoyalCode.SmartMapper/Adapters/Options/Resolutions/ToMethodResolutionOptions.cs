@@ -16,9 +16,16 @@ public sealed class ToMethodResolutionOptions : InnerPropertiesResolutionOptions
     ///     as a resolution of the source property.
     /// </para>
     /// </summary>
+    /// <param name="methodOptions"></param>
     /// <param name="resolvedProperty"></param>
-    public ToMethodResolutionOptions(PropertyOptions resolvedProperty) : base(resolvedProperty)
+    public ToMethodResolutionOptions(MethodOptions methodOptions, PropertyOptions resolvedProperty) : base(resolvedProperty)
     {
         Status = ResolutionStatus.MappedToMethod;
+        MethodOptions = methodOptions;
     }
+
+    /// <summary>
+    /// The method options mapped by the property.
+    /// </summary>
+    public MethodOptions MethodOptions { get; }
 }

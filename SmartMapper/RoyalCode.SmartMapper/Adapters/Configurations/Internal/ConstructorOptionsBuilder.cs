@@ -4,18 +4,18 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
 internal sealed class ConstructorOptionsBuilder<TSource> : IConstructorOptionsBuilder<TSource>
 {
-    private readonly AdapterOptions options;
+    private readonly SourceOptions sourceOptions;
     private readonly ConstructorOptions constructorOptions;
 
     public ConstructorOptionsBuilder(AdapterOptions options)
     {
-        this.options = options;
+        sourceOptions = options.SourceOptions;
         constructorOptions = options.TargetOptions.GetConstructorOptions();
     }
 
     public void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configurePrameters)
     {
-        var builder = new ConstructorParametersOptionsBuilder<TSource>(options, constructorOptions);
+        var builder = new ConstructorParametersOptionsBuilder<TSource>(sourceOptions, constructorOptions);
         configurePrameters(builder);
     }
 

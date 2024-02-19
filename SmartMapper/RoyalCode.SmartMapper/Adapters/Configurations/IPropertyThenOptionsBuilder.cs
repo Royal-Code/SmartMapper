@@ -48,12 +48,12 @@ public interface IPropertyThenOptionsBuilder<TSourceProperty, TTargetProperty>
     /// <summary>
     /// Maps the current property to a method, where the internal properties will be mapped to the method parameters.
     /// </summary>
-    /// <param name="methodSelect">
+    /// <param name="methodSelector">
     ///     A function to select the method of the destination type.
     /// </param>
     /// <returns>
     ///     The builder to configure the property to method mapping.
     /// </returns>
     IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod(
-        Expression<Func<TTargetProperty, Delegate>> methodSelect);
+        Expression<Func<TTargetProperty, Delegate>> methodSelector);
 }

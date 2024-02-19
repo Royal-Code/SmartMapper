@@ -1,30 +1,27 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
-using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Core.Extensions;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
 internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructorParametersOptionsBuilder<TSource>
 {
-    private readonly AdapterOptions adapterOptions;
+    private readonly SourceOptions sourceOptions;
     private readonly ConstructorOptions constructorOptions;
     private readonly ToConstructorResolutionOptions? parentResolutionOptions;
 
-    public ConstructorParametersOptionsBuilder(AdapterOptions adapterOptions, ConstructorOptions constructorOptions)
+    public ConstructorParametersOptionsBuilder(SourceOptions sourceOptions, ConstructorOptions constructorOptions)
     {
-        this.adapterOptions = adapterOptions;
+        this.sourceOptions = sourceOptions;
         this.constructorOptions = constructorOptions;
     }
 
     public ConstructorParametersOptionsBuilder(
-        AdapterOptions adapterOptions, 
+        SourceOptions sourceOptions, 
         ConstructorOptions constructorOptions, 
         ToConstructorResolutionOptions parentResolutionOptions)
     {
-        this.adapterOptions = adapterOptions;
+        this.sourceOptions = sourceOptions;
         this.constructorOptions = constructorOptions;
         this.parentResolutionOptions = parentResolutionOptions;
     }
@@ -33,14 +30,8 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
         Expression<Func<TSource, TProperty>> propertySelector, 
         string? parameterName = null)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-        var constructorParameterOptions = constructorOptions.GetParameterOptions(propertyInfo);
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
+        var constructorParameterOptions = constructorOptions.GetParameterOptions(propertyOptions.Property);
         
         if (parameterName is not null)
             constructorParameterOptions.UseParameterName(parameterName);
@@ -54,22 +45,17 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
     public IConstructorParametersOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-        
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
         var resolutionOptions = propertyOptions.ResolutionOptions is ToConstructorResolutionOptions tcro
             ? tcro
             : new ToConstructorResolutionOptions(propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
-        var innerAdapterOptions = new AdapterOptions(resolutionOptions.InnerSourceOptions, adapterOptions.TargetOptions);
-        return new ConstructorParametersOptionsBuilder<TInnerProperty>(innerAdapterOptions, constructorOptions, resolutionOptions);
+        return new ConstructorParametersOptionsBuilder<TInnerProperty>(
+            resolutionOptions.InnerSourceOptions, 
+            constructorOptions,
+            resolutionOptions);
     }
 
     public void InnerProperties<TInnerProperty>(
@@ -82,14 +68,7 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
 
     public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
         propertyOptions.IgnoreMapping();
     }
 }

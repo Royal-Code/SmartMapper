@@ -1,9 +1,6 @@
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
-using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Core.Extensions;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -33,13 +30,7 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
     /// <inheritdoc />
     public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertySelector);
         propertyOptions.IgnoreMapping();
     }
 
@@ -47,14 +38,8 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
     public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector, string? parameterName = null)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-        var parameterOptions = sourceToMethodOptions.MethodOptions.GetParameterOptions(propertyInfo);
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertySelector);
+        var parameterOptions = sourceToMethodOptions.MethodOptions.GetParameterOptions(propertyOptions.Property);
 
         if (parameterName is not null)
             parameterOptions.UseParameterName(parameterName);
@@ -69,17 +54,10 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
     public ISourceToMethodPropertiesOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
-
+        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertySelector);
         var resolutionOptions = propertyOptions.ResolutionOptions is ToMethodResolutionOptions tcro
             ? tcro
-            : new ToMethodResolutionOptions(propertyOptions);
+            : new ToMethodResolutionOptions(sourceToMethodOptions.MethodOptions, propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 

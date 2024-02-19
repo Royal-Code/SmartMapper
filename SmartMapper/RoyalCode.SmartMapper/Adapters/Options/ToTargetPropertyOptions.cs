@@ -12,15 +12,12 @@ public sealed class ToTargetPropertyOptions
     /// </summary>
     /// <param name="targetOptions">The target type options.</param>
     /// <param name="targetProperty">The target property.</param>
-    /// <param name="sourcePropertyOptions">The source property options.</param>
     public ToTargetPropertyOptions(
         TargetOptions targetOptions,
-        PropertyInfo targetProperty,
-        PropertyOptions sourcePropertyOptions)
+        PropertyInfo targetProperty)
     {
         TargetOptions = targetOptions;
         TargetProperty = targetProperty;
-        SourcePropertyOptions = sourcePropertyOptions;
     }
     
     /// <summary>
@@ -32,11 +29,6 @@ public sealed class ToTargetPropertyOptions
     /// The target property.
     /// </summary>
     public PropertyInfo TargetProperty { get; }
-    
-    /// <summary>
-    /// The source property options.
-    /// </summary>
-    public PropertyOptions SourcePropertyOptions { get; }
     
     /// <summary>
     /// Options for inner properties of the target property.

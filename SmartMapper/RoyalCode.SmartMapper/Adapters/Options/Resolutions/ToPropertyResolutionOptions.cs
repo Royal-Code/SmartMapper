@@ -43,20 +43,7 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
     /// </para>
     /// </summary>
-    public ThenToMethodOptions? ThenToMethod { get; set; }
-    
-    /// <summary>
-    /// <para>
-    ///     The assignment strategy options.
-    /// </para>
-    /// <para>
-    ///     The assignment strategy is used to define how the source property value will be assigned to the target property.
-    /// </para>
-    /// <para>
-    ///     This property can be not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.SetValue"/>.
-    /// </para>
-    /// </summary>
-    public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
+    public ToMethodOptions? ThenToMethod { get; set; }
     
     /// <summary>
     /// Continues the mapping of the source property to an internal property of the target property.
@@ -66,14 +53,39 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     public ThenToPropertyOptions ThenTo(PropertyInfo targetProperty)
     {
         var innerTargetProperty = TargetProperty.GetInnerProperty(targetProperty);
-        ThenToProperty = new(this, innerTargetProperty);
-        Strategy = ToPropertyResolutionStrategy.AccessInnerProperty;
+        var thenToProperty = new ThenToPropertyOptions(this, innerTargetProperty);
+        
+        UseResolutionStrategy(ToPropertyResolutionStrategy.AccessInnerProperty);
+        
+        ThenToProperty = thenToProperty;
         return ThenToProperty;
     }
 
-    public ThenToMethodOptions ThenCall()
+    public ToMethodOptions ThenCall()
     {
         throw new NotImplementedException();
+    }
+
+    private void UseResolutionStrategy(ToPropertyResolutionStrategy strategy)
+    {
+        if (Strategy == strategy) 
+            return;
+
+        if (Strategy != ToPropertyResolutionStrategy.SetValue || AssignmentStrategy is not null)
+            throw new InvalidOperationException($"Another resolution strategy has already been used: '{Strategy}'.");
+
+        Strategy = strategy;
+    }
+
+    /// <summary>
+    /// Internal validation of assignment stragety options.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    protected override void GuardCreateAssignmentStrategyOptions()
+    {
+        if (Strategy is not ToPropertyResolutionStrategy.SetValue)
+            throw new InvalidOperationException(
+                $"To provide an assignment strategy, the resolution strategy must be 'SetValue', but currently it is '{Strategy}'.");
     }
 }
 

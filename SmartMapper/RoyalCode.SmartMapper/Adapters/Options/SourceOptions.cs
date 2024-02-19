@@ -1,6 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 using RoyalCode.SmartMapper.Core.Exceptions;
+using RoyalCode.SmartMapper.Core.Extensions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
@@ -11,7 +12,7 @@ public sealed class SourceOptions
 {
     private ICollection<PropertyOptions>? propertyOptions;
     private ICollection<SourceToMethodOptions>? sourceToMethodOptions;
-    
+
     /// <summary>
     /// Creates a new instance of <see cref="SourceOptions"/>.
     /// </summary>
@@ -24,8 +25,8 @@ public sealed class SourceOptions
     /// <summary>
     /// The source type to configure.
     /// </summary>
-    public Type SourceType { get;  }
-    
+    public Type SourceType { get; }
+
     /// <summary>
     /// <para>
     ///     Gets or create the options for a property of the source type.
@@ -55,28 +56,67 @@ public sealed class SourceOptions
 
     /// <summary>
     /// <para>
-    ///     Gets or create the options for a property of the source type.
+    ///     Gets or create the options for a property of the source type from a lambda expression.
     /// </para>
     /// </summary>
-    /// <param name="propertyName">The name of the property of the source type.</param>
-    /// <returns>The options for the property of the source type or a new instance if no options have been set.</returns>
-    public PropertyOptions GetPropertyOptions(string propertyName)
+    /// <param name="propertySelector">
+    ///     A lambda expression that get a property value, used to extract the property info.
+    /// </param>
+    /// <returns>
+    ///     The options for the property of the source type or a new instance if no options have been set.
+    /// </returns>
+    /// <exception cref="InvalidPropertySelectorException">
+    ///     If the lambda expression does not select a property.
+    /// </exception>
+    public PropertyOptions GetPropertyOptions(LambdaExpression propertySelector)
+    {
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        return GetPropertyOptions(propertyInfo);
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Gets or create the options for a property of the source type from a lambda expression.
+    /// </para>
+    /// </summary>
+    /// <param name="propertyName">The property name.</param>
+    /// <param name="propertyType">The property type.</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidPropertyNameException">
+    ///     If the source type does not contains the a property with informed name.
+    /// </exception>
+    /// <exception cref="InvalidPropertyTypeException">
+    ///     If the source property is not of the informed type.
+    /// </exception>
+    public PropertyOptions GetPropertyOptions(string propertyName, Type propertyType)
     {
         var options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
-        if (options is null)
-        {
-            // get source property by name, including inherited type properties
-            var propertyInfo = SourceType.GetRuntimeProperty(propertyName);
+        if (options is not null)
+            return options;
 
-            if (propertyInfo is not null)
-                options = GetPropertyOptions(propertyInfo);
-        }
+        // get target property by name, including inherited type properties
+        var propertyInfo = SourceType.GetRuntimeProperty(propertyName);
 
-        if (options is null)
+        // check if property exists
+        if (propertyInfo is null)
             throw new InvalidPropertyNameException(
-                $"Property '{propertyName}' not found on type '{SourceType.Name}'.", nameof(propertyName));
-        
-        return options;
+                $"The type '{SourceType.Name}' does not have a property with name '{propertyName}'.",
+                nameof(propertyName));
+
+        // validate the property type
+        if (propertyInfo.PropertyType != propertyType)
+            throw new InvalidPropertyTypeException(
+                $"Property '{propertyName}' on type '{SourceType.Name}' " +
+                $"is not of type '{propertyType.Name}', " +
+                $"but of type '{propertyInfo.PropertyType.Name}'.",
+                nameof(propertyName));
+
+        return GetPropertyOptions(propertyInfo);
     }
 
     /// <summary>

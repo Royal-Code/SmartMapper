@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 internal sealed class PropertyToConstructorOptionsBuilder<TProperty> : IPropertyToConstructorOptionsBuilder<TProperty>
 {
     private readonly ToConstructorResolutionOptions toConstructorResolutionOptions;
-    private readonly AdapterOptions adapterOptions;
+    private readonly SourceOptions sourceOptions;
     private readonly ConstructorOptions constructorOptions;
 
     public PropertyToConstructorOptionsBuilder(
@@ -14,14 +14,14 @@ internal sealed class PropertyToConstructorOptionsBuilder<TProperty> : IProperty
         AdapterOptions adapterOptions)
     {
         this.toConstructorResolutionOptions = toConstructorResolutionOptions;
-        this.adapterOptions = adapterOptions;
+        sourceOptions = adapterOptions.SourceOptions;
         constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
     }
 
     public void Parameters(Action<IConstructorParametersOptionsBuilder<TProperty>> configurePrameters)
     {
         var builder = new ConstructorParametersOptionsBuilder<TProperty>(
-            adapterOptions, 
+            sourceOptions, 
             constructorOptions, 
             toConstructorResolutionOptions);
 

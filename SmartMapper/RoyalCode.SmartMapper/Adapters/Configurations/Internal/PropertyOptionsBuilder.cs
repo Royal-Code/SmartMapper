@@ -1,9 +1,6 @@
 ﻿using System.Linq.Expressions;
-using System.Reflection;
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
-using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Core.Extensions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -24,14 +21,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> To<TTargetProperty>(
         Expression<Func<TTarget, TTargetProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var toTargetPropertyOptions = adapterOptions.TargetOptions
-            .GetOrCreateToTargetPropertyOptions(propertyOptions, propertyInfo);
+        var toTargetPropertyOptions = adapterOptions.TargetOptions.GetToTargetPropertyOptions(propertySelector);
         
         var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
@@ -47,7 +37,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
         string propertyName)
     {
         var toTargetPropertyOptions = adapterOptions.TargetOptions
-            .GetOrCreateToTargetPropertyOptions<TTargetProperty>(propertyOptions, propertyName);
+            .GetToTargetPropertyOptions(propertyName, typeof(TTargetProperty));
         
         var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
@@ -70,7 +60,10 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
         var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
+        var resolution = new ToMethodResolutionOptions(methodOptions, propertyOptions);
 
+        var toMethodOptions = new ToMethodOptions(resolution);
+        var builder = new PropertyToMethodOptionsBuilder<TTarget, TProperty>(resolution);
 
         throw new NotImplementedException();
     }

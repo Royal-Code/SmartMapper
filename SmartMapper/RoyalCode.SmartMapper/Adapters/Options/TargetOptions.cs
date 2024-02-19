@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using System.Reflection;
 using RoyalCode.SmartMapper.Core.Exceptions;
+using RoyalCode.SmartMapper.Core.Extensions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
@@ -47,12 +49,9 @@ public sealed class TargetOptions
     ///     Create a new instance of <see cref="ToTargetPropertyOptions"/> for the target type.
     /// </para>
     /// </summary>
-    /// <param name="sourcePropertyOptions">The source property options.</param>
     /// <param name="targetProperty">The target property.</param>
     /// <returns>A new instance of <see cref="ToTargetPropertyOptions"/> for the target type.</returns>
-    public ToTargetPropertyOptions GetOrCreateToTargetPropertyOptions(
-        PropertyOptions sourcePropertyOptions,
-        PropertyInfo targetProperty)
+    public ToTargetPropertyOptions GetToTargetPropertyOptions(PropertyInfo targetProperty)
     {
         var options = toTargetPropertyOptions?.FirstOrDefault(p => p.TargetProperty == targetProperty);
         if (options is not null)
@@ -64,7 +63,7 @@ public sealed class TargetOptions
                 $"The property '{targetProperty.Name}' is not an inner property of the target property '{TargetType.Name}'.",
                 nameof(targetProperty));
         
-        options = new ToTargetPropertyOptions(this, targetProperty, sourcePropertyOptions);
+        options = new ToTargetPropertyOptions(this, targetProperty);
         toTargetPropertyOptions ??= [];
         toTargetPropertyOptions.Add(options);
         return options;
@@ -72,41 +71,67 @@ public sealed class TargetOptions
 
     /// <summary>
     /// <para>
-    ///     Create a new instance of <see cref="ToTargetPropertyOptions"/> for the target type.
+    ///     Gets or create the options for a property of the source type from a lambda expression.
     /// </para>
     /// </summary>
-    /// <param name="sourcePropertyOptions">The source property options.</param>
-    /// <param name="targetPropertyName">The name of the target property.</param>
-    /// <typeparam name="TTargetProperty">The type of the target property.</typeparam>
-    /// <returns>A new instance of <see cref="ToTargetPropertyOptions"/> for the target type.</returns>
+    /// <param name="propertySelector">
+    ///     A lambda expression that get a property value, used to extract the property info.
+    /// </param>
+    /// <returns>
+    ///     The options for the property of the source type or a new instance if no options have been set.
+    /// </returns>
+    /// <exception cref="InvalidPropertySelectorException">
+    ///     If the lambda expression does not select a property.
+    /// </exception>
+    public ToTargetPropertyOptions GetToTargetPropertyOptions(LambdaExpression propertySelector)
+    {
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        return GetToTargetPropertyOptions(propertyInfo);
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Gets or create the options for a property of the source type from a lambda expression.
+    /// </para>
+    /// </summary>
+    /// <param name="propertyName">The property name.</param>
+    /// <param name="propertyType">The property type.</param>
+    /// <returns></returns>
     /// <exception cref="InvalidPropertyNameException">
-    ///     Check if the property exists on the target type.
+    ///     If the source type does not contains the a property with informed name.
     /// </exception>
     /// <exception cref="InvalidPropertyTypeException">
-    ///     Check if the property type is the same as the target property type.
+    ///     If the source property is not of the informed type.
     /// </exception>
-    public ToTargetPropertyOptions GetOrCreateToTargetPropertyOptions<TTargetProperty>(
-        PropertyOptions sourcePropertyOptions,
-        string targetPropertyName)
+    public ToTargetPropertyOptions GetToTargetPropertyOptions(string propertyName, Type propertyType)
     {
+        var options = toTargetPropertyOptions?.FirstOrDefault(x => x.TargetProperty.Name == propertyName);
+        if (options is not null)
+            return options;
+
         // get target property by name, including inherited type properties
-        var propertyInfo = TargetType.GetRuntimeProperty(targetPropertyName);
+        var propertyInfo = TargetType.GetRuntimeProperty(propertyName);
 
         // check if property exists
         if (propertyInfo is null)
             throw new InvalidPropertyNameException(
-                $"The type '{TargetType.Name}' does not have a property with name '{targetPropertyName}'.",
-                nameof(targetPropertyName));
+                $"The type '{TargetType.Name}' does not have a property with name '{propertyName}'.",
+                nameof(propertyName));
 
         // validate the property type
-        if (propertyInfo.PropertyType != typeof(TTargetProperty))
+        if (propertyInfo.PropertyType != propertyType)
             throw new InvalidPropertyTypeException(
-                $"Property '{targetPropertyName}' on type '{TargetType.Name}' " +
-                $"is not of type '{typeof(TTargetProperty).Name}', " +
+                $"Property '{propertyName}' on type '{TargetType.Name}' " +
+                $"is not of type '{propertyType.Name}', " +
                 $"but of type '{propertyInfo.PropertyType.Name}'.",
-                nameof(targetPropertyName));
-        
-        return GetOrCreateToTargetPropertyOptions(sourcePropertyOptions, propertyInfo);
+                nameof(propertyName));
+
+        return GetToTargetPropertyOptions(propertyInfo);
     }
 
     /// <summary>

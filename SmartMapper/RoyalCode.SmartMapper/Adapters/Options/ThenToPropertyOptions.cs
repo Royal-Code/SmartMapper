@@ -57,7 +57,7 @@ public sealed class ThenToPropertyOptions
     ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
     /// </para>
     /// </summary>
-    public ThenToMethodOptions? ThenToMethod { get; set; }
+    public ToMethodOptions? ThenToMethod { get; set; }
     
     /// <summary>
     /// <para>
@@ -71,30 +71,41 @@ public sealed class ThenToPropertyOptions
     /// </para>
     /// </summary>
     public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
-    
+
     /// <summary>
     /// Continues the mapping of the source property to an internal property of the target property.
     /// </summary>
     /// <param name="targetProperty">The internal property.</param>
-    /// <typeparam name="TNextProperty">The internal property type.</typeparam>
-    /// <returns></returns>
-    public ThenToPropertyOptions ThenTo<TNextProperty>(PropertyInfo targetProperty)
+    /// <returns>
+    ///     The <see cref="ThenToProperty"/> created.
+    /// </returns>
+    public ThenToPropertyOptions ThenTo(PropertyInfo targetProperty)
     {
+        GuardThen();
+
         var innerTargetProperty = TargetProperty.GetInnerProperty(targetProperty);
         ThenToProperty = new(PropertyResolutionOptions, innerTargetProperty);
         Strategy = ToPropertyResolutionStrategy.AccessInnerProperty;
         return ThenToProperty;
     }
     
-    public ThenToMethodOptions ThenCall()
+    /// <summary>
+    /// Continues the mapping of the source property to a method of the target property.
+    /// </summary>
+    /// <returns>
+    ///     The <see cref="ThenToMethod"/> created.
+    /// </returns>
+    public ToMethodOptions ThenCall()
     {
-        // var methodOptions = Tar
-        // var parameterOptions = new ToMethodParameterOptions()
-        // var methodOptions = new ThenToMethodOptions(PropertyResolutionOptions);
-        
-        throw new NotImplementedException();
+        GuardThen();
+
+        var methodOptions = TargetProperty.TargetOptions.CreateMethodOptions();
+
+        ThenToMethod = new ToMethodOptions(PropertyResolutionOptions, methodOptions);
+
+        return ThenToMethod;
     }
-    
+
     /// <summary>
     /// <para>
     ///     Get o create the <see cref="AssignmentStrategyOptions{TProperty}"/>.
@@ -115,5 +126,15 @@ public sealed class ThenToPropertyOptions
         }
         
         return PropertyResolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
+    }
+
+    private void GuardThen()
+    {
+        if (Strategy is not ToPropertyResolutionStrategy.SetValue 
+            || AssignmentStrategy is not null)
+        {
+            throw new InvalidOperationException(
+                $"The property resolution strategy was defied as {Strategy} and can not be changed");
+        }
     }
 }

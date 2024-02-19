@@ -9,15 +9,15 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 internal abstract class PropertyToParametersOptionsBuilderBase<TSourceProperty> 
     : IPropertyToParametersOptionsBuilder<TSourceProperty>
 {
-    protected readonly AdapterOptions adapterOptions;
+    protected readonly SourceOptions sourceOptions;
 
     /// <summary>
     /// Creates a new base builder to map properties to parameters.
     /// </summary>
-    /// <param name="adapterOptions"></param>
-    protected PropertyToParametersOptionsBuilderBase(AdapterOptions adapterOptions)
+    /// <param name="sourceOptions">The source options</param>
+    protected PropertyToParametersOptionsBuilderBase(SourceOptions sourceOptions)
     {
-        this.adapterOptions = adapterOptions;
+        this.sourceOptions = sourceOptions;
     }
 
     public void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector)
@@ -28,7 +28,7 @@ internal abstract class PropertyToParametersOptionsBuilderBase<TSourceProperty>
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
 
         propertyOptions.IgnoreMapping();
     }
@@ -41,15 +41,26 @@ internal abstract class PropertyToParametersOptionsBuilderBase<TSourceProperty>
 internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
     : PropertyToParametersOptionsBuilderBase<TSourceProperty>
 {
-    public PropertyToParametersOptionsBuilder(AdapterOptions adapterOptions) 
-        : base(adapterOptions)
+    private readonly InnerPropertiesOptions innerPropertiesOptions;
+
+    public PropertyToParametersOptionsBuilder(InnerPropertiesOptions innerPropertiesOptions) 
+        : base(innerPropertiesOptions.InnerSourceOptions)
     {
+        this.innerPropertiesOptions = innerPropertiesOptions;
     }
 
     public override IParameterStrategyBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector,
         string? parameterName = null)
     {
+        if (!propertySelector.TryGetMember(out var member))
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        if (member is not PropertyInfo propertyInfo)
+            throw new InvalidPropertySelectorException(nameof(propertySelector));
+
+        
+
         throw new NotImplementedException();
     }
 }

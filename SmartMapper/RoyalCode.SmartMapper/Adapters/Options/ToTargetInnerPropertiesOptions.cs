@@ -52,9 +52,7 @@ public sealed class ToTargetInnerPropertiesOptions
                 nameof(innerTargetPropertyInfo));
         
         // create a new options and add to the inner properties collection
-        options = PropertyTargetOptions.GetOrCreateToTargetPropertyOptions(
-            ParentTargetProperty.SourcePropertyOptions,
-            innerTargetPropertyInfo);
+        options = PropertyTargetOptions.GetToTargetPropertyOptions(innerTargetPropertyInfo);
         
         innerProperties ??= [];
         innerProperties.Add(options);

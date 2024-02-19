@@ -58,6 +58,8 @@ public abstract class ResolutionOptionsBase
         if (typeof(TProperty) != ResolvedProperty.Property.PropertyType)
             throw new InvalidOperationException($"The type of the property '{ResolvedProperty.Property.Name}' is not '{typeof(TProperty).Name}'");
 
+        GuardCreateAssignmentStrategyOptions();
+
         if (AssignmentStrategy is not AssignmentStrategyOptions<TProperty> strategyOptions)
         {
             strategyOptions = new AssignmentStrategyOptions<TProperty>();
@@ -66,4 +68,9 @@ public abstract class ResolutionOptionsBase
 
         return strategyOptions;
     }
+
+    /// <summary>
+    /// Execute some validation logic before the creation and assignment of the <see cref="AssignmentStrategy"/> property.
+    /// </summary>
+    protected virtual void GuardCreateAssignmentStrategyOptions() { }
 }
