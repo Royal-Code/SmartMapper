@@ -13,7 +13,7 @@ public sealed class ThenToPropertyOptions
     /// </summary>
     /// <param name="propertyResolutionOptions">The property resolution options.</param>
     /// <param name="targetProperty">The target property.</param>
-    public ThenToPropertyOptions(ToPropertyResolutionOptions propertyResolutionOptions, PropertyInfo targetProperty)
+    public ThenToPropertyOptions(ToPropertyResolutionOptions propertyResolutionOptions, ToTargetPropertyOptions targetProperty)
     {
         PropertyResolutionOptions = propertyResolutionOptions;
         TargetProperty = targetProperty;
@@ -32,15 +32,43 @@ public sealed class ThenToPropertyOptions
     /// <summary>
     /// The target property.
     /// </summary>
-    public PropertyInfo TargetProperty { get; }
+    public ToTargetPropertyOptions TargetProperty { get; }
     
     /// <summary>
-    /// The inner target property mapping. 
+    /// The resolution strategy for the target property.
+    /// </summary>
+    public ToPropertyResolutionStrategy Strategy { get; private set; } = ToPropertyResolutionStrategy.SetValue;
+    
+    /// <summary>
+    /// <para>
+    ///     The inner target property mapping.
+    /// </para>
+    /// <para>
+    ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.AccessInnerProperty"/>.
+    /// </para>
     /// </summary>
     public ThenToPropertyOptions? ThenToProperty { get; private set; }
+
+    /// <summary>
+    /// <para>
+    ///     The method mapping.
+    /// </para>
+    /// <para>
+    ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
+    /// </para>
+    /// </summary>
+    public ThenToMethodOptions? ThenToMethod { get; set; }
     
     /// <summary>
-    /// The assignment strategy options.
+    /// <para>
+    ///     The assignment strategy options.
+    /// </para>
+    /// <para>
+    ///     The assignment strategy is used to define how the source property value will be assigned to the target property.
+    /// </para>
+    /// <para>
+    ///     This property can be not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.SetValue"/>.
+    /// </para>
     /// </summary>
     public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
     
@@ -52,8 +80,19 @@ public sealed class ThenToPropertyOptions
     /// <returns></returns>
     public ThenToPropertyOptions ThenTo<TNextProperty>(PropertyInfo targetProperty)
     {
-        ThenToProperty = new(PropertyResolutionOptions, targetProperty);
+        var innerTargetProperty = TargetProperty.GetInnerProperty(targetProperty);
+        ThenToProperty = new(PropertyResolutionOptions, innerTargetProperty);
+        Strategy = ToPropertyResolutionStrategy.AccessInnerProperty;
         return ThenToProperty;
+    }
+    
+    public ThenToMethodOptions ThenCall()
+    {
+        // var methodOptions = Tar
+        // var parameterOptions = new ToMethodParameterOptions()
+        // var methodOptions = new ThenToMethodOptions(PropertyResolutionOptions);
+        
+        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -69,6 +108,12 @@ public sealed class ThenToPropertyOptions
     /// <returns>The <see cref="AssignmentStrategyOptions{TProperty}"/>.</returns>
     public AssignmentStrategyOptions<TProperty> GetOrCreateAssignmentStrategyOptions<TProperty>()
     {
+        if (Strategy is not ToPropertyResolutionStrategy.SetValue)
+        {
+            throw new InvalidOperationException(
+                "The assignment strategy is only available when the resolution strategy is SetValue.");
+        }
+        
         return PropertyResolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
     }
 }

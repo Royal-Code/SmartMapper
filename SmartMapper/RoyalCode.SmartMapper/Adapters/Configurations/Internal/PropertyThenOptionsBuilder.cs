@@ -64,11 +64,9 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
     {
         // here is required a ThenToMethodOptions that contains the MethodOptions for the target property
         // The ThenToPropertyOptions should be used to create a new ThenToMethodOptions
-        
-        var resolution = new PropertyToMethodResolutionOptions(
-            thenToPropertyOptions.SourcePropertyOptions,
-            thenToPropertyOptions.MethodOptions);
-        
+
+        ThenToMethodOptions options = thenToPropertyOptions.ThenToMethod();
+            
         throw new NotImplementedException();
     }
 

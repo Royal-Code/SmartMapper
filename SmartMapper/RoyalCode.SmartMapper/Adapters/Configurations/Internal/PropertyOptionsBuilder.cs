@@ -8,7 +8,8 @@ using RoyalCode.SmartMapper.Core.Extensions;
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
 /// <inheritdoc />
-internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty> : IPropertyOptionsBuilder<TSource, TTarget, TProperty>
+internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty> 
+    : IPropertyOptionsBuilder<TSource, TTarget, TProperty>
 {
     private readonly AdapterOptions adapterOptions;
     private readonly PropertyOptions propertyOptions;
@@ -29,7 +30,10 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty> : IPro
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var resolution = new ToPropertyResolutionOptions(propertyOptions, propertyInfo);
+        var toTargetPropertyOptions = adapterOptions.TargetOptions
+            .GetOrCreateToTargetPropertyOptions(propertyOptions, propertyInfo);
+        
+        var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
         var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
             adapterOptions, 
@@ -42,24 +46,10 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty> : IPro
     public IPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> To<TTargetProperty>(
         string propertyName)
     {
-        // get target property by name, including inherited type properties
-        var propertyInfo = typeof(TTargetProperty).GetRuntimeProperty(propertyName);
-
-        // check if property exists
-        if (propertyInfo is null)
-            throw new InvalidPropertyNameException(
-                $"The type '{typeof(TTarget).Name}' does not have a property with name '{propertyName}'.",
-                nameof(propertyName));
-
-        // validate the property type
-        if (propertyInfo.PropertyType != typeof(TTargetProperty))
-            throw new InvalidPropertyTypeException(
-                $"Property '{propertyName}' on type '{typeof(TTarget).Name}' " +
-                $"is not of type '{typeof(TTargetProperty).Name}', " +
-                $"but of type '{propertyInfo.PropertyType.Name}'.",
-                nameof(propertyName));
-
-        var resolution = new ToPropertyResolutionOptions(propertyOptions, propertyInfo);
+        var toTargetPropertyOptions = adapterOptions.TargetOptions
+            .GetOrCreateToTargetPropertyOptions<TTargetProperty>(propertyOptions, propertyName);
+        
+        var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
         var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
             adapterOptions,
