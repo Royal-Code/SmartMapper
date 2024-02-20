@@ -49,7 +49,7 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     /// </summary>
     public ToMethodStrategy Strategy { get; private set; }
 
-    internal void MapAsParameter()
+    internal ToMethodParameterOptions MapAsParameter()
     {
         if (Strategy is ToMethodStrategy.InnerProperties)
             throw new InvalidOperationException(
@@ -60,9 +60,10 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
         Status = ResolutionStatus.MappedToMethodParameter;
         Strategy = ToMethodStrategy.Value;
         ValueOptions = new ToMethodParameterOptions(MethodOptions, ResolvedProperty.Property);
+        return ValueOptions;
     }
 
-    internal void MapInnerParameters()
+    internal InnerPropertiesOptions MapInnerParameters()
     {
         if (Strategy is ToMethodStrategy.Value)
             throw new InvalidOperationException(
@@ -73,5 +74,6 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
         Status = ResolutionStatus.MappedToMethod;
         Strategy = ToMethodStrategy.InnerProperties;
         InnerPropertiesOptions = new InnerPropertiesOptions(ResolvedProperty.Property);
+        return InnerPropertiesOptions;
     }
 }

@@ -2,19 +2,26 @@
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
 using System.Linq.Expressions;
+using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
+/// <inheritdoc />
 internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
     : IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
 {
-    private readonly ToMethodOptions options;
+    private readonly PropertyToMethodResolutionOptions options;
 
-    public PropertyToMethodOptionsBuilder(ToMethodOptions options)
+    /// <summary>
+    /// Creates a new instance of <see cref="PropertyToMethodOptionsBuilder{TTarget, TSourceProperty}"/>.
+    /// </summary>
+    /// <param name="options">The resolution options for the property to method mapping.</param>
+    public PropertyToMethodOptionsBuilder(PropertyToMethodResolutionOptions options)
     {
         this.options = options;
     }
 
+    /// <inheritdoc />
     public void Parameters(Action<IPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters)
     {
         var innerParameters = options.MapInnerParameters();
@@ -22,6 +29,7 @@ internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
         configureParameters(builder);
     }
 
+    /// <inheritdoc />
     public void Value(Action<IParameterStrategyBuilder<TSourceProperty>> configureProperty)
     {
         var parameterOptions = options.MapAsParameter();
@@ -29,13 +37,16 @@ internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(string name)
     {
         options.MethodOptions.WithMethodName(name);
         return this;
     }
 
-    public IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector)
+    /// <inheritdoc />
+    public IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty> UseMethod(
+        Expression<Func<TTarget, Delegate>> methodSelector)
     {
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));

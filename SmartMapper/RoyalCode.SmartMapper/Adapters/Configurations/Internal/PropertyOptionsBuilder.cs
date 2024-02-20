@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Core.Exceptions;
+using RoyalCode.SmartMapper.Core.Extensions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -11,6 +13,11 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     private readonly AdapterOptions adapterOptions;
     private readonly PropertyOptions propertyOptions;
 
+    /// <summary>
+    /// Create a new instance of <see cref="PropertyOptionsBuilder{TSource, TTarget, TProperty}"/>
+    /// </summary>
+    /// <param name="adapterOptions">The adapter options</param>
+    /// <param name="propertyOptions">The source property options</param>
     public PropertyOptionsBuilder(AdapterOptions adapterOptions, PropertyOptions propertyOptions)
     {
         this.adapterOptions = adapterOptions;
@@ -60,18 +67,23 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
         var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
-        var resolution = new ToMethodResolutionOptions(methodOptions, propertyOptions);
-
-        var toMethodOptions = new ToMethodOptions(resolution);
+        var resolution = new PropertyToMethodResolutionOptions(propertyOptions, methodOptions);
         var builder = new PropertyToMethodOptionsBuilder<TTarget, TProperty>(resolution);
-
-        throw new NotImplementedException();
+        return builder;
     }
 
     /// <inheritdoc />
     public IPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod(
-        Expression<Func<TTarget, Delegate>> methodSelect)
+        Expression<Func<TTarget, Delegate>> methodSelector)
     {
-        throw new NotImplementedException();
+        if (!methodSelector.TryGetMethod(out var method))
+            throw new InvalidMethodDelegateException(nameof(methodSelector));
+
+        var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
+        methodOptions.Method = method;
+        methodOptions.MethodName = method.Name;
+        var resolution = new PropertyToMethodResolutionOptions(propertyOptions, methodOptions);
+        var builder = new PropertyToMethodOptionsBuilder<TTarget, TProperty>(resolution);
+        return builder;
     }
 }

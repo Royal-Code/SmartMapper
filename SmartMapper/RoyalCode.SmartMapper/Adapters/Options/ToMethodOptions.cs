@@ -5,6 +5,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <summary>
 /// Options to resolve a source property to call a target method.
 /// </summary>
+[Obsolete("Use the resolution, PropertyToMethodResolutionOptions, instead.")]
 public sealed class ToMethodOptions
 {
     /// <summary>
