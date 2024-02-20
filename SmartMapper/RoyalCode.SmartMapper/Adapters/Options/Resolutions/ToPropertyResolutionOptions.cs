@@ -43,7 +43,7 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
     ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
     /// </para>
     /// </summary>
-    public ToMethodOptions? ThenToMethod { get; set; }
+    public ThenToMethodOptions? ThenToMethod { get; set; }
     
     /// <summary>
     /// Continues the mapping of the source property to an internal property of the target property.
@@ -61,9 +61,12 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
         return ThenToProperty;
     }
 
-    public ToMethodOptions ThenCall()
+    public ThenToMethodOptions ThenCall()
     {
-        throw new NotImplementedException();
+        UseResolutionStrategy(ToPropertyResolutionStrategy.CallMethod);
+
+        ThenToMethod = new(ResolvedProperty, TargetProperty);
+        return ThenToMethod;
     }
 
     private void UseResolutionStrategy(ToPropertyResolutionStrategy strategy)

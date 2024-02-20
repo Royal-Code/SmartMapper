@@ -13,7 +13,9 @@ public sealed class ThenToPropertyOptions
     /// </summary>
     /// <param name="propertyResolutionOptions">The property resolution options.</param>
     /// <param name="targetProperty">The target property.</param>
-    public ThenToPropertyOptions(ToPropertyResolutionOptions propertyResolutionOptions, ToTargetPropertyOptions targetProperty)
+    public ThenToPropertyOptions(
+        ToPropertyResolutionOptions propertyResolutionOptions, 
+        ToTargetPropertyOptions targetProperty)
     {
         PropertyResolutionOptions = propertyResolutionOptions;
         TargetProperty = targetProperty;
@@ -57,7 +59,7 @@ public sealed class ThenToPropertyOptions
     ///     This property is not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
     /// </para>
     /// </summary>
-    public ToMethodOptions? ThenToMethod { get; set; }
+    public ThenToMethodOptions? ThenToMethod { get; set; }
     
     /// <summary>
     /// <para>
@@ -95,13 +97,12 @@ public sealed class ThenToPropertyOptions
     /// <returns>
     ///     The <see cref="ThenToMethod"/> created.
     /// </returns>
-    public ToMethodOptions ThenCall()
+    public ThenToMethodOptions ThenCall()
     {
         GuardThen();
+        Strategy = ToPropertyResolutionStrategy.CallMethod;
 
-        var methodOptions = TargetProperty.TargetOptions.CreateMethodOptions();
-
-        ThenToMethod = new ToMethodOptions(PropertyResolutionOptions, methodOptions);
+        ThenToMethod = new(PropertyResolutionOptions.ResolvedProperty, TargetProperty);
 
         return ThenToMethod;
     }

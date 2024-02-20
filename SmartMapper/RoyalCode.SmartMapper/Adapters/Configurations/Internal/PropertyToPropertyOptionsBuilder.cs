@@ -77,26 +77,22 @@ internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProper
     /// <inheritdoc />
     public IPropertyThenOptionsBuilder<TProperty, TTargetProperty> Then()
     {
-        return new InternalPropertyThenOptionsBuilder<TProperty, TTargetProperty>(adapterOptions, propertyResolutionOptions);
+        return new InternalPropertyThenOptionsBuilder<TProperty, TTargetProperty>(propertyResolutionOptions);
     }
 
     /// <inheritdoc />
     private sealed class InternalPropertyThenOptionsBuilder<TTProperty, TTTargetProperty>
         : IPropertyThenOptionsBuilder<TTProperty, TTTargetProperty>
     {
-        private readonly AdapterOptions adapterOptions;
         private readonly ToPropertyResolutionOptions propertyResolutionOptions;
 
         /// <summary>
         /// Crea
         /// </summary>
-        /// <param name="adapterOptions"></param>
         /// <param name="propertyResolutionOptions"></param>
         public InternalPropertyThenOptionsBuilder(
-            AdapterOptions adapterOptions, 
             ToPropertyResolutionOptions propertyResolutionOptions)
         {
-            this.adapterOptions = adapterOptions;
             this.propertyResolutionOptions = propertyResolutionOptions;
         }
 
@@ -144,6 +140,8 @@ internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProper
         /// <inheritdoc />
         public IPropertyToMethodOptionsBuilder<TTTargetProperty, TTProperty> ToMethod()
         {
+            ThenToMethodOptions options = propertyResolutionOptions.ThenCall();
+
             throw new NotImplementedException();
         }
 

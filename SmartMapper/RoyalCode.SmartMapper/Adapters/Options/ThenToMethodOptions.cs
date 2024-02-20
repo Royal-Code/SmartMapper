@@ -5,18 +5,31 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// <summary>
 /// Options to resolve a source property to call a target method.
 /// </summary>
-[Obsolete("Use the resolution, PropertyToMethodResolutionOptions, instead.")]
-public sealed class ToMethodOptions
+public sealed class ThenToMethodOptions
 {
     /// <summary>
-    /// Creates a new instance of <see cref="ToMethodOptions"/>.
+    /// Creates a new instance of <see cref="ThenToMethodOptions"/>.
     /// </summary>
-    /// <param name="propertyOptions">The source property Optons.</param>
-    /// <param name="methodOptions">The method options.</param>
-    public ToMethodOptions(PropertyOptions propertyOptions, MethodOptions methodOptions)
+    public ThenToMethodOptions(
+        PropertyOptions sourcePropertyOptions,
+        ToTargetPropertyOptions toTargetPropertyOptions)
     {
-        MethodOptions = methodOptions;
+        SourcePropertyOptions = sourcePropertyOptions;
+        ToTargetPropertyOptions = toTargetPropertyOptions;
+
+        PropertyTargetOptions = new(toTargetPropertyOptions.TargetProperty.PropertyType);
+        MethodOptions = PropertyTargetOptions.CreateMethodOptions();
     }
+
+    /// <summary>
+    /// The target property options.
+    /// </summary>
+    public ToTargetPropertyOptions ToTargetPropertyOptions { get; }
+
+    /// <summary>
+    /// The target options for the target property.
+    /// </summary>
+    public TargetOptions PropertyTargetOptions { get; }
 
     /// <summary>
     /// The method options.
@@ -24,14 +37,9 @@ public sealed class ToMethodOptions
     public MethodOptions MethodOptions { get; }
 
     /// <summary>
-    /// The property resolution options.
-    /// </summary>
-    public ToMethodResolutionOptions PropertyResolutionOptions { get; }
-
-    /// <summary>
     /// The source property options.
     /// </summary>
-    public PropertyOptions SourcePropertyOptions => PropertyResolutionOptions.ResolvedProperty;
+    public PropertyOptions SourcePropertyOptions { get; }
 
     /// <summary>
     /// <para>

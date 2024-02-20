@@ -3,7 +3,6 @@ using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
 using System.Linq.Expressions;
 using System.Reflection;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -62,12 +61,11 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
 
     public IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod()
     {
-        // here is required a ThenToMethodOptions that contains the MethodOptions for the target property
-        // The ThenToPropertyOptions should be used to create a new ThenToMethodOptions
+        ThenToMethodOptions options = thenToPropertyOptions.ThenCall();
 
-        ToMethodOptions options = thenToPropertyOptions.ThenCall();
+        // here, a new implementation of PropertyToMethodOptionsBuilder is required.
 
-        var builder = new PropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
+        //var builder = new PropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
 
         throw new NotImplementedException();
     }
