@@ -1,5 +1,4 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Core.Exceptions;
+﻿using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
 using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
@@ -25,16 +24,19 @@ internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
     public void Parameters(Action<IPropertyToParametersOptionsBuilder<TSourceProperty>> configureParameters)
     {
         var innerParameters = options.MapInnerParameters();
-        var builder = new PropertyToParametersOptionsBuilder<TSourceProperty>(innerParameters);
+        var builder = new PropertyToParametersOptionsBuilder<TSourceProperty>(innerParameters, options.MethodOptions);
         configureParameters(builder);
     }
 
     /// <inheritdoc />
-    public void Value(Action<IParameterStrategyBuilder<TSourceProperty>> configureProperty)
+    public void Value(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
     {
-        var parameterOptions = options.MapAsParameter();
-
-        throw new NotImplementedException();
+        options.MapAsParameter();
+        if (configureProperty is not null)
+        {
+            var builder = new ToParameterOptionsBuilder<TSourceProperty>(options);
+            configureProperty(builder);
+        }
     }
 
     /// <inheritdoc />

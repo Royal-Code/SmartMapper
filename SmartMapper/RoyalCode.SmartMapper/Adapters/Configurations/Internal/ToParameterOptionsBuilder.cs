@@ -1,13 +1,13 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+﻿using RoyalCode.SmartMapper.Adapters.Options;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
 internal sealed class ToParameterOptionsBuilder<TProperty> : IToParameterOptionsBuilder<TProperty>
 {
-    private readonly ParameterResolutionOptionsBase resolutionOptions;
+    private readonly ResolutionOptionsBase resolutionOptions;
 
-    public ToParameterOptionsBuilder(ParameterResolutionOptionsBase resolutionOptions)
+    public ToParameterOptionsBuilder(ResolutionOptionsBase resolutionOptions)
     {
         this.resolutionOptions = resolutionOptions;
     }

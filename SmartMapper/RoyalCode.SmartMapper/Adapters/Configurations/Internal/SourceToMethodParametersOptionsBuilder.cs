@@ -8,14 +8,14 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
 internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceToMethodParametersOptionsBuilder<TSource>
 {
-    private readonly AdapterOptions adapterOptions;
+    private readonly SourceOptions sourceOptions;
     private readonly SourceToMethodOptions sourceToMethodOptions;
 
     public SourceToMethodParametersOptionsBuilder(
-        AdapterOptions adapterOptions,
+        SourceOptions sourceOptions,
         SourceToMethodOptions sourceToMethodOptions)
     {
-        this.adapterOptions = adapterOptions;
+        this.sourceOptions = sourceOptions;
         this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
@@ -27,7 +27,7 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
 
         propertyOptions.IgnoreMapping();
     }
@@ -41,7 +41,7 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
         if (member is not PropertyInfo propertyInfo)
             throw new InvalidPropertySelectorException(nameof(propertySelector));
 
-        var propertyOptions = adapterOptions.SourceOptions.GetPropertyOptions(propertyInfo);
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
 
         var resolution = sourceToMethodOptions.AddPropertyToParameterSequence(propertyOptions);
 

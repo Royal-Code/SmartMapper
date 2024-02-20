@@ -56,10 +56,19 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
                 $"The property '{ResolvedProperty.Property.Name}' of type " +
                 $"'{ResolvedProperty.Property.DeclaringType?.Name}' was mapped as inner properties " +
                 $"and it is not possible to map as value.");
-            
+        
+        // if method existis, validate if method has a single parameter
+        if (MethodOptions.Method is not null && MethodOptions.Method.GetParameters().Length != 1)
+        {
+            throw new InvalidOperationException(
+                $"The method '{MethodOptions.Method.Name}' of type '{MethodOptions.Method.DeclaringType?.Name}'" +
+                $" does not have a single parameter, and to map the property '{ResolvedProperty.Property.Name}'" +
+                $" to a method as value, the method must have a single parameter.");
+        }
+
         Status = ResolutionStatus.MappedToMethodParameter;
         Strategy = ToMethodStrategy.Value;
-        ValueOptions = new ToMethodParameterOptions(MethodOptions, ResolvedProperty.Property);
+        ValueOptions = MethodOptions.GetParameterOptions(ResolvedProperty.Property);
         return ValueOptions;
     }
 

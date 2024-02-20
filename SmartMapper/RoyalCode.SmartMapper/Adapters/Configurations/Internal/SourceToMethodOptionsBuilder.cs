@@ -41,13 +41,18 @@ internal sealed class SourceToMethodOptionsBuilder<TSource, TTarget> : ISourceTo
         if (configureProperties is null)
             return;
 
-        var builder = new SourceToMethodPropertiesOptionsBuilder<TSource>(adapterOptions, sourceToMethodOptions);
+        var builder = new SourceToMethodPropertiesOptionsBuilder<TSource>(
+            adapterOptions.SourceOptions, 
+            sourceToMethodOptions);
+
         configureProperties(builder);
     }
 
     public void Parameters(Action<ISourceToMethodParametersOptionsBuilder<TSource>> configureParameters)
     {
-        var builder = new SourceToMethodParametersOptionsBuilder<TSource>(adapterOptions, sourceToMethodOptions);
+        var builder = new SourceToMethodParametersOptionsBuilder<TSource>(
+            adapterOptions.SourceOptions, 
+            sourceToMethodOptions);
         configureParameters(builder);
     }
 

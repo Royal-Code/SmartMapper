@@ -1,8 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Core.Extensions;
+using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -22,18 +20,11 @@ internal abstract class PropertyToParametersOptionsBuilderBase<TSourceProperty>
 
     public void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
-
+        var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
         propertyOptions.IgnoreMapping();
     }
 
-    public abstract IParameterStrategyBuilder<TProperty> Parameter<TProperty>(
+    public abstract IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector, 
         string? parameterName = null);
 }
@@ -42,25 +33,29 @@ internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
     : PropertyToParametersOptionsBuilderBase<TSourceProperty>
 {
     private readonly InnerPropertiesOptions innerPropertiesOptions;
+    private readonly MethodOptions methodOptions;
 
-    public PropertyToParametersOptionsBuilder(InnerPropertiesOptions innerPropertiesOptions) 
+    public PropertyToParametersOptionsBuilder(InnerPropertiesOptions innerPropertiesOptions, MethodOptions methodOptions) 
         : base(innerPropertiesOptions.InnerSourceOptions)
     {
         this.innerPropertiesOptions = innerPropertiesOptions;
+        this.methodOptions = methodOptions;
     }
 
-    public override IParameterStrategyBuilder<TProperty> Parameter<TProperty>(
+    public override IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector,
         string? parameterName = null)
     {
-        if (!propertySelector.TryGetMember(out var member))
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
-        if (member is not PropertyInfo propertyInfo)
-            throw new InvalidPropertySelectorException(nameof(propertySelector));
-
+        var propertyOptions = innerPropertiesOptions.InnerSourceOptions.GetPropertyOptions(propertySelector);
+        var parameterOptions = methodOptions.GetParameterOptions(propertyOptions.Property);
         
+        if (parameterName is not null)
+            parameterOptions.UseParameterName(parameterName);
 
-        throw new NotImplementedException();
+        // when created the resolution options, the options are resolved by the resolution.
+        var resolution = new ToMethodParameterResolutionOptions(propertyOptions, parameterOptions);
+
+        var builder = new ToParameterOptionsBuilder<TProperty>(resolution);
+        return builder;
     }
 }
