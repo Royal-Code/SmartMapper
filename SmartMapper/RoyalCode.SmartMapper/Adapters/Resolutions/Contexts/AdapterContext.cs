@@ -23,6 +23,9 @@ internal sealed class AdapterContext
 
     private AdapterContext() { }
 
+    /// <summary>
+    /// The adapter options used to create the resolution.
+    /// </summary>
     public AdapterOptions Options { get; private init; }
 
     /// <summary>

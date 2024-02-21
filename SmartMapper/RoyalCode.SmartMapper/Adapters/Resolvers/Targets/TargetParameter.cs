@@ -1,11 +1,11 @@
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolutions.Targets;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Targets;
 
 /// <summary>
 /// Represents a target parameter of a constructor or method.
 /// </summary>
-public class TargetParameter 
+public sealed class TargetParameter
 {
     /// <summary>
     /// Creates a new instance of <see cref="TargetParameter"/>.
@@ -15,7 +15,7 @@ public class TargetParameter
     {
         ParameterInfo = parameterInfo;
     }
-    
+
     /// <summary>
     /// The parameter information.
     /// </summary>

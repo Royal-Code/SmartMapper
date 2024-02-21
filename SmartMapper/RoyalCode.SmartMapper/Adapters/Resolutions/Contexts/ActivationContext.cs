@@ -20,10 +20,19 @@ internal sealed class ActivationContext
 
     private ActivationContext() { }
 
+    /// <summary>
+    /// The adapter context that creates this activation context.
+    /// </summary>
     public AdapterContext AdapterContext { get; private init; }
 
+    /// <summary>
+    /// The adapter options to create the resolution.
+    /// </summary>
     public AdapterOptions Options => AdapterContext.Options;
 
+    /// <summary>
+    /// The elegible constructors.
+    /// </summary>
     public ICollection<EligibleConstructor> EligibleConstructors { get; private init; }
 
     public ActivationResolution CreateResolution(MapperConfigurations configurations)
