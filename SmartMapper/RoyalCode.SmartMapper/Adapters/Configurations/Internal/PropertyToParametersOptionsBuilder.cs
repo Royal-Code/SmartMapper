@@ -4,49 +4,23 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
-internal abstract class PropertyToParametersOptionsBuilderBase<TSourceProperty> 
+internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
     : IPropertyToParametersOptionsBuilder<TSourceProperty>
 {
-    protected readonly SourceOptions sourceOptions;
-
-    /// <summary>
-    /// Creates a new base builder to map properties to parameters.
-    /// </summary>
-    /// <param name="sourceOptions">The source options</param>
-    protected PropertyToParametersOptionsBuilderBase(SourceOptions sourceOptions)
-    {
-        this.sourceOptions = sourceOptions;
-    }
-
-    public void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector)
-    {
-        var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        propertyOptions.IgnoreMapping();
-    }
-
-    public abstract IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
-        Expression<Func<TSourceProperty, TProperty>> propertySelector, 
-        string? parameterName = null);
-}
-
-internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
-    : PropertyToParametersOptionsBuilderBase<TSourceProperty>
-{
-    private readonly InnerPropertiesOptions innerPropertiesOptions;
+    private readonly SourceOptions propertySourceOptions;
     private readonly MethodOptions methodOptions;
 
-    public PropertyToParametersOptionsBuilder(InnerPropertiesOptions innerPropertiesOptions, MethodOptions methodOptions) 
-        : base(innerPropertiesOptions.InnerSourceOptions)
+    public PropertyToParametersOptionsBuilder(SourceOptions propertySourceOptions, MethodOptions methodOptions)
     {
-        this.innerPropertiesOptions = innerPropertiesOptions;
+        this.propertySourceOptions = propertySourceOptions;
         this.methodOptions = methodOptions;
     }
 
-    public override IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
+    public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSourceProperty, TProperty>> propertySelector,
         string? parameterName = null)
     {
-        var propertyOptions = innerPropertiesOptions.InnerSourceOptions.GetPropertyOptions(propertySelector);
+        var propertyOptions = propertySourceOptions.GetPropertyOptions(propertySelector);
         var parameterOptions = methodOptions.GetParameterOptions(propertyOptions.Property);
         
         if (parameterName is not null)
@@ -57,5 +31,11 @@ internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
 
         var builder = new ToParameterOptionsBuilder<TProperty>(resolution);
         return builder;
+    }
+
+    public void Ignore<TProperty>(Expression<Func<TSourceProperty, TProperty>> propertySelector)
+    {
+        var propertyOptions = propertySourceOptions.GetPropertyOptions(propertySelector);
+        propertyOptions.IgnoreMapping();
     }
 }

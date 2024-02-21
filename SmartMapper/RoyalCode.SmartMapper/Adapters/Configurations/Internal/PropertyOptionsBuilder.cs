@@ -32,9 +32,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
         
         var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
-        var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
-            adapterOptions, 
-            resolution);
+        var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(resolution);
         
         return builder;
     }
@@ -48,9 +46,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
         
         var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
 
-        var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(
-            adapterOptions,
-            resolution);
+        var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(resolution);
 
         return builder;
     }

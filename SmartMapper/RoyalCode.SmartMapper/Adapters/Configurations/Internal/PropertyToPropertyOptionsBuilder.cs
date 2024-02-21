@@ -10,19 +10,14 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> 
     : IPropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty> 
 {
-    private readonly AdapterOptions adapterOptions;
     private readonly ToPropertyResolutionOptions propertyResolutionOptions;
 
     /// <summary>
     /// Creates a new instance of <see cref="PropertyToPropertyOptionsBuilder{TSource, TTarget, TProperty, TTargetProperty}"/>.
     /// </summary>
-    /// <param name="adapterOptions">The adapter options.</param>
     /// <param name="propertyResolutionOptions">The property resolution options.</param>
-    public PropertyToPropertyOptionsBuilder(
-        AdapterOptions adapterOptions,
-        ToPropertyResolutionOptions propertyResolutionOptions)
+    public PropertyToPropertyOptionsBuilder(ToPropertyResolutionOptions propertyResolutionOptions)
     {
-        this.adapterOptions = adapterOptions;
         this.propertyResolutionOptions = propertyResolutionOptions;
     }
     
@@ -141,15 +136,24 @@ internal sealed class PropertyToPropertyOptionsBuilder<TSource, TTarget, TProper
         public IPropertyToMethodOptionsBuilder<TTTargetProperty, TTProperty> ToMethod()
         {
             ThenToMethodOptions options = propertyResolutionOptions.ThenCall();
-
-            throw new NotImplementedException();
+            var builder = new PropertyThenToMethodOptionsBuilder<TTTargetProperty, TTProperty>(options);
+            return builder;
         }
 
         /// <inheritdoc />
         public IPropertyToMethodOptionsBuilder<TTTargetProperty, TTProperty> ToMethod(
-            Expression<Func<TTTargetProperty, Delegate>> methodSelect)
+            Expression<Func<TTTargetProperty, Delegate>> methodSelector)
         {
-            throw new NotImplementedException();
+            if (!methodSelector.TryGetMethod(out var method))
+                throw new InvalidMethodDelegateException(nameof(methodSelector));
+
+            ThenToMethodOptions options = propertyResolutionOptions.ThenCall();
+
+            options.MethodOptions.Method = method;
+            options.MethodOptions.MethodName = method.Name;
+
+            var builder = new PropertyThenToMethodOptionsBuilder<TTTargetProperty, TTProperty>(options);
+            return builder;
         }
     }
 }

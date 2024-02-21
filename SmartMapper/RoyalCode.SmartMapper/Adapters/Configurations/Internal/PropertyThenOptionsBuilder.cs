@@ -62,12 +62,8 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
     public IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod()
     {
         ThenToMethodOptions options = thenToPropertyOptions.ThenCall();
-
-        // here, a new implementation of PropertyToMethodOptionsBuilder is required.
-
-        //var builder = new PropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
-
-        throw new NotImplementedException();
+        var builder = new PropertyThenToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
+        return builder;
     }
 
     public IPropertyToMethodOptionsBuilder<TTargetProperty, TSourceProperty> ToMethod(
@@ -76,9 +72,12 @@ internal sealed class PropertyThenOptionsBuilder<TSourceProperty, TTargetPropert
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
 
-        //sourceToMethodOptions.MethodOptions.Method = method;
-        //sourceToMethodOptions.MethodOptions.MethodName = method.Name;
+        ThenToMethodOptions options = thenToPropertyOptions.ThenCall();
 
-        throw new NotImplementedException();
+        options.MethodOptions.Method = method;
+        options.MethodOptions.MethodName = method.Name;
+
+        var builder = new PropertyThenToMethodOptionsBuilder<TTargetProperty, TSourceProperty>(options);
+        return builder;
     }
 }
