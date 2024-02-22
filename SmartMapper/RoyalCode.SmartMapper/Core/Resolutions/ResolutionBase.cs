@@ -11,7 +11,7 @@ public abstract class ResolutionBase
     /// Determine whether the resolution has been resolved.
     /// </summary>
     [MemberNotNullWhen(false, nameof(Failure))]
-    public bool Resolved { get; init; }
+    public bool Resolved { get; protected init; }
     
     /// <summary>
     /// Contains the failure of the resolution, if any.

@@ -7,15 +7,15 @@ namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 /// <summary>
 /// A group of inner properties that are available for mapping, from a parent source property.
 /// </summary>
-public class AvaliableInnerSourceProperties
+public sealed class AvailableInnerSourceProperties
 {
     private readonly List<AvailableSourceProperty> properties = [];
 
     /// <summary>
-    /// Create a new instance of <see cref="AvaliableInnerSourceProperties"/>.
+    /// Create a new instance of <see cref="AvailableInnerSourceProperties"/>.
     /// </summary>
     /// <param name="parentSourceProperty">The available parent source property.</param>
-    public AvaliableInnerSourceProperties(AvailableSourceProperty parentSourceProperty)
+    public AvailableInnerSourceProperties(AvailableSourceProperty parentSourceProperty)
     {
         ParentSourceProperty = parentSourceProperty;
     }

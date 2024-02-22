@@ -3,7 +3,7 @@
 /// <summary>
 /// Contains all <see cref="AvailableMethod"/> that are available to be mapped.
 /// </summary>
-public class AvailableTargetMethods
+public sealed class AvailableTargetMethods
 {
     private ICollection<AvailableMethod> availableMethod;
     

@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 /// <summary>
 /// Property that is available for mapping.
 /// </summary>
-public class AvailableSourceProperty
+public sealed class AvailableSourceProperty
 {
     /// <summary>
     /// Creates new instance of <see cref="AvailableSourceProperty"/>.
@@ -51,7 +51,7 @@ public class AvailableSourceProperty
     /// <summary>
     /// The inner properties, if available.
     /// </summary>
-    public AvaliableInnerSourceProperties? InnerProperties { get; private set; }
+    public AvailableInnerSourceProperties? InnerProperties { get; private set; }
 
     /// <summary>
     /// The resolution of the property, if resolved.
@@ -93,7 +93,7 @@ public class AvailableSourceProperty
 
     private void AddInnerProperty(AvailableSourceProperty child)
     {
-        InnerProperties ??= new AvaliableInnerSourceProperties(this);
+        InnerProperties ??= new AvailableInnerSourceProperties(this);
         InnerProperties.Add(child);
     }
 

@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 /// <summary>
 /// Available source items for the mapping.
 /// </summary>
-public class AvailableSourceItems
+public sealed class AvailableSourceItems
 {
     /// <summary>
     /// Create a new instance of <see cref="AvailableSourceItems"/> with the source items available for the mapping
