@@ -125,8 +125,11 @@ public sealed class SourceOptions
     /// <returns>
     ///     All configured options of source to method or empty.
     /// </returns>
-    public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions()
-        => sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
+    public bool TryGetSourceToMethodOptions(out IEnumerable<SourceToMethodOptions> options)
+    {
+        options = sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
+        return sourceToMethodOptions is not null;
+    }
 
     /// <summary>
     /// <para>

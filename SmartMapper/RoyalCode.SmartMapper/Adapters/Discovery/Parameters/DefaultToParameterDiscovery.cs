@@ -1,7 +1,7 @@
 ﻿
 namespace RoyalCode.SmartMapper.Adapters.Discovery.Parameters;
 
-internal class DefaultToParameterDiscovery : IToParameterDiscovery
+internal sealed class DefaultToParameterDiscovery : IToParameterDiscovery
 {
     public ToParameterDiscoveryResult Discover(ToParameterDiscoveryRequest request)
     {
