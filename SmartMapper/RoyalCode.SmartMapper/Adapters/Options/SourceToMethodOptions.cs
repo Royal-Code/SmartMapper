@@ -80,4 +80,15 @@ public sealed class SourceToMethodOptions
     {
         return parametersSequence ?? Enumerable.Empty<ToMethodParameterOptions>();
     }
+
+    /// <summary>
+    /// <para>
+    ///     Get the count of the selected property to parameter sequence.
+    /// </para>
+    /// </summary>
+    /// <returns>The count of the selected property to parameter sequence.</returns>
+    public int CountParameterSequence()
+    {
+        return parametersSequence?.Count ?? 0;
+    }
 }

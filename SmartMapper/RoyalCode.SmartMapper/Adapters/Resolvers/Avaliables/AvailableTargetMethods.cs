@@ -13,5 +13,8 @@ public sealed class AvailableTargetMethods
         availableMethod = AvailableMethod.Create(targetType);
     }
 
-
+    public IEnumerable<AvailableMethod> ListAvailableMethods()
+    {
+        return availableMethod.Where(m => !m.Resolved).ToList();
+    }
 }

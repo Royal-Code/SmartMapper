@@ -1,4 +1,6 @@
-﻿namespace RoyalCode.SmartMapper.Adapters.Resolutions;
+﻿using RoyalCode.SmartMapper.Core.Resolutions;
+
+namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 
 /// <summary>
 /// <para>
@@ -8,7 +10,7 @@
 ///     This resolution is used to map the source properties to the target method.
 /// </para>
 /// </summary>
-public sealed class SourceToMethodResolution
+public sealed class SourceToMethodResolution : ResolutionBase
 {
     
 }

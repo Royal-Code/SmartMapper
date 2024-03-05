@@ -21,7 +21,7 @@ public sealed class MapperDiscovery
     public IToParameterDiscovery ToParameter { get; private set; } = new DefaultToParameterDiscovery();
 
     /// <summary>
-    /// Component responsible for 
+    /// Component responsible for discovering the mapping between a source and a target method.
     /// </summary>
     public ISourceToMethodDiscovery SourceToMethod { get; private set; } = new DefaultSourceToMethodDiscovery();
 

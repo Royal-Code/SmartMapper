@@ -1,4 +1,6 @@
 ﻿
+using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
+using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 using RoyalCode.SmartMapper.Core.Configurations;
 
@@ -30,21 +32,41 @@ internal sealed class MethodContext
         {
             // 1.1 if none is found, try to resolve the method with the source type.
 
-            configurations.Discovery.SourceToMethod
+            var discoveryRequest = new SourceToMethodRequest(
+                configurations,
+                AdapterContext.SourceOptions.SourceType,
+                AdapterContext.SourceItems,
+                AvailableMethods.ListAvailableMethods());
+
+            // 1.1.1 Using the name of the source type, try to discover the method by name.
+            var discoveryResult = configurations.Discovery.SourceToMethod.Discover(discoveryRequest);
+
+            // 1.2 if none is found, return a empty resolution.
+            return discoveryResult.IsResolved
+                ? new MethodsResolutions([discoveryResult.Resolution])
+                : new MethodsResolutions([]);
         }
 
+        // 2. for each source to method options, try to resolve the method.
+        List<SourceToMethodResolution>? resolutions = null;
+        foreach(var stmOption in sourceToMethodOptions)
+        {
+            var sourceToMethodContext = SourceToMethodContext.Create(stmOption, AvailableMethods);
+            var resolution = sourceToMethodContext.CreateResolution(configurations);
 
-        // 1.1.1 Using the name of the source type, try to discover the method by name.
-        // 1.2 if none is found, return a empty resolution.
+            if (resolution.Resolved)
+            {
+                resolutions ??= [];
+                resolutions.Add(resolution);
+            }
+            else
+            {
+                // 2.1 if one fails, and it is not the discovered method, return a failure.
+                return new MethodsResolutions(resolution.Failure);
+            }
+        }
 
-        // 2. for each source to method options, try to resolve the method (see 3).
-        // 2.1 if one fails, and it is not the discovered method, return a failure.
-        // 2.2 if the discovered method fails, return a empty resolution.
-
-        // 3. resolve the method, resolving the parameters and the method itself.
-        // 3.1 if all parameters are resolved, generate the resolution.
-        // 3.2 if one parameter fails, generate a failure.
-
-        throw new NotImplementedException();
+        return new(resolutions ?? []);
     }
+
 }
