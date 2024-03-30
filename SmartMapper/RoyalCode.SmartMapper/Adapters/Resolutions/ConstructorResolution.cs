@@ -8,6 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 /// </summary>
 public class ConstructorResolution : ResolutionBase
 {
+    // TODO: consider to remove the parameters field and the property below.
     private ParameterInfo[]? parameters;
 
     /// <summary>

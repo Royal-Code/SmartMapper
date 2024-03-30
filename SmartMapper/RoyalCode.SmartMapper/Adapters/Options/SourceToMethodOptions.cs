@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
@@ -50,7 +51,7 @@ public sealed class SourceToMethodOptions
             throw new InvalidOperationException(
                 "Invalid strategy, this method requires the strategy 'SelectedParameters' and it has not been assigned.");
 
-        parametersSequence ??= new List<ToMethodParameterOptions>();
+        parametersSequence ??= [];
         parametersSequence.Add(options);
     }
 
@@ -63,7 +64,7 @@ public sealed class SourceToMethodOptions
         var parameterOptions = MethodOptions.GetParameterOptions(options.Property);
 
         // when created the resolution options, the options are resolved by the resolution.
-        var resolution = new ToMethodParameterResolutionOptions(options, parameterOptions);
+        var resolution = ToMethodParameterResolutionOptions.Resolves(options, parameterOptions);
 
         AddParameterSequence(parameterOptions);
 
@@ -78,7 +79,7 @@ public sealed class SourceToMethodOptions
     /// <returns>The selected property to parameter sequence.</returns>
     public IEnumerable<ToMethodParameterOptions> GetAllParameterSequence()
     {
-        return parametersSequence ?? Enumerable.Empty<ToMethodParameterOptions>();
+        return parametersSequence ?? [];
     }
 
     /// <summary>
@@ -90,5 +91,40 @@ public sealed class SourceToMethodOptions
     public int CountParameterSequence()
     {
         return parametersSequence?.Count ?? 0;
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        var sb = new StringBuilder("Strategy: ").Append(Strategy).Append(", ");
+
+        if (parametersSequence is not null)
+        {
+            sb.Append("Parameters: ").Append(parametersSequence.Count).Append("(");
+            foreach (var parameter in parametersSequence)
+            {
+                sb.Append(parameter).Append(", ");
+            }
+            sb.Append("), ");
+        }
+        else
+        {
+            sb.Append("Parameters: none, ");
+        }
+
+        if (MethodOptions.Method is not null)
+        {
+            sb.Append("Informed method: ").Append(MethodOptions.Method);
+        }
+        else if (MethodOptions.MethodName is not null)
+        {
+            sb.Append("Informed method name: ").Append(MethodOptions.MethodName);
+        }
+        else
+        {
+            sb.Append("No method informed.");
+        }
+        
+        return sb.ToString();
     }
 }

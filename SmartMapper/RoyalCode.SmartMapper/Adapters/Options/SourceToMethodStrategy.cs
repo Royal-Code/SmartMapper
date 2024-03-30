@@ -16,7 +16,7 @@ public enum SourceToMethodStrategy
     SelectedParameters,
     
     /// <summary>
-    /// Mapp all properties as parameters.
+    /// Map all available properties as parameters.
     /// </summary>
     AllParameters
 }

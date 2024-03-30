@@ -5,16 +5,25 @@
 /// </summary>
 public sealed class AvailableTargetMethods
 {
-    private ICollection<AvailableMethod> availableMethod;
+    private readonly ICollection<AvailableMethod> availableMethod;
     
-
+    /// <summary>
+    /// Create a new instance of <see cref="AvailableTargetMethods"/>.
+    /// </summary>
+    /// <param name="targetType">The target type to be mapped.</param>
     public AvailableTargetMethods(Type targetType)
     {
         availableMethod = AvailableMethod.Create(targetType);
     }
 
+    /// <summary>
+    /// Get the available methods that are not resolved.
+    /// </summary>
+    /// <returns>
+    ///     The available methods that are not resolved.
+    /// </returns>
     public IEnumerable<AvailableMethod> ListAvailableMethods()
     {
-        return availableMethod.Where(m => !m.Resolved).ToList();
+        return availableMethod.Where(m => !m.Resolved);
     }
 }

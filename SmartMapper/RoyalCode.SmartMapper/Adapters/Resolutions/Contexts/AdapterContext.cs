@@ -58,7 +58,7 @@ internal sealed class AdapterContext
             return new AdapterResolution(activationResolution.Failure);
 
         // resolve methods mapping
-        var methodContext = MethodContext.Create(this);
+        var methodContext = MethodsContext.Create(this);
         MethodsResolutions methodResolution = methodContext.CreateResolution(configurations);
 
 

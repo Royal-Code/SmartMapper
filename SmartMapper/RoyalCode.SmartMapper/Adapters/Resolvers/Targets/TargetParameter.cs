@@ -2,6 +2,8 @@ using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolvers.Targets;
 
+// TODO: Consider to remove this class and use directly the ParameterInfo.
+
 /// <summary>
 /// Represents a target parameter of a constructor or method.
 /// </summary>

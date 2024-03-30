@@ -10,6 +10,9 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// </summary>
 public abstract class ResolutionOptionsBase
 {
+    // TODO: Para todos os tipos que herdam ResolutionOptionBase, deve ser criar um método estático Resolves,
+    //       como foi feito em ToMethodParameterResolutionOptions.
+    
     /// <summary>
     /// <para>
     ///     Base constructor for the resolution options.

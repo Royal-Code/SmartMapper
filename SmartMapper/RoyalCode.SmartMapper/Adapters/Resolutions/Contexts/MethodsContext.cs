@@ -1,23 +1,27 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
-using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
-internal sealed class MethodContext
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+/// <summary>
+/// Represents the context for the methods resolution.
+/// </summary>
+internal sealed class MethodsContext
 {
-    public static MethodContext Create(AdapterContext adapterContext)
+    public static MethodsContext Create(AdapterContext adapterContext)
     {
-        return new MethodContext()
+        return new MethodsContext()
         {
             AdapterContext = adapterContext,
             AvailableMethods = new AvailableTargetMethods(adapterContext.Options.TargetType)
         };
     }
 
-    private MethodContext() { }
+    private MethodsContext() { }
 
     public AdapterContext AdapterContext { get; private init; }
 
@@ -51,7 +55,7 @@ internal sealed class MethodContext
         List<SourceToMethodResolution>? resolutions = null;
         foreach(var stmOption in sourceToMethodOptions)
         {
-            var sourceToMethodContext = SourceToMethodContext.Create(stmOption, AvailableMethods);
+            var sourceToMethodContext = SourceToMethodContext.Create(AdapterContext.SourceItems, stmOption, AvailableMethods);
             var resolution = sourceToMethodContext.CreateResolution(configurations);
 
             if (resolution.Resolved)
