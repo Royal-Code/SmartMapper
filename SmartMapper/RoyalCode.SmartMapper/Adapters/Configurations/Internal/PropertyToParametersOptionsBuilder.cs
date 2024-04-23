@@ -27,7 +27,7 @@ internal sealed class PropertyToParametersOptionsBuilder<TSourceProperty>
             parameterOptions.UseParameterName(parameterName);
 
         // when created the resolution options, the options are resolved by the resolution.
-        var resolution = new ToMethodParameterResolutionOptions(propertyOptions, parameterOptions);
+        var resolution = ToMethodParameterResolutionOptions.Resolves(propertyOptions, parameterOptions);
 
         var builder = new ToParameterOptionsBuilder<TProperty>(resolution);
         return builder;

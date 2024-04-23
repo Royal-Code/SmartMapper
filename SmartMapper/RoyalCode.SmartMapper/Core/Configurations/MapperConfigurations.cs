@@ -24,6 +24,12 @@ public class MapperConfigurations
     private readonly MapperDiscovery discovery;
 
     /// <summary>
+    /// Create a new instance of <see cref="MapperConfigurations"/>
+    /// with a default <see cref="MapperOptions"/> and <see cref="ExpressionGenerator"/>.
+    /// </summary>
+    public MapperConfigurations() : this(new(), new()) { }
+    
+    /// <summary>
     /// Create a new instance of <see cref="MapperConfigurations"/>.
     /// </summary>
     /// <param name="options">The options for the mappers, adapters, and selectors.</param>

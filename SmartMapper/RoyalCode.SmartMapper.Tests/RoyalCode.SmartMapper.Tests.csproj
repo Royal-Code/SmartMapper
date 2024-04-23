@@ -27,4 +27,8 @@
     <ProjectReference Include="..\RoyalCode.SmartMapper\RoyalCode.SmartMapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappings\Builders\" />
+  </ItemGroup>
+
 </Project>

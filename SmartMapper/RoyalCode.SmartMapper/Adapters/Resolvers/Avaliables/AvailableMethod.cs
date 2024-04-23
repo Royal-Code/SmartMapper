@@ -36,7 +36,7 @@ public sealed class AvailableMethod
     /// <summary>
     /// The method info.
     /// </summary>
-    public MethodInfo Info { get; set; }
+    public MethodInfo Info { get; }
 
     /// <summary>
     /// if the method is resolved.

@@ -60,10 +60,13 @@ internal sealed class AdapterContext
         // resolve methods mapping
         var methodContext = MethodsContext.Create(this);
         MethodsResolutions methodResolution = methodContext.CreateResolution(configurations);
-
+        if (methodResolution.Resolved)
+            resolutions.MethodsResolutions = methodResolution;
+        else
+            return new AdapterResolution(methodResolution.Failure);
 
         // resolve properties mapping
-
+        var propertiesContext = PropertiesContext.Create(this);
 
 
         throw new NotImplementedException();
@@ -72,5 +75,7 @@ internal sealed class AdapterContext
     private struct Resolutions
     {
         public ActivationResolution? ActivationResolution { get; set; }
+        
+        public MethodsResolutions? MethodsResolutions { get; set; }
     }
 }

@@ -8,28 +8,28 @@ public static class ConfigureSample
     {
         builder.Configure<MyDto, MyEntity>(b =>
         {
-            //b.Map(d => d.Id).To(e => e.Id);
+            b.Map(d => d.Id).To(e => e.Id);
         });
 
         builder.Configure<MyDto, MyEntity>(b =>
         {
-            //b.MapToMethod(e => e.DoSomething)
-            //    .Parameters(b2 =>
-            //    {
-            //        b2.Parameter(e => e.Id);
-            //    });
+            b.MapToMethod(e => e.DoSomething)
+                .Parameters(b2 =>
+                {
+                    b2.Parameter(e => e.Id);
+                });
 
-            //b.Map(d => d.ValueObject).ToMethod(e => e.DoSomething);
+            b.Map(d => d.ValueObject).ToMethod(e => e.DoSomething);
 
-            //b.Constructor().Parameters(b2 =>
-            //{
-            //    b2.Parameter(e => e.Id);
-            //});
+            b.Constructor().Parameters(b2 =>
+            {
+                b2.Parameter(e => e.Id);
+            });
 
-            //b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
-            //{
-            //    b2.Parameter(e => e.Value);
-            //});
+            b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
+            {
+                b2.Parameter(e => e.Value);
+            });
         });
     }
 

@@ -44,7 +44,7 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
         if (parameterName is not null)
             parameterOptions.UseParameterName(parameterName);
 
-        var resolutionOptions = new ToMethodParameterResolutionOptions(propertyOptions, parameterOptions);
+        var resolutionOptions = ToMethodParameterResolutionOptions.Resolves(propertyOptions, parameterOptions);
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
         return new ToParameterOptionsBuilder<TProperty>(resolutionOptions);
