@@ -3,7 +3,7 @@ using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using System.Text;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// Property that is available for mapping.

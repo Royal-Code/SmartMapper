@@ -93,7 +93,7 @@ public sealed class SourceOptions
     /// <exception cref="InvalidPropertyTypeException">
     ///     If the source property is not of the informed type.
     /// </exception>
-    public PropertyOptions GetPropertyOptions(string propertyName, Type propertyType)
+    public PropertyOptions GetPropertyOptions(string propertyName, Type? propertyType = null)
     {
         var options = propertyOptions?.FirstOrDefault(x => x.Property.Name == propertyName);
         if (options is not null)
@@ -109,7 +109,7 @@ public sealed class SourceOptions
                 nameof(propertyName));
 
         // validate the property type
-        if (propertyInfo.PropertyType != propertyType)
+        if (propertyType is not null && propertyInfo.PropertyType != propertyType)
             throw new InvalidPropertyTypeException(
                 $"Property '{propertyName}' on type '{SourceType.Name}' " +
                 $"is not of type '{propertyType.Name}', " +

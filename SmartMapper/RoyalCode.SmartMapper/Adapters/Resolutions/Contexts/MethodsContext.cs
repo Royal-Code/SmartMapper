@@ -1,6 +1,6 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
-using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
@@ -8,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 /// <summary>
-/// Represents the context for the methods resolution.
+/// Represents the context for the source to methods resolution.
 /// </summary>
 internal sealed class MethodsContext
 {
@@ -45,7 +45,7 @@ internal sealed class MethodsContext
             // 1.1.1 Using the name of the source type, try to discover the method by name.
             var discoveryResult = configurations.Discovery.SourceToMethod.Discover(discoveryRequest);
 
-            // 1.2 if none is found, return a empty resolution.
+            // 1.2 if none is found, return an empty resolution.
             return discoveryResult.IsResolved
                 ? new MethodsResolutions([discoveryResult.Resolution])
                 : new MethodsResolutions([]);

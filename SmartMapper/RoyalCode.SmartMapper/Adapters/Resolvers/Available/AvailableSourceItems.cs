@@ -4,7 +4,7 @@ using RoyalCode.SmartMapper.Adapters.Resolutions;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// Available source items for the mapping.
@@ -180,6 +180,44 @@ public sealed class AvailableSourceItems
             ?? new SourceOptions(propertyOptions.Property.PropertyType);
         var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
         var innerAvailableProperties = CreateAvailableSourceItemsForMethods(methodInfo, innerItems, parent);
+
+        return innerAvailableProperties;
+    }
+
+    public static AvailableSourceItems CreateAvailableSourceItemsForMapProperties(
+        IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+    {
+        AvailableSourceItems availableSourceItems = new();
+
+        foreach (var sourceItem in sourceItems.Where(item => item.IsAvailable))
+        {
+            // all available source properties are required for map as properties
+            // because all properties must be resolved
+            var availableSourceProperty = new AvailableSourceProperty(sourceItem, parent);
+            availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
+            
+            if (sourceItem.IsNotMapped || sourceItem.IsMappedToProperty)
+            {
+                availableSourceItems.availableSourceProperties.Add(availableSourceProperty);
+            }
+            else if (sourceItem.IsMappedToTarget)
+            {
+                var innerAvailableItems = CreateAvailableSourceItemsForMapProperties(sourceItem, availableSourceProperty);
+                availableSourceItems.AddInner(innerAvailableItems);
+            }
+        }
+        
+        return availableSourceItems;
+    }
+    
+    private static AvailableSourceItems CreateAvailableSourceItemsForMapProperties(
+        SourceItem sourceItem, AvailableSourceProperty parent)
+    {
+        var propertyOptions = sourceItem.Options;
+        var innerSourceOptions = propertyOptions.GetInnerPropertiesSourceOptions()
+                                 ?? new SourceOptions(propertyOptions.Property.PropertyType);
+        var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
+        var innerAvailableProperties = CreateAvailableSourceItemsForMapProperties(innerItems, parent);
 
         return innerAvailableProperties;
     }

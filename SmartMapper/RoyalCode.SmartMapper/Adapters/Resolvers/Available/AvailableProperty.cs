@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// A property that is available to be mapped.

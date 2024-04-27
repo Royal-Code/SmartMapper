@@ -2,7 +2,7 @@
 using RoyalCode.SmartMapper.Core.Resolutions;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// A target eligible method to be mapped.

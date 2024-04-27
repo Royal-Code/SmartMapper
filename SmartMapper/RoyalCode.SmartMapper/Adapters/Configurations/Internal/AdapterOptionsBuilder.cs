@@ -1,5 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using System.Linq.Expressions;
+using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -59,5 +60,19 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
     {
         var propertyOptions = options.SourceOptions.GetPropertyOptions(propertyName, typeof(TProperty));
         return new PropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
+    }
+
+    /// <inheritdoc />
+    public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
+    {
+        var propertyOptions = options.SourceOptions.GetPropertyOptions(propertySelector);
+        new IgnoreResolutionOptions(propertyOptions);
+    }
+
+    /// <inheritdoc />
+    public void Ignore(string propertyName)
+    {
+        var propertyOptions = options.SourceOptions.GetPropertyOptions(propertyName);
+        new IgnoreResolutionOptions(propertyOptions);
     }
 }

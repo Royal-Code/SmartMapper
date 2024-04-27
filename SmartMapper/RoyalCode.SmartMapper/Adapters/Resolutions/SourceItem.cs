@@ -97,9 +97,14 @@ public sealed class SourceItem
     public bool IsMappedToMethodParameter => Options.ResolutionOptions?.Status == ResolutionStatus.MappedToMethodParameter;
 
     /// <summary>
-    /// Check if the property is mapped to a property.
+    /// Check if the property has inner properties mapped to the target.
     /// </summary>
     public bool IsMappedToTarget => Options.ResolutionOptions?.Status == ResolutionStatus.MappedToTarget;
+    
+    /// <summary>
+    /// Check if the property is mapped to a property.
+    /// </summary>
+    public bool IsMappedToProperty => Options.ResolutionOptions?.Status == ResolutionStatus.MappedToProperty;
 
     /// <summary>
     /// Check if the property is not mapped manually.

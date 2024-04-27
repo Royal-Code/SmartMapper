@@ -2,7 +2,7 @@
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using System.Text;
 
-namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// A group of inner properties that are available for mapping, from a parent source property.

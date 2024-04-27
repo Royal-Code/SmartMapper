@@ -1,5 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Resolvers;
-using RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Core.Resolutions;
 

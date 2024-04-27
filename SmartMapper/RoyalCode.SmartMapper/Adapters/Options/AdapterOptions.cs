@@ -9,6 +9,14 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 public sealed class AdapterOptions
 {
     /// <summary>
+    /// Constructs a new instance of <see cref="AdapterOptions"/>.
+    /// </summary>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TTarget">The target type.</typeparam>
+    /// <returns>A new instance of <see cref="AdapterOptions"/>.</returns>
+    public static AdapterOptions For<TSource, TTarget>() => new(typeof(TSource), typeof(TTarget));
+    
+    /// <summary>
     /// Creates a new instance of <see cref="AdapterOptions"/>.
     /// </summary>
     /// <param name="sourceType">The source type.</param>

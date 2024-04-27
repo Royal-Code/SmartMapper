@@ -40,6 +40,14 @@ public interface IPropertyOptionsBuilder<TSource, TTarget, TSourceProperty>
 
     /// <summary>
     /// <para>
+    ///     Maps the internal properties of the source property type to the destination type.
+    /// </para>
+    /// </summary>
+    /// <param name="innerPropertiesBuilder">A builder to configure the inner properties.</param>
+    void InnerProperties(Action<IInnerPropertiesOptionsBuilder<TSource, TTarget, TSourceProperty>>? innerPropertiesBuilder = null);
+    
+    /// <summary>
+    /// <para>
     ///     Maps the internal properties of the source property type to a constructor.
     /// </para>
     /// </summary>

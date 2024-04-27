@@ -1,4 +1,4 @@
-﻿namespace RoyalCode.SmartMapper.Adapters.Resolvers.Avaliables;
+﻿namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
 /// <summary>
 /// Contains all <see cref="AvailableMethod"/> that are available to be mapped.

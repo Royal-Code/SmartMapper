@@ -10,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 ///     The goal here is to define which properties will be part of the constructor.
 /// </para>
 /// <para>
-///     The constructor will be selected by a best constructor selector algorithm.
+///     The constructor will be selected by the best constructor selector algorithm.
 ///     If the constructor has parameters defined,
 ///     these parameters will have to be in the constructor where the algorithm will take them into account.
 /// </para>
@@ -51,7 +51,7 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     ///     A builder to configure the inner properties and parameters strategy options.
     /// </returns>
     IConstructorParametersOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
-               Expression<Func<TSource, TInnerProperty>> propertySelector);
+        Expression<Func<TSource, TInnerProperty>> propertySelector);
 
     /// <summary>
     /// <para>
