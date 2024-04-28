@@ -1,5 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
+using RoyalCode.SmartMapper.Core.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
@@ -11,7 +12,6 @@ internal class PropertiesContext
         {
             AdapterContext = adapterContext,
             AvailableProperties = new AvailableTargetProperties(adapterContext.Options.TargetType),
-            AvailableMethods = new AvailableTargetMethods(adapterContext.Options.TargetType)
         };
     }
     
@@ -20,8 +20,6 @@ internal class PropertiesContext
     public AdapterContext AdapterContext { get; private init; }
     
     public AvailableTargetProperties AvailableProperties { get; private init; }
-    
-    public AvailableTargetMethods AvailableMethods { get; private init; }
 
     public PropertiesResolution CreateResolution(MapperConfigurations configurations)
     {
@@ -30,21 +28,24 @@ internal class PropertiesContext
         // 1. get source available properties to map.
         var availableProperties = AvailableSourceItems
             .CreateAvailableSourceItemsForMapProperties(AdapterContext.SourceItems);
+
+        // 2. for each property, create a context and try to resolve the property.
+        var resolutions = availableProperties.AvailableSourceProperties
+            .Select(property => PropertyContext.Create(AdapterContext, AvailableProperties, property))
+            .Select(propertyContext => propertyContext.CreateResolution(configurations))
+            .ToList();
+
+        var errors = resolutions.Where(r => !r.Resolved).Select(r => r.Failure).ToList();
         
-        // 2. for each property, try to resolve the property.
-        foreach (var property in availableProperties.AvailableSourceProperties)
-        {
-            
-        }
+        // when there are no errors, return a successful resolution.
+        if (errors.Count is 0) 
+            return new PropertiesResolution(resolutions);
         
-        // 2.1 property can have a resolution option.
-        // 2.1.1 check the resolution options e try to resolve the property.
-        // 2.1.2 when property does not have a resolution option, try to resolve the property by name.
-        
-        // 2.2 try to resolve the property by name.
-        // 2.2.1 try map the property by name to an available target method by name.
-        // 2.2.2 try map the property by name to an available target property.
-        
-        throw new System.NotImplementedException();
+        // when has errors, return a failure resolution.
+        var failure = new ResolutionFailure();
+        failure.AddMessage($"Failed to resolve properties from {AdapterContext.Options.SourceType} to {AdapterContext.Options.TargetType}.");
+        failure.AddMessages(errors.SelectMany(f => f.Messages));
+        return new PropertiesResolution(failure);
+
     }
 }

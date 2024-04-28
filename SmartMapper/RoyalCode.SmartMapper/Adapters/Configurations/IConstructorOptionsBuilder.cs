@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace RoyalCode.SmartMapper.Adapters.Configurations;
 
 /// <summary>
@@ -12,10 +14,13 @@ public interface IConstructorOptionsBuilder<TSource>
     /// <para>
     ///     Configure the parameters of the constructor of the destination type.
     /// </para>
+    /// <para>
+    ///     This configuration requires the same number of parameters as the constructor of the destination type.
+    /// </para>
     /// </summary>
     /// <param name="configurePrameters"></param>
     void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configurePrameters);
-
+    
     /// <summary>
     /// <para>
     ///     Adds information about the constructor of the destination type.

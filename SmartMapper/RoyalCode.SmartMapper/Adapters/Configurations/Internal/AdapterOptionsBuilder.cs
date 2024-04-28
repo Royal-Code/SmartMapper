@@ -66,13 +66,13 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
     public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
     {
         var propertyOptions = options.SourceOptions.GetPropertyOptions(propertySelector);
-        new IgnoreResolutionOptions(propertyOptions);
+        IgnoreResolutionOptions.Resolves(propertyOptions);
     }
 
     /// <inheritdoc />
     public void Ignore(string propertyName)
     {
         var propertyOptions = options.SourceOptions.GetPropertyOptions(propertyName);
-        new IgnoreResolutionOptions(propertyOptions);
+        IgnoreResolutionOptions.Resolves(propertyOptions);
     }
 }

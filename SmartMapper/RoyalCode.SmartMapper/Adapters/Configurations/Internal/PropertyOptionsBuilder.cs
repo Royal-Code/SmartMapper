@@ -55,15 +55,13 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     public void InnerProperties(Action<IInnerPropertiesOptionsBuilder<TSource, TTarget, TProperty>>? innerPropertiesBuilder = null)
     {
         // create a resolution options for inner properties
-        new InnerPropertiesResolutionOptions(propertyOptions);
+        var resolutionOptions = InnerPropertiesResolutionOptions.Resolves(propertyOptions);
         
-        // if innerPropertiesBuilder action is not null, create a new instance of InnerPropertiesOptionsBuilder
-        // and call the action
-        if (innerPropertiesBuilder != null)
-        {
-            var builder = new InnerPropertiesOptionsBuilder<TSource, TTarget, TProperty>(adapterOptions, propertyOptions);
-            innerPropertiesBuilder(builder);
-        }
+        if (innerPropertiesBuilder == null)
+            return;
+        
+        var builder = new InnerPropertiesOptionsBuilder<TSource, TTarget, TProperty>(adapterOptions, resolutionOptions);
+        innerPropertiesBuilder(builder);
     }
 
     /// <inheritdoc />

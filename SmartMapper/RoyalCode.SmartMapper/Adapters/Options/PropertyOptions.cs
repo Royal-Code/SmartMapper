@@ -73,7 +73,7 @@ public sealed class PropertyOptions
     internal void IgnoreMapping()
     {
         // when created the resolution options, this property options will be resolved by the resolution.
-        _ = new IgnoreResolutionOptions(this);
+        IgnoreResolutionOptions.Resolves(this);
     }
 
     /////// <summary>

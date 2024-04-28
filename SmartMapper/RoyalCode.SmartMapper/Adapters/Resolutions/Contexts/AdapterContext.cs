@@ -67,9 +67,16 @@ internal sealed class AdapterContext
 
         // resolve properties mapping
         var propertiesContext = PropertiesContext.Create(this);
+        var propertiesResolution = propertiesContext.CreateResolution(configurations);
+        if (propertiesResolution.Resolved)
+            resolutions.PropertiesResolutions = propertiesResolution;
+        else
+            return new AdapterResolution(propertiesResolution.Failure);
 
-
-        throw new NotImplementedException();
+        return new AdapterResolution(
+            resolutions.ActivationResolution,
+            resolutions.MethodsResolutions,
+            resolutions.PropertiesResolutions);
     }
 
     private struct Resolutions
@@ -77,5 +84,7 @@ internal sealed class AdapterContext
         public ActivationResolution? ActivationResolution { get; set; }
         
         public MethodsResolutions? MethodsResolutions { get; set; }
+        
+        public PropertiesResolution? PropertiesResolutions { get; set; }
     }
 }

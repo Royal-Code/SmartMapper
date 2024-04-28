@@ -24,7 +24,6 @@ internal sealed class AdapterConstrutorMappgins
         var adapter = new AdapterOptions(typeof(SourceBeta), typeof(TargetBeta));
         var builder = new AdapterOptionsBuilder<SourceBeta, TargetBeta>(adapter);
 
-        // ainda não tem implementação
         builder.Map(s => s.SourceAlpha).ToConstructor();
     }
 
