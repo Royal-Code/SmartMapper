@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 
@@ -25,5 +27,18 @@ public class AvailableTargetProperties
     public IEnumerable<AvailableProperty> ListAvailableProperties()
     {
         return availableProperties.Where(p => !p.Resolved);
+    }
+    
+    /// <summary>
+    /// Try to find a available property by the given property info.
+    /// </summary>
+    /// <param name="propertyInfo">The property info to find.</param>
+    /// <param name="availableProperty">The available property found, or null if the property was not available.</param>
+    /// <returns>True if the property was found, otherwise false.</returns>
+    public bool TryFindProperty(PropertyInfo propertyInfo, [NotNullWhen(true)] out AvailableProperty? availableProperty)
+    {
+        availableProperty = ListAvailableProperties()
+            .FirstOrDefault(p => p.Info == propertyInfo);
+        return availableProperty is not null;
     }
 }

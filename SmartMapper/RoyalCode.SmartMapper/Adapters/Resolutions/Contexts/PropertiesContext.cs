@@ -35,7 +35,7 @@ internal class PropertiesContext
             .Select(propertyContext => propertyContext.CreateResolution(configurations))
             .ToList();
 
-        var errors = resolutions.Where(r => !r.Resolved).Select(r => r.Failure).ToList();
+        var errors = resolutions.Where(r => !r.Resolved).Select(r => r.Failure!).ToList();
         
         // when there are no errors, return a successful resolution.
         if (errors.Count is 0) 

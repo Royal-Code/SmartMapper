@@ -1,4 +1,5 @@
-﻿using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
+﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
@@ -31,8 +32,14 @@ internal class PropertyContext
         // event: resolution started. here the interceptor can be called in future versions
         
         // 2.1 property can have a resolution option.
-        // 2.1.1 check the resolution options e try to resolve the property.
-        // 2.1.2 when property does not have a resolution option, try to resolve the property by name.
+        if (Property.SourceItem.Options.ResolutionOptions is ToPropertyResolutionOptions resolutionOptions)
+        {
+            // 2.1.1 check the resolution options e try to resolve the property.
+            if (AvailableProperties.TryFindProperty(resolutionOptions.TargetProperty.TargetProperty, out var available))
+            {
+                // available.ResolvedBy(resolutionOptions) -- não funfa, deve criar a resolução.
+            }
+        }
         
         // 2.2 try to resolve the property by name.
         // 2.2.1 try map the property by name to an available target method by name.

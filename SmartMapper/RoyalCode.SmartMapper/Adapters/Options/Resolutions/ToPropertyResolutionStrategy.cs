@@ -7,7 +7,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 public enum ToPropertyResolutionStrategy
 {
     /// <summary>
-    /// The source property value will be setted to the target property.
+    /// The source property value will be set to the target property. This is the default strategy.
     /// </summary>
     SetValue,
 
