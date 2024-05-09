@@ -1,5 +1,6 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Discovery.Parameters;
+using RoyalCode.SmartMapper.Adapters.Discovery.PropertyToMethods;
 using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
 using RoyalCode.SmartMapper.Core.Discovery.Assignment;
 
@@ -24,6 +25,11 @@ public sealed class MapperDiscovery
     /// Component responsible for discovering the mapping between a source and a target method.
     /// </summary>
     public ISourceToMethodDiscovery SourceToMethod { get; private set; } = new DefaultSourceToMethodDiscovery();
+
+    /// <summary>
+    /// Component responsible for discovering if a source property can be mapped to a method of a target property.
+    /// </summary>
+    public IPropertyToMethodDiscovery PropertyToMethod { get; private set; } = new DefaultPropertyToMethodDiscovery();
 
     /// <summary>
     /// Set the assignment discovery component for the mapper.

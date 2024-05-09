@@ -5,8 +5,18 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 
 public class AdapterResolution : ResolutionBase
 {
-    // success resolution, not implemented yet
-    public AdapterResolution(ActivationResolution activationResolution, MethodsResolutions methodsResolutions, PropertiesResolution propertiesResolutions)
+    /// <summary>
+    /// <para>
+    ///     Create a new <see cref="AdapterResolution"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="activationResolution"></param>
+    /// <param name="methodsResolutions"></param>
+    /// <param name="propertiesResolutions"></param>
+    public AdapterResolution(
+        ActivationResolution activationResolution,
+        MethodsResolutions methodsResolutions,
+        PropertiesResolution propertiesResolutions)
     {
         Resolved = true;
         ActivationResolution = activationResolution;

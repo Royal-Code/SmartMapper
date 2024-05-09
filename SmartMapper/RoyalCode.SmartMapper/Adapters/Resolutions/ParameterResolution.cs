@@ -5,7 +5,7 @@ using RoyalCode.SmartMapper.Adapters.Resolvers.Targets;
 namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 
 /// <summary>
-/// A resolution for a parameter of a constructor of method mapped from a source property.
+/// A resolution for a parameter of a constructor or method mapped from a source property.
 /// </summary>
 public class ParameterResolution : ResolutionBase
 {
