@@ -31,7 +31,7 @@ internal sealed class ParameterContext
     {
         var parameterName = TargetParameter.ParameterInfo.Name!;
 
-        // 1 - try get a pre-configured property mapped to the parameter.
+        // 1 - try to get a pre-configured property mapped to the parameter.
         if (AvailableSourceItems.TryGetAvailableSourcePropertyToParameter(parameterName,
             out var availableSourceProperty, out var toParameterResolutionOptions))
         {

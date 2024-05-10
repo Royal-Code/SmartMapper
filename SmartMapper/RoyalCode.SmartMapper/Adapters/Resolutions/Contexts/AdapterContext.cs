@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
+using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
@@ -16,7 +17,9 @@ internal sealed class AdapterContext
         return new AdapterContext
         {
             SourceItems = items,
-            Options = options
+            Options = options,
+            AvailableTargetProperties = new AvailableTargetProperties(options.TargetType),
+            AvailableTargetMethods = new AvailableTargetMethods(options.TargetType)
         };
     }
 
@@ -42,6 +45,16 @@ internal sealed class AdapterContext
     /// </summary>
     public IEnumerable<SourceItem> SourceItems { get; private init; }
 
+    /// <summary>
+    /// The available properties for the target type.
+    /// </summary>
+    public AvailableTargetProperties AvailableTargetProperties { get; private init; }
+    
+    /// <summary>
+    /// The available methods for the target type.
+    /// </summary>
+    public AvailableTargetMethods AvailableTargetMethods { get; private init; }
+    
     public AdapterResolution CreateResolution(MapperConfigurations configurations)
     {
         // event: resolution started. here the interceptor can be called in future versions

@@ -2,18 +2,18 @@
 using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 
-namespace RoyalCode.SmartMapper.Adapters.Discovery.PropertyToMethods;
+namespace RoyalCode.SmartMapper.Adapters.Discovery.Properties;
 
 /// <summary>
-/// A request to discover a target method to map a source property.
+/// A request to discover a target property to map source properties.
 /// </summary>
 /// <param name="configurations">The mapper configurations.</param>
 /// <param name="sourceItem">The source item.</param>
-/// <param name="availableTargetMethods">The available target methods.</param>
-public readonly struct PropertyToMethodRequest(
+/// <param name="availableTargetProperties">The available target properties.</param>
+public readonly struct PropertyRequest(
     MapperConfigurations configurations,
     SourceItem sourceItem,
-    AvailableTargetMethods availableTargetMethods)
+    AvailableTargetProperties availableTargetProperties)
 {
     /// <summary>
     /// The mapper configurations.
@@ -21,12 +21,13 @@ public readonly struct PropertyToMethodRequest(
     public MapperConfigurations Configurations { get; } = configurations;
 
     /// <summary>
-    /// The source item.
+    /// The source item to be mapped.
     /// </summary>
     public SourceItem SourceItem { get; } = sourceItem;
 
     /// <summary>
-    /// The available target methods.
+    /// The target available properties to be mapped.
     /// </summary>
-    public AvailableTargetMethods TargetMethods { get; } = availableTargetMethods;
+    public AvailableTargetProperties TargetProperties { get; } = availableTargetProperties;
+    
 }

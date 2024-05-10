@@ -16,8 +16,7 @@ internal sealed class MethodsContext
     {
         return new MethodsContext()
         {
-            AdapterContext = adapterContext,
-            AvailableMethods = new AvailableTargetMethods(adapterContext.Options.TargetType)
+            AdapterContext = adapterContext
         };
     }
 
@@ -25,12 +24,12 @@ internal sealed class MethodsContext
 
     public AdapterContext AdapterContext { get; private init; }
 
-    public AvailableTargetMethods AvailableMethods { get; private init; }
-
     public MethodsResolutions CreateResolution(MapperConfigurations configurations)
     {
         // event: resolution started. here the interceptor can be called in future versions
 
+        var availableMethods = AdapterContext.AvailableTargetMethods;
+        
         // 1. get source to method options.
         if (!AdapterContext.SourceOptions.TryGetSourceToMethodOptions(out var sourceToMethodOptions))
         {
@@ -40,7 +39,7 @@ internal sealed class MethodsContext
                 configurations,
                 AdapterContext.SourceOptions.SourceType,
                 AdapterContext.SourceItems,
-                AvailableMethods.ListAvailableMethods());
+                availableMethods.ListAvailableMethods());
 
             // 1.1.1 Using the name of the source type, try to discover the method by name.
             var discoveryResult = configurations.Discovery.SourceToMethod.Discover(discoveryRequest);
@@ -55,7 +54,7 @@ internal sealed class MethodsContext
         List<SourceToMethodResolution>? resolutions = null;
         foreach(var stmOption in sourceToMethodOptions)
         {
-            var sourceToMethodContext = SourceToMethodContext.Create(AdapterContext.SourceItems, stmOption, AvailableMethods);
+            var sourceToMethodContext = SourceToMethodContext.Create(AdapterContext.SourceItems, stmOption, availableMethods);
             var resolution = sourceToMethodContext.CreateResolution(configurations);
 
             if (resolution.Resolved)

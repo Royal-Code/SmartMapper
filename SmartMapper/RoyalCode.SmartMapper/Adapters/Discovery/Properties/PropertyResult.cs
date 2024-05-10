@@ -1,13 +1,13 @@
-﻿using RoyalCode.SmartMapper.Adapters.Resolutions;
+﻿using System.Diagnostics.CodeAnalysis;
+using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
-using System.Diagnostics.CodeAnalysis;
 
-namespace RoyalCode.SmartMapper.Adapters.Discovery.PropertyToMethods;
+namespace RoyalCode.SmartMapper.Adapters.Discovery.Properties;
 
 /// <summary>
-/// A result to a property to method discovery.
+/// The result of a property discovery.
 /// </summary>
-public readonly struct PropertyToMethodResult
+public readonly struct PropertyResult
 {
     /// <summary>
     /// Determines if the mapping of a source properties to a target method was resolved.

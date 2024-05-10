@@ -10,16 +10,13 @@ internal class PropertiesContext
     {
         return new PropertiesContext()
         {
-            AdapterContext = adapterContext,
-            AvailableProperties = new AvailableTargetProperties(adapterContext.Options.TargetType),
+            AdapterContext = adapterContext
         };
     }
     
     private PropertiesContext() { }
     
     public AdapterContext AdapterContext { get; private init; }
-    
-    public AvailableTargetProperties AvailableProperties { get; private init; }
 
     public PropertiesResolution CreateResolution(MapperConfigurations configurations)
     {
@@ -31,7 +28,7 @@ internal class PropertiesContext
 
         // 2. for each property, create a context and try to resolve the property.
         var resolutions = availableProperties.AvailableSourceProperties
-            .Select(property => PropertyContext.Create(AdapterContext, AvailableProperties, property))
+            .Select(property => PropertyContext.Create(AdapterContext, property))
             .Select(propertyContext => propertyContext.CreateResolution(configurations))
             .ToList();
 

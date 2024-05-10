@@ -1,5 +1,6 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Discovery.Parameters;
+using RoyalCode.SmartMapper.Adapters.Discovery.Properties;
 using RoyalCode.SmartMapper.Adapters.Discovery.PropertyToMethods;
 using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
 using RoyalCode.SmartMapper.Core.Discovery.Assignment;
@@ -32,14 +33,16 @@ public sealed class MapperDiscovery
     public IPropertyToMethodDiscovery PropertyToMethod { get; private set; } = new DefaultPropertyToMethodDiscovery();
 
     /// <summary>
+    /// Component responsible for discovering if a property can be mapped to another property.
+    /// </summary>
+    public IPropertyDiscovery Property { get; private set; } = new DefaultPropertyDiscovery();
+    
+    /// <summary>
     /// Set the assignment discovery component for the mapper.
     /// </summary>
     /// <param name="assignmentDiscovery">The assignment discovery component.</param>
     public void SetAssignmentDiscovery(IAssignmentDiscovery assignmentDiscovery)
     {
-        if (assignmentDiscovery is null)
-            throw new ArgumentNullException(nameof(assignmentDiscovery));
-
-        Assignment = assignmentDiscovery;
+        Assignment = assignmentDiscovery ?? throw new ArgumentNullException(nameof(assignmentDiscovery));
     }
 }
