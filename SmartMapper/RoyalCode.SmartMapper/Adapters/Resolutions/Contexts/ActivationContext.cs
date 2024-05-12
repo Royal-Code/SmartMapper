@@ -45,11 +45,11 @@ internal sealed class ActivationContext
         // if none constructor is eligible, generate a failure resolution
         if (targetConstructor.Count is 0)
         {
-            return new(new ResolutionFailure($"None elegible constructor for adapt {Options.SourceType.Name} type to {Options.TargetType.Name} type."));
+            return new(new ResolutionFailure($"None eligible constructor for adapt {Options.SourceType.Name} type to {Options.TargetType.Name} type."));
         }
 
-        // 2 - check if has a single empty constructor, then create a resolution for the constructor
-        if (EligibleConstructor.HasSingleEmptyConstructor(targetConstructor, out var eligible))
+        // 2 - check if it has a single empty constructor, then create a resolution for the constructor
+        if (targetConstructor.Count is 1 && EligibleConstructor.HasSingleEmptyConstructor(targetConstructor, out var eligible))
         {
             return new(new ConstructorResolution(eligible.Info, []));
         }

@@ -18,8 +18,8 @@ public interface IConstructorOptionsBuilder<TSource>
     ///     This configuration requires the same number of parameters as the constructor of the destination type.
     /// </para>
     /// </summary>
-    /// <param name="configurePrameters"></param>
-    void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configurePrameters);
+    /// <param name="configureParameters"></param>
+    void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configureParameters);
     
     /// <summary>
     /// <para>

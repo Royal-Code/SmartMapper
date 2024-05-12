@@ -5,7 +5,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 
 /// <summary>
 /// <para>
-///     A builder to configurate the mapping for adapters.
+///     A builder to configure the mapping for adapters.
 /// </para>
 /// </summary>
 public interface IAdapterOptionsBuilder

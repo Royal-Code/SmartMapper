@@ -13,10 +13,10 @@ internal sealed class ConstructorOptionsBuilder<TSource> : IConstructorOptionsBu
         constructorOptions = options.TargetOptions.GetConstructorOptions();
     }
 
-    public void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configurePrameters)
+    public void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configureParameters)
     {
         var builder = new ConstructorParametersOptionsBuilder<TSource>(sourceOptions, constructorOptions);
-        configurePrameters(builder);
+        configureParameters(builder);
     }
 
     public void WithParameters(int numberOfParameters)
