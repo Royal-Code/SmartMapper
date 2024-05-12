@@ -7,7 +7,7 @@ namespace RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
 /// <summary>
 /// The result of mapping a source properties to a target method.
 /// </summary>
-public sealed class SourceToMethodResult
+public readonly struct SourceToMethodResult
 {
     /// <summary>
     /// Determines if the mapping of a source properties to a target method was resolved.

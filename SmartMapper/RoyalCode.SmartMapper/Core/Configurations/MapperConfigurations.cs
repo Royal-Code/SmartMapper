@@ -1,5 +1,7 @@
 ﻿
 using FastExpressionCompiler;
+using RoyalCode.SmartMapper.Adapters.Configurations;
+using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
@@ -21,7 +23,6 @@ public class MapperConfigurations
     private readonly ResolutionFactory resolutionFactory;
     private readonly MapperOptions options;
     private readonly ExpressionGenerator expressionGenerator;
-    private readonly MapperDiscovery discovery;
 
     /// <summary>
     /// Create a new instance of <see cref="MapperConfigurations"/>
@@ -45,14 +46,30 @@ public class MapperConfigurations
         this.expressionGenerator = expressionGenerator ?? throw new ArgumentNullException(nameof(expressionGenerator));
 
         resolutionFactory = new(this);
-        discovery = new();
+        Discovery = new();
     }
 
     /// <summary>
     /// The discovery for the mapper.
     /// </summary>
-    public MapperDiscovery Discovery => discovery;
+    public MapperDiscovery Discovery { get; }
 
+    /// <summary>
+    /// <para>
+    ///     Configure the adapter for adapting from <typeparamref name="TSource"/> to <typeparamref name="TTarget"/>.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TSource">The source type</typeparam>
+    /// <typeparam name="TTarget">The target type</typeparam>
+    /// <returns>
+    ///     A builder to configure the adapter options.
+    /// </returns>
+    public IAdapterOptionsBuilder<TSource, TTarget> ConfigureAdapter<TSource, TTarget>()
+    {
+        AdapterOptions adapterOptions = options.GetAdapterOptions<TSource, TTarget>();
+        return new AdapterOptionsBuilder<TSource, TTarget>(adapterOptions);
+    }
+    
     /// <summary>
     /// Get the function that adapts from <typeparamref name="TSource"/> to <typeparamref name="TTarget"/>.
     /// </summary>
@@ -81,7 +98,7 @@ public class MapperConfigurations
         }
 
         // Compile the expression
-        Func<TSource, TTarget> function = expression.CompileFast();
+        var function = expression.CompileFast();
         resolutionsMap.AddAdapter(function);
         return function;
     }

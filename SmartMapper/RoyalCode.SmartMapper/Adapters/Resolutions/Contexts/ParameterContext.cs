@@ -44,7 +44,7 @@ internal sealed class ParameterContext
                     toParameterResolutionOptions.AssignmentStrategy.Resolution,
                     toParameterResolutionOptions.AssignmentStrategy.Converter);
 
-                return new ParameterResolution(availableSourceProperty, TargetParameter, assignmentStrategyResolution);
+                return ParameterResolution.Resolves(availableSourceProperty, TargetParameter, assignmentStrategyResolution);
             }
             
             // discover the assignment strategy.
@@ -57,23 +57,19 @@ internal sealed class ParameterContext
 
             // when the assignment strategy is resolved, return the resolution.
             if (result.IsResolved)
-            {
-                return new ParameterResolution(availableSourceProperty, TargetParameter, result.Resolution);
-            }
-            else
-            {
-                // when the assignment strategy is not resolved, return the failure,
-                // adding the messages from the resolution failure.
+                return ParameterResolution.Resolves(availableSourceProperty, TargetParameter, result.Resolution);
+            
+            // when the assignment strategy is not resolved, return the failure,
+            // adding the messages from the resolution failure.
 
-                ResolutionFailure failure = new(
-                    "The assignment strategy between the source property " +
-                    $"({availableSourceProperty.GetPropertyPathString()}) " +
-                    $"and the constructor parameter ({parameterName}) could not be resolved.");
+            ResolutionFailure failure = new(
+                "The assignment strategy between the source property " +
+                $"({availableSourceProperty.GetPropertyPathString()}) " +
+                $"and the constructor parameter ({parameterName}) could not be resolved.");
 
-                failure.AddMessages(result.Failure.Messages);
+            failure.AddMessages(result.Failure.Messages);
 
-                return new ParameterResolution(failure);
-            }
+            return new ParameterResolution(failure);
         }
 
         // 2 - discover the source property to the parameter.

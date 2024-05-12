@@ -28,6 +28,17 @@ public sealed class ResolutionFailure
     {
         messages.Add(message);
     }
+    
+    /// <summary>
+    /// Create a new instance of <see cref="ResolutionFailure"/> with a message and the messages from another failure.
+    /// </summary>
+    /// <param name="message">A failure message.</param>
+    /// <param name="failure">The failure to get the messages.</param>
+    public ResolutionFailure(string message, ResolutionFailure failure)
+    {
+        messages.Add(message);
+        messages.AddRange(failure.Messages);
+    }
 
     /// <summary>
     /// Add a message to the failure.

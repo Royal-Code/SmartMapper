@@ -10,6 +10,30 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 public class ParameterResolution : ResolutionBase
 {
     /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="ParameterResolution"/> for successful resolution.
+    /// </para>
+    /// <para>
+    ///     Call the method <see cref="AvailableSourceProperty.ResolvedBy(ResolutionBase)"/>
+    ///     to notify the source property that it has been resolved.
+    /// </para>
+    /// </summary>
+    /// <param name="availableSourceProperty">The available source property that was resolved.</param>
+    /// <param name="parameter">The target parameter that resolved the source property.</param>
+    /// <param name="assignmentStrategyResolution">The assignment strategy resolution.</param>
+    /// <returns>A new instance of <see cref="ParameterResolution"/>.</returns>
+    /// <exception cref="ArgumentNullException">
+    ///     Case any of the parameters are null.
+    /// </exception>
+    public static ParameterResolution Resolves(
+        AvailableSourceProperty availableSourceProperty,
+        TargetParameter parameter,
+        AssignmentStrategyResolution assignmentStrategyResolution)
+    {
+        return new ParameterResolution(availableSourceProperty, parameter, assignmentStrategyResolution);
+    }
+    
+    /// <summary>
     /// Creates a new instance of <see cref="ParameterResolution"/> for successful resolution.
     /// </summary>
     /// <param name="availableSourceProperty"></param>
@@ -18,7 +42,7 @@ public class ParameterResolution : ResolutionBase
     /// <exception cref="ArgumentNullException">
     ///     Case any of the parameters are null.
     /// </exception>
-    public ParameterResolution(
+    private ParameterResolution(
         AvailableSourceProperty availableSourceProperty,
         TargetParameter parameter,
         AssignmentStrategyResolution assignmentStrategyResolution)
