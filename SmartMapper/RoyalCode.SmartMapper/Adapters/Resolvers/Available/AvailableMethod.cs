@@ -19,7 +19,7 @@ public sealed class AvailableMethod
     {
         return targetType.GetTypeInfo()
             .GetRuntimeMethods()
-            .Where(m => m is { IsPublic: true, IsStatic: false })
+            .Where(m => m is { IsPublic: true, IsStatic: false, IsSpecialName: false })
             .Select(m => new AvailableMethod(m))
             .ToList();
     }

@@ -46,17 +46,17 @@ public sealed class ThenToMethodOptions
     ///     The options for the method parameter.
     /// </para>
     /// <para>
-    ///     The value will be informed when the <see cref="Strategy"/> be <see cref="ToMethodStrategy.Value"/>.
+    ///     The value will be informed when <see cref="Strategy"/> be <see cref="ToMethodStrategy.Value"/>.
     /// </para>
     /// </summary>
-    public ToMethodParameterOptions? ValueOptions { get; private set; }
+    public ToMethodParameterOptions? ParameterOptions { get; private set; }
 
     /// <summary>
     /// <para>
     ///     The inner property options.
     /// </para>
     /// <para>
-    ///     The value will be informed when the <see cref="Strategy"/> be <see cref="ToMethodStrategy.InnerProperties"/>.
+    ///     The value will be informed when <see cref="Strategy"/> be <see cref="ToMethodStrategy.InnerProperties"/>.
     /// </para>
     /// </summary>
     public InnerPropertiesOptions? InnerPropertiesOptions { get; private set; }
@@ -75,8 +75,8 @@ public sealed class ThenToMethodOptions
                 $"and it is not possible to map as value.");
 
         Strategy = ToMethodStrategy.Value;
-        ValueOptions = new ToMethodParameterOptions(MethodOptions, SourcePropertyOptions.Property);
-        return ValueOptions;
+        ParameterOptions = new ToMethodParameterOptions(MethodOptions, SourcePropertyOptions.Property);
+        return ParameterOptions;
     }
 
     internal InnerPropertiesOptions MapInnerParameters()

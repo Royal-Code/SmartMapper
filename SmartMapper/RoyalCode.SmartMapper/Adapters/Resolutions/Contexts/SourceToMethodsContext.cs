@@ -1,6 +1,5 @@
 ﻿
 using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
-using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
@@ -10,17 +9,17 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 /// <summary>
 /// Represents the context for the source to methods resolution.
 /// </summary>
-internal sealed class MethodsContext
+internal sealed class SourceToMethodsContext
 {
-    public static MethodsContext Create(AdapterContext adapterContext)
+    public static SourceToMethodsContext Create(AdapterContext adapterContext)
     {
-        return new MethodsContext()
+        return new SourceToMethodsContext()
         {
             AdapterContext = adapterContext
         };
     }
 
-    private MethodsContext() { }
+    private SourceToMethodsContext() { }
 
     public AdapterContext AdapterContext { get; private init; }
 

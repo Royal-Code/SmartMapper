@@ -79,7 +79,7 @@ public sealed class AvailableSourceItems
     ///     A new instance of <see cref="AvailableSourceItems"/> with the source items available for the mapping
     ///     as parameters of a method.
     /// </returns>
-    public static AvailableSourceItems CreateAvailableSourceItemsForMethods(
+    public static AvailableSourceItems CreateAvailableSourceItemsForSourceToMethod(
         MethodInfo methodInfo,
         IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
     {
@@ -146,7 +146,7 @@ public sealed class AvailableSourceItems
     ///     as parameters of a method in the sequence of the to method parameters,
     ///     or null if one of the to method parameters is missing.
     /// </returns>
-    public static AvailableSourceItems? CreateAvailableSourceItemsForMethods(
+    public static AvailableSourceItems? CreateAvailableSourceItemsForSourceToMethod(
         IEnumerable<ToMethodParameterOptions> toMethodParameters,
         IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
     {
@@ -179,7 +179,7 @@ public sealed class AvailableSourceItems
         var innerSourceOptions = propertyOptions.GetInnerPropertiesSourceOptions()
             ?? new SourceOptions(propertyOptions.Property.PropertyType);
         var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
-        var innerAvailableProperties = CreateAvailableSourceItemsForMethods(methodInfo, innerItems, parent);
+        var innerAvailableProperties = CreateAvailableSourceItemsForSourceToMethod(methodInfo, innerItems, parent);
 
         return innerAvailableProperties;
     }

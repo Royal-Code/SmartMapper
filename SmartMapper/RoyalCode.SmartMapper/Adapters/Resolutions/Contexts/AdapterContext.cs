@@ -11,12 +11,12 @@ internal sealed class AdapterContext
     public static AdapterContext Create(AdapterOptions options)
     {
         // gets the source property options and creates the source items
-        var items = SourceItem.Create(options.SourceType, options.SourceOptions);
-
+        var sourceItems = SourceItem.Create(options.SourceType, options.SourceOptions);
+        
         // creates the context for the adapter resolution
         return new AdapterContext
         {
-            SourceItems = items,
+            SourceItems = sourceItems,
             Options = options,
             AvailableTargetProperties = new AvailableTargetProperties(options.TargetType),
             AvailableTargetMethods = new AvailableTargetMethods(options.TargetType)
@@ -71,7 +71,7 @@ internal sealed class AdapterContext
             return new AdapterResolution(activationResolution.Failure);
 
         // resolve methods mapping
-        var methodContext = MethodsContext.Create(this);
+        var methodContext = SourceToMethodsContext.Create(this);
         MethodsResolutions methodResolution = methodContext.CreateResolution(configurations);
         if (methodResolution.Resolved)
             resolutions.MethodsResolutions = methodResolution;

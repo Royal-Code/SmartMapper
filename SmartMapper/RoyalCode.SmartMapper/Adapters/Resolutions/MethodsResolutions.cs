@@ -37,5 +37,5 @@ public sealed class MethodsResolutions : ResolutionBase
     ///     It will be empty if a failure occurs.
     /// </para>
     /// </summary>
-    public IEnumerable<SourceToMethodResolution> Resolutions { get; init; }
+    public IEnumerable<SourceToMethodResolution> Resolutions { get; }
 }

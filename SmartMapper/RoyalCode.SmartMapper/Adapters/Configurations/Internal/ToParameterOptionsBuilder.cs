@@ -6,7 +6,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 internal sealed class ToParameterOptionsBuilder<TProperty> : IToParameterOptionsBuilder<TProperty>
 {
     private readonly ResolutionOptionsBase resolutionOptions;
-
+    
     public ToParameterOptionsBuilder(ResolutionOptionsBase resolutionOptions)
     {
         this.resolutionOptions = resolutionOptions;

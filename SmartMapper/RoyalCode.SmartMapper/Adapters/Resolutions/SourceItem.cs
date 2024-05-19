@@ -41,7 +41,7 @@ public sealed class SourceItem
     /// <summary>
     /// Options for the source property.
     /// </summary>
-    public PropertyOptions Options { get; private init; }
+    public PropertyOptions Options { get; }
 
     /// <summary>
     /// The kind or status of the mapping of the property.

@@ -29,16 +29,16 @@ internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
             options.MethodOptions);
         configureParameters(builder);
     }
-
+    
     /// <inheritdoc />
-    public void ToParameter(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
+    public IToParameterOptionsBuilder<TSourceProperty> ToParameter(string? parameterName = null)
     {
-        options.MapAsParameter();
-        if (configureProperty is not null)
-        {
-            var builder = new ToParameterOptionsBuilder<TSourceProperty>(options);
-            configureProperty(builder);
-        }
+        var parameterOptions = options.MapAsParameter();
+        
+        if (parameterName is not null)
+            parameterOptions.UseParameterName(parameterName);
+        
+        return new ToParameterOptionsBuilder<TSourceProperty>(options);
     }
 
     /// <inheritdoc />

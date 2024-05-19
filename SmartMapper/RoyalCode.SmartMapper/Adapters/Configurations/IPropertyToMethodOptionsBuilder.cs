@@ -27,9 +27,12 @@ public interface IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
     ///     where the method should have a single parameter.
     /// </para>
     /// </summary>
-    /// <param name="configureProperty"></param>
-    void ToParameter(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null);
-
+    /// <param name="parameterName">Optional, the name of the parameter.</param>
+    /// <returns>
+    ///     A builder to configure the mapping of the source property to a method parameter.
+    /// </returns>
+    IToParameterOptionsBuilder<TSourceProperty> ToParameter(string? parameterName = null);
+    
     /// <summary>
     /// <para>
     ///     Configure the name of the target method.

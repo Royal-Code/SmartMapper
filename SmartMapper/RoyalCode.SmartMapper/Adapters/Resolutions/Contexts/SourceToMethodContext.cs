@@ -61,8 +61,8 @@ internal sealed class SourceToMethodContext
             
             // 3.1 get the available source items for the method.
             var availableSourceItems = sourceParameters is null
-                ? AvailableSourceItems.CreateAvailableSourceItemsForMethods(availableMethod.Info, SourceItems)
-                : AvailableSourceItems.CreateAvailableSourceItemsForMethods(sourceParameters, SourceItems);
+                ? AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(availableMethod.Info, SourceItems)
+                : AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(sourceParameters, SourceItems);
             
             // 3.2 if not satisfied, continue to the next method.
             if (availableSourceItems is null)
