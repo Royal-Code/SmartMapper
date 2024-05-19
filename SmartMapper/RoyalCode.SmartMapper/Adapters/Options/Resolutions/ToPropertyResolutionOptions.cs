@@ -9,11 +9,29 @@ namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
 {
     /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="ToPropertyResolutionOptions"/>.
+    /// </para>
+    /// <para>
+    ///     Call <see cref="PropertyOptions.ResolvedBy(ResolutionOptionsBase)"/> to add the current instance
+    ///     as a resolution of the source property.
+    /// </para>
+    /// </summary>
+    /// <param name="resolvedProperty">The resolved property options.</param>
+    /// <param name="targetProperty">The target property options.</param>
+    /// <returns>A new instance of <see cref="ToPropertyResolutionOptions"/>.</returns>
+    public static ToPropertyResolutionOptions Resolves(
+        PropertyOptions resolvedProperty, ToTargetPropertyOptions targetProperty)
+    {
+        return new(resolvedProperty, targetProperty);
+    }
+    
+    /// <summary>
     /// Creates a new instance of <see cref="ToPropertyResolutionOptions"/>.
     /// </summary>
     /// <param name="resolvedProperty">The resolved property options.</param>
     /// <param name="targetProperty">The target property options.</param>
-    public ToPropertyResolutionOptions(PropertyOptions resolvedProperty, ToTargetPropertyOptions targetProperty)
+    private ToPropertyResolutionOptions(PropertyOptions resolvedProperty, ToTargetPropertyOptions targetProperty)
         : base(resolvedProperty)
     {
         Status = ResolutionStatus.MappedToProperty;
@@ -61,6 +79,12 @@ public sealed class ToPropertyResolutionOptions : ResolutionOptionsBase
         return ThenToProperty;
     }
 
+    /// <summary>
+    /// Maps the source property to a method of the target property.
+    /// </summary>
+    /// <returns>
+    ///     The options to map the source property to a method of the target property.
+    /// </returns>
     public ThenToMethodOptions ThenCall()
     {
         UseResolutionStrategy(ToPropertyResolutionStrategy.CallMethod);

@@ -46,6 +46,79 @@ public sealed class TargetOptions
     
     /// <summary>
     /// <para>
+    ///     Gets the options for a method of the target type.
+    /// </para>
+    /// <para>
+    ///     When a method is not found, a new instance of <see cref="MethodOptions"/> is created.
+    /// </para>
+    /// </summary>
+    /// <param name="methodInfo">
+    ///     The method info to find the options.
+    /// </param>
+    /// <returns>
+    ///     An existing instance of <see cref="MethodOptions"/> for the target type
+    ///     or a new instance if no options have been set.
+    /// </returns>
+    public MethodOptions GetMethodOptions(MethodInfo methodInfo)
+    {
+        var options = methodOptions?.FirstOrDefault(x => x.Method == methodInfo);
+        if (options is not null)
+            return options;
+
+        options = new MethodOptions(methodInfo.DeclaringType!)
+        {
+            Method = methodInfo,
+            MethodName = methodInfo.Name
+        };
+        methodOptions ??= [];
+        methodOptions.Add(options);
+        return options;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Gets the options for a method of the target type.
+    /// </para>
+    /// <para>
+    ///     When a method is not found, a new instance of <see cref="MethodOptions"/> is created.
+    /// </para>
+    /// </summary>
+    /// <param name="methodName">The method name.</param>
+    /// <returns>
+    ///     An existing instance of <see cref="MethodOptions"/> for the target type
+    ///     or a new instance if no options have been set.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    ///     When none method with the informed name is found on the target type.
+    /// </exception>
+    public MethodOptions GetMethodOptions(string methodName)
+    {
+        var options = methodOptions?.FirstOrDefault(x => x.MethodName == methodName);
+        if (options is not null)
+            return options;
+
+        // try to get the method info by name
+        var methods = TargetType.GetMethods().Where(x => x.Name == methodName).ToArray();
+        if (methods.Length == 0)
+            throw new ArgumentException(
+                $"The method '{methodName}' was not found on type '{TargetType.Name}'.",
+                nameof(methodName));
+    
+        // if it has a single method, use it
+        var methodInfo = methods.Length == 1 ? methods[0] : null;
+        
+        options = new MethodOptions(TargetType)
+        {
+            Method = methodInfo,
+            MethodName = methodName
+        };
+        methodOptions ??= [];
+        methodOptions.Add(options);
+        return options;
+    }
+    
+    /// <summary>
+    /// <para>
     ///     Create a new instance of <see cref="ToTargetPropertyOptions"/> for the target type.
     /// </para>
     /// </summary>
@@ -147,4 +220,6 @@ public sealed class TargetOptions
         constructorOptions ??= new ConstructorOptions(TargetType);
         return constructorOptions;
     }
+
+    
 }

@@ -30,7 +30,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     {
         var toTargetPropertyOptions = adapterOptions.TargetOptions.GetToTargetPropertyOptions(propertySelector);
         
-        var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
+        var resolution = ToPropertyResolutionOptions.Resolves(propertyOptions, toTargetPropertyOptions);
 
         var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(resolution);
         
@@ -44,7 +44,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
         var toTargetPropertyOptions = adapterOptions.TargetOptions
             .GetToTargetPropertyOptions(propertyName, typeof(TTargetProperty));
         
-        var resolution = new ToPropertyResolutionOptions(propertyOptions, toTargetPropertyOptions);
+        var resolution = ToPropertyResolutionOptions.Resolves(propertyOptions, toTargetPropertyOptions);
 
         var builder = new PropertyToPropertyOptionsBuilder<TSource, TTarget, TProperty, TTargetProperty>(resolution);
 
@@ -67,7 +67,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     /// <inheritdoc />
     public IPropertyToConstructorOptionsBuilder<TProperty> ToConstructor()
     {
-        var resolutionOptions = new ToConstructorResolutionOptions(propertyOptions);
+        var resolutionOptions = ToConstructorResolutionOptions.Resolves(propertyOptions);
         var innerAdapterOptions = new AdapterOptions(resolutionOptions.InnerSourceOptions, adapterOptions.TargetOptions);
         return new PropertyToConstructorOptionsBuilder<TProperty>(resolutionOptions, innerAdapterOptions);
     }
@@ -76,7 +76,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
     public IPropertyToMethodOptionsBuilder<TTarget, TProperty> ToMethod()
     {
         var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
-        var resolution = new PropertyToMethodResolutionOptions(propertyOptions, methodOptions);
+        var resolution = PropertyToMethodResolutionOptions.Resolves(propertyOptions, methodOptions);
         var builder = new PropertyToMethodOptionsBuilder<TTarget, TProperty>(resolution);
         return builder;
     }
@@ -91,7 +91,7 @@ internal sealed class PropertyOptionsBuilder<TSource, TTarget, TProperty>
         var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
         methodOptions.Method = method;
         methodOptions.MethodName = method.Name;
-        var resolution = new PropertyToMethodResolutionOptions(propertyOptions, methodOptions);
+        var resolution = PropertyToMethodResolutionOptions.Resolves(propertyOptions, methodOptions);
         var builder = new PropertyToMethodOptionsBuilder<TTarget, TProperty>(resolution);
         return builder;
     }

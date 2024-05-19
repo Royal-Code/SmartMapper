@@ -29,7 +29,7 @@ internal class PropertyThenToMethodOptionsBuilder<TTargetProperty, TSourceProper
     }
 
     /// <inheritdoc />
-    public void Value(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
+    public void ToParameter(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
     {
         var resolutionOptionsBase = options.SourcePropertyOptions.ResolutionOptions
             ?? throw new InvalidOperationException("The source property must have a resolution");

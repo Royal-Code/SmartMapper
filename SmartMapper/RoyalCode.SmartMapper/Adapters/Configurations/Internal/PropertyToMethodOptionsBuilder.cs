@@ -31,7 +31,7 @@ internal sealed class PropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
     }
 
     /// <inheritdoc />
-    public void Value(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
+    public void ToParameter(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null)
     {
         options.MapAsParameter();
         if (configureProperty is not null)

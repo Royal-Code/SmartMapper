@@ -55,9 +55,8 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        var resolutionOptions = propertyOptions.ResolutionOptions is ToMethodResolutionOptions tcro
-            ? tcro
-            : new ToMethodResolutionOptions(sourceToMethodOptions.MethodOptions, propertyOptions);
+        var resolutionOptions = propertyOptions.ResolutionOptions as ToMethodResolutionOptions 
+            ?? ToMethodResolutionOptions.Resolvers(sourceToMethodOptions.MethodOptions, propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 

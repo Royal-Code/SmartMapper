@@ -28,7 +28,7 @@ public interface IPropertyToMethodOptionsBuilder<TTarget, TSourceProperty>
     /// </para>
     /// </summary>
     /// <param name="configureProperty"></param>
-    void Value(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null);
+    void ToParameter(Action<IToParameterOptionsBuilder<TSourceProperty>>? configureProperty = null);
 
     /// <summary>
     /// <para>

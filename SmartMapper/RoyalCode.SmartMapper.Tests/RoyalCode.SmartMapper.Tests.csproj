@@ -28,7 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mappings\Builders\" />
+    <Compile Remove="Mappings\Builders\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Mappings\Builders\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Mappings\Builders\**" />
   </ItemGroup>
 
 </Project>

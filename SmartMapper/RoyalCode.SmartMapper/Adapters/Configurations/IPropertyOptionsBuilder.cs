@@ -54,6 +54,7 @@ public interface IPropertyOptionsBuilder<TSource, TTarget, TSourceProperty>
     /// <returns>
     ///     The builder to configure the property to constructor mapping.
     /// </returns>
+    [Obsolete("Use ToConstructor from the IAdapterOptionsBuilder instead.")]
     IPropertyToConstructorOptionsBuilder<TSourceProperty> ToConstructor();
 
     /// <summary>

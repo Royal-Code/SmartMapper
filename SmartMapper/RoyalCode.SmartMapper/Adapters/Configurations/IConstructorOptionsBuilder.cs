@@ -20,6 +20,19 @@ public interface IConstructorOptionsBuilder<TSource>
     /// </summary>
     /// <param name="configureParameters"></param>
     void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configureParameters);
+
+    /// <summary>
+    /// <para>
+    ///     Map many properties of the source type to the constructor parameters of the destination type.
+    /// </para>
+    /// <para>
+    ///     To advanced mapping, use the <see cref="Parameters"/> method.
+    /// </para>
+    /// </summary>
+    /// <param name="propertySelectors">
+    ///     The properties of the source type.
+    /// </param>
+    void Map(params Expression<Func<TSource, object>>[] propertySelectors);
     
     /// <summary>
     /// <para>

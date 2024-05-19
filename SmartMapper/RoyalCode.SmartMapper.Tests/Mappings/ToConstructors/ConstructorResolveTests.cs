@@ -2,7 +2,7 @@
 using RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 using RoyalCode.SmartMapper.Core.Configurations;
 
-namespace RoyalCode.SmartMapper.Tests.Mappings.Adapters;
+namespace RoyalCode.SmartMapper.Tests.Mappings.ToConstructors;
 
 public class ConstructorResolveTests
 {
@@ -98,6 +98,36 @@ public class ConstructorResolveTests
         Assert.NotNull(resolution.ConstructorResolution);
         Assert.Single(resolution.ConstructorResolution.ParameterResolution);
     }
+    
+    [Fact]
+    public void Constructor_ConfigureAndResolve_FromInnerProperties()
+    {
+        // Arrange
+        Configure<SourceGamma, TargetGamma>(
+            builder =>
+            {
+                builder.Constructor()
+                    .Parameters(p =>
+                    {
+                        p.InnerProperties(s => s.SourceBeta).InnerProperties(s => s.SourceAlpha, i =>
+                        {
+                            i.Parameter(s => s.Name);
+                            i.Parameter(s => s.Age);
+                        });
+                        p.Parameter(s => s.EntryDate);
+                    });
+            },
+            out var configuration, out var activationContext);
+        
+        // Act
+        var resolution = activationContext.CreateResolution(configuration);
+        
+        // Assert
+        Assert.NotNull(resolution);
+        Assert.True(resolution.Resolved);
+        Assert.NotNull(resolution.ConstructorResolution);
+        Assert.Equal(3, resolution.ConstructorResolution.ParameterResolution.Count());
+    }
 }
 
 #pragma warning disable
@@ -124,3 +154,64 @@ file class EmptyAndOneAndTwoParametersTarget
 }
 
 file class OtherNamesSource { public int Id { get; set; } public int Quantity { get; set; } }
+
+#region AlphaBethaGamma
+
+file sealed class SourceAlpha
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+
+file sealed class TargetAlpha
+{
+    public TargetAlpha(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+
+    public string Name { get; }
+    public int Age { get; }
+}
+
+file sealed class SourceBeta
+{
+    public SourceAlpha SourceAlpha { get; set; }
+}
+
+file sealed class TargetBeta
+{
+    public TargetBeta(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+
+    public string Name { get; }
+    public int Age { get; }
+}
+
+
+file sealed class SourceGamma
+{
+    public SourceBeta SourceBeta { get; set; }
+
+    public DateTime EntryDate { get; set; }
+}
+
+file sealed class TargetGamma
+{
+    public TargetGamma(string name, int age, DateTime entryDate)
+    {
+        Name = name;
+        Age = age;
+        EntryDate = entryDate;
+    }
+
+    public string Name { get; }
+    public int Age { get; }
+    public DateTime EntryDate { get; }
+}
+
+#endregion

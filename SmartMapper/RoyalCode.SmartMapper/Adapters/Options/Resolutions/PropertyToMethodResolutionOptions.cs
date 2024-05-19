@@ -9,11 +9,35 @@ namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
 {
     /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="PropertyToMethodResolutionOptions"/>
+    ///     with the given property and method options.
+    /// </para>
+    /// <para>
+    ///     Resolves the property to the method.
+    ///     <br/>
+    ///     Call <see cref="PropertyOptions.ResolvedBy(ResolutionOptionsBase)"/> to add the current instance
+    ///     as a resolution of the source property.
+    /// </para>
+    /// </summary>
+    /// <param name="resolvedProperty">The resolved property.</param>
+    /// <param name="methodOptions">The method options.</param>
+    /// <returns>
+    ///     A new instance of <see cref="PropertyToMethodResolutionOptions"/>.
+    /// </returns>
+    public static PropertyToMethodResolutionOptions Resolves(
+        PropertyOptions resolvedProperty,
+        MethodOptions methodOptions)
+    {
+        return new PropertyToMethodResolutionOptions(resolvedProperty, methodOptions);
+    }
+    
+    /// <summary>
     /// Creates a new instance of <see cref="PropertyToMethodResolutionOptions"/>.
     /// </summary>
     /// <param name="resolvedProperty">The resolved property.</param>
     /// <param name="methodOptions">The method options.</param>
-    public PropertyToMethodResolutionOptions(PropertyOptions resolvedProperty, MethodOptions methodOptions) 
+    private PropertyToMethodResolutionOptions(PropertyOptions resolvedProperty, MethodOptions methodOptions) 
         : base(resolvedProperty)
     {
         Status = ResolutionStatus.Undefined;

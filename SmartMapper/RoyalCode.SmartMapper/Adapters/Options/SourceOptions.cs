@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using RoyalCode.SmartMapper.Core.Exceptions;
@@ -120,16 +121,20 @@ public sealed class SourceOptions
     }
 
     /// <summary>
-    /// Gets all options of source to method.
+    /// <para>
+    ///     Gets all options of source to method.
+    /// </para>
     /// </summary>
     /// <returns>
-    ///     All configured options of source to method or empty.
+    ///     True if any source to method options was found, otherwise false.
     /// </returns>
     public bool TryGetSourceToMethodOptions(out IEnumerable<SourceToMethodOptions> options)
     {
         options = sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
         return sourceToMethodOptions is not null;
     }
+    
+    
 
     /// <summary>
     /// <para>
@@ -144,5 +149,33 @@ public sealed class SourceOptions
         sourceToMethodOptions ??= [];
         sourceToMethodOptions.Add(options);
         return options;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Try to get the source to method options for the given method.
+    /// </para>
+    /// </summary>
+    /// <param name="method">The method to get the options.</param>
+    /// <param name="options">The source to method options or null if not found.</param>
+    /// <returns>True if the options was found, otherwise false.</returns>
+    public bool TryGetSourceToMethodOption(MethodInfo method, [NotNullWhen(true)] out SourceToMethodOptions? options)
+    {
+        options = sourceToMethodOptions?.FirstOrDefault(x => x.MethodOptions.Method == method);
+        return options is not null;
+    }
+    
+    /// <summary>
+    /// <para>
+    ///     Try to get the source to method options for the given method name.
+    /// </para>
+    /// </summary>
+    /// <param name="methodName">The method name to get the options.</param>
+    /// <param name="options">The source to method options or null if not found.</param>
+    /// <returns>The source to method options or null if not found.</returns>
+    public bool TryGetSourceToMethodOption(string methodName, [NotNullWhen(true)] out SourceToMethodOptions? options)
+    {
+        options = sourceToMethodOptions?.FirstOrDefault(x => x.MethodOptions.MethodName == methodName);
+        return options is not null;
     }
 }

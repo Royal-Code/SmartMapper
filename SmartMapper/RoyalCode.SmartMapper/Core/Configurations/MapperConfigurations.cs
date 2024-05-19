@@ -55,6 +55,14 @@ public class MapperConfigurations
     public MapperDiscovery Discovery { get; }
 
     /// <summary>
+    /// Component to handle the matching of member names.
+    /// </summary>
+    /// <exception cref="NotImplementedException">
+    ///     TODO: Implement the matching of member names.
+    /// </exception>
+    public object MatchingNames => throw new NotImplementedException();
+
+    /// <summary>
     /// <para>
     ///     Configure the adapter for adapting from <typeparamref name="TSource"/> to <typeparamref name="TTarget"/>.
     /// </para>

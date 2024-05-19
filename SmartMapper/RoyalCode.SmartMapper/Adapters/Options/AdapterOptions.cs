@@ -56,26 +56,4 @@ public sealed class AdapterOptions
     /// Contains the options for the target members of the mapping.
     /// </summary>
     public TargetOptions TargetOptions { get; }
-
-    /////// <summary>
-    /////// Creates a new configuration to map properties of the source type to a target method.
-    /////// </summary>
-    /////// <returns>A new instance of the <see cref="SourceToMethodOptions"/> class.</returns>
-    ////public SourceToMethodOptions CreateSourceToMethodOptions()
-    ////{
-    ////    var methodOptions = new MethodOptions(TargetType);
-    ////    TargetOptions.AddToMethod(methodOptions);
-    ////    var sourceToMethodOptions = new SourceToMethodOptions(methodOptions);
-    ////    SourceOptions.AddSourceToMethod(sourceToMethodOptions);
-        
-    ////    return sourceToMethodOptions;
-    ////}
-
-    /////// <summary>
-    /////// Gets all options of source to method.
-    /////// </summary>
-    /////// <returns>
-    ///////     All configured options of source to method or empty.
-    /////// </returns>
-    ////public IEnumerable<SourceToMethodOptions> GetSourceToMethodOptions() => SourceOptions.GetSourceToMethodOptions();
 }

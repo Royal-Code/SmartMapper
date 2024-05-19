@@ -36,7 +36,7 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
         if (parameterName is not null)
             constructorParameterOptions.UseParameterName(parameterName);
 
-        var resolutionOptions = new ToConstructorParameterResolutionOptions(propertyOptions, constructorParameterOptions);
+        var resolutionOptions = ToConstructorParameterResolutionOptions.Resolves(propertyOptions, constructorParameterOptions);
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
         return new ToParameterOptionsBuilder<TProperty>(resolutionOptions);
@@ -46,9 +46,8 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        var resolutionOptions = propertyOptions.ResolutionOptions is ToConstructorResolutionOptions tcro
-            ? tcro
-            : new ToConstructorResolutionOptions(propertyOptions);
+        var resolutionOptions = propertyOptions.ResolutionOptions as ToConstructorResolutionOptions 
+            ?? ToConstructorResolutionOptions.Resolves(propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 

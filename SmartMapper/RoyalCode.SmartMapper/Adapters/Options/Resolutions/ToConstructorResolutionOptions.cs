@@ -16,8 +16,16 @@ public sealed class ToConstructorResolutionOptions : InnerPropertiesResolutionOp
     ///     as a resolution of the source property.
     /// </para>
     /// </summary>
-    /// <param name="resolvedProperty">A resolved property.</param>
-    public ToConstructorResolutionOptions(PropertyOptions resolvedProperty) 
+    /// <param name="resolvedProperty">The resolved property.</param>
+    /// <returns>
+    ///     A new instance of <see cref="ToConstructorResolutionOptions"/>.
+    /// </returns>
+    public static ToConstructorResolutionOptions Resolves(PropertyOptions resolvedProperty)
+    {
+        return new(resolvedProperty);
+    }
+    
+    private ToConstructorResolutionOptions(PropertyOptions resolvedProperty) 
         : base(resolvedProperty)
     {
         Status = ResolutionStatus.MappedToConstructor;

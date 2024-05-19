@@ -17,9 +17,26 @@ public sealed class ToMethodResolutionOptions : InnerPropertiesResolutionOptions
     ///     as a resolution of the source property.
     /// </para>
     /// </summary>
+    /// <param name="methodOptions">The method options mapped by the property.</param>
+    /// <param name="resolvedProperty">The property options that will be resolved by the method.</param>
+    /// <returns>A new instance of <see cref="ToMethodResolutionOptions"/>.</returns>
+    public static ToMethodResolutionOptions Resolvers(MethodOptions methodOptions, PropertyOptions resolvedProperty)
+    {
+        return new(methodOptions, resolvedProperty);
+    }
+    
+    /// <summary>
+    /// <para>
+    ///     Creates a new instance of <see cref="ToMethodResolutionOptions"/>.
+    /// </para>
+    /// <para>
+    ///     Call <see cref="PropertyOptions.ResolvedBy(ResolutionOptionsBase)"/> to add the current instance
+    ///     as a resolution of the source property.
+    /// </para>
+    /// </summary>
     /// <param name="methodOptions"></param>
     /// <param name="resolvedProperty"></param>
-    public ToMethodResolutionOptions(MethodOptions methodOptions, PropertyOptions resolvedProperty) : base(resolvedProperty)
+    private ToMethodResolutionOptions(MethodOptions methodOptions, PropertyOptions resolvedProperty) : base(resolvedProperty)
     {
         Status = ResolutionStatus.MappedToMethod;
         MethodOptions = methodOptions;

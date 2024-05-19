@@ -10,28 +10,10 @@ internal sealed class SourceToMethodOptionsBuilder<TSource, TTarget> : ISourceTo
     private readonly AdapterOptions adapterOptions;
     private readonly SourceToMethodOptions sourceToMethodOptions;
 
-    public SourceToMethodOptionsBuilder(AdapterOptions adapterOptions)
+    public SourceToMethodOptionsBuilder(AdapterOptions adapterOptions, SourceToMethodOptions sourceToMethodOptions)
     {
         this.adapterOptions = adapterOptions;
-         
-        var methodOptions = adapterOptions.TargetOptions.CreateMethodOptions();
-        sourceToMethodOptions = adapterOptions.SourceOptions.CreateSourceToMethodOptions(methodOptions);
-    }
-
-    public SourceToMethodOptionsBuilder(AdapterOptions adapterOptions, 
-        Expression<Func<TTarget, Delegate>> methodSelector) 
-        : this(adapterOptions)
-    {
-        if (!methodSelector.TryGetMethod(out var method))
-            throw new InvalidMethodDelegateException(nameof(methodSelector));
-
-        sourceToMethodOptions.MethodOptions.Method = method;
-        sourceToMethodOptions.MethodOptions.MethodName = method.Name;
-    }
-
-    public SourceToMethodOptionsBuilder(AdapterOptions adapterOptions, string methodName) : this(adapterOptions)
-    {
-        sourceToMethodOptions.MethodOptions.WithMethodName(methodName);
+        this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
     public void AllProperties(Action<ISourceToMethodPropertiesOptionsBuilder<TSource>>? configureProperties = null)

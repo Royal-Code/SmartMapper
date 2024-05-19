@@ -1,15 +1,17 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 using RoyalCode.SmartMapper.Adapters.Options;
+using RoyalCode.SmartMapper.Adapters.Resolutions;
 
-namespace RoyalCode.SmartMapper.Tests.Mappings.Adapters;
+namespace RoyalCode.SmartMapper.Tests.Mappings.ToConstructors;
 
-public sealed class ConstrutorMappings
+public sealed class ConstructorMappings
 {
     /// <summary>
     /// Simple constructor parameter mapping.
     /// <br/>
     /// Source has a property to be mapped to the constructor parameter.
     /// </summary>
+    [Fact]
     public void Single_Simple()
     {
         // Arrange
@@ -21,6 +23,14 @@ public sealed class ConstrutorMappings
         {
             b.Parameter(s => s.Name);
         });
+        
+        // Assert
+        var constructorOptions = options.TargetOptions.GetConstructorOptions();
+        Assert.NotNull(constructorOptions);
+        var found = constructorOptions.TryGetParameterOptions("Name", out var parameterOptions);
+        Assert.True(found);
+        Assert.NotNull(parameterOptions);
+        Assert.Equal("Name", parameterOptions.SourceProperty.Name);
     }
 
     /// <summary>
@@ -28,6 +38,7 @@ public sealed class ConstrutorMappings
     /// <br/>
     /// Source has a complex type property, where the inner property are mapped to the constructor parameter.
     /// </summary>
+    [Fact]
     public void Single_Complex()
     {
         // Arrange
@@ -36,6 +47,16 @@ public sealed class ConstrutorMappings
         
         // Act
         builder.Map(s => s.Value).ToConstructor();
+        
+        // Assert
+        var constructorOptions = options.TargetOptions.GetConstructorOptions();
+        Assert.NotNull(constructorOptions);
+        var found = constructorOptions.TryGetParameterOptions("Value", out _);
+        Assert.False(found);
+        var propertyOptions = options.SourceOptions.GetPropertyOptions("Value", typeof(ComplexValue));
+        Assert.NotNull(propertyOptions);
+        Assert.NotNull(propertyOptions.ResolutionOptions);
+        Assert.Equal(ResolutionStatus.MappedToConstructor, propertyOptions.ResolutionOptions.Status);
     }
 }
 
