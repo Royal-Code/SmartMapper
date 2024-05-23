@@ -79,4 +79,9 @@ public class ParameterResolution : ResolutionBase
     /// The assignment strategy resolution.
     /// </summary>
     public AssignmentStrategyResolution AssignmentStrategyResolution { get; }
+
+    public override void Completed()
+    {
+        AvailableSourceProperty.Completed();
+    }
 }

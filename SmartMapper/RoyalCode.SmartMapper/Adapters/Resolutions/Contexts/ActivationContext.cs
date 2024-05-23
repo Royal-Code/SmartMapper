@@ -65,8 +65,12 @@ internal sealed class ActivationContext
             
             // if resolved, return the resolution
             if (ctorResolution.Resolved)
-                return new(ctorResolution);
-
+            {
+                var activationResolution = new ActivationResolution(ctorResolution);
+                activationResolution.Completed();
+                return activationResolution;
+            }
+            
             // otherwise, add the failure to the list
             failures ??= [];
             failures.Add(ctorResolution.Failure);

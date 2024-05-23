@@ -18,4 +18,7 @@ public class PropertiesResolution : ResolutionBase
     }
     
     public IEnumerable<PropertyResolution> PropertyResolutions { get; }
+    
+    /// <inheritdoc />
+    public override void Completed() { }
 }

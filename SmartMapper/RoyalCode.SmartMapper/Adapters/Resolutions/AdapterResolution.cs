@@ -39,5 +39,8 @@ public class AdapterResolution : ResolutionBase
     public MethodsResolutions? MethodsResolutions { get; }
         
     public PropertiesResolution? PropertiesResolutions { get; }
+    
+    /// <inheritdoc />
+    public override void Completed() { }
 }
 

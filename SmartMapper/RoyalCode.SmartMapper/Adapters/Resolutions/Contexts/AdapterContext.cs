@@ -43,7 +43,7 @@ internal sealed class AdapterContext
     /// <summary>
     /// Contains the options for all properties of the source type.
     /// </summary>
-    public IEnumerable<SourceItem> SourceItems { get; private init; }
+    public IReadOnlyCollection<SourceItem> SourceItems { get; private init; }
 
     /// <summary>
     /// The available properties for the target type.

@@ -45,4 +45,11 @@ public sealed class SourceToMethodResolution: ResolutionBase
     /// The parameters resolutions.
     /// </summary>
     public IEnumerable<ParameterResolution> ParametersResolutions { get; }
+
+    /// <inheritdoc />
+    public override void Completed()
+    {
+        foreach (var resolution in ParametersResolutions)
+            resolution.Completed();
+    }
 }

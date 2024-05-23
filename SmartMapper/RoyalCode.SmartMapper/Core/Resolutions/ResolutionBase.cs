@@ -17,4 +17,9 @@ public abstract class ResolutionBase
     /// Contains the failure of the resolution, if any.
     /// </summary>
     public ResolutionFailure? Failure { get; init; }
+
+    /// <summary>
+    /// Mark the resolution as completed, and mark the source as resolved.
+    /// </summary>
+    public abstract void Completed();
 }

@@ -35,23 +35,12 @@ public sealed class SourceItem
     public SourceItem(PropertyOptions options)
     {
         Options = options;
-        ResolutionStatus = ResolutionStatus.Undefined;
     }
 
     /// <summary>
     /// Options for the source property.
     /// </summary>
     public PropertyOptions Options { get; }
-
-    /// <summary>
-    /// The kind or status of the mapping of the property.
-    /// </summary>
-    public ResolutionStatus ResolutionStatus { get; private set; }
-
-    /// <summary>
-    /// Options of the strategy to be used to assign the property value to the destination counterpart.
-    /// </summary>
-    public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
 
     /// <summary>
     /// The resolution of the property, if resolved.
@@ -67,13 +56,9 @@ public sealed class SourceItem
     /// Sets the resolution of the property.
     /// </summary>
     /// <param name="resolution">The resolution.</param>
-    /// <param name="status">The status of the resolution.</param>
-    /// <param name="strategy">The strategy to be used to assign the property value to the destination counterpart.</param>
-    public void ResolvedBy(ResolutionBase resolution, ResolutionStatus status, AssignmentStrategyOptions? strategy)
+    public void ResolvedBy(ResolutionBase resolution)
     {
         Resolution = resolution;
-        ResolutionStatus = status;
-        AssignmentStrategy = strategy;
     }
 
     /// <summary>

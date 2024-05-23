@@ -82,4 +82,10 @@ public class PropertyResolution : ResolutionBase
     /// </para>
     /// </summary>
     public ResolutionBase ThenResolution { get; }
+
+    /// <inheritdoc />
+    public override void Completed()
+    {
+        AvailableSourceProperty?.Completed();
+    }
 }

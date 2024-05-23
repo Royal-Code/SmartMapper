@@ -38,4 +38,7 @@ public sealed class MethodsResolutions : ResolutionBase
     /// </para>
     /// </summary>
     public IEnumerable<SourceToMethodResolution> Resolutions { get; }
+
+    /// <inheritdoc />
+    public override void Completed() { }
 }

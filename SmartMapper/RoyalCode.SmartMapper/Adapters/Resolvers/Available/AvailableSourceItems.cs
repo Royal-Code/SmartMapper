@@ -89,40 +89,53 @@ public sealed class AvailableSourceItems
         {
             var availableSourceProperty = new AvailableSourceProperty(sourceItem, parent);
 
-            if (sourceItem.IsMappedToMethod 
-                && sourceItem.Options.ResolutionOptions is ToMethodResolutionOptions toMethodResolutionOptions
-                && toMethodResolutionOptions.CanAcceptMethod(methodInfo))
+            switch (sourceItem)
             {
-                availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
-                
-                var innerAvailableItems = CreateInnerAvailableSourceItemsForMethods(methodInfo, sourceItem, availableSourceProperty);
-                availableSourceItems.AddInner(innerAvailableItems);
-            }
-            else if (sourceItem.IsMappedToMethodParameter
-                 && sourceItem.Options.ResolutionOptions is PropertyToMethodResolutionOptions propertyToMethodResolutionOptions
-                 && propertyToMethodResolutionOptions.CanAcceptMethod(methodInfo))
-            {
-                availableSourceItems.availableSourceProperties.Add(availableSourceProperty);
-                availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
-            }
-            else if (sourceItem.IsMappedToMethodParameter
-                 && sourceItem.Options.ResolutionOptions is ToMethodParameterResolutionOptions toMethodParameterResolutionOptions
-                 && toMethodParameterResolutionOptions.CanAcceptMethod(methodInfo))
-            {
-                availableSourceItems.availableSourceProperties.Add(availableSourceProperty);
-                availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
-            }
-            else if (sourceItem.IsMappedToTarget)
-            {
-                availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
-                
-                var innerAvailableItems = CreateInnerAvailableSourceItemsForMethods(methodInfo, sourceItem, availableSourceProperty);
-                availableSourceItems.AddInner(innerAvailableItems);
-            }
-            else if (sourceItem.IsNotMapped)
-            {
-                availableSourceItems.availableSourceProperties.Add(new(sourceItem, parent));
-                availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
+                case
+                    {
+                        IsMappedToMethod: true,
+                        Options.ResolutionOptions: ToMethodResolutionOptions toMethodResolutionOptions
+                    }
+                    when toMethodResolutionOptions.CanAcceptMethod(methodInfo):
+                    
+                    availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
+                    availableSourceItems.AddInner(
+                        CreateInnerAvailableSourceItemsForMethods(
+                            methodInfo,
+                            sourceItem,
+                            availableSourceProperty));
+                    break;
+
+                case
+                    {
+                        IsMappedToMethodParameter: true,
+                        Options.ResolutionOptions: ToMethodParameterResolutionOptions resolutionOptions
+                    }
+                    when resolutionOptions.CanAcceptMethod(methodInfo):
+                    
+                    availableSourceItems.availableSourceProperties.Add(availableSourceProperty);
+                    availableSourceItems.requiredSourceProperties.Add(availableSourceProperty);
+                    break;
+
+                case
+                    {
+                        IsNotMapped: true
+                    }:
+                    
+                    availableSourceItems.availableSourceProperties.Add(availableSourceProperty);
+                    break;
+
+                case
+                    {
+                        IsMappedToTarget: true
+                    }:
+                    
+                    availableSourceItems.AddInner(
+                        CreateInnerAvailableSourceItemsForMethods(
+                            methodInfo,
+                            sourceItem,
+                            availableSourceProperty));
+                    break;
             }
         }
 
@@ -143,12 +156,12 @@ public sealed class AvailableSourceItems
     /// <param name="parent">Parent source property, if available.</param>
     /// <returns>
     ///     A new instance of <see cref="AvailableSourceItems"/> with the source items available for the mapping
-    ///     as parameters of a method in the sequence of the to method parameters,
-    ///     or null if one of the to method parameters is missing.
+    ///     as parameters of a method in the sequence of the to-method parameters,
+    ///     or null if one of the to-method parameters is missing.
     /// </returns>
     public static AvailableSourceItems? CreateAvailableSourceItemsForSourceToMethod(
-        IEnumerable<ToMethodParameterOptions> toMethodParameters,
-        IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+        IReadOnlyCollection<ToMethodParameterOptions> toMethodParameters,
+        IReadOnlyCollection<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();
         
@@ -240,10 +253,10 @@ public sealed class AvailableSourceItems
     /// </summary>
     public bool AllRequiredItemsResolved => RequiredSourceProperties.All(p => p.Resolved);
 
-    private void AddInner(AvailableSourceItems innerAvaliableItems)
+    private void AddInner(AvailableSourceItems innerAvailableSourceItems)
     {
-        availableSourceProperties.AddRange(innerAvaliableItems.AvailableSourceProperties);
-        requiredSourceProperties.AddRange(innerAvaliableItems.RequiredSourceProperties);
+        availableSourceProperties.AddRange(innerAvailableSourceItems.AvailableSourceProperties);
+        requiredSourceProperties.AddRange(innerAvailableSourceItems.RequiredSourceProperties);
     }
 
     internal bool TryGetAvailableSourcePropertyToParameter(string parameterName,

@@ -82,7 +82,7 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
                 $"'{ResolvedProperty.Property.DeclaringType?.Name}' was mapped as inner properties " +
                 $"and it is not possible to map as value.");
         
-        // if method existis, validate if method has a single parameter
+        // if method exists, validate if method has a single parameter
         if (MethodOptions.Method is not null && MethodOptions.Method.GetParameters().Length != 1)
         {
             throw new InvalidOperationException(

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
@@ -14,13 +15,13 @@ public sealed class AvailableSourceProperty
     /// Creates new instance of <see cref="AvailableSourceProperty"/>.
     /// </summary>
     /// <param name="sourceItem">The source item.</param>
-    /// <param name="parentySourceProperty">The parent source property, if available.</param>
-    public AvailableSourceProperty(SourceItem sourceItem, AvailableSourceProperty? parentySourceProperty = null)
+    /// <param name="parentSourceProperty">The parent source property, if available.</param>
+    public AvailableSourceProperty(SourceItem sourceItem, AvailableSourceProperty? parentSourceProperty = null)
     {
         SourceItem = sourceItem;
-        Parent = parentySourceProperty;
+        Parent = parentSourceProperty;
 
-        parentySourceProperty?.AddInnerProperty(this);
+        parentSourceProperty?.AddInnerProperty(this);
     }
 
     /// <summary>
@@ -31,7 +32,8 @@ public sealed class AvailableSourceProperty
     /// <summary>
     /// if the property is resolved.
     /// </summary>
-    public bool Resolved { get; private set; }
+    [MemberNotNullWhen(true, nameof(Resolution))]
+    public bool Resolved => Resolution is not null;
 
     /// <summary>
     /// The source item.
@@ -65,9 +67,23 @@ public sealed class AvailableSourceProperty
     public void ResolvedBy(ResolutionBase resolution)
     {
         Resolution = resolution;
-        Resolved = true;
 
         Parent?.ChildResolved();
+    }
+
+    /// <summary>
+    /// Complete the resolution of the property, marking the source item as resolved.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    ///     Case the property is not resolved.
+    /// </exception>
+    public void Completed()
+    {
+        if (!Resolved)
+            throw new InvalidOperationException("The property is not resolved.");
+        
+        SourceItem.ResolvedBy(Resolution);
+        Parent?.Completed();
     }
 
     /// <summary>
@@ -105,7 +121,7 @@ public sealed class AvailableSourceProperty
         var isAllChildrenResolved = InnerProperties.Resolved;
         if (isAllChildrenResolved)
         {
-            Resolved = true;
+            //Resolved = true;
             Parent?.ChildResolved();
         }
     }

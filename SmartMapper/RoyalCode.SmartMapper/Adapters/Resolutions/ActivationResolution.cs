@@ -31,4 +31,10 @@ public class ActivationResolution : ResolutionBase
     /// The constructor resolution.
     /// </summary>
     public ConstructorResolution? ConstructorResolution { get; }
+
+    /// <inheritdoc />
+    public override void Completed()
+    {
+        ConstructorResolution?.Completed();
+    }
 }

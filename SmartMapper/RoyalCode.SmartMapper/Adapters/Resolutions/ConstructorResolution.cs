@@ -8,9 +8,6 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 /// </summary>
 public class ConstructorResolution : ResolutionBase
 {
-    // TODO: consider to remove the parameters field and the property below.
-    private ParameterInfo[]? parameters;
-
     /// <summary>
     /// Creates new resolution for failures.
     /// </summary>
@@ -46,8 +43,11 @@ public class ConstructorResolution : ResolutionBase
     /// </summary>
     public ConstructorInfo Constructor { get; }
 
-    /// <summary>
-    /// Get the constructor parameters.
-    /// </summary>
-    public ParameterInfo[] Parameters => parameters ??= Constructor.GetParameters();
+    public override void Completed()
+    {
+        foreach (var parameterResolution in ParameterResolution)
+        {
+            parameterResolution.Completed();
+        }
+    }
 }

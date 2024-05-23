@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.ObjectModel;
 using System.Text;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
@@ -10,7 +11,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 public sealed class SourceToMethodOptions
 {
     private SourceToMethodStrategy strategy;
-    private ICollection<ToMethodParameterOptions>? parametersSequence;
+    private IList<ToMethodParameterOptions>? parametersSequence;
 
     /// <summary>
     /// Creates a new <see cref="SourceToMethodOptions"/> instance with the specified adapter options
@@ -77,9 +78,9 @@ public sealed class SourceToMethodOptions
     /// </para>
     /// </summary>
     /// <returns>The selected property to parameter sequence.</returns>
-    public IEnumerable<ToMethodParameterOptions> GetAllParameterSequence()
+    public IReadOnlyCollection<ToMethodParameterOptions> GetAllParameterSequence()
     {
-        return parametersSequence ?? [];
+        return new ReadOnlyCollection<ToMethodParameterOptions>(parametersSequence ?? []) ;
     }
 
     /// <summary>

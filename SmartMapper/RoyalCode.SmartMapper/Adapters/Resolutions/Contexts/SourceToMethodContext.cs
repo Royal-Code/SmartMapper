@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 internal sealed class SourceToMethodContext
 {
     public static SourceToMethodContext Create(
-        IEnumerable<SourceItem> sourceItems,
+        IReadOnlyCollection<SourceItem> sourceItems,
         SourceToMethodOptions options,
         AvailableTargetMethods availableTargetMethods)
     {
@@ -24,7 +24,7 @@ internal sealed class SourceToMethodContext
         };
     }
 
-    public IEnumerable<SourceItem> SourceItems { get; private init; }
+    public IReadOnlyCollection<SourceItem> SourceItems { get; private init; }
     
     public SourceToMethodOptions Options { get; private init; }
 
@@ -47,7 +47,7 @@ internal sealed class SourceToMethodContext
             availableMethods = availableMethods.Where(a => a.Info.Name == Options.MethodOptions.MethodName);
         }
 
-        IEnumerable<ToMethodParameterOptions>? sourceParameters = null;
+        IReadOnlyCollection<ToMethodParameterOptions>? sourceParameters = null;
         if (Options.Strategy == SourceToMethodStrategy.SelectedParameters)
         {
             sourceParameters = Options.GetAllParameterSequence();
@@ -57,8 +57,6 @@ internal sealed class SourceToMethodContext
         // 2.1 for each available method, try to resolve the method.
         foreach (var availableMethod in availableMethods)
         {
-            // TODO: Reavaliar AvailableSourceItems, tem opções de resolução para source to method e property to method. É necessário separar.
-            
             // 3.1 get the available source items for the method.
             var availableSourceItems = sourceParameters is null
                 ? AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(availableMethod.Info, SourceItems)
@@ -86,7 +84,9 @@ internal sealed class SourceToMethodContext
                 continue;
             
             // 3.8 - create the resolution.
-            return new SourceToMethodResolution(availableMethod.Info, parametersResolutions);
+            var resolution = new SourceToMethodResolution(availableMethod.Info, parametersResolutions);
+            resolution.Completed();
+            return resolution;
         }
 
         // 2.2 if none available method satisfies the source to method options, return a failure. 
