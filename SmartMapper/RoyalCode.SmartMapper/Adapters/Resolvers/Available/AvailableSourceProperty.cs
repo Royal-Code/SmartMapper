@@ -121,8 +121,7 @@ public sealed class AvailableSourceProperty
         var isAllChildrenResolved = InnerProperties.Resolved;
         if (isAllChildrenResolved)
         {
-            //Resolved = true;
-            Parent?.ChildResolved();
+            ResolvedBy(new InnerPropertiesResolution(SourceItem, InnerProperties));
         }
     }
 }
