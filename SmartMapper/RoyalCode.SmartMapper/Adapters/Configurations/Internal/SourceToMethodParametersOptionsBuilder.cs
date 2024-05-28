@@ -47,4 +47,22 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
 
         return new ToParameterOptionsBuilder<TProperty>(resolution);
     }
+
+    // TODO: REQUER IMPLEMENTAÇÃO
+
+    /////// <inheritdoc />
+    ////public ISourceToMethodPropertiesOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+    ////    Expression<Func<TSource, TInnerProperty>> propertySelector)
+    ////{
+    ////    var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
+    ////    var resolutionOptions = propertyOptions.ResolutionOptions as ToMethodResolutionOptions
+    ////        ?? ToMethodResolutionOptions.Resolvers(sourceToMethodOptions.MethodOptions, propertyOptions);
+
+    ////    parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
+
+    ////    return new SourceToMethodPropertiesOptionsBuilder<TInnerProperty>(
+    ////        resolutionOptions.InnerSourceOptions,
+    ////        sourceToMethodOptions,
+    ////        resolutionOptions);
+    ////}
 }

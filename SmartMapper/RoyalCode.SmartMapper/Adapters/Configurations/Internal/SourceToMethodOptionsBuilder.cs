@@ -30,6 +30,7 @@ internal sealed class SourceToMethodOptionsBuilder<TSource, TTarget> : ISourceTo
         configureProperties(builder);
     }
 
+    /// <inheritdoc />
     public void Parameters(Action<ISourceToMethodParametersOptionsBuilder<TSource>> configureParameters)
     {
         var builder = new SourceToMethodParametersOptionsBuilder<TSource>(
