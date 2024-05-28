@@ -1,6 +1,5 @@
-﻿
-using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Resolvers.Targets;
+﻿using RoyalCode.SmartMapper.Adapters.Resolvers.Targets;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 

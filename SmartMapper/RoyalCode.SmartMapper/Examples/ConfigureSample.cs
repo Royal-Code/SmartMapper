@@ -1,10 +1,10 @@
-﻿using RoyalCode.SmartMapper.Adapters.Configurations;
+﻿using RoyalCode.SmartMapper.Mapping.Builders;
 
 namespace RoyalCode.SmartMapper.Examples;
 
 public static class ConfigureSample
 {
-    public static void Configure(IAdapterOptionsBuilder builder)
+    public static void Configure(IAdapterBuilder builder)
     {
         builder.Configure<MyDto, MyEntity>(b =>
         {

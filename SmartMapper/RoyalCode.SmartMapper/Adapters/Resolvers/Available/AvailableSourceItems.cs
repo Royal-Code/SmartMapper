@@ -1,6 +1,6 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -160,7 +160,7 @@ public sealed class AvailableSourceItems
     ///     or null if one of the to-method parameters is missing.
     /// </returns>
     public static AvailableSourceItems? CreateAvailableSourceItemsForSourceToMethod(
-        IReadOnlyCollection<ToMethodParameterOptions> toMethodParameters,
+        IReadOnlyCollection<MethodParameterOptions> toMethodParameters,
         IReadOnlyCollection<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();

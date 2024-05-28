@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Core.Exceptions;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
@@ -8,9 +9,9 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 ///     Options for define the mapping of a source properties to a target method.
 /// </para>
 /// </summary>
-public sealed class MethodOptions : ParametersOptionsBase<ToMethodParameterOptions>
+public sealed class MethodOptions : ParametersOptionsBase<MethodParameterOptions>
 {
-    private ICollection<ToMethodParameterOptions>? parametersOptions;
+    private ICollection<MethodParameterOptions>? parametersOptions;
 
     /// <summary>
     /// 
@@ -29,18 +30,18 @@ public sealed class MethodOptions : ParametersOptionsBase<ToMethodParameterOptio
     public string? MethodName { get; internal set; }
 
     /// <inheritdoc />
-    protected override IEnumerable<ToMethodParameterOptions> Parameters 
-        => parametersOptions ?? Enumerable.Empty<ToMethodParameterOptions>();
+    protected override IEnumerable<MethodParameterOptions> Parameters 
+        => parametersOptions ?? Enumerable.Empty<MethodParameterOptions>();
 
     /// <inheritdoc />
-    public override ToMethodParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
+    public override MethodParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
         parametersOptions ??= [];
 
         var options = parametersOptions.FirstOrDefault(x => x.SourceProperty == sourceProperty);
         if (options is null)
         {
-            options = new ToMethodParameterOptions(this, sourceProperty);
+            options = new MethodParameterOptions(this, sourceProperty);
             parametersOptions.Add(options);
         }
 

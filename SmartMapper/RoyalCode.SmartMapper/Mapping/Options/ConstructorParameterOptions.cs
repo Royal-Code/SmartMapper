@@ -1,25 +1,26 @@
+using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// <para>
 ///     Options for mapping of a source property to a constructor parameter.
 /// </para>
 /// </summary>
-public sealed class ToConstructorParameterOptions : ToParameterOptionsBase
+public sealed class ConstructorParameterOptions : ParameterOptionsBase
 {
     private readonly Type targetType;
 
     /// <summary>
     /// <para>
-    ///     Creates a new instance of <see cref="ToConstructorParameterOptions"/>.
+    ///     Creates a new instance of <see cref="ConstructorParameterOptions"/>.
     /// </para>
     /// </summary>
     /// <param name="targetType">The target type.</param>
     /// <param name="sourceProperty">The source property.</param>
-    public ToConstructorParameterOptions(Type targetType, PropertyInfo sourceProperty)
+    public ConstructorParameterOptions(Type targetType, PropertyInfo sourceProperty)
         : base(sourceProperty)
     {
         this.targetType = targetType;

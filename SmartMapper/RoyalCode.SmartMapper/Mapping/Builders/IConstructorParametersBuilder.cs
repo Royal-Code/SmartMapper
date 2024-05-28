@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
@@ -19,7 +19,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-public interface IConstructorParametersOptionsBuilder<TSource>
+public interface IConstructorParametersBuilder<TSource>
 {
     /// <summary>
     /// <para>
@@ -36,7 +36,7 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the parameter strategy options.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
+    IParameterBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null);
 
@@ -50,7 +50,7 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the inner properties and parameters strategy options.
     /// </returns>
-    IConstructorParametersOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+    IConstructorParametersBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector);
 
     /// <summary>
@@ -63,7 +63,7 @@ public interface IConstructorParametersOptionsBuilder<TSource>
     /// <param name="configureInnerProperties">An action to configure the inner properties and parameters strategy options.</param>
     void InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector,
-        Action<IConstructorParametersOptionsBuilder<TInnerProperty>> configureInnerProperties);
+        Action<IConstructorParametersBuilder<TInnerProperty>> configureInnerProperties);
 
     /// <summary>
     /// <para>

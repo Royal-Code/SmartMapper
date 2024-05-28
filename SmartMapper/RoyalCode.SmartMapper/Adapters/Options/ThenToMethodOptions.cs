@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
@@ -49,7 +50,7 @@ public sealed class ThenToMethodOptions
     ///     The value will be informed when <see cref="Strategy"/> be <see cref="ToMethodStrategy.Value"/>.
     /// </para>
     /// </summary>
-    public ToMethodParameterOptions? ParameterOptions { get; private set; }
+    public MethodParameterOptions? ParameterOptions { get; private set; }
 
     /// <summary>
     /// <para>
@@ -66,7 +67,7 @@ public sealed class ThenToMethodOptions
     /// </summary>
     public ToMethodStrategy Strategy { get; private set; }
 
-    internal ToMethodParameterOptions MapAsParameter()
+    internal MethodParameterOptions MapAsParameter()
     {
         if (Strategy is ToMethodStrategy.InnerProperties)
             throw new InvalidOperationException(
@@ -75,7 +76,7 @@ public sealed class ThenToMethodOptions
                 $"and it is not possible to map as value.");
 
         Strategy = ToMethodStrategy.Value;
-        ParameterOptions = new ToMethodParameterOptions(MethodOptions, SourcePropertyOptions.Property);
+        ParameterOptions = new MethodParameterOptions(MethodOptions, SourcePropertyOptions.Property);
         return ParameterOptions;
     }
 

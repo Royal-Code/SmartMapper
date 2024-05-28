@@ -1,4 +1,6 @@
 ﻿
+using RoyalCode.SmartMapper.Mapping.Options;
+
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 /// <summary>
@@ -20,7 +22,7 @@ public abstract class ParameterResolutionOptionsBase : ResolutionOptionsBase
     /// </summary>
     /// <param name="resolvedProperty">The source property related to the assignment.</param>
     /// <param name="toParameterOptions">The options to assign the source property to the parameter.</param>
-    protected ParameterResolutionOptionsBase(PropertyOptions resolvedProperty, ToParameterOptionsBase toParameterOptions)
+    protected ParameterResolutionOptionsBase(PropertyOptions resolvedProperty, ParameterOptionsBase toParameterOptions)
         : base(resolvedProperty)
     {
         ToParameterOptions = toParameterOptions;
@@ -29,5 +31,5 @@ public abstract class ParameterResolutionOptionsBase : ResolutionOptionsBase
     /// <summary>
     /// The options to assign the source property to the parameter.
     /// </summary>
-    public ToParameterOptionsBase ToParameterOptions { get; }
+    public ParameterOptionsBase ToParameterOptions { get; }
 }

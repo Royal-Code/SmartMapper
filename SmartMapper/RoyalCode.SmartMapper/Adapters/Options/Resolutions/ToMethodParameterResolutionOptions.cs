@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
@@ -24,7 +25,7 @@ public sealed class ToMethodParameterResolutionOptions : ParameterResolutionOpti
     /// </returns>
     public static ToMethodParameterResolutionOptions Resolves(
         PropertyOptions resolvedProperty,
-        ToMethodParameterOptions toParameterOptions)
+        MethodParameterOptions toParameterOptions)
     {
         return new(resolvedProperty, toParameterOptions);
     }
@@ -38,7 +39,7 @@ public sealed class ToMethodParameterResolutionOptions : ParameterResolutionOpti
     /// <param name="toParameterOptions">The parameter resolution options.</param>
     private ToMethodParameterResolutionOptions(
         PropertyOptions resolvedProperty,
-        ToMethodParameterOptions toParameterOptions) 
+        MethodParameterOptions toParameterOptions) 
         : base(resolvedProperty, toParameterOptions)
     {
         ToMethodParameterOptions = toParameterOptions;
@@ -48,7 +49,7 @@ public sealed class ToMethodParameterResolutionOptions : ParameterResolutionOpti
     /// <summary>
     /// The options for the method parameter.
     /// </summary>
-    public ToMethodParameterOptions ToMethodParameterOptions { get; }
+    public MethodParameterOptions ToMethodParameterOptions { get; }
 
     /// <summary>
     /// <para>

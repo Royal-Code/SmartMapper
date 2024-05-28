@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
@@ -57,7 +58,7 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     ///     The value will be informed when <see cref="Strategy"/> be <see cref="ToMethodStrategy.Value"/>.
     /// </para>
     /// </summary>
-    public ToMethodParameterOptions? ParameterOptions { get; private set; }
+    public MethodParameterOptions? ParameterOptions { get; private set; }
 
     /// <summary>
     /// <para>
@@ -74,7 +75,7 @@ public class PropertyToMethodResolutionOptions : ResolutionOptionsBase
     /// </summary>
     public ToMethodStrategy Strategy { get; private set; }
 
-    internal ToMethodParameterOptions MapAsParameter()
+    internal MethodParameterOptions MapAsParameter()
     {
         if (Strategy is ToMethodStrategy.InnerProperties)
             throw new InvalidOperationException(

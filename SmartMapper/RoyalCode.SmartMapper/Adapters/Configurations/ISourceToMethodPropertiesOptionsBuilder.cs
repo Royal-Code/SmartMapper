@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using RoyalCode.SmartMapper.Mapping.Builders;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations;
 
@@ -29,7 +30,7 @@ public interface ISourceToMethodPropertiesOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the parameter strategy options.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
+    IParameterBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null);
 

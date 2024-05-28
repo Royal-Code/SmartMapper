@@ -1,24 +1,24 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
-internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructorParametersOptionsBuilder<TSource>
+internal sealed class ConstructorParametersBuilder<TSource> : IConstructorParametersBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
     private readonly ConstructorOptions constructorOptions;
     private readonly ToConstructorResolutionOptions? parentResolutionOptions;
 
-    public ConstructorParametersOptionsBuilder(SourceOptions sourceOptions, ConstructorOptions constructorOptions)
+    public ConstructorParametersBuilder(SourceOptions sourceOptions, ConstructorOptions constructorOptions)
     {
         this.sourceOptions = sourceOptions;
         this.constructorOptions = constructorOptions;
     }
 
-    public ConstructorParametersOptionsBuilder(
-        SourceOptions sourceOptions, 
-        ConstructorOptions constructorOptions, 
+    public ConstructorParametersBuilder(
+        SourceOptions sourceOptions,
+        ConstructorOptions constructorOptions,
         ToConstructorResolutionOptions parentResolutionOptions)
     {
         this.sourceOptions = sourceOptions;
@@ -26,40 +26,40 @@ internal sealed class ConstructorParametersOptionsBuilder<TSource> : IConstructo
         this.parentResolutionOptions = parentResolutionOptions;
     }
 
-    public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
-        Expression<Func<TSource, TProperty>> propertySelector, 
+    public IParameterBuilder<TProperty> Parameter<TProperty>(
+        Expression<Func<TSource, TProperty>> propertySelector,
         string? parameterName = null)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
         var constructorParameterOptions = constructorOptions.GetParameterOptions(propertyOptions.Property);
-        
+
         if (parameterName is not null)
             constructorParameterOptions.UseParameterName(parameterName);
 
         var resolutionOptions = ToConstructorParameterResolutionOptions.Resolves(propertyOptions, constructorParameterOptions);
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
-        return new ToParameterOptionsBuilder<TProperty>(resolutionOptions);
+        return new ParameterBuilder<TProperty>(resolutionOptions);
     }
 
-    public IConstructorParametersOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+    public IConstructorParametersBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        var resolutionOptions = propertyOptions.ResolutionOptions as ToConstructorResolutionOptions 
+        var resolutionOptions = propertyOptions.ResolutionOptions as ToConstructorResolutionOptions
             ?? ToConstructorResolutionOptions.Resolves(propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
-        return new ConstructorParametersOptionsBuilder<TInnerProperty>(
-            resolutionOptions.InnerSourceOptions, 
+        return new ConstructorParametersBuilder<TInnerProperty>(
+            resolutionOptions.InnerSourceOptions,
             constructorOptions,
             resolutionOptions);
     }
 
     public void InnerProperties<TInnerProperty>(
-        Expression<Func<TSource, TInnerProperty>> propertySelector, 
-        Action<IConstructorParametersOptionsBuilder<TInnerProperty>> configureInnerProperties)
+        Expression<Func<TSource, TInnerProperty>> propertySelector,
+        Action<IConstructorParametersBuilder<TInnerProperty>> configureInnerProperties)
     {
         var innerBuilder = InnerProperties(propertySelector);
         configureInnerProperties(innerBuilder);

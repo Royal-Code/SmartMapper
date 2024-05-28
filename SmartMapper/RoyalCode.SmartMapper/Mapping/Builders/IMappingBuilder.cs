@@ -1,14 +1,14 @@
-﻿
+﻿using RoyalCode.SmartMapper.Adapters.Configurations;
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
 ///     A builder to configure the mapping for adapters.
 /// </para>
 /// </summary>
-public interface IAdapterOptionsBuilder
+public interface IMappingBuilder
 {
     /// <summary>
     /// <para>
@@ -17,9 +17,9 @@ public interface IAdapterOptionsBuilder
     /// </summary>
     /// <param name="configure">Configuration action.</param>
     /// <typeparam name="TSource">The source type.</typeparam>
-    /// <typeparam name="TTarget">The destination type.</typeparam>
+    /// <typeparam name="TTarget">The target type.</typeparam>
     /// <returns>The same instance for chained calls.</returns>
-    IAdapterOptionsBuilder Configure<TSource, TTarget>(Action<IAdapterOptionsBuilder<TSource, TTarget>> configure);
+    IMappingBuilder Adapter<TSource, TTarget>(Action<IAdapterBuilder<TSource, TTarget>> configure);
 
     /// <summary>
     /// <para>
@@ -27,38 +27,51 @@ public interface IAdapterOptionsBuilder
     /// </para>
     /// </summary>
     /// <typeparam name="TSource">The source type.</typeparam>
-    /// <typeparam name="TTarget">The destination type.</typeparam>
+    /// <typeparam name="TTarget">The target type.</typeparam>
     /// <returns>
     ///     The configuration for the specified source and destination types.
     /// </returns>
-    IAdapterOptionsBuilder<TSource, TTarget> Configure<TSource, TTarget>();
+    IAdapterBuilder<TSource, TTarget> Adapter<TSource, TTarget>();
+
+    /// <summary>
+    /// <para>
+    ///     Configures the mapping of a source type to a destination type.
+    /// </para>
+    /// </summary>
+    /// <param name="configure">Configuration action.</param>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TTarget">The target type.</typeparam>
+    /// <returns>The same instance for chained calls.</returns>
+    IMappingBuilder Mapper<TSource, TTarget>(Action<IMapperBuilder<TSource, TTarget>> configure);
+
+    /// <summary>
+    /// <para>
+    ///     Gets the configuration for the specified source and destination types.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TTarget">The target type.</typeparam>
+    /// <returns>
+    ///     The configuration for the specified source and destination types.
+    /// </returns>
+    IMapperBuilder<TSource, TTarget> Mapper<TSource, TTarget>();
 }
 
 /// <summary>
 /// <para>
-///     A builder to configurate the mapping for adapter of a source type to a destination type.
+///     A builder to configurate the mapping of a source type to a target type.
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-/// <typeparam name="TTarget">The destination type.</typeparam>
-public interface IAdapterOptionsBuilder<TSource, TTarget>
+/// <typeparam name="TTarget">The target type.</typeparam>
+public interface IMappingBuilder<TSource, TTarget>
 {
     /// <summary>
     /// <para>
-    ///     Configure the constructor that will be used to create the destination instance.
-    /// </para>
-    /// </summary>
-    /// <returns>
-    ///     A builder to configure the constructor mapping options.
-    /// </returns>
-    IConstructorOptionsBuilder<TSource> Constructor();
-
-    /// <summary>
-    /// <para>
-    ///     Adapts the source type to a method of the destination type.
+    ///     Maps the source type properties to a method of the target type.
     /// </para>
     /// <para>
-    ///     The properties of the source type are mapped to the parameters of the destination method.
+    ///     The properties of the source type are mapped to the parameters of the target method.
     /// </para>
     /// </summary>
     /// <returns>
@@ -68,14 +81,14 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
 
     /// <summary>
     /// <para>
-    ///     Adapts the source type to a method of the destination type.
+    ///     Maps the source type properties to a method of the target type.
     /// </para>
     /// <para>
-    ///     The properties of the source type are mapped to the parameters of the destination method.
+    ///     The properties of the source type are mapped to the parameters of the target method.
     /// </para>
     /// </summary>
     /// <param name="methodSelector">
-    ///     A function to select the method of the destination type.
+    ///     A function to select the method of the target type.
     /// </param>
     /// <returns>
     ///     A builder to configure the method mapping options.
@@ -84,14 +97,14 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
 
     /// <summary>
     /// <para>
-    ///     Adapts the source type to a method of the destination type.
+    ///     Maps the source type properties to a method of the target type.
     /// </para>
     /// <para>
-    ///     The properties of the source type are mapped to the parameters of the destination method.
+    ///     The properties of the source type are mapped to the parameters of the target method.
     /// </para>
     /// </summary>
     /// <param name="methodName">
-    ///     The name of the method of the destination type.
+    ///     The name of the method of the target type.
     /// </param>
     /// <returns>
     ///     A builder to configure the method mapping options.
@@ -129,7 +142,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     ///     A builder to configure the property mapping options.
     /// </returns>
     IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
-    
+
     /// <summary>
     /// <para>
     ///     Configure a property to be ignored.
@@ -142,7 +155,7 @@ public interface IAdapterOptionsBuilder<TSource, TTarget>
     ///     The type of the property of the source type.
     /// </typeparam>
     void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
-    
+
     /// <summary>
     /// <para>
     ///     Configure a property to be ignored.

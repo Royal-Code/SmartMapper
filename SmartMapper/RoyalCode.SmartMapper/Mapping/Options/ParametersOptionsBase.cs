@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using RoyalCode.SmartMapper.Adapters.Options;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// <para>
@@ -9,7 +10,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 /// </para>
 /// </summary>
 public abstract class ParametersOptionsBase<TToParameter>
-    where TToParameter : ToParameterOptionsBase
+    where TToParameter : ParameterOptionsBase
 {
     /// <summary>
     /// Constructor with the target type.

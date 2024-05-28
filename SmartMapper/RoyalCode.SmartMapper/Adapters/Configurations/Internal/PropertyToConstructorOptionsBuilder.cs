@@ -1,5 +1,6 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+﻿using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Builders;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 
@@ -18,7 +19,7 @@ internal sealed class PropertyToConstructorOptionsBuilder<TProperty> : IProperty
         constructorOptions = adapterOptions.TargetOptions.GetConstructorOptions();
     }
 
-    public void Parameters(Action<IConstructorParametersOptionsBuilder<TProperty>> configurePrameters)
+    public void Parameters(Action<IConstructorParametersBuilder<TProperty>> configurePrameters)
     {
         var builder = new ConstructorParametersOptionsBuilder<TProperty>(
             sourceOptions, 

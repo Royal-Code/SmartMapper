@@ -1,29 +1,32 @@
 ﻿using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
 /// <inheritdoc />
-internal sealed class ConstructorOptionsBuilder<TSource> : IConstructorOptionsBuilder<TSource>
+internal sealed class ConstructorBuilder<TSource> : IConstructorBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
     private readonly ConstructorOptions constructorOptions;
 
     /// <summary>
-    /// Creates a new instance of <see cref="ConstructorOptionsBuilder{TSource}"/>.
+    /// Creates a new instance of <see cref="ConstructorBuilder{TSource}"/>.
     /// </summary>
     /// <param name="options">The adapter options.</param>
-    public ConstructorOptionsBuilder(AdapterOptions options)
+    public ConstructorBuilder(MappingOptions options)
     {
+        if (options.Category is not MappingCategory.Adapter)
+            throw new InvalidOperationException("To configure a constructor, the mapping must be of the Adapter category.");
+
         sourceOptions = options.SourceOptions;
         constructorOptions = options.TargetOptions.GetConstructorOptions();
     }
 
     /// <inheritdoc />
-    public void Parameters(Action<IConstructorParametersOptionsBuilder<TSource>> configureParameters)
+    public void Parameters(Action<IConstructorParametersBuilder<TSource>> configureParameters)
     {
-        var builder = new ConstructorParametersOptionsBuilder<TSource>(sourceOptions, constructorOptions);
+        var builder = new ConstructorParametersBuilder<TSource>(sourceOptions, constructorOptions);
         configureParameters(builder);
     }
 

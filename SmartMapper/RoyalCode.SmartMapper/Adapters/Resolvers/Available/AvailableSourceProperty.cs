@@ -3,6 +3,7 @@ using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using System.Text;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 

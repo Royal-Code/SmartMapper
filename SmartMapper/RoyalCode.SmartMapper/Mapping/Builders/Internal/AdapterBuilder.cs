@@ -1,29 +1,31 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
+using RoyalCode.SmartMapper.Adapters.Configurations;
+using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+using RoyalCode.SmartMapper.Mapping.Options;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
 /// <inheritdoc />
-internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsBuilder<TSource, TTarget>
+internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource, TTarget>
 {
-    private readonly AdapterOptions options;
+    private readonly MappingOptions options;
 
     /// <summary>
-    /// Creates a new instance of <see cref="AdapterOptionsBuilder{TSource, TTarget}"/>.
+    /// Creates a new instance of <see cref="AdapterBuilder{TSource, TTarget}"/>.
     /// </summary>
     /// <param name="options"></param>
-    public AdapterOptionsBuilder(AdapterOptions options)
+    public AdapterBuilder(MappingOptions options)
     {
         this.options = options;
     }
 
     /// <inheritdoc />
-    public IConstructorOptionsBuilder<TSource> Constructor()
+    public IConstructorBuilder<TSource> Constructor()
     {
-        return new ConstructorOptionsBuilder<TSource>(options);
+        return new ConstructorBuilder<TSource>(options);
     }
 
     /// <inheritdoc />
@@ -31,7 +33,7 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
     {
         var methodOptions = options.TargetOptions.CreateMethodOptions();
         var sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
-        
+
         var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }
@@ -42,12 +44,12 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
 
-        if(!options.SourceOptions.TryGetSourceToMethodOption(method, out var sourceToMethodOptions))
+        if (!options.SourceOptions.TryGetSourceToMethodOption(method, out var sourceToMethodOptions))
         {
             var methodOptions = options.TargetOptions.GetMethodOptions(method);
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
-        
+
         var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }
@@ -55,12 +57,12 @@ internal sealed class AdapterOptionsBuilder<TSource, TTarget> : IAdapterOptionsB
     /// <inheritdoc />
     public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
     {
-        if(!options.SourceOptions.TryGetSourceToMethodOption(methodName, out var sourceToMethodOptions))
+        if (!options.SourceOptions.TryGetSourceToMethodOption(methodName, out var sourceToMethodOptions))
         {
             var methodOptions = options.TargetOptions.GetMethodOptions(methodName);
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
-        
+
         var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }

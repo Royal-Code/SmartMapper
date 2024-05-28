@@ -1,6 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
+using RoyalCode.SmartMapper.Mapping.Builders;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
@@ -29,7 +30,7 @@ internal class PropertyThenToMethodOptionsBuilder<TTargetProperty, TSourceProper
     }
 
     /// <inheritdoc />
-    public IToParameterOptionsBuilder<TSourceProperty> ToParameter(string? parameterName = null)
+    public IParameterBuilder<TSourceProperty> ToParameter(string? parameterName = null)
     {
         var resolutionOptionsBase = options.SourcePropertyOptions.ResolutionOptions
             ?? throw new InvalidOperationException("The source property must have a resolution");

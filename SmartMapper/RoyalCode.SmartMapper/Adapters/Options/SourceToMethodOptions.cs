@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Text;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Options;
 
@@ -11,7 +12,7 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 public sealed class SourceToMethodOptions
 {
     private SourceToMethodStrategy strategy;
-    private IList<ToMethodParameterOptions>? parametersSequence;
+    private IList<MethodParameterOptions>? parametersSequence;
 
     /// <summary>
     /// Creates a new <see cref="SourceToMethodOptions"/> instance with the specified adapter options
@@ -46,7 +47,7 @@ public sealed class SourceToMethodOptions
     /// Adds the property to parameter options to the selected property to parameter sequence.
     /// </summary>
     /// <param name="options">The property to parameter options.</param>
-    public void AddParameterSequence(ToMethodParameterOptions options)
+    public void AddParameterSequence(MethodParameterOptions options)
     {
         if (strategy != SourceToMethodStrategy.SelectedParameters)
             throw new InvalidOperationException(
@@ -78,9 +79,9 @@ public sealed class SourceToMethodOptions
     /// </para>
     /// </summary>
     /// <returns>The selected property to parameter sequence.</returns>
-    public IReadOnlyCollection<ToMethodParameterOptions> GetAllParameterSequence()
+    public IReadOnlyCollection<MethodParameterOptions> GetAllParameterSequence()
     {
-        return new ReadOnlyCollection<ToMethodParameterOptions>(parametersSequence ?? []) ;
+        return new ReadOnlyCollection<MethodParameterOptions>(parametersSequence ?? []) ;
     }
 
     /// <summary>

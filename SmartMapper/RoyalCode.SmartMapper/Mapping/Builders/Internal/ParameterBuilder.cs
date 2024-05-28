@@ -1,39 +1,39 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
-internal sealed class ToParameterOptionsBuilder<TProperty> : IToParameterOptionsBuilder<TProperty>
+internal sealed class ParameterBuilder<TProperty> : IParameterBuilder<TProperty>
 {
     private readonly ResolutionOptionsBase resolutionOptions;
-    
-    public ToParameterOptionsBuilder(ResolutionOptionsBase resolutionOptions)
+
+    public ParameterBuilder(ResolutionOptionsBase resolutionOptions)
     {
         this.resolutionOptions = resolutionOptions;
     }
 
-    public IToParameterOptionsBuilder<TProperty> Adapt()
+    public IParameterBuilder<TProperty> Adapt()
     {
         var assigmentOptions = resolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         assigmentOptions.UseAdapt();
         return this;
     }
 
-    public IToParameterOptionsBuilder<TProperty> CastValue()
+    public IParameterBuilder<TProperty> CastValue()
     {
         var assigmentOptions = resolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         assigmentOptions.UseCast();
         return this;
     }
 
-    public IToParameterOptionsBuilder<TProperty> Select()
+    public IParameterBuilder<TProperty> Select()
     {
         var assigmentOptions = resolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         assigmentOptions.UseSelect();
         return this;
     }
 
-    public IToParameterOptionsBuilder<TProperty> UseConverter<TParameter>(Expression<Func<TProperty, TParameter>> converter)
+    public IParameterBuilder<TProperty> UseConverter<TParameter>(Expression<Func<TProperty, TParameter>> converter)
     {
         var assigmentOptions = resolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
         assigmentOptions.UseConverter(converter);

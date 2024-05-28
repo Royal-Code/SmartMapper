@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
@@ -23,7 +24,7 @@ public class ToConstructorParameterResolutionOptions : ParameterResolutionOption
     /// </returns>
     public static  ToConstructorParameterResolutionOptions Resolves(
         PropertyOptions resolvedProperty,
-        ToConstructorParameterOptions toConstructorParameterOptions)
+        ConstructorParameterOptions toConstructorParameterOptions)
     {
         return new(resolvedProperty, toConstructorParameterOptions);
     } 
@@ -41,7 +42,7 @@ public class ToConstructorParameterResolutionOptions : ParameterResolutionOption
     /// <param name="toConstructorParameterOptions">The options for the constructor parameter.</param>
     private ToConstructorParameterResolutionOptions(
         PropertyOptions resolvedProperty, 
-        ToConstructorParameterOptions toConstructorParameterOptions) 
+        ConstructorParameterOptions toConstructorParameterOptions) 
         : base(resolvedProperty, toConstructorParameterOptions)
     {
         ToConstructorParameterOptions = toConstructorParameterOptions;
@@ -51,7 +52,7 @@ public class ToConstructorParameterResolutionOptions : ParameterResolutionOption
     /// <summary>
     /// The options for the constructor parameter.
     /// </summary>
-    public ToConstructorParameterOptions ToConstructorParameterOptions { get; }
+    public ConstructorParameterOptions ToConstructorParameterOptions { get; }
     
     /// <summary>
     /// <para>

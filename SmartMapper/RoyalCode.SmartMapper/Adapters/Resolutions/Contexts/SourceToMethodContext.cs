@@ -3,6 +3,7 @@ using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Core.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 
@@ -47,7 +48,7 @@ internal sealed class SourceToMethodContext
             availableMethods = availableMethods.Where(a => a.Info.Name == Options.MethodOptions.MethodName);
         }
 
-        IReadOnlyCollection<ToMethodParameterOptions>? sourceParameters = null;
+        IReadOnlyCollection<MethodParameterOptions>? sourceParameters = null;
         if (Options.Strategy == SourceToMethodStrategy.SelectedParameters)
         {
             sourceParameters = Options.GetAllParameterSequence();

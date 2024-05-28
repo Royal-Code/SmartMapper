@@ -1,6 +1,8 @@
 ﻿using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
+using RoyalCode.SmartMapper.Mapping.Builders;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -32,7 +34,7 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
         propertyOptions.IgnoreMapping();
     }
 
-    public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
+    public IParameterBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector)
     {
         if (!propertySelector.TryGetMember(out var member))

@@ -1,10 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
+using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// Contains options configured for mapping of a source type.
@@ -17,11 +18,18 @@ public sealed class SourceOptions
     /// <summary>
     /// Creates a new instance of <see cref="SourceOptions"/>.
     /// </summary>
+    /// <param name="category">The mapping category.</param>
     /// <param name="sourceType">The source type to configure.</param>
-    public SourceOptions(Type sourceType)
+    public SourceOptions(MappingCategory category, Type sourceType)
     {
+        Category = category;
         SourceType = sourceType;
     }
+
+    /// <summary>
+    /// The mapping category, adapter or mapper.
+    /// </summary>
+    public MappingCategory Category { get; }
 
     /// <summary>
     /// The source type to configure.
@@ -133,8 +141,8 @@ public sealed class SourceOptions
         options = sourceToMethodOptions ?? Enumerable.Empty<SourceToMethodOptions>();
         return sourceToMethodOptions is not null;
     }
-    
-    
+
+
 
     /// <summary>
     /// <para>
@@ -164,7 +172,7 @@ public sealed class SourceOptions
         options = sourceToMethodOptions?.FirstOrDefault(x => x.MethodOptions.Method == method);
         return options is not null;
     }
-    
+
     /// <summary>
     /// <para>
     ///     Try to get the source to method options for the given method name.

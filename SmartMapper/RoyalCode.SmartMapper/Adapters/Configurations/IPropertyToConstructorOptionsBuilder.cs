@@ -1,4 +1,6 @@
 ﻿
+using RoyalCode.SmartMapper.Mapping.Builders;
+
 namespace RoyalCode.SmartMapper.Adapters.Configurations;
 
 /// <summary>
@@ -19,5 +21,5 @@ public interface IPropertyToConstructorOptionsBuilder<TSourceProperty>
     /// <param name="configurePrameters">
     ///     A function to configure the constructor parameters. 
     /// </param>
-    void Parameters(Action<IConstructorParametersOptionsBuilder<TSourceProperty>> configurePrameters);
+    void Parameters(Action<IConstructorParametersBuilder<TSourceProperty>> configurePrameters);
 }

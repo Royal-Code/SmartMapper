@@ -1,22 +1,22 @@
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// <para>
 ///     Options for define the target constructor.
 /// </para>
 /// </summary>
-public sealed class ConstructorOptions : ParametersOptionsBase<ToConstructorParameterOptions>
+public sealed class ConstructorOptions : ParametersOptionsBase<ConstructorParameterOptions>
 {
-    private ICollection<ToConstructorParameterOptions>? parametersOptions;
+    private ICollection<ConstructorParameterOptions>? parametersOptions;
 
     /// <summary>
     /// Creates a new instance of the <see cref="ConstructorOptions"/> class.
     /// </summary>
     /// <param name="targetType">The target type to be constructed.</param>
     public ConstructorOptions(Type targetType) : base(targetType) { }
-    
+
     /// <summary>
     /// <para>
     ///     A value for select the constructor.
@@ -38,20 +38,20 @@ public sealed class ConstructorOptions : ParametersOptionsBase<ToConstructorPara
     public Type[]? ParameterTypes { get; internal set; }
 
     /// <inheritdoc />
-    protected override IEnumerable<ToConstructorParameterOptions> Parameters 
-        => parametersOptions ?? Enumerable.Empty<ToConstructorParameterOptions>();
+    protected override IEnumerable<ConstructorParameterOptions> Parameters
+        => parametersOptions ?? Enumerable.Empty<ConstructorParameterOptions>();
 
     /// <inheritdoc />
-    public override ToConstructorParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
+    public override ConstructorParameterOptions GetParameterOptions(PropertyInfo sourceProperty)
     {
         parametersOptions ??= [];
 
         var options = parametersOptions.FirstOrDefault(p => p.SourceProperty == sourceProperty);
-        
-        if (options is not null) 
+
+        if (options is not null)
             return options;
-        
-        options = new ToConstructorParameterOptions(TargetType, sourceProperty);
+
+        options = new ConstructorParameterOptions(TargetType, sourceProperty);
         parametersOptions.Add(options);
 
         return options;

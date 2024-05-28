@@ -12,4 +12,8 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(AspNetVer)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Selecting\" />
+	</ItemGroup>
+
 </Project>

@@ -1,5 +1,7 @@
 using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Builders;
+using RoyalCode.SmartMapper.Mapping.Options;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
@@ -35,7 +37,7 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
     }
 
     /// <inheritdoc />
-    public IToParameterOptionsBuilder<TProperty> Parameter<TProperty>(
+    public IParameterBuilder<TProperty> Parameter<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector, string? parameterName = null)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);

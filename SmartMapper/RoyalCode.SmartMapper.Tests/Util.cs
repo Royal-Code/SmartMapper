@@ -1,8 +1,8 @@
-﻿using RoyalCode.SmartMapper.Adapters.Configurations;
-using RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
+﻿using RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
 using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Core.Gererators;
 using RoyalCode.SmartMapper.Core.Options;
+using RoyalCode.SmartMapper.Mapping.Builders;
 
 namespace RoyalCode.SmartMapper.Tests;
 
@@ -20,7 +20,7 @@ internal static class Util
     }
     
     internal static void PrepareAdapter<TSource, TTarget>(
-        Action<IAdapterOptionsBuilder<TSource, TTarget>> configure,
+        Action<IAdapterBuilder<TSource, TTarget>> configure,
         out MapperConfigurations configurations,
         out ActivationContext activationContext)
     {

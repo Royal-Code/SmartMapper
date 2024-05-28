@@ -1,9 +1,10 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// <para>
@@ -15,15 +16,22 @@ public sealed class TargetOptions
     private ConstructorOptions? constructorOptions;
     private ICollection<MethodOptions>? methodOptions;
     private ICollection<ToTargetPropertyOptions>? toTargetPropertyOptions;
-    
+
     /// <summary>
     /// Creates a new instance of <see cref="TargetOptions"/>.
     /// </summary>
+    /// <param name="category">The mapping category.</param>
     /// <param name="targetType">The target type.</param>
-    public TargetOptions(Type targetType)
+    public TargetOptions(MappingCategory category, Type targetType)
     {
         TargetType = targetType;
+        Category = category;
     }
+
+    /// <summary>
+    /// The mapping category, adapter or mapper.
+    /// </summary>
+    public MappingCategory Category { get; }
 
     /// <summary>
     /// The target type.
@@ -217,6 +225,9 @@ public sealed class TargetOptions
     /// </returns>
     public ConstructorOptions GetConstructorOptions()
     {
+        if (Category == MappingCategory.Mapper)
+            throw new InvalidOperationException("Mappings from the 'Mapper' category cannot have configurations for builders.");
+
         constructorOptions ??= new ConstructorOptions(TargetType);
         return constructorOptions;
     }

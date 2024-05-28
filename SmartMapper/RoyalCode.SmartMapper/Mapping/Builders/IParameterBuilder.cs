@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
@@ -9,7 +9,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TProperty">The source property type</typeparam>
-public interface IToParameterOptionsBuilder<TProperty>
+public interface IParameterBuilder<TProperty>
 {
     /// <summary>
     /// <para>
@@ -19,7 +19,7 @@ public interface IToParameterOptionsBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> CastValue();
+    IParameterBuilder<TProperty> CastValue();
 
     /// <summary>
     /// <para>
@@ -35,7 +35,7 @@ public interface IToParameterOptionsBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> UseConverter<TParameter>(
+    IParameterBuilder<TProperty> UseConverter<TParameter>(
         Expression<Func<TProperty, TParameter>> converter);
 
     /// <summary>
@@ -46,7 +46,7 @@ public interface IToParameterOptionsBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> Adapt();
+    IParameterBuilder<TProperty> Adapt();
 
     /// <summary>
     /// <para>
@@ -56,5 +56,5 @@ public interface IToParameterOptionsBuilder<TProperty>
     /// <returns>
     ///     The same instance for chained calls.
     /// </returns>
-    IToParameterOptionsBuilder<TProperty> Select();
+    IParameterBuilder<TProperty> Select();
 }
