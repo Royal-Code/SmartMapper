@@ -1,7 +1,7 @@
 using RoyalCode.SmartMapper.Core.Exceptions;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// Base class for options where the source property is mapped to a method ou constructor parameter.

@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Mapping.Builders;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
@@ -13,7 +12,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-public interface ISourceToMethodPropertiesOptionsBuilder<TSource>
+public interface ISourceToMethodPropertiesBuilder<TSource>
 {
     /// <summary>
     /// <para>
@@ -55,7 +54,7 @@ public interface ISourceToMethodPropertiesOptionsBuilder<TSource>
     /// <returns>
     ///     A builder to configure the inner properties and parameters strategy options.
     /// </returns>
-    ISourceToMethodPropertiesOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+    ISourceToMethodPropertiesBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
                Expression<Func<TSource, TInnerProperty>> propertySelector);
 
     /// <summary>
@@ -68,5 +67,5 @@ public interface ISourceToMethodPropertiesOptionsBuilder<TSource>
     /// <param name="configureInnerProperties">An action to configure the inner properties and parameters strategy options.</param>
     void InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector,
-        Action<ISourceToMethodPropertiesOptionsBuilder<TInnerProperty>> configureInnerProperties);
+        Action<ISourceToMethodPropertiesBuilder<TInnerProperty>> configureInnerProperties);
 }

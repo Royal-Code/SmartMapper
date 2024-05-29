@@ -77,7 +77,7 @@ public interface IMappingBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod();
+    ISourceToMethodBuilder<TSource, TTarget> MapToMethod();
 
     /// <summary>
     /// <para>
@@ -93,7 +93,7 @@ public interface IMappingBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
+    ISourceToMethodBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 
     /// <summary>
     /// <para>
@@ -109,7 +109,7 @@ public interface IMappingBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the method mapping options.
     /// </returns>
-    ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName);
+    ISourceToMethodBuilder<TSource, TTarget> MapToMethod(string methodName);
 
     /// <summary>
     /// <para>

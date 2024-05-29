@@ -1,19 +1,18 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Core.Exceptions;
+﻿using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
-using RoyalCode.SmartMapper.Mapping.Builders;
 using RoyalCode.SmartMapper.Mapping.Options;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
-internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceToMethodParametersOptionsBuilder<TSource>
+/// <inheritdoc />
+internal sealed class SourceToMethodParametersBuilder<TSource> : ISourceToMethodParametersBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
     private readonly SourceToMethodOptions sourceToMethodOptions;
 
-    public SourceToMethodParametersOptionsBuilder(
+    public SourceToMethodParametersBuilder(
         SourceOptions sourceOptions,
         SourceToMethodOptions sourceToMethodOptions)
     {
@@ -47,7 +46,7 @@ internal sealed class SourceToMethodParametersOptionsBuilder<TSource> : ISourceT
 
         var resolution = sourceToMethodOptions.AddPropertyToParameterSequence(propertyOptions);
 
-        return new ToParameterOptionsBuilder<TProperty>(resolution);
+        return new ParameterBuilder<TProperty>(resolution);
     }
 
     // TODO: REQUER IMPLEMENTAÇÃO

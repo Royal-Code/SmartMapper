@@ -1,10 +1,13 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
-using RoyalCode.SmartMapper.Mapping.Options;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
+
+public sealed class SourceToMethodPropertiesOptions
+{
+
+}
 
 /// <summary>
 /// Options containing configuration for the mapping of a source type to a destination type method.
@@ -12,7 +15,6 @@ namespace RoyalCode.SmartMapper.Adapters.Options;
 public sealed class SourceToMethodOptions
 {
     private SourceToMethodStrategy strategy;
-    private IList<MethodParameterOptions>? parametersSequence;
 
     /// <summary>
     /// Creates a new <see cref="SourceToMethodOptions"/> instance with the specified adapter options
@@ -37,11 +39,39 @@ public sealed class SourceToMethodOptions
         get => strategy;
         internal set
         {
-            if (strategy != SourceToMethodStrategy.Default)
+            if (strategy is not SourceToMethodStrategy.Default)
                 throw new InvalidOperationException("The method has been set up before");
+
+            if (strategy is SourceToMethodStrategy.SelectedParameters)
+                ParametersOptions = new(MethodOptions);
+            else
+                PropertiesOptions = new();
+
             strategy = value;
         }
     }
+
+    /// <summary>
+    /// Check that this mapping uses the strategy of selecting the parameters of the target method.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(ParametersOptions))]
+    public bool HasSelectedParameters => Strategy is SourceToMethodStrategy.SelectedParameters;
+
+    /// <summary>
+    /// Options for mapping the parameters of the target method.
+    /// </summary>
+    public SourceToMethodParametersOptions? ParametersOptions { get; set; }
+
+    /// <summary>
+    /// Check that this mapping uses the strategy of mapping all properties from the source to the target method.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(PropertiesOptions))]
+    public bool HasAllProperties => Strategy is SourceToMethodStrategy.AllParameters;
+
+    /// <summary>
+    /// Options for mapping all source properties to the target method.
+    /// </summary>
+    public SourceToMethodPropertiesOptions? PropertiesOptions { get; set; }
 
     /// <summary>
     /// Adds the property to parameter options to the selected property to parameter sequence.
@@ -49,12 +79,11 @@ public sealed class SourceToMethodOptions
     /// <param name="options">The property to parameter options.</param>
     public void AddParameterSequence(MethodParameterOptions options)
     {
-        if (strategy != SourceToMethodStrategy.SelectedParameters)
+        if (!HasSelectedParameters)
             throw new InvalidOperationException(
                 "Invalid strategy, this method requires the strategy 'SelectedParameters' and it has not been assigned.");
 
-        parametersSequence ??= [];
-        parametersSequence.Add(options);
+        ParametersOptions.AddParameterSequence(options);
     }
 
     /// <summary>
@@ -81,7 +110,7 @@ public sealed class SourceToMethodOptions
     /// <returns>The selected property to parameter sequence.</returns>
     public IReadOnlyCollection<MethodParameterOptions> GetAllParameterSequence()
     {
-        return new ReadOnlyCollection<MethodParameterOptions>(parametersSequence ?? []) ;
+        return ParametersOptions.GetAllParameterSequence();
     }
 
     /// <summary>
@@ -92,7 +121,7 @@ public sealed class SourceToMethodOptions
     /// <returns>The count of the selected property to parameter sequence.</returns>
     public int CountParameterSequence()
     {
-        return parametersSequence?.Count ?? 0;
+        return ParametersOptions.CountParameterSequence();
     }
 
     /// <inheritdoc />
@@ -100,19 +129,20 @@ public sealed class SourceToMethodOptions
     {
         var sb = new StringBuilder("Strategy: ").Append(Strategy).Append(", ");
 
-        if (parametersSequence is not null)
-        {
-            sb.Append("Parameters: ").Append(parametersSequence.Count).Append("(");
-            foreach (var parameter in parametersSequence)
-            {
-                sb.Append(parameter).Append(", ");
-            }
-            sb.Append("), ");
-        }
-        else
-        {
-            sb.Append("Parameters: none, ");
-        }
+        // TODO: refactor this part.
+        //if (parametersSequence is not null)
+        //{
+        //    sb.Append("Parameters: ").Append(parametersSequence.Count).Append("(");
+        //    foreach (var parameter in parametersSequence)
+        //    {
+        //        sb.Append(parameter).Append(", ");
+        //    }
+        //    sb.Append("), ");
+        //}
+        //else
+        //{
+        //    sb.Append("Parameters: none, ");
+        //}
 
         if (MethodOptions.Method is not null)
         {
@@ -126,7 +156,7 @@ public sealed class SourceToMethodOptions
         {
             sb.Append("No method informed.");
         }
-        
+
         return sb.ToString();
     }
 }

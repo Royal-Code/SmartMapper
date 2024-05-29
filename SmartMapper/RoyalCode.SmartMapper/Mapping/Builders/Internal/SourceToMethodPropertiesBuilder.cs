@@ -1,19 +1,17 @@
-using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
-using RoyalCode.SmartMapper.Mapping.Builders;
 using RoyalCode.SmartMapper.Mapping.Options;
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
 /// <inheritdoc />
-internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceToMethodPropertiesOptionsBuilder<TSource>
+internal sealed class SourceToMethodPropertiesBuilder<TSource> : ISourceToMethodPropertiesBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
     private readonly SourceToMethodOptions sourceToMethodOptions;
     private readonly ToMethodResolutionOptions? parentResolutionOptions;
 
-    public SourceToMethodPropertiesOptionsBuilder(
+    public SourceToMethodPropertiesBuilder(
         SourceOptions sourceOptions,
         SourceToMethodOptions sourceToMethodOptions)
     {
@@ -21,7 +19,7 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
         this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
-    public SourceToMethodPropertiesOptionsBuilder(
+    public SourceToMethodPropertiesBuilder(
         SourceOptions sourceOptions,
         SourceToMethodOptions sourceToMethodOptions,
         ToMethodResolutionOptions parentResolutionOptions) : this(sourceOptions, sourceToMethodOptions)
@@ -49,29 +47,29 @@ internal sealed class SourceToMethodPropertiesOptionsBuilder<TSource> : ISourceT
         var resolutionOptions = ToMethodParameterResolutionOptions.Resolves(propertyOptions, parameterOptions);
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
-        return new ToParameterOptionsBuilder<TProperty>(resolutionOptions);
+        return new ParameterBuilder<TProperty>(resolutionOptions);
     }
 
     /// <inheritdoc />
-    public ISourceToMethodPropertiesOptionsBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
+    public ISourceToMethodPropertiesBuilder<TInnerProperty> InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        var resolutionOptions = propertyOptions.ResolutionOptions as ToMethodResolutionOptions 
+        var resolutionOptions = propertyOptions.ResolutionOptions as ToMethodResolutionOptions
             ?? ToMethodResolutionOptions.Resolvers(sourceToMethodOptions.MethodOptions, propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
-        return new SourceToMethodPropertiesOptionsBuilder<TInnerProperty>(
+        return new SourceToMethodPropertiesBuilder<TInnerProperty>(
             resolutionOptions.InnerSourceOptions,
-            sourceToMethodOptions, 
+            sourceToMethodOptions,
             resolutionOptions);
     }
 
     /// <inheritdoc />
     public void InnerProperties<TInnerProperty>(
         Expression<Func<TSource, TInnerProperty>> propertySelector,
-        Action<ISourceToMethodPropertiesOptionsBuilder<TInnerProperty>> configureInnerProperties)
+        Action<ISourceToMethodPropertiesBuilder<TInnerProperty>> configureInnerProperties)
     {
         var innerProperties = InnerProperties(propertySelector);
         configureInnerProperties(innerProperties);

@@ -29,17 +29,17 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
     }
 
     /// <inheritdoc />
-    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod()
+    public ISourceToMethodBuilder<TSource, TTarget> MapToMethod()
     {
         var methodOptions = options.TargetOptions.CreateMethodOptions();
         var sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
 
-        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }
 
     /// <inheritdoc />
-    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
+    public ISourceToMethodBuilder<TSource, TTarget> MapToMethod(Expression<Func<TTarget, Delegate>> methodSelector)
     {
         if (!methodSelector.TryGetMethod(out var method))
             throw new InvalidMethodDelegateException(nameof(methodSelector));
@@ -50,12 +50,12 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
 
-        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }
 
     /// <inheritdoc />
-    public ISourceToMethodOptionsBuilder<TSource, TTarget> MapToMethod(string methodName)
+    public ISourceToMethodBuilder<TSource, TTarget> MapToMethod(string methodName)
     {
         if (!options.SourceOptions.TryGetSourceToMethodOption(methodName, out var sourceToMethodOptions))
         {
@@ -63,7 +63,7 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
 
-        var builder = new SourceToMethodOptionsBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
         return builder;
     }
 

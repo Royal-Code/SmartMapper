@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Mapping.Builders;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
@@ -9,7 +8,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </para>
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
-public interface ISourceToMethodParametersOptionsBuilder<TSource>
+public interface ISourceToMethodParametersBuilder<TSource>
 {
     /// <summary>
     /// <para>

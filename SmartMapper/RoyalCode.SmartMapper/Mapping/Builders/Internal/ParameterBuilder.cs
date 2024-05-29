@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
+/// <inheritdoc />
 internal sealed class ParameterBuilder<TProperty> : IParameterBuilder<TProperty>
 {
     private readonly ResolutionOptionsBase resolutionOptions;

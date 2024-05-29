@@ -1,8 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Mapping.Options;
 using System.Reflection;
 
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// <para>

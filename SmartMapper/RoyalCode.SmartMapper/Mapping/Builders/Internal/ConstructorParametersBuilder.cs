@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
+/// <inheritdoc />
 internal sealed class ConstructorParametersBuilder<TSource> : IConstructorParametersBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;

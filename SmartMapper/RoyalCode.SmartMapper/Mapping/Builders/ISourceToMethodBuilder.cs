@@ -1,7 +1,7 @@
 ﻿
 using System.Linq.Expressions;
 
-namespace RoyalCode.SmartMapper.Adapters.Configurations;
+namespace RoyalCode.SmartMapper.Mapping.Builders;
 
 /// <summary>
 /// <para>
@@ -17,7 +17,7 @@ namespace RoyalCode.SmartMapper.Adapters.Configurations;
 /// </summary>
 /// <typeparam name="TSource">The source type.</typeparam>
 /// <typeparam name="TTarget">The destination type.</typeparam>
-public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
+public interface ISourceToMethodBuilder<TSource, TTarget>
 {
     /// <summary>
     /// <para>
@@ -30,7 +30,7 @@ public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureParameters">
     ///     A function to configure the parameters of the destination method.
     /// </param>
-    void Parameters(Action<ISourceToMethodParametersOptionsBuilder<TSource>> configureParameters);
+    void Parameters(Action<ISourceToMethodParametersBuilder<TSource>> configureParameters);
 
     /// <summary>
     /// <para>
@@ -46,7 +46,7 @@ public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
     /// <param name="configureProperties">
     ///     A function to configure the properties of the source type.
     /// </param>
-    void AllProperties(Action<ISourceToMethodPropertiesOptionsBuilder<TSource>>? configureProperties = null);
+    void AllProperties(Action<ISourceToMethodPropertiesBuilder<TSource>>? configureProperties = null);
 
     /// <summary>
     /// <para>
@@ -55,7 +55,7 @@ public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
     /// </summary>
     /// <param name="name">The name of method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    ISourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(string name);
+    ISourceToMethodBuilder<TSource, TTarget> UseMethod(string name);
 
     /// <summary>
     /// <para>
@@ -64,5 +64,5 @@ public interface ISourceToMethodOptionsBuilder<TSource, TTarget>
     /// </summary>
     /// <param name="methodSelector">An expression that select the target method.</param>
     /// <returns>The same instance for chained calls.</returns>
-    ISourceToMethodOptionsBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
+    ISourceToMethodBuilder<TSource, TTarget> UseMethod(Expression<Func<TTarget, Delegate>> methodSelector);
 }

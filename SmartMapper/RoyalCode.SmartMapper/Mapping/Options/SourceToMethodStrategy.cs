@@ -1,4 +1,4 @@
-namespace RoyalCode.SmartMapper.Adapters.Options;
+namespace RoyalCode.SmartMapper.Mapping.Options;
 
 /// <summary>
 /// Strategy used to map properties from a source object as parameters to a destination object method.
@@ -9,12 +9,12 @@ public enum SourceToMethodStrategy
     /// Default value, same behaviour as <see cref="AllParameters"/>.
     /// </summary>
     Default,
-    
+
     /// <summary>
     /// Map only the selected properties as parameters.
     /// </summary>
     SelectedParameters,
-    
+
     /// <summary>
     /// Map all available properties as parameters.
     /// </summary>
