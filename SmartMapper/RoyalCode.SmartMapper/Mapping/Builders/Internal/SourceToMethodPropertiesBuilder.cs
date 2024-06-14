@@ -1,5 +1,5 @@
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
@@ -8,21 +8,22 @@ namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 internal sealed class SourceToMethodPropertiesBuilder<TSource> : ISourceToMethodPropertiesBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
-    private readonly SourceToMethodOptions sourceToMethodOptions;
     private readonly ToMethodResolutionOptions? parentResolutionOptions;
+
+    private readonly SourceToMethodPropertiesOptions propertiesOptions;
 
     public SourceToMethodPropertiesBuilder(
         SourceOptions sourceOptions,
-        SourceToMethodOptions sourceToMethodOptions)
+        SourceToMethodPropertiesOptions propertiesOptions)
     {
         this.sourceOptions = sourceOptions;
-        this.sourceToMethodOptions = sourceToMethodOptions;
+        this.propertiesOptions = propertiesOptions;
     }
 
     public SourceToMethodPropertiesBuilder(
         SourceOptions sourceOptions,
-        SourceToMethodOptions sourceToMethodOptions,
-        ToMethodResolutionOptions parentResolutionOptions) : this(sourceOptions, sourceToMethodOptions)
+        SourceToMethodPropertiesOptions propertiesOptions,
+        ToMethodResolutionOptions parentResolutionOptions) : this(sourceOptions, propertiesOptions)
     {
         this.parentResolutionOptions = parentResolutionOptions;
     }
@@ -39,7 +40,7 @@ internal sealed class SourceToMethodPropertiesBuilder<TSource> : ISourceToMethod
         Expression<Func<TSource, TProperty>> propertySelector, string? parameterName = null)
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
-        var parameterOptions = sourceToMethodOptions.MethodOptions.GetParameterOptions(propertyOptions.Property);
+        var parameterOptions = propertiesOptions.MethodOptions.GetParameterOptions(propertyOptions.Property);
 
         if (parameterName is not null)
             parameterOptions.UseParameterName(parameterName);
@@ -56,13 +57,13 @@ internal sealed class SourceToMethodPropertiesBuilder<TSource> : ISourceToMethod
     {
         var propertyOptions = sourceOptions.GetPropertyOptions(propertySelector);
         var resolutionOptions = propertyOptions.ResolutionOptions as ToMethodResolutionOptions
-            ?? ToMethodResolutionOptions.Resolvers(sourceToMethodOptions.MethodOptions, propertyOptions);
+            ?? ToMethodResolutionOptions.Resolvers(propertiesOptions.MethodOptions, propertyOptions);
 
         parentResolutionOptions?.AddInnerPropertyResolution(resolutionOptions);
 
         return new SourceToMethodPropertiesBuilder<TInnerProperty>(
             resolutionOptions.InnerSourceOptions,
-            sourceToMethodOptions,
+            propertiesOptions,
             resolutionOptions);
     }
 

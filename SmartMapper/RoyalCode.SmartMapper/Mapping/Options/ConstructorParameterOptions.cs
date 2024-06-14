@@ -1,4 +1,3 @@
-using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using System.Reflection;
 

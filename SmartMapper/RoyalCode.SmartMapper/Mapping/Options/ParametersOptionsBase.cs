@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using RoyalCode.SmartMapper.Adapters.Options;
 
 namespace RoyalCode.SmartMapper.Mapping.Options;
 

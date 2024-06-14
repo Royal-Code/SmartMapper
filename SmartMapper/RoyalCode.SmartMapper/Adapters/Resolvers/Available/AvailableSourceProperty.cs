@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using RoyalCode.SmartMapper.Adapters.Options;
 using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using System.Text;
 using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolvers.Available;
 

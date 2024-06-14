@@ -1,13 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Mapping.Options;
-
-public sealed class SourceToMethodPropertiesOptions
-{
-
-}
 
 /// <summary>
 /// Options containing configuration for the mapping of a source type to a destination type method.
@@ -37,25 +31,13 @@ public sealed class SourceToMethodOptions
     public SourceToMethodStrategy Strategy
     {
         get => strategy;
-        internal set
+        private set
         {
             if (strategy is not SourceToMethodStrategy.Default)
                 throw new InvalidOperationException("The method has been set up before");
-
-            if (strategy is SourceToMethodStrategy.SelectedParameters)
-                ParametersOptions = new(MethodOptions);
-            else
-                PropertiesOptions = new();
-
             strategy = value;
         }
     }
-
-    /// <summary>
-    /// Check that this mapping uses the strategy of selecting the parameters of the target method.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(ParametersOptions))]
-    public bool HasSelectedParameters => Strategy is SourceToMethodStrategy.SelectedParameters;
 
     /// <summary>
     /// Options for mapping the parameters of the target method.
@@ -74,54 +56,67 @@ public sealed class SourceToMethodOptions
     public SourceToMethodPropertiesOptions? PropertiesOptions { get; set; }
 
     /// <summary>
-    /// Adds the property to parameter options to the selected property to parameter sequence.
+    /// Configure the strategy to be <see cref="SourceToMethodStrategy.SelectedParameters"/>.
     /// </summary>
-    /// <param name="options">The property to parameter options.</param>
-    public void AddParameterSequence(MethodParameterOptions options)
+    /// <param name="parametersOptions">The parameters options.</param>
+    public void UseSelectedParameters(out SourceToMethodParametersOptions parametersOptions)
     {
-        if (!HasSelectedParameters)
-            throw new InvalidOperationException(
-                "Invalid strategy, this method requires the strategy 'SelectedParameters' and it has not been assigned.");
+        if (IsSelectedParameters(out var options))
+        {
+            parametersOptions = options;
+            return;
+        }
 
-        ParametersOptions.AddParameterSequence(options);
+        Strategy = SourceToMethodStrategy.SelectedParameters;
+        ParametersOptions = new(MethodOptions);
+        parametersOptions = ParametersOptions;
     }
 
     /// <summary>
-    /// Add a source property to a parameter in sequence.
+    /// Configure the strategy to be <see cref="SourceToMethodStrategy.AllParameters"/>.
     /// </summary>
-    /// <param name="options">The source property options.</param>
-    public ToMethodParameterResolutionOptions AddPropertyToParameterSequence(PropertyOptions options)
+    /// <param name="propertiesOptions">The properties options.</param>
+    public void UseAllProperties(out SourceToMethodPropertiesOptions propertiesOptions)
     {
-        var parameterOptions = MethodOptions.GetParameterOptions(options.Property);
+        if (IsAllParameters(out var options))
+        {
+            propertiesOptions = options;
+            return;
+        }
 
-        // when created the resolution options, the options are resolved by the resolution.
-        var resolution = ToMethodParameterResolutionOptions.Resolves(options, parameterOptions);
-
-        AddParameterSequence(parameterOptions);
-
-        return resolution;
+        Strategy = SourceToMethodStrategy.AllParameters;
+        PropertiesOptions = new(MethodOptions);
+        propertiesOptions = PropertiesOptions;
     }
 
     /// <summary>
-    /// <para>
-    ///     Gets the selected property to parameter sequence.
-    /// </para>
+    /// Check that this mapping uses the strategy of selecting the parameters of the target method.
     /// </summary>
-    /// <returns>The selected property to parameter sequence.</returns>
-    public IReadOnlyCollection<MethodParameterOptions> GetAllParameterSequence()
+    /// <param name="parametersOptions">
+    ///     The parameters options when the strategy is <see cref="SourceToMethodStrategy.SelectedParameters"/>
+    /// </param>
+    /// <returns>
+    ///     true if the strategy is <see cref="SourceToMethodStrategy.SelectedParameters"/>, false otherwise.
+    /// </returns>
+    public bool IsSelectedParameters([NotNullWhen(true)] out SourceToMethodParametersOptions? parametersOptions)
     {
-        return ParametersOptions.GetAllParameterSequence();
+        parametersOptions = ParametersOptions;
+        return parametersOptions is not null;
     }
 
     /// <summary>
-    /// <para>
-    ///     Get the count of the selected property to parameter sequence.
-    /// </para>
+    /// Check that this mapping uses the strategy of mapping all properties from the source to the target method.
     /// </summary>
-    /// <returns>The count of the selected property to parameter sequence.</returns>
-    public int CountParameterSequence()
+    /// <param name="propertiesOptions">
+    ///     The properties options when the strategy is <see cref="SourceToMethodStrategy.AllParameters"/>.
+    /// </param>
+    /// <returns>
+    ///     true if the strategy is <see cref="SourceToMethodStrategy.AllParameters"/>.
+    /// </returns>
+    public bool IsAllParameters([NotNullWhen(true)] out SourceToMethodPropertiesOptions? propertiesOptions)
     {
-        return ParametersOptions.CountParameterSequence();
+        propertiesOptions = PropertiesOptions;
+        return propertiesOptions is not null;
     }
 
     /// <inheritdoc />

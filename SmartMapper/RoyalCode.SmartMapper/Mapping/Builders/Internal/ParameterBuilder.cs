@@ -1,4 +1,4 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
+﻿using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;

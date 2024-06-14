@@ -1,5 +1,4 @@
-﻿using RoyalCode.SmartMapper.Adapters.Configurations;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders;
 
@@ -125,7 +124,7 @@ public interface IMappingBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the property mapping options.
     /// </returns>
-    IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
+    IPropertyBuilder<TSource, TTarget, TProperty> Map<TProperty>(Expression<Func<TSource, TProperty>> propertySelector);
 
     /// <summary>
     /// <para>
@@ -141,7 +140,7 @@ public interface IMappingBuilder<TSource, TTarget>
     /// <returns>
     ///     A builder to configure the property mapping options.
     /// </returns>
-    IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
+    IPropertyBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName);
 
     /// <summary>
     /// <para>

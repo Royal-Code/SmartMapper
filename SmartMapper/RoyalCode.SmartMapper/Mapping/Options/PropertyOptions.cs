@@ -1,6 +1,5 @@
 using System.Reflection;
-using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Mapping.Options;
 

@@ -47,10 +47,10 @@ internal sealed class SourceToMethodContext
         }
 
         IReadOnlyCollection<MethodParameterOptions>? sourceParameters = null;
-        if (Options.Strategy == SourceToMethodStrategy.SelectedParameters)
+        if (Options.IsSelectedParameters(out var parametersOptions))
         {
-            sourceParameters = Options.GetAllParameterSequence();
-            availableMethods = availableMethods.Where(a => a.Info.GetParameters().Length == Options.CountParameterSequence());
+            sourceParameters = parametersOptions.GetAllParameterSequence();
+            availableMethods = availableMethods.Where(a => a.Info.GetParameters().Length == parametersOptions.CountParameterSequence());
         }
 
         // 2.1 for each available method, try to resolve the method.

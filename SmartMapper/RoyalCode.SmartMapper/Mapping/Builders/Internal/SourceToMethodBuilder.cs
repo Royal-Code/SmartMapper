@@ -8,26 +8,26 @@ namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 /// <inheritdoc />
 internal sealed class SourceToMethodBuilder<TSource, TTarget> : ISourceToMethodBuilder<TSource, TTarget>
 {
-    private readonly MappingOptions mappingOptions;
+    private readonly SourceOptions sourceOptions;
     private readonly SourceToMethodOptions sourceToMethodOptions;
 
-    public SourceToMethodBuilder(MappingOptions mappingOptions, SourceToMethodOptions sourceToMethodOptions)
+    public SourceToMethodBuilder(SourceOptions sourceOptions, SourceToMethodOptions sourceToMethodOptions)
     {
-        this.mappingOptions = mappingOptions;
+        this.sourceOptions = sourceOptions;
         this.sourceToMethodOptions = sourceToMethodOptions;
     }
 
     /// <inheritdoc />
     public void AllProperties(Action<ISourceToMethodPropertiesBuilder<TSource>>? configureProperties = null)
     {
-        sourceToMethodOptions.Strategy = SourceToMethodStrategy.AllParameters;
+        sourceToMethodOptions.UseAllProperties(out var propertiesOptions);
 
         if (configureProperties is null)
             return;
 
         var builder = new SourceToMethodPropertiesBuilder<TSource>(
-            mappingOptions.SourceOptions,
-            sourceToMethodOptions);
+            sourceOptions,
+            propertiesOptions);
 
         configureProperties(builder);
     }
@@ -35,11 +35,10 @@ internal sealed class SourceToMethodBuilder<TSource, TTarget> : ISourceToMethodB
     /// <inheritdoc />
     public void Parameters(Action<ISourceToMethodParametersBuilder<TSource>> configureParameters)
     {
-        sourceToMethodOptions.Strategy = SourceToMethodStrategy.SelectedParameters;
-
+        sourceToMethodOptions.UseSelectedParameters(out var parametersOptions);
+        
         var builder = new SourceToMethodParametersBuilder<TSource>(
-            mappingOptions.SourceOptions,
-            sourceToMethodOptions);
+            sourceOptions, parametersOptions);
 
         configureParameters(builder);
     }

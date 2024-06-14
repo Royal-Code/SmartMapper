@@ -1,6 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Core.Extensions;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Adapters.Resolutions;
 

@@ -1,10 +1,8 @@
 ﻿using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Adapters.Options.Resolutions;
 using RoyalCode.SmartMapper.Core.Exceptions;
 using RoyalCode.SmartMapper.Core.Extensions;
-using RoyalCode.SmartMapper.Adapters.Configurations;
-using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
 using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 
@@ -34,7 +32,7 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
         var methodOptions = options.TargetOptions.CreateMethodOptions();
         var sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
 
-        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options.SourceOptions, sourceToMethodOptions);
         return builder;
     }
 
@@ -50,7 +48,7 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
 
-        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options.SourceOptions, sourceToMethodOptions);
         return builder;
     }
 
@@ -63,25 +61,25 @@ internal sealed class AdapterBuilder<TSource, TTarget> : IAdapterBuilder<TSource
             sourceToMethodOptions = options.SourceOptions.CreateSourceToMethodOptions(methodOptions);
         }
 
-        var builder = new SourceToMethodBuilder<TSource, TTarget>(options, sourceToMethodOptions);
+        var builder = new SourceToMethodBuilder<TSource, TTarget>(options.SourceOptions, sourceToMethodOptions);
         return builder;
     }
 
     /// <inheritdoc />
-    public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(
+    public IPropertyBuilder<TSource, TTarget, TProperty> Map<TProperty>(
         Expression<Func<TSource, TProperty>> propertySelector)
     {
         var propertyOptions = options.SourceOptions.GetPropertyOptions(propertySelector);
 
-        var builder = new PropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
+        var builder = new PropertyBuilder<TSource, TTarget, TProperty>(options.TargetOptions, propertyOptions);
         return builder;
     }
 
     /// <inheritdoc />
-    public IPropertyOptionsBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
+    public IPropertyBuilder<TSource, TTarget, TProperty> Map<TProperty>(string propertyName)
     {
         var propertyOptions = options.SourceOptions.GetPropertyOptions(propertyName, typeof(TProperty));
-        return new PropertyOptionsBuilder<TSource, TTarget, TProperty>(options, propertyOptions);
+        return new PropertyBuilder<TSource, TTarget, TProperty>(options.TargetOptions, propertyOptions);
     }
 
     /// <inheritdoc />

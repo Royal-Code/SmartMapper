@@ -10,14 +10,14 @@ namespace RoyalCode.SmartMapper.Mapping.Builders.Internal;
 internal sealed class SourceToMethodParametersBuilder<TSource> : ISourceToMethodParametersBuilder<TSource>
 {
     private readonly SourceOptions sourceOptions;
-    private readonly SourceToMethodOptions sourceToMethodOptions;
+    private readonly SourceToMethodParametersOptions parametersOptions;
 
     public SourceToMethodParametersBuilder(
         SourceOptions sourceOptions,
-        SourceToMethodOptions sourceToMethodOptions)
+        SourceToMethodParametersOptions parametersOptions)
     {
         this.sourceOptions = sourceOptions;
-        this.sourceToMethodOptions = sourceToMethodOptions;
+        this.parametersOptions = parametersOptions;
     }
 
     public void Ignore<TProperty>(Expression<Func<TSource, TProperty>> propertySelector)
@@ -44,7 +44,7 @@ internal sealed class SourceToMethodParametersBuilder<TSource> : ISourceToMethod
 
         var propertyOptions = sourceOptions.GetPropertyOptions(propertyInfo);
 
-        var resolution = sourceToMethodOptions.AddPropertyToParameterSequence(propertyOptions);
+        var resolution = parametersOptions.AddPropertyToParameterSequence(propertyOptions);
 
         return new ParameterBuilder<TProperty>(resolution);
     }
