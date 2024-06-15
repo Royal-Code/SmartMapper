@@ -90,9 +90,7 @@ public sealed class ThenToMethodOptions
 
         Strategy = ToMethodStrategy.InnerProperties;
 
-        InnerPropertiesOptions = new InnerPropertiesOptions(
-            ToTargetPropertyOptions.TargetOptions.Category,
-            SourcePropertyOptions.Property);
+        InnerPropertiesOptions = new InnerPropertiesOptions(SourcePropertyOptions.Property);
 
         return InnerPropertiesOptions;
     }

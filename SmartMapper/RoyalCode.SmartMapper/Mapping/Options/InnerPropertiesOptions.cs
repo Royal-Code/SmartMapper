@@ -13,11 +13,11 @@ public sealed class InnerPropertiesOptions
     /// <summary>
     /// Creates a new <see cref="InnerPropertiesOptions"/>.
     /// </summary>
-    /// <param name="category">Categoria de mapeamento.</param>
+    /// <param name="category">mapping category.</param>
     /// <param name="property">The property info.</param>
-    public InnerPropertiesOptions(MappingCategory category, PropertyInfo property)
+    public InnerPropertiesOptions(PropertyInfo property)
     {
-        InnerSourceOptions = new SourceOptions(category, property.PropertyType);
+        InnerSourceOptions = new SourceOptions(MappingCategory.Inner, property.PropertyType);
     }
 
     /// <summary>

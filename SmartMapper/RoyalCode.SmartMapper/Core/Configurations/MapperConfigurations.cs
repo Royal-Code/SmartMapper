@@ -1,13 +1,13 @@
 ﻿
 using FastExpressionCompiler;
-using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
-using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Core.Options;
 using RoyalCode.SmartMapper.Core.Gererators;
 using RoyalCode.SmartMapper.Core.Discovery;
 using RoyalCode.SmartMapper.Mapping.Builders;
+using RoyalCode.SmartMapper.Mapping.Builders.Internal;
+using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
 
 namespace RoyalCode.SmartMapper.Core.Configurations;
 
@@ -74,8 +74,8 @@ public class MapperConfigurations
     /// </returns>
     public IAdapterBuilder<TSource, TTarget> ConfigureAdapter<TSource, TTarget>()
     {
-        AdapterOptions adapterOptions = options.GetAdapterOptions<TSource, TTarget>();
-        return new AdapterOptionsBuilder<TSource, TTarget>(adapterOptions);
+        MappingOptions adapterOptions = options.GetAdapterOptions<TSource, TTarget>();
+        return new AdapterBuilder<TSource, TTarget>(adapterOptions);
     }
     
     /// <summary>
@@ -96,7 +96,7 @@ public class MapperConfigurations
         if (expression == null)
         {
             // Create the adapter resolution
-            AdapterOptions adapterOptions = options.GetAdapterOptions<TSource, TTarget>();
+            MappingOptions adapterOptions = options.GetAdapterOptions<TSource, TTarget>();
             AdapterResolution resolution = resolutionFactory.CreateAdapterResolution(adapterOptions);
             resolutionsMap.AddAdapterResolution<TSource, TTarget>(resolution);
 

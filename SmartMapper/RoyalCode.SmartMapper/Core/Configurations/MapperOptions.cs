@@ -1,4 +1,4 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
+﻿using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Core.Options;
 
@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Core.Options;
 /// </summary>
 public sealed class MapperOptions
 {
-    private readonly Dictionary<(Type, Type), AdapterOptions> adapterOptions = [];
+    private readonly Dictionary<(Type, Type), MappingOptions> adapterOptions = [];
 
     /// <summary>
     /// Get the configured options for the adapter between TFrom and TTarget.
@@ -20,14 +20,14 @@ public sealed class MapperOptions
     /// <typeparam name="TSource">The source type</typeparam>
     /// <typeparam name="TTarget">The target type</typeparam>
     /// <returns>The adapter options</returns>
-    public AdapterOptions GetAdapterOptions<TSource, TTarget>()
+    public MappingOptions GetAdapterOptions<TSource, TTarget>()
     {
         if (adapterOptions.TryGetValue((typeof(TSource), typeof(TTarget)), out var options))
         {
             return options;
         }
 
-        options = new AdapterOptions(typeof(TSource), typeof(TTarget));
+        options = MappingOptions.AdapterFor<TSource, TTarget>();
         adapterOptions.Add((typeof(TSource), typeof(TTarget)), options);
         return options;
     }

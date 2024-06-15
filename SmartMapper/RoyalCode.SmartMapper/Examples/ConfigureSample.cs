@@ -4,14 +4,14 @@ namespace RoyalCode.SmartMapper.Examples;
 
 public static class ConfigureSample
 {
-    public static void Configure(IAdapterBuilder builder)
+    public static void Configure(IMappingBuilder builder)
     {
-        builder.Configure<MyDto, MyEntity>(b =>
+        builder.Adapter<MyDto, MyEntity>(b =>
         {
             b.Map(d => d.Id).To(e => e.Id);
         });
 
-        builder.Configure<MyDto, MyEntity>(b =>
+        builder.Adapter<MyDto, MyEntity>(b =>
         {
             b.MapToMethod(e => e.DoSomething)
                 .Parameters(b2 =>
@@ -26,10 +26,8 @@ public static class ConfigureSample
                 b2.Parameter(e => e.Id);
             });
 
-            b.Map(d => d.ValueObject).ToConstructor().Parameters(b2 =>
-            {
-                b2.Parameter(e => e.Value);
-            });
+            b.Constructor().Parameters(p => p.InnerProperties(
+                d => d.ValueObject, dp => dp.Parameter(e => e.Value)));
         });
     }
 

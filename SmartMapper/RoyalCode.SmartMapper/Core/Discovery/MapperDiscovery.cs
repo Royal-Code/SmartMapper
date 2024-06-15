@@ -1,9 +1,8 @@
-﻿
-using RoyalCode.SmartMapper.Adapters.Discovery.Parameters;
-using RoyalCode.SmartMapper.Adapters.Discovery.Properties;
-using RoyalCode.SmartMapper.Adapters.Discovery.PropertyToMethods;
-using RoyalCode.SmartMapper.Adapters.Discovery.SourceToMethods;
-using RoyalCode.SmartMapper.Core.Discovery.Assignment;
+﻿using RoyalCode.SmartMapper.Core.Discovery.Assignment;
+using RoyalCode.SmartMapper.Mapping.Discovery.Parameters;
+using RoyalCode.SmartMapper.Mapping.Discovery.Properties;
+using RoyalCode.SmartMapper.Mapping.Discovery.PropertyToMethods;
+using RoyalCode.SmartMapper.Mapping.Discovery.SourceToMethods;
 
 namespace RoyalCode.SmartMapper.Core.Discovery;
 

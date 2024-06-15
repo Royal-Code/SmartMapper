@@ -1,7 +1,7 @@
 ﻿
 using System.Linq.Expressions;
-using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Exceptions;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
 
 namespace RoyalCode.SmartMapper.Core.Gererators;
 

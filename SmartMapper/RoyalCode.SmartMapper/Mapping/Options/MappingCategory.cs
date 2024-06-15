@@ -15,4 +15,9 @@ public enum MappingCategory
     /// which can be methods or properties.
     /// </summary>
     Mapper,
+    
+    /// <summary>
+    /// Used for mapping inner properties.
+    /// </summary>
+    Inner,
 }

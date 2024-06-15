@@ -1,8 +1,8 @@
 ﻿using RoyalCode.SmartMapper.Core.Exceptions;
-using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Resolutions;
 using RoyalCode.SmartMapper.Core.Configurations;
-using RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
+using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers;
 
 namespace RoyalCode.SmartMapper.Core.Resolutions;
 
@@ -34,9 +34,9 @@ public sealed class ResolutionFactory
     /// <exception cref="ResolutionException">
     ///     When the resolution could not be created.
     /// </exception>
-    public AdapterResolution CreateAdapterResolution(AdapterOptions adapterOptions)
+    public AdapterResolution CreateAdapterResolution(MappingOptions adapterOptions)
     {
-        var context = AdapterContext.Create(adapterOptions);
+        var context = AdapterResolver.Create(adapterOptions);
 
         var resolution = context.CreateResolution(configurations);
 

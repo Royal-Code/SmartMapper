@@ -1,5 +1,5 @@
-﻿using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
-using RoyalCode.SmartMapper.Adapters.Options;
+﻿using RoyalCode.SmartMapper.Mapping.Builders.Internal;
+using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
 namespace RoyalCode.SmartMapper.Tests.Mappings.ToConstructors;
@@ -15,8 +15,8 @@ public sealed class ConstructorMappings
     public void Single_Simple()
     {
         // Arrange
-        var options = AdapterOptions.For<SingleSource, SingleTarget>();
-        var builder = new AdapterOptionsBuilder<SingleSource, SingleTarget>(options);
+        var options = MappingOptions.AdapterFor<SingleSource, SingleTarget>();
+        var builder = new AdapterBuilder<SingleSource, SingleTarget>(options);
         
         // Act
         builder.Constructor().Parameters(b =>
@@ -42,11 +42,11 @@ public sealed class ConstructorMappings
     public void Single_Complex()
     {
         // Arrange
-        var options = AdapterOptions.For<SingleComplexSource, SingleComplexTarget>();
-        var builder = new AdapterOptionsBuilder<SingleComplexSource, SingleComplexTarget>(options);
+        var options = MappingOptions.AdapterFor<SingleComplexSource, SingleComplexTarget>();
+        var builder = new AdapterBuilder<SingleComplexSource, SingleComplexTarget>(options);
         
         // Act
-        builder.Map(s => s.Value).ToConstructor();
+        builder.Constructor().Map(s => s.Value);
         
         // Assert
         var constructorOptions = options.TargetOptions.GetConstructorOptions();

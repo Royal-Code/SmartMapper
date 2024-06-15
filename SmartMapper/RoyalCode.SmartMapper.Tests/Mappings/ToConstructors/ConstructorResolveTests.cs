@@ -1,6 +1,6 @@
-﻿using RoyalCode.SmartMapper.Adapters.Resolutions.Contexts;
-using RoyalCode.SmartMapper.Core.Configurations;
+﻿using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Mapping.Builders;
+using RoyalCode.SmartMapper.Mapping.Resolvers;
 
 namespace RoyalCode.SmartMapper.Tests.Mappings.ToConstructors;
 
@@ -8,15 +8,15 @@ public class ConstructorResolveTests
 {
     private void Prepare<TSource, TTarget>(
         out MapperConfigurations configurations,
-        out ActivationContext activationContext)
+        out ActivationResolver activationResolver)
     {
-        Util.PrepareAdapter<TSource, TTarget>(out configurations, out activationContext);
+        Util.PrepareAdapter<TSource, TTarget>(out configurations, out activationResolver);
     }
     
     private void Configure<TSource, TTarget>(
         Action<IAdapterBuilder<TSource, TTarget>> configure,
         out MapperConfigurations configurations,
-        out ActivationContext activationContext)
+        out ActivationResolver activationContext)
     {
         Util.PrepareAdapter(configure, out configurations, out activationContext);
     }

@@ -1,6 +1,5 @@
-﻿
-using RoyalCode.SmartMapper.Adapters.Resolutions;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
 
 namespace RoyalCode.SmartMapper.Core.Resolutions;
 

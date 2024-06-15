@@ -1,15 +1,14 @@
-﻿using RoyalCode.SmartMapper.Adapters.Options;
-using RoyalCode.SmartMapper.Adapters.Configurations.Internal;
+﻿using RoyalCode.SmartMapper.Mapping.Builders.Internal;
+using RoyalCode.SmartMapper.Mapping.Options;
 
 namespace RoyalCode.SmartMapper.Examples;
 
 internal sealed class AdapterConstrutorMappgins
 {
-
     public void MapConstructorParameters()
     {
-        var adapter = new AdapterOptions(typeof(SourceAlpha), typeof(TargetAlpha));
-        var builder = new AdapterOptionsBuilder<SourceAlpha, TargetAlpha>(adapter);
+        var adapter = MappingOptions.AdapterFor<SourceAlpha, TargetAlpha>();
+        var builder = new AdapterBuilder<SourceAlpha, TargetAlpha>(adapter);
 
         builder.Constructor()
             .Parameters(p =>
@@ -21,16 +20,16 @@ internal sealed class AdapterConstrutorMappgins
 
     public void MapPropertyToConstructor()
     {
-        var adapter = new AdapterOptions(typeof(SourceBeta), typeof(TargetBeta));
-        var builder = new AdapterOptionsBuilder<SourceBeta, TargetBeta>(adapter);
+        var adapter = MappingOptions.AdapterFor<SourceBeta, TargetBeta>();
+        var builder = new AdapterBuilder<SourceBeta, TargetBeta>(adapter);
 
-        builder.Map(s => s.SourceAlpha).ToConstructor();
+        builder.Constructor().Map(s => s.SourceAlpha);
     }
 
     public void MapConstructorParametersFromInnerProperties()
     {
-        var adapter = new AdapterOptions(typeof(SourceGamma), typeof(TargetGamma));
-        var builder = new AdapterOptionsBuilder<SourceGamma, TargetGamma>(adapter);
+        var adapter = MappingOptions.AdapterFor<SourceGamma, TargetGamma>();
+        var builder = new AdapterBuilder<SourceGamma, TargetGamma>(adapter);
 
         builder.Constructor()
             .Parameters(p =>
