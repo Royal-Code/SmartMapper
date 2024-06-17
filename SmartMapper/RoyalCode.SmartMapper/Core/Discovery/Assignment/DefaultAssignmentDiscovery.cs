@@ -24,6 +24,7 @@ public sealed class DefaultAssignmentDiscovery : IAssignmentDiscovery
     {
         // ReSharper disable once ForCanBeConvertedToForeach
         // ReSharper disable once SuggestVarOrType_BuiltInTypes
+
         for (int i = 0; i < strategyDiscoveries.Length; i++)
             if (strategyDiscoveries[i].TryDiscover(request, out var resolution))
             {
@@ -108,7 +109,7 @@ public sealed class DefaultAssignmentDiscovery : IAssignmentDiscovery
         {
             resolution = null;
             
-#if NET6
+#if NET6_0
             // check if both types are primitive
             if (!request.SourceType.IsPrimitive || !request.TargetType.IsPrimitive)
                 return false;
