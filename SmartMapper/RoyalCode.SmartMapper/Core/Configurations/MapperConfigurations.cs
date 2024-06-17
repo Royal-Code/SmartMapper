@@ -1,7 +1,6 @@
 ﻿
 using FastExpressionCompiler;
 using RoyalCode.SmartMapper.Core.Resolutions;
-using RoyalCode.SmartMapper.Core.Options;
 using RoyalCode.SmartMapper.Core.Gererators;
 using RoyalCode.SmartMapper.Core.Discovery;
 using RoyalCode.SmartMapper.Mapping.Builders;

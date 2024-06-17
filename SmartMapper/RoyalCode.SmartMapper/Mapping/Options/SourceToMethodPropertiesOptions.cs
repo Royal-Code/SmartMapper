@@ -16,7 +16,6 @@ public sealed class SourceToMethodPropertiesOptions
         MethodOptions = methodOptions ?? throw new ArgumentNullException(nameof(methodOptions));
     }
 
-
     /// <summary>
     /// The method options.
     /// </summary>

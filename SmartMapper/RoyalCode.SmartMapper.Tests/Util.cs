@@ -1,6 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Core.Gererators;
-using RoyalCode.SmartMapper.Core.Options;
 using RoyalCode.SmartMapper.Mapping.Builders;
 using RoyalCode.SmartMapper.Mapping.Resolvers;
 
