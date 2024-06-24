@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace RoyalCode.SmartMapper.Core.Extensions;
 
@@ -11,12 +12,16 @@ public static class MembersExtensions
     /// Splits pascal case, so "FooBar" would become [ "Foo", "Bar" ].
     /// </summary>
     /// <param name="name">A string, thats represents a name of something, to be splited.</param>
-    public static string[]? SplitUpperCase(this string? name)
+    /// <param name="parts">The parts of the name splited by upper case</param>
+    public static bool SplitUpperCase(this string? name, [NotNullWhen(true)] out string[]? parts)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return null;
+        {
+            parts = null;
+            return false;
+        }
 
-        var parts = new LinkedList<string>();
+        var partsList = new LinkedList<string>();
         var sb = new StringBuilder();
 
         for (int i = 0; i < name.Length; ++i)
@@ -25,15 +30,22 @@ public static class MembersExtensions
             if (char.IsUpper(currentChar) && i > 1
                 && (!char.IsUpper(name[i - 1]) || (i + 1 < name.Length && !char.IsUpper(name[i + 1]))))
             {
-                parts.AddLast(sb.ToString());
+                partsList.AddLast(sb.ToString());
                 sb.Clear();
             }
             sb.Append(currentChar);
         }
 
-        parts.AddLast(sb.ToString());
+        partsList.AddLast(sb.ToString());
 
-        return parts.Count > 1 ? [.. parts] : null;
+        if (partsList.Count <= 1)
+        {
+            parts = null;
+            return false;
+        }
+
+        parts = [.. partsList];
+        return true;
     }
 
     /// <summary>
