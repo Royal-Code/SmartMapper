@@ -6,12 +6,12 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
 public readonly struct MemberDiscoveryRequest(
     MapperConfigurations configurations,
-    PropertyInfo sourceProperty,
+    AvailableSourceProperty sourceProperty,
     AvailableTargetMethods targetMethods,
     AvailableTargetProperties targetProperties)
 {
     public MapperConfigurations Configurations { get; } = configurations;
-    public PropertyInfo SourceProperty { get; } = sourceProperty;
+    public AvailableSourceProperty SourceProperty { get; } = sourceProperty;
     public AvailableTargetMethods TargetMethods { get; } = targetMethods;
     public AvailableTargetProperties TargetProperties { get; } = targetProperties;
 }

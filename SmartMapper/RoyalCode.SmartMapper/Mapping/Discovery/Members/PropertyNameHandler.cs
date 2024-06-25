@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using RoyalCode.SmartMapper.Core.Discovery.Members;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
