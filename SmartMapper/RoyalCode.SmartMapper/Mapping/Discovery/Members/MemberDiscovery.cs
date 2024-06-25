@@ -8,7 +8,7 @@ public sealed class MemberDiscovery : IMemberDiscovery
 
     public MemberDiscoveryResult Discover(MemberDiscoveryRequest request)
     {
-        var names = new NamePartitions(request.SourceProperty.Name;
+        var names = new NamePartitions(request.SourceProperty.Name);
 
         foreach (var handler in nameHandlers)
         {

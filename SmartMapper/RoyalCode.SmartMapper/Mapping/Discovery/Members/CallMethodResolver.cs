@@ -24,6 +24,8 @@ public sealed class CallMethodResolver : MemberResolver
 
     public override MemberResolution CreateResolution(MapperConfigurations configurations)
     {
+        
+        
         throw new NotImplementedException();
     }
 }

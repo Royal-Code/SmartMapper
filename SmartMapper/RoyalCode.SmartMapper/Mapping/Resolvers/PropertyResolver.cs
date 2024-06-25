@@ -56,7 +56,10 @@ internal class PropertyResolver
             }
             else
             {
-                // must be called other context 
+                // must be called other contexts:
+                // - map to a method
+                // - map to a internal property
+                
                 throw new NotImplementedException();
             }
         }
