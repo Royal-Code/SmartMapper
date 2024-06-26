@@ -30,7 +30,7 @@ public class PropertyResolution : ResolutionBase
         AvailableSourceProperty = availableSourceProperty;
         TargetProperty = targetProperty;
         AssignmentStrategyResolution = assignmentStrategyResolution;
-        PropertyResolutionStrategy = ToPropertyResolutionStrategy.SetValue;
+        PropertyResolutionStrategy = ToPropertyResolutionStrategy.AssignValue;
 
         availableSourceProperty.ResolvedBy(this);
     }
@@ -38,13 +38,12 @@ public class PropertyResolution : ResolutionBase
     public PropertyResolution(
         AvailableSourceProperty availableSourceProperty,
         PropertyInfo targetProperty,
-        ToPropertyResolutionStrategy propertyResolutionStrategy,
         ResolutionBase thenResolution)
     {
         Resolved = true;
         AvailableSourceProperty = availableSourceProperty;
         TargetProperty = targetProperty;
-        PropertyResolutionStrategy = propertyResolutionStrategy;
+        PropertyResolutionStrategy = ToPropertyResolutionStrategy.Then;
         ThenResolution = thenResolution;
 
         availableSourceProperty.ResolvedBy(this);
@@ -65,7 +64,7 @@ public class PropertyResolution : ResolutionBase
     /// </summary>
     [MemberNotNullWhen(true, nameof(AssignmentStrategyResolution))]
     [MemberNotNullWhen(false, nameof(ThenResolution))]
-    public bool IsSetValue => PropertyResolutionStrategy == ToPropertyResolutionStrategy.SetValue;
+    public bool IsSetValue => PropertyResolutionStrategy == ToPropertyResolutionStrategy.AssignValue;
     
     /// <summary>
     /// The available source property.
@@ -87,7 +86,7 @@ public class PropertyResolution : ResolutionBase
     ///     The assignment strategy resolution.
     /// </para>
     /// <para>
-    ///     When the <see cref="PropertyResolutionStrategy"/> is <see cref="ToPropertyResolutionStrategy.SetValue"/>
+    ///     When the <see cref="PropertyResolutionStrategy"/> is <see cref="ToPropertyResolutionStrategy.AssignValue"/>
     ///     this property will not be null, otherwise will be null.
     /// </para>
     /// </summary>

@@ -6,17 +6,14 @@
 public enum ToPropertyResolutionStrategy
 {
     /// <summary>
-    /// The source property value will be set to the target property. This is the default strategy.
+    /// The source property value will be assigned to the target property. This is the default strategy.
     /// </summary>
-    SetValue,
+    AssignValue,
 
     /// <summary>
-    /// An internal property of the target property will be accessed.
+    /// The source property value will be used by another resolution,
+    /// to assign the value to the target navigation property
+    /// or call a method of a target property.
     /// </summary>
-    AccessInnerProperty,
-
-    /// <summary>
-    /// A method of the target property will be called.
-    /// </summary>
-    CallMethod,
+    Then,
 }

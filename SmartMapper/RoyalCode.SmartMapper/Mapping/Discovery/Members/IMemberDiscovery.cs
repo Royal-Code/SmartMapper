@@ -1,25 +1,17 @@
-﻿using RoyalCode.SmartMapper.Mapping.Discovery.Members;
-using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
-
-namespace RoyalCode.SmartMapper.Core.Discovery.Members;
+﻿namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
 #pragma warning disable CS1591 // XML doc.
 
-public class MemberResolution
-{
-
-}
-
+/// <summary>
+/// A discovery component that is responsible for discovering the mapping
+/// from a source property to a destination member, that is a property or a method.
+/// </summary>
 public interface IMemberDiscovery
 {
+    /// <summary>
+    /// Discover the mapping from a source property to a destination member.
+    /// </summary>
+    /// <param name="request">The discovery request.</param>
+    /// <returns>The result of the member discovery process.</returns>
     MemberDiscoveryResult Discover(MemberDiscoveryRequest request);
 }
-
-public readonly struct MemberDiscoveryResult
-{
-
-    public AvailableMethod? Method { get; }
-
-    public AvailableProperty? Property { get; }
-}
-

@@ -1,31 +1,52 @@
 ﻿using RoyalCode.SmartMapper.Core.Configurations;
-using RoyalCode.SmartMapper.Core.Discovery.Members;
-using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
-using System.Reflection;
+using RoyalCode.SmartMapper.Core.Discovery.Assignment;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
+/// <summary>
+/// Resolves a single name property. The source property name matches the target property name.
+/// </summary>
 public sealed class SingleNamePropertyResolver : MemberResolver
 {
     private readonly MemberDiscoveryRequest request;
-    private readonly AvailableProperty availableProperty;
+    private readonly AvailableProperty targetAvailableProperty;
 
-    public SingleNamePropertyResolver(MemberDiscoveryRequest request, AvailableProperty availableProperty)
+    public SingleNamePropertyResolver(MemberDiscoveryRequest request, AvailableProperty targetAvailableProperty)
     {
         this.request = request;
-        this.availableProperty = availableProperty ?? throw new ArgumentNullException(nameof(availableProperty));
+        this.targetAvailableProperty = targetAvailableProperty;
     }
 
-    public override MemberResolution CreateResolution(MapperConfigurations configurations)
+    /// <inheritdoc />
+    public override MemberDiscoveryResult CreateResolution(MapperConfigurations configurations)
     {
-        AvailableSourceProperty availableSourceProperty = request.SourceProperty;
-        PropertyInfo targetProperty;
-        AssignmentStrategyResolution assignmentStrategyResolution;
+        var assignDiscoveryRequest = new AssignmentDiscoveryRequest(
+            request.Configurations,
+            request.SourceProperty.Options.Property.PropertyType,
+            targetAvailableProperty.Info.PropertyType);
+        var assignDiscoveryResult = request.Configurations.Discovery.Assignment.Discover(assignDiscoveryRequest);
 
+        if (!assignDiscoveryResult.IsResolved)
+            return new()
+            {
+                IsResolved = false,
+                Failure = assignDiscoveryResult.Failure
+            };
 
-
-        throw new NotImplementedException();
+        var resolution = new PropertyResolution(
+            request.SourceProperty,
+            targetAvailableProperty.Info,
+            assignDiscoveryResult.Resolution);
+        
+        targetAvailableProperty.ResolvedBy(resolution);
+        
+        return new()
+        {
+            IsResolved = true,
+            Resolution = resolution
+        };
     }
 }
 

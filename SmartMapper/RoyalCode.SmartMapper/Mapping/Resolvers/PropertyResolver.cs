@@ -42,7 +42,7 @@ internal class PropertyResolver
             && availableProperties.TryFindProperty(resolutionOptions.TargetProperty.TargetProperty, out var available))
         {
             // 2.1.1 check the resolution options e try to resolve the property.
-            if (resolutionOptions.Strategy == ToPropertyResolutionStrategy.SetValue)
+            if (resolutionOptions.Strategy == ToPropertyResolutionStrategy.AssignValue)
             {
                 if (!ResolveStrategy(configurations, resolutionOptions.AssignmentStrategy, Property, available,
                     out var assignmentStrategyResolution, out var resolutionFailure))

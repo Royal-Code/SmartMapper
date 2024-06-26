@@ -1,24 +1,24 @@
-﻿using RoyalCode.SmartMapper.Core.Discovery.Members;
+﻿namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
-namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
-
+/// <summary>
+/// Default implementation of the member discovery component.
+/// </summary>
 public sealed class MemberDiscovery : IMemberDiscovery
 {
     private readonly INameHandler[] nameHandlers = [];
 
+    /// <inheritdoc />
     public MemberDiscoveryResult Discover(MemberDiscoveryRequest request)
     {
-        var names = new NamePartitions(request.SourceProperty.SourceItem.Options.Property.Name);
+        var names = new MemberDiscoveryName(request, nameHandlers);
 
-        foreach (var handler in nameHandlers)
+        if (names.HandleNextPart(0, out var resolver))
+            return resolver.CreateResolution(request.Configurations);
+        
+        return new()
         {
-            if (handler.Handle(request, names, 0, out var resolver))
-                return new();
-        }
-
-        throw new NotImplementedException();
+            IsResolved = false,
+            Failure = new($"Could not resolve member {request.SourceProperty.SourceItem.Options.Property.Name}")
+        };
     }
-
-
 }
-

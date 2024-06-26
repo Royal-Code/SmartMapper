@@ -39,7 +39,7 @@ public sealed class ThenToPropertyOptions
     /// <summary>
     /// The resolution strategy for the target property.
     /// </summary>
-    public ToPropertyResolutionStrategy Strategy { get; private set; } = ToPropertyResolutionStrategy.SetValue;
+    public ToPropertyResolutionStrategy Strategy { get; private set; } = ToPropertyResolutionStrategy.AssignValue;
 
     /// <summary>
     /// <para>
@@ -69,7 +69,7 @@ public sealed class ThenToPropertyOptions
     ///     The assignment strategy is used to define how the source property value will be assigned to the target property.
     /// </para>
     /// <para>
-    ///     This property can be not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.SetValue"/>.
+    ///     This property can be not null when the <see cref="Strategy"/> is <see cref="ToPropertyResolutionStrategy.AssignValue"/>.
     /// </para>
     /// </summary>
     public AssignmentStrategyOptions? AssignmentStrategy { get; private set; }
@@ -87,7 +87,7 @@ public sealed class ThenToPropertyOptions
 
         var innerTargetProperty = TargetProperty.GetInnerProperty(targetProperty);
         ThenToProperty = new(PropertyResolutionOptions, innerTargetProperty);
-        Strategy = ToPropertyResolutionStrategy.AccessInnerProperty;
+        Strategy = ToPropertyResolutionStrategy.Then;
         return ThenToProperty;
     }
 
@@ -100,7 +100,7 @@ public sealed class ThenToPropertyOptions
     public ThenToMethodOptions ThenCall()
     {
         GuardThen();
-        Strategy = ToPropertyResolutionStrategy.CallMethod;
+        Strategy = ToPropertyResolutionStrategy.Then;
 
         ThenToMethod = new(PropertyResolutionOptions.ResolvedProperty, TargetProperty);
 
@@ -120,10 +120,10 @@ public sealed class ThenToPropertyOptions
     /// <returns>The <see cref="AssignmentStrategyOptions{TProperty}"/>.</returns>
     public AssignmentStrategyOptions<TProperty> GetOrCreateAssignmentStrategyOptions<TProperty>()
     {
-        if (Strategy is not ToPropertyResolutionStrategy.SetValue)
+        if (Strategy is not ToPropertyResolutionStrategy.AssignValue)
         {
             throw new InvalidOperationException(
-                "The assignment strategy is only available when the resolution strategy is SetValue.");
+                "The assignment strategy is only available when the resolution strategy is AssignValue.");
         }
 
         return PropertyResolutionOptions.GetOrCreateAssignmentStrategyOptions<TProperty>();
@@ -131,7 +131,7 @@ public sealed class ThenToPropertyOptions
 
     private void GuardThen()
     {
-        if (Strategy is not ToPropertyResolutionStrategy.SetValue
+        if (Strategy is not ToPropertyResolutionStrategy.AssignValue
             || AssignmentStrategy is not null)
         {
             throw new InvalidOperationException(
