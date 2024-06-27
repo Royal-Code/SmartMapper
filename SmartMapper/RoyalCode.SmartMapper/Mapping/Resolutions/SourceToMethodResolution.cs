@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Mapping.Resolutions;
 ///     This resolution is used to map the source properties to the target method.
 /// </para>
 /// </summary>
-public sealed class SourceToMethodResolution: ResolutionBase
+public sealed class SourceToMethodResolution : ResolutionBase
 {
     /// <summary>
     /// Creates a new instance of <see cref="SourceToMethodResolution"/> for successful resolutions.
@@ -36,7 +36,17 @@ public sealed class SourceToMethodResolution: ResolutionBase
         Failure = failure;
         ParametersResolutions = [];
     }
-    
+
+    /// <summary>
+    /// The resolved method information.
+    /// </summary>
+    public MethodInfo? Info { get; }
+
+    /// <summary>
+    /// The parameters resolutions.
+    /// </summary>
+    public IEnumerable<ParameterResolution> ParametersResolutions { get; }
+
     /// <summary>
     /// Check if the resolution has a failure.
     /// </summary>
@@ -47,16 +57,6 @@ public sealed class SourceToMethodResolution: ResolutionBase
         return !Resolved;
     }
     
-    /// <summary>
-    /// The resolved method information.
-    /// </summary>
-    public MethodInfo? Info { get; }
-    
-    /// <summary>
-    /// The parameters resolutions.
-    /// </summary>
-    public IEnumerable<ParameterResolution> ParametersResolutions { get; }
-
     /// <inheritdoc />
     public override void Completed()
     {

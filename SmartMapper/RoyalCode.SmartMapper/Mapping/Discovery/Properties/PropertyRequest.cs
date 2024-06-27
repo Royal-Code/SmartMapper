@@ -1,6 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Core.Configurations;
-using RoyalCode.SmartMapper.Mapping.Resolvers;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Properties;
 
@@ -12,7 +12,7 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.Properties;
 /// <param name="availableTargetProperties">The available target properties.</param>
 public readonly struct PropertyRequest(
     MapperConfigurations configurations,
-    SourceItem sourceItem,
+    SourceProperty sourceItem,
     AvailableTargetProperties availableTargetProperties)
 {
     /// <summary>
@@ -23,7 +23,7 @@ public readonly struct PropertyRequest(
     /// <summary>
     /// The source item to be mapped.
     /// </summary>
-    public SourceItem SourceItem { get; } = sourceItem;
+    public SourceProperty SourceItem { get; } = sourceItem;
 
     /// <summary>
     /// The target available properties to be mapped.

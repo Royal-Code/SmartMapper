@@ -5,14 +5,14 @@
 /// </summary>
 public sealed class MemberDiscovery : IMemberDiscovery
 {
-    private readonly INameHandler[] nameHandlers = [];
+    private readonly INameHandler[] nameHandlers = [ new DirectMethodNameHandler(), new PropertyNameHandler() ];
 
     /// <inheritdoc />
     public MemberDiscoveryResult Discover(MemberDiscoveryRequest request)
     {
-        var names = new MemberDiscoveryName(request, nameHandlers);
+        var context = new MemberDiscoveryContext(request, nameHandlers);
 
-        if (names.HandleNextPart(0, out var resolver))
+        if (context.HandleNextPart(0, out var resolver))
             return resolver.CreateResolution(request.Configurations);
         
         return new()

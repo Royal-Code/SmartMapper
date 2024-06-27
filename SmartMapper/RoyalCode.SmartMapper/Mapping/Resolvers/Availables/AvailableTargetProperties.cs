@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using RoyalCode.SmartMapper.Mapping.Resolutions;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
@@ -27,7 +28,18 @@ public class AvailableTargetProperties
     {
         return availableProperties.Where(p => !p.Resolved);
     }
-    
+
+    /// <summary>
+    /// List the available properties that are not resolved.
+    /// </summary>
+    /// <returns>A collection of available properties that are not resolved.</returns>
+    public IEnumerable<AvailableProperty> ListAvailableThenProperties()
+    {
+        return availableProperties.Where(p => !p.Resolved 
+        || (p.Resolution is PropertyResolution pr 
+            && pr.PropertyResolutionStrategy is Options.Resolutions.ToPropertyResolutionStrategy.Then));
+    }
+
     /// <summary>
     /// Try to find a available property by the given property info.
     /// </summary>

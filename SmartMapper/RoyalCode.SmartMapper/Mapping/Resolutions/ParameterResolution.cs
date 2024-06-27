@@ -66,16 +66,6 @@ public class ParameterResolution : ResolutionBase
     }
 
     /// <summary>
-    /// Check if the resolution has a failure.
-    /// </summary>
-    [MemberNotNullWhen(false, nameof(AvailableSourceProperty), nameof(Parameter), nameof(AssignmentStrategyResolution))]
-    public bool HasFailure([NotNullWhen(true)] out ResolutionFailure? failure)
-    {
-        failure = Failure;
-        return !Resolved;
-    }
-    
-    /// <summary>
     /// The available source property.
     /// </summary>
     public AvailableSourceProperty? AvailableSourceProperty { get; }
@@ -89,6 +79,16 @@ public class ParameterResolution : ResolutionBase
     /// The assignment strategy resolution.
     /// </summary>
     public AssignmentStrategyResolution? AssignmentStrategyResolution { get; }
+
+    /// <summary>
+    /// Check if the resolution has a failure.
+    /// </summary>
+    [MemberNotNullWhen(false, nameof(AvailableSourceProperty), nameof(Parameter), nameof(AssignmentStrategyResolution))]
+    public bool HasFailure([NotNullWhen(true)] out ResolutionFailure? failure)
+    {
+        failure = Failure;
+        return !Resolved;
+    }
 
     /// <inheritdoc />
     public override void Completed()

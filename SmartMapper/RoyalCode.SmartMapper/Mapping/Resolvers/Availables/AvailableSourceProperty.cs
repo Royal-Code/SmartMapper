@@ -4,6 +4,7 @@ using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -17,7 +18,7 @@ public sealed class AvailableSourceProperty
     /// </summary>
     /// <param name="sourceItem">The source item.</param>
     /// <param name="parentSourceProperty">The parent source property, if available.</param>
-    public AvailableSourceProperty(SourceItem sourceItem, AvailableSourceProperty? parentSourceProperty = null)
+    public AvailableSourceProperty(SourceProperty sourceItem, AvailableSourceProperty? parentSourceProperty = null)
     {
         SourceItem = sourceItem;
         Parent = parentSourceProperty;
@@ -39,7 +40,7 @@ public sealed class AvailableSourceProperty
     /// <summary>
     /// The source item.
     /// </summary>
-    public SourceItem SourceItem { get; }
+    public SourceProperty SourceItem { get; }
 
     /// <summary>
     /// The property options.

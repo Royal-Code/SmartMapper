@@ -20,4 +20,21 @@ public static class ReflectionExtensions
             .Where(p => p.CanRead)
             .ToList();
     }
+
+    /// <summary>
+    /// Checks whether the <paramref name="type"/> implements the <paramref name="genericType"/> 
+    /// in a generic or closed way.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <param name="genericType">The generic type.</param>
+    /// <returns>
+    ///     True if implements, false otherwise.
+    /// </returns>
+    public static bool ImplementsGenericType(this Type type, Type genericType)
+    {
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+            return true;
+
+        return Array.Exists(type.GetInterfaces(), i => i.IsGenericType && i.GetGenericTypeDefinition() == genericType);
+    }
 }

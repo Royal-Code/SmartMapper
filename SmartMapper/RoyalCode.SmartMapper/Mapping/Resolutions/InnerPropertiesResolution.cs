@@ -1,16 +1,16 @@
 ﻿using RoyalCode.SmartMapper.Core.Resolutions;
-using RoyalCode.SmartMapper.Mapping.Resolvers;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolutions;
 
 public class InnerPropertiesResolution : ResolutionBase
 {
-    private readonly SourceItem sourceItem;
+    private readonly SourceProperty sourceItem;
     public AvailableInnerSourceProperties InnerProperties { get; }
 
     public InnerPropertiesResolution(
-        SourceItem sourceItem,
+        SourceProperty sourceItem,
         AvailableInnerSourceProperties innerProperties)
     {
         this.sourceItem = sourceItem;

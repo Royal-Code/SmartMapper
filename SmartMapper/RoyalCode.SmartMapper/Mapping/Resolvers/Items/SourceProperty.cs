@@ -3,37 +3,37 @@ using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 
-namespace RoyalCode.SmartMapper.Mapping.Resolvers;
+namespace RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 /// <summary>
 /// Represent a source property of the mapping and the current resolution state.
 /// </summary>
-public sealed class SourceItem
+public sealed class SourceProperty
 {
     /// <summary>
-    /// Creates a new list of <see cref="SourceItem"/> from a type.
+    /// Creates a new list of <see cref="SourceProperty"/> from a type.
     /// </summary>
     /// <param name="type">The type of the source.</param>
     /// <param name="options">The options for the source properties.</param>
-    /// <returns>A new list of <see cref="SourceItem"/> with new instances of the source items.</returns>
-    public static List<SourceItem> Create(Type type, SourceOptions options)
+    /// <returns>A new list of <see cref="SourceProperty"/> with new instances of the source items.</returns>
+    public static List<SourceProperty> Create(Type type, SourceOptions options)
     {
         // gets the properties of the source that should be mapped
         var sourceProperties = type.GetSourceProperties();
 
         // gets the source property options
         var items = sourceProperties
-            .Select(p => new SourceItem(options.GetPropertyOptions(p)))
+            .Select(p => new SourceProperty(options.GetPropertyOptions(p)))
             .ToList();
 
         return items;
     }
 
     /// <summary>
-    /// Creates a new instance of <see cref="SourceItem"/>.
+    /// Creates a new instance of <see cref="SourceProperty"/>.
     /// </summary>
     /// <param name="options"></param>
-    public SourceItem(PropertyOptions options)
+    public SourceProperty(PropertyOptions options)
     {
         Options = options;
     }
@@ -86,7 +86,7 @@ public sealed class SourceItem
     /// Check if the property has inner properties mapped to the target.
     /// </summary>
     public bool IsMappedToTarget => Options.ResolutionOptions?.Status == ResolutionStatus.MappedToTarget;
-    
+
     /// <summary>
     /// Check if the property is mapped to a property.
     /// </summary>

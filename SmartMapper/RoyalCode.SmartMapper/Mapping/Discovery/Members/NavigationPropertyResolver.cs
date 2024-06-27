@@ -11,7 +11,7 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 public sealed class NavigationPropertyResolver : MemberResolver
 {
     private readonly AvailableProperty targetAvailableProperty;
-    private readonly MemberDiscoveryName names;
+    private readonly MemberDiscoveryContext names;
     private readonly int nameIndex;
 
     /// <summary>
@@ -21,7 +21,7 @@ public sealed class NavigationPropertyResolver : MemberResolver
     /// <param name="targetAvailableProperty">The target property to resolve.</param>
     /// <param name="nameIndex">The index of the name.</param>
     public NavigationPropertyResolver(
-        MemberDiscoveryName names,
+        MemberDiscoveryContext names,
         AvailableProperty targetAvailableProperty,
         int nameIndex)
     {
@@ -33,7 +33,8 @@ public sealed class NavigationPropertyResolver : MemberResolver
     /// <inheritdoc />
     public override MemberDiscoveryResult CreateResolution(MapperConfigurations configurations)
     {
-        if (names.HandleNextPart(nameIndex, out var thenResolver))
+        var innerContext = names.Inner(targetAvailableProperty);
+        if (innerContext.HandleNextPart(nameIndex, out var thenResolver))
         {
             var thenResolution = thenResolver.CreateResolution(configurations);
             if (!thenResolution.IsResolved)

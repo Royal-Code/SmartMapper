@@ -1,6 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Core.Configurations;
-using RoyalCode.SmartMapper.Mapping.Resolvers;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.SourceToMethods;
 
@@ -14,7 +14,7 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.SourceToMethods;
 public readonly struct SourceToMethodRequest(
     MapperConfigurations configurations,
     Type sourceType,
-    IEnumerable<SourceItem> sourceItems,
+    IEnumerable<SourceProperty> sourceItems,
     IEnumerable<AvailableMethod> availableMethods)
 {
     /// <summary>
@@ -30,7 +30,7 @@ public readonly struct SourceToMethodRequest(
     /// <summary>
     /// The source items.
     /// </summary>
-    public IEnumerable<SourceItem> SourceItems { get; } = sourceItems;
+    public IEnumerable<SourceProperty> SourceItems { get; } = sourceItems;
 
     /// <summary>
     /// The available taget methods.

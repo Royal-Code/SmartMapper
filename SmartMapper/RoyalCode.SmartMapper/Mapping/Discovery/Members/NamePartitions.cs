@@ -4,7 +4,12 @@ using RoyalCode.SmartMapper.Core.Extensions;
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
 /// <summary>
-/// Parts of a given name for mapping an orgim property to some property or method of the target type.
+/// <para>
+///     Parts of a given name for mapping an orgim property to some property or method of the target type.
+/// </para>
+/// <para>
+///     The name of the source property is split into parts using CamelCase/PascalCase to do so.
+/// </para>
 /// </summary>
 public sealed class NamePartitions
 {
@@ -66,7 +71,7 @@ public sealed class NamePartitions
     }
 
     /// <summary>
-    /// btains a name by concatenating the parts from an initial index and a reverse end index.
+    /// Obtains a name by concatenating the parts from an initial index and a reverse end index.
     /// </summary>
     /// <param name="index">Initial index.</param>
     /// <param name="end">Reverse end index.</param>

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using RoyalCode.SmartMapper.Mapping.Options;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -27,7 +28,7 @@ public sealed class AvailableInnerSourceProperties
     /// <summary>
     /// The source item of the parent source property.
     /// </summary>
-    public SourceItem SourceItem => ParentSourceProperty.SourceItem;
+    public SourceProperty SourceItem => ParentSourceProperty.SourceItem;
 
     /// <summary>
     /// The property options of the parent source property.

@@ -1,30 +1,40 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using RoyalCode.SmartMapper.Core.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
+/// <summary>
+/// 
+/// </summary>
 public class PropertyNameHandler : INameHandler
 {
+    /// <inheritdoc />
     public bool Handle(
-        MemberDiscoveryName names,
+        MemberDiscoveryContext context,
         int index,
         [NotNullWhen(true)] out MemberResolver? resolver)
     {
         resolver = null;
 
-        for (var end = 0; end <= names.Partitions.Parts.Length; end++)
-        {
-            if (!names.Partitions.GetName(index, end, out var name))
-                return false;
-
-            var properties = names.Request.TargetProperties.ListAvailableProperties()
+        // Try full name property match
+        if (context.Partitions.GetName(index, out var name)
+            && context.Request.TargetProperties.ListAvailableProperties()
                 .Where(p => p.Info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+                .HasSingle(out var property))
+        {
+            resolver = new AssignPropertyResolver(context.Request, property);
+            return true;
+        }
 
-            if (properties.Count == 1)
+        // partial name property match
+        for (var end = 1; end < context.Partitions.Parts.Length; end++)
+        {
+            if (context.Partitions.GetName(index, end, out name)
+                && context.Request.TargetProperties.ListAvailableThenProperties()
+                    .Where(p => p.Info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    .HasSingle(out property))
             {
-                resolver = index == 0 && end == 0
-                    ? new SingleNamePropertyResolver(names.Request, properties[0])
-                    : new NavigationPropertyResolver(names, properties[0], names.Partitions.Parts.Length - end);
+                resolver = new NavigationPropertyResolver(context, property, context.Partitions.Parts.Length - end);
                 return true;
             }
         }

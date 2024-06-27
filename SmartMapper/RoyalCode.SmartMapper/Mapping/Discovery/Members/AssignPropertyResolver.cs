@@ -8,12 +8,17 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 /// <summary>
 /// Resolves a single name property. The source property name matches the target property name.
 /// </summary>
-public sealed class SingleNamePropertyResolver : MemberResolver
+public sealed class AssignPropertyResolver : MemberResolver
 {
     private readonly MemberDiscoveryRequest request;
     private readonly AvailableProperty targetAvailableProperty;
 
-    public SingleNamePropertyResolver(MemberDiscoveryRequest request, AvailableProperty targetAvailableProperty)
+    /// <summary>
+    /// Creates a new <see cref="AssignPropertyResolver"/>.
+    /// </summary>
+    /// <param name="request">The discovery request.</param>
+    /// <param name="targetAvailableProperty">The target property.</param>
+    public AssignPropertyResolver(MemberDiscoveryRequest request, AvailableProperty targetAvailableProperty)
     {
         this.request = request;
         this.targetAvailableProperty = targetAvailableProperty;
@@ -26,6 +31,7 @@ public sealed class SingleNamePropertyResolver : MemberResolver
             request.Configurations,
             request.SourceProperty.Options.Property.PropertyType,
             targetAvailableProperty.Info.PropertyType);
+
         var assignDiscoveryResult = request.Configurations.Discovery.Assignment.Discover(assignDiscoveryRequest);
 
         if (!assignDiscoveryResult.IsResolved)

@@ -3,6 +3,7 @@ using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 
@@ -12,7 +13,7 @@ namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 internal sealed class SourceToMethodResolver
 {
     public static SourceToMethodResolver Create(
-        IReadOnlyCollection<SourceItem> sourceItems,
+        IReadOnlyCollection<SourceProperty> sourceItems,
         SourceToMethodOptions options,
         AvailableTargetMethods availableTargetMethods)
     {
@@ -20,7 +21,7 @@ internal sealed class SourceToMethodResolver
     }
 
     private SourceToMethodResolver(
-        IReadOnlyCollection<SourceItem> sourceItems,
+        IReadOnlyCollection<SourceProperty> sourceItems,
         SourceToMethodOptions options,
         AvailableTargetMethods availableTargetMethods)
     {
@@ -29,7 +30,7 @@ internal sealed class SourceToMethodResolver
         AvailableMethods = availableTargetMethods;
     }
 
-    public IReadOnlyCollection<SourceItem> SourceItems { get; }
+    public IReadOnlyCollection<SourceProperty> SourceItems { get; }
     
     public SourceToMethodOptions Options { get; }
 

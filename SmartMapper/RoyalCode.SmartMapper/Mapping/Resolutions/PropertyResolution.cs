@@ -21,6 +21,12 @@ public class PropertyResolution : ResolutionBase
         Failure = failure;
     }
 
+    /// <summary>
+    /// <para>
+    ///     Creates a new <see cref="PropertyResolution"/> to resolve an assignment 
+    ///     between the source property and the destination property.
+    /// </para>
+    /// </summary>
     public PropertyResolution(
         AvailableSourceProperty availableSourceProperty, 
         PropertyInfo targetProperty,
@@ -35,6 +41,12 @@ public class PropertyResolution : ResolutionBase
         availableSourceProperty.ResolvedBy(this);
     }
 
+    /// <summary>
+    /// <para>
+    ///     Creates a new <see cref="PropertyResolution"/> to resolve a mapping where there is a navigation
+    ///     (then/member access) of the target property.
+    /// </para>
+    /// </summary>
     public PropertyResolution(
         AvailableSourceProperty availableSourceProperty,
         PropertyInfo targetProperty,
@@ -64,7 +76,7 @@ public class PropertyResolution : ResolutionBase
     /// </summary>
     [MemberNotNullWhen(true, nameof(AssignmentStrategyResolution))]
     [MemberNotNullWhen(false, nameof(ThenResolution))]
-    public bool IsSetValue => PropertyResolutionStrategy == ToPropertyResolutionStrategy.AssignValue;
+    public bool IsAssignValue => PropertyResolutionStrategy == ToPropertyResolutionStrategy.AssignValue;
     
     /// <summary>
     /// The available source property.
@@ -94,8 +106,7 @@ public class PropertyResolution : ResolutionBase
 
     /// <summary>
     /// <para>
-    ///     Resolution for <see cref="ToPropertyResolutionStrategy.AccessInnerProperty"/>
-    ///     and <see cref="ToPropertyResolutionStrategy.CallMethod"/>.
+    ///     Resolution for <see cref="ToPropertyResolutionStrategy.Then"/>.
     /// </para>
     /// </summary>
     public ResolutionBase? ThenResolution { get; }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -21,7 +22,7 @@ public sealed class AvailableSourceItems
     ///     as parameters of a constructor.
     /// </returns>
     public static AvailableSourceItems CreateAvailableSourceItemsForConstructors(
-        IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+        IEnumerable<SourceProperty> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();
 
@@ -56,12 +57,12 @@ public sealed class AvailableSourceItems
     }
 
     private static AvailableSourceItems CreateInnerAvailableSourceItemsForConstructors(
-        SourceItem sourceItem, AvailableSourceProperty parent)
+        SourceProperty sourceItem, AvailableSourceProperty parent)
     {
         var propertyOptions = sourceItem.Options;
         var innerSourceOptions = propertyOptions.GetInnerPropertiesSourceOptions()
             ?? new SourceOptions(MappingCategory.Inner, propertyOptions.Property.PropertyType);
-        var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
+        var innerItems = SourceProperty.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
         var innerAvailableProperties = CreateAvailableSourceItemsForConstructors(innerItems, parent);
 
         return innerAvailableProperties;
@@ -80,7 +81,7 @@ public sealed class AvailableSourceItems
     /// </returns>
     public static AvailableSourceItems CreateAvailableSourceItemsForSourceToMethod(
         MethodInfo methodInfo,
-        IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+        IEnumerable<SourceProperty> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();
 
@@ -160,7 +161,7 @@ public sealed class AvailableSourceItems
     /// </returns>
     public static AvailableSourceItems? CreateAvailableSourceItemsForSourceToMethod(
         IReadOnlyCollection<MethodParameterOptions> toMethodParameters,
-        IReadOnlyCollection<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+        IReadOnlyCollection<SourceProperty> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();
         
@@ -185,19 +186,19 @@ public sealed class AvailableSourceItems
     }
 
     private static AvailableSourceItems CreateInnerAvailableSourceItemsForMethods(
-        MethodInfo methodInfo, SourceItem sourceItem, AvailableSourceProperty parent)
+        MethodInfo methodInfo, SourceProperty sourceItem, AvailableSourceProperty parent)
     {
         var propertyOptions = sourceItem.Options;
         var innerSourceOptions = propertyOptions.GetInnerPropertiesSourceOptions()
             ?? new SourceOptions(MappingCategory.Inner, propertyOptions.Property.PropertyType);
-        var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
+        var innerItems = SourceProperty.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
         var innerAvailableProperties = CreateAvailableSourceItemsForSourceToMethod(methodInfo, innerItems, parent);
 
         return innerAvailableProperties;
     }
 
     public static AvailableSourceItems CreateAvailableSourceItemsForMapProperties(
-        IEnumerable<SourceItem> sourceItems, AvailableSourceProperty? parent = null)
+        IEnumerable<SourceProperty> sourceItems, AvailableSourceProperty? parent = null)
     {
         AvailableSourceItems availableSourceItems = new();
 
@@ -223,12 +224,12 @@ public sealed class AvailableSourceItems
     }
     
     private static AvailableSourceItems CreateAvailableSourceItemsForMapProperties(
-        SourceItem sourceItem, AvailableSourceProperty parent)
+        SourceProperty sourceItem, AvailableSourceProperty parent)
     {
         var propertyOptions = sourceItem.Options;
         var innerSourceOptions = propertyOptions.GetInnerPropertiesSourceOptions()
             ?? new SourceOptions(MappingCategory.Inner,propertyOptions.Property.PropertyType);
-        var innerItems = SourceItem.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
+        var innerItems = SourceProperty.Create(propertyOptions.Property.PropertyType, innerSourceOptions);
         var innerAvailableProperties = CreateAvailableSourceItemsForMapProperties(innerItems, parent);
 
         return innerAvailableProperties;

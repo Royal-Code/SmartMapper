@@ -2,6 +2,7 @@
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 
@@ -13,13 +14,13 @@ internal sealed class AdapterResolver
             throw  new ArgumentException("The mapping options must be for an adapter.", nameof(options));
         
         // gets the source property options and creates the source items
-        var sourceItems = SourceItem.Create(options.SourceType, options.SourceOptions);
+        var sourceProperties = SourceProperty.Create(options.SourceType, options.SourceOptions);
         
         // creates the context for the adapter resolution
-        return new AdapterResolver(options, sourceItems);
+        return new AdapterResolver(options, sourceProperties);
     }
 
-    private AdapterResolver(MappingOptions options, IReadOnlyCollection<SourceItem> sourceItems)
+    private AdapterResolver(MappingOptions options, IReadOnlyCollection<SourceProperty> sourceItems)
     {
         Options = options;
         SourceItems = sourceItems;
@@ -45,7 +46,7 @@ internal sealed class AdapterResolver
     /// <summary>
     /// Contains the options for all properties of the source type.
     /// </summary>
-    public IReadOnlyCollection<SourceItem> SourceItems { get; private init; }
+    public IReadOnlyCollection<SourceProperty> SourceItems { get; private init; }
 
     /// <summary>
     /// The available properties for the target type.
