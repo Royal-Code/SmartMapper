@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -12,13 +13,12 @@ public sealed class AvailableMethod
     /// Creates a collection of <see cref="AvailableMethod"/> for the type.
     /// Get all the methods of the target type that are eligible for mapping.
     /// </summary>
-    /// <param name="targetType">The target type to get the methods.</param>
+    /// <param name="targetMethods">The target methods.</param>
     /// <returns>The collection of eligible constructors.</returns>
-    public static ICollection<AvailableMethod> Create(Type targetType)
+    public static IReadOnlyCollection<AvailableMethod> Create(IReadOnlyCollection<TargetMethod> targetMethods)
     {
-        return targetType.GetTypeInfo()
-            .GetRuntimeMethods()
-            .Where(m => m is { IsPublic: true, IsStatic: false, IsSpecialName: false })
+        return targetMethods
+            .Where(m => !m.IsResolved)
             .Select(m => new AvailableMethod(m))
             .ToList();
     }
@@ -26,16 +26,16 @@ public sealed class AvailableMethod
     /// <summary>
     /// Creates a new instance of <see cref="AvailableMethod"/>
     /// </summary>
-    /// <param name="info"></param>
-    public AvailableMethod(MethodInfo info)
+    /// <param name="method"></param>
+    public AvailableMethod(TargetMethod method)
     {
-        Info = info;
+        Method = method;
     }
 
     /// <summary>
     /// The method info.
     /// </summary>
-    public MethodInfo Info { get; }
+    public TargetMethod Method { get; }
 
     /// <summary>
     /// if the method is resolved.
@@ -64,14 +64,8 @@ public sealed class AvailableMethod
     /// </para>
     /// </summary>
     /// <returns>A collection of <see cref="AvailableParameter"/>.</returns>
-    public IEnumerable<AvailableParameter> CreateTargetParameters()
+    public IReadOnlyCollection<AvailableParameter> CreateAvailableParameters()
     {
-        var parameterInfos = Info.GetParameters();
-        var targetParameters = new AvailableParameter[parameterInfos.Length];
-        for (int i = 0; i < parameterInfos.Length; i++)
-        {
-            targetParameters[i] = new(parameterInfos[i]);
-        }
-        return targetParameters;
+        return AvailableParameter.Create(Method);
     }
 }

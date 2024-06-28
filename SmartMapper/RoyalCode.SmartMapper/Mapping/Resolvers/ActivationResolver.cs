@@ -2,7 +2,7 @@
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
-using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 
@@ -33,25 +33,26 @@ internal sealed class ActivationResolver
         // event: activation resolution started. here the interceptor can be called in future versions
 
         // 1 - get eligible target constructors
-        var availableConstructors = AvailableConstructor.Create(Options.TargetOptions.GetConstructorOptions());
+        var options = Options.TargetOptions.GetConstructorOptions();
+        var eligibleConstructors = TargetConstructor.Create(options.TargetType, options.ParameterTypes, options.NumberOfParameters);
 
         // if none constructor is eligible, generate a failure resolution
-        if (availableConstructors.Count is 0)
+        if (eligibleConstructors.Count is 0)
         {
             return new(new ResolutionFailure($"None constructor is available for adapt {Options.SourceType.Name} type to {Options.TargetType.Name} type."));
         }
 
         // 2 - check if it has a single empty constructor, then create a resolution for the constructor
-        if (availableConstructors.Count is 1 && AvailableConstructor.HasSingleEmptyConstructor(availableConstructors, out var eligible))
+        if (TargetConstructor.HasSingleEmptyConstructor(eligibleConstructors, out var eligible))
         {
-            return new(new ConstructorResolution(eligible.Info, []));
+            return new(new ConstructorResolution(eligible, []));
         }
 
         // a list of failures
         List<ResolutionFailure>? failures = null;
 
         // 3 - for each eligible constructor, try to resolve the constructor
-        foreach (var ctor in availableConstructors)
+        foreach (var ctor in eligibleConstructors)
         {
             var ctorContext = ConstructorResolver.Create(AdapterResolver, ctor);
             var ctorResolution = ctorContext.CreateResolution(configurations);

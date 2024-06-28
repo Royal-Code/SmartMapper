@@ -30,7 +30,7 @@ public sealed class AssignPropertyResolver : MemberResolver
         var assignDiscoveryRequest = new AssignmentDiscoveryRequest(
             request.Configurations,
             request.SourceProperty.Options.Property.PropertyType,
-            targetAvailableProperty.Info.PropertyType);
+            targetAvailableProperty.Property.PropertyType);
 
         var assignDiscoveryResult = request.Configurations.Discovery.Assignment.Discover(assignDiscoveryRequest);
 
@@ -43,7 +43,7 @@ public sealed class AssignPropertyResolver : MemberResolver
 
         var resolution = new PropertyResolution(
             request.SourceProperty,
-            targetAvailableProperty.Info,
+            targetAvailableProperty.Property,
             assignDiscoveryResult.Resolution);
         
         targetAvailableProperty.ResolvedBy(resolution);

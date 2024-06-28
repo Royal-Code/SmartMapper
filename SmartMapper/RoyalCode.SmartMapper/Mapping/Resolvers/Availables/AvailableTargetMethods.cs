@@ -1,19 +1,21 @@
-﻿namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+﻿using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
+
+namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
 /// <summary>
 /// Contains all <see cref="AvailableMethod"/> that are available to be mapped.
 /// </summary>
 public sealed class AvailableTargetMethods
 {
-    private readonly ICollection<AvailableMethod> availableMethod;
+    private readonly IReadOnlyCollection<AvailableMethod> availableMethod;
     
     /// <summary>
     /// Create a new instance of <see cref="AvailableTargetMethods"/>.
     /// </summary>
-    /// <param name="targetType">The target type to be mapped.</param>
-    public AvailableTargetMethods(Type targetType)
+    /// <param name="targetmethods">The collection of target type to be mapped.</param>
+    public AvailableTargetMethods(IReadOnlyCollection<TargetMethod> targetmethods)
     {
-        availableMethod = AvailableMethod.Create(targetType);
+        availableMethod = AvailableMethod.Create(targetmethods);
     }
 
     /// <summary>

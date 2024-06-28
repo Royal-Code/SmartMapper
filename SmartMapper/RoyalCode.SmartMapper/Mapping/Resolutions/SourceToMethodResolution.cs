@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolutions;
 
@@ -17,12 +18,12 @@ public sealed class SourceToMethodResolution : ResolutionBase
     /// <summary>
     /// Creates a new instance of <see cref="SourceToMethodResolution"/> for successful resolutions.
     /// </summary>
-    /// <param name="info">The resolved method information.</param>
+    /// <param name="method">The resolved method information.</param>
     /// <param name="parametersResolutions">The parameters resolutions.</param>
-    public SourceToMethodResolution(MethodInfo info, IEnumerable<ParameterResolution> parametersResolutions)
+    public SourceToMethodResolution(TargetMethod method, IEnumerable<ParameterResolution> parametersResolutions)
     {
         Resolved = true;
-        Info = info;
+        Method = method;
         ParametersResolutions = parametersResolutions;
     }
     
@@ -40,7 +41,7 @@ public sealed class SourceToMethodResolution : ResolutionBase
     /// <summary>
     /// The resolved method information.
     /// </summary>
-    public MethodInfo? Info { get; }
+    public TargetMethod? Method { get; }
 
     /// <summary>
     /// The parameters resolutions.
@@ -50,7 +51,7 @@ public sealed class SourceToMethodResolution : ResolutionBase
     /// <summary>
     /// Check if the resolution has a failure.
     /// </summary>
-    [MemberNotNullWhen(false, nameof(Info), nameof(ParametersResolutions))]
+    [MemberNotNullWhen(false, nameof(Method), nameof(ParametersResolutions))]
     public bool HasFailure([NotNullWhen(true)] out ResolutionFailure? failure)
     {
         failure = Failure;
@@ -60,6 +61,7 @@ public sealed class SourceToMethodResolution : ResolutionBase
     /// <inheritdoc />
     public override void Completed()
     {
+        Method?.ResolvedBy(this);
         foreach (var resolution in ParametersResolutions)
             resolution.Completed();
     }

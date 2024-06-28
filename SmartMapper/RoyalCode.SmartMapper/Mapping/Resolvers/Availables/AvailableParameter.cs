@@ -1,4 +1,5 @@
 using System.Reflection;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -10,16 +11,36 @@ namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 public sealed class AvailableParameter
 {
     /// <summary>
+    /// Creates a new list of <see cref="AvailableParameter"/>.
+    /// </summary>
+    /// <param name="constructor">The target constructor.</param>
+    /// <returns>A new list of <see cref="AvailableParameter"/>.</returns>
+    public static IReadOnlyCollection<AvailableParameter> Create(TargetConstructor constructor)
+    {
+        return constructor.Parameters.Select(p => new AvailableParameter(p)).ToList();
+    }
+
+    /// <summary>
+    /// Creates a new list of <see cref="AvailableParameter"/>.
+    /// </summary>
+    /// <param name="method">The target methods.</param>
+    /// <returns>A new list of <see cref="AvailableParameter"/>.</returns>
+    public static IReadOnlyCollection<AvailableParameter> Create(TargetMethod method)
+    {
+        return method.Parameters.Select(p => new AvailableParameter(p)).ToList();
+    }
+
+    /// <summary>
     /// Creates a new instance of <see cref="AvailableParameter"/>.
     /// </summary>
-    /// <param name="parameterInfo"></param>
-    public AvailableParameter(ParameterInfo parameterInfo)
+    /// <param name="parameter"></param>
+    public AvailableParameter(TargetParameter parameter)
     {
-        ParameterInfo = parameterInfo;
+        Parameter = parameter;
     }
 
     /// <summary>
     /// The parameter information.
     /// </summary>
-    public ParameterInfo ParameterInfo { get; }
+    public TargetParameter Parameter { get; }
 }

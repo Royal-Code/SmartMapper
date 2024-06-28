@@ -35,7 +35,7 @@ internal class PropertyResolver
     {
         // event: resolution started. here the interceptor can be called in future versions
 
-        var availableProperties = AdapterResolver.AvailableTargetProperties;
+        var availableProperties = new AvailableTargetProperties(AdapterResolver.TargetProperties);
         
         // 2.1 property can have a resolution option.
         if (Property.SourceItem.Options.ResolutionOptions is ToPropertyResolutionOptions resolutionOptions
@@ -50,7 +50,7 @@ internal class PropertyResolver
                     return new PropertyResolution(resolutionFailure);
                 }
 
-                var resolution = new PropertyResolution(Property, available.Info, assignmentStrategyResolution);
+                var resolution = new PropertyResolution(Property, available.Property, assignmentStrategyResolution);
                 available.ResolvedBy(resolution);
                 return resolution;
             }
@@ -113,7 +113,7 @@ internal class PropertyResolver
         var request = new AssignmentDiscoveryRequest(
             configurations, 
             sourceProperty.SourceItem.Options.Property.PropertyType,
-            targetProperty.Info.PropertyType);
+            targetProperty.Property.PropertyInfo.PropertyType);
 
         var result = configurations.Discovery.Assignment.Discover(request);
 
@@ -129,7 +129,7 @@ internal class PropertyResolver
         failure = new(
             "The assignment strategy between the source property " +
             $"({sourceProperty.GetPropertyPathString()}) " +
-            $"and the target property ({targetProperty.Info.DeclaringType!.Name}.{targetProperty.Info.Name}) could not be resolved.");
+            $"and the target property ({targetProperty.Property.PropertyInfo.DeclaringType!.Name}.{targetProperty.Property.PropertyInfo.Name}) could not be resolved.");
 
         failure.AddMessages(result.Failure.Messages);
 

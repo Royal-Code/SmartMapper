@@ -19,7 +19,7 @@ public abstract class ResolutionBase
     public ResolutionFailure? Failure { get; init; }
 
     /// <summary>
-    /// Mark the resolution as completed, and mark the source as resolved.
+    /// Mark the resolution as completed, and mark the source and the target as resolved.
     /// </summary>
     public abstract void Completed();
 }

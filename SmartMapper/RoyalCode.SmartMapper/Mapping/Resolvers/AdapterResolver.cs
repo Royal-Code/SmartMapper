@@ -20,12 +20,12 @@ internal sealed class AdapterResolver
         return new AdapterResolver(options, sourceProperties);
     }
 
-    private AdapterResolver(MappingOptions options, IReadOnlyCollection<SourceProperty> sourceItems)
+    private AdapterResolver(MappingOptions options, IReadOnlyCollection<SourceProperty> sourceProperties)
     {
         Options = options;
-        SourceItems = sourceItems;
-        AvailableTargetProperties = new AvailableTargetProperties(options.TargetType);
-        AvailableTargetMethods = new AvailableTargetMethods(options.TargetType);
+        SourceProperties = sourceProperties;
+        TargetMethods = TargetMethod.Create(options.TargetType);
+        TargetProperties = TargetProperty.Create(options.TargetType);
     }
 
     /// <summary>
@@ -46,17 +46,17 @@ internal sealed class AdapterResolver
     /// <summary>
     /// Contains the options for all properties of the source type.
     /// </summary>
-    public IReadOnlyCollection<SourceProperty> SourceItems { get; private init; }
+    public IReadOnlyCollection<SourceProperty> SourceProperties { get; private init; }
 
     /// <summary>
-    /// The available properties for the target type.
+    /// Contains the target methods.
     /// </summary>
-    public AvailableTargetProperties AvailableTargetProperties { get; private init; }
-    
+    public IReadOnlyCollection<TargetMethod> TargetMethods { get; private init; }
+
     /// <summary>
-    /// The available methods for the target type.
+    /// Contains the target proprerties.
     /// </summary>
-    public AvailableTargetMethods AvailableTargetMethods { get; private init; }
+    public IReadOnlyCollection<TargetProperty> TargetProperties { get; private init; }
     
     public AdapterResolution CreateResolution(MapperConfigurations configurations)
     {

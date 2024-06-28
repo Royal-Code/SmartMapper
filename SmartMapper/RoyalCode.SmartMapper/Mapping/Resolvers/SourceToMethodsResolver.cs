@@ -1,6 +1,7 @@
 ﻿using RoyalCode.SmartMapper.Core.Configurations;
 using RoyalCode.SmartMapper.Mapping.Discovery.SourceToMethods;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 
@@ -25,7 +26,7 @@ internal sealed class SourceToMethodsResolver
     {
         // event: resolution started. here the interceptor can be called in future versions
 
-        var availableMethods = AdapterResolver.AvailableTargetMethods;
+        var availableMethods = new AvailableTargetMethods(AdapterResolver.TargetMethods);
         
         // 1. get source to method options.
         if (!AdapterResolver.SourceOptions.TryGetSourceToMethodOptions(out var sourceToMethodOptions))
@@ -35,7 +36,7 @@ internal sealed class SourceToMethodsResolver
             var discoveryRequest = new SourceToMethodRequest(
                 configurations,
                 AdapterResolver.SourceOptions.SourceType,
-                AdapterResolver.SourceItems,
+                AdapterResolver.SourceProperties,
                 availableMethods.ListAvailableMethods());
 
             // 1.1.1 Using the name of the source type, try to discover the method by name.
@@ -51,7 +52,7 @@ internal sealed class SourceToMethodsResolver
         List<SourceToMethodResolution>? resolutions = null;
         foreach(var stmOption in sourceToMethodOptions)
         {
-            var sourceToMethodContext = SourceToMethodResolver.Create(AdapterResolver.SourceItems, stmOption, availableMethods);
+            var sourceToMethodContext = SourceToMethodResolver.Create(AdapterResolver.SourceProperties, stmOption, availableMethods);
             var resolution = sourceToMethodContext.CreateResolution(configurations);
 
             if (resolution.Resolved)

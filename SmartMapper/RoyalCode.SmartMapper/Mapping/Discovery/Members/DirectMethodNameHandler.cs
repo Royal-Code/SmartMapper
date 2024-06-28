@@ -12,7 +12,7 @@ public class DirectMethodNameHandler : INameHandler
             return false;
 
         var methods = context.Request.TargetMethods.ListAvailableMethods()
-            .Where(m => m.Info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            .Where(m => m.Method.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         if (methods.Count is 0)

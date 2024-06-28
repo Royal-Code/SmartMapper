@@ -3,6 +3,7 @@ using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Options.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolutions;
 
@@ -29,7 +30,7 @@ public class PropertyResolution : ResolutionBase
     /// </summary>
     public PropertyResolution(
         AvailableSourceProperty availableSourceProperty, 
-        PropertyInfo targetProperty,
+        TargetProperty targetProperty,
         AssignmentStrategyResolution assignmentStrategyResolution)
     {
         Resolved = true;
@@ -49,7 +50,7 @@ public class PropertyResolution : ResolutionBase
     /// </summary>
     public PropertyResolution(
         AvailableSourceProperty availableSourceProperty,
-        PropertyInfo targetProperty,
+        TargetProperty targetProperty,
         ResolutionBase thenResolution)
     {
         Resolved = true;
@@ -86,7 +87,7 @@ public class PropertyResolution : ResolutionBase
     /// <summary>
     /// The target parameter.
     /// </summary>
-    public PropertyInfo? TargetProperty { get; }
+    public TargetProperty? TargetProperty { get; }
 
     /// <summary>
     /// The resolution strategy for the target property.
@@ -114,6 +115,7 @@ public class PropertyResolution : ResolutionBase
     /// <inheritdoc />
     public override void Completed()
     {
+        TargetProperty?.ResolvedBy(this);
         AvailableSourceProperty?.Completed();
     }
 }

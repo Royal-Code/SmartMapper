@@ -2,6 +2,7 @@
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 
@@ -10,32 +11,32 @@ namespace RoyalCode.SmartMapper.Mapping.Resolvers;
 /// </summary>
 internal sealed class ConstructorResolver
 {
-    public static ConstructorResolver Create(AdapterResolver adapterResolver, AvailableConstructor availableConstructor)
+    public static ConstructorResolver Create(AdapterResolver adapterResolver, TargetConstructor constructor)
     {
-        return new ConstructorResolver(adapterResolver, availableConstructor);
+        return new ConstructorResolver(adapterResolver, constructor);
     }
 
-    private ConstructorResolver(AdapterResolver adapterResolver, AvailableConstructor availableConstructor)
+    private ConstructorResolver(AdapterResolver adapterResolver, TargetConstructor constructor)
     {
         AdapterResolver = adapterResolver;
-        AvailableConstructor = availableConstructor;
+        Constructor = constructor;
     }
     
     public AdapterResolver AdapterResolver { get; }
 
-    public AvailableConstructor AvailableConstructor { get; }
+    public TargetConstructor Constructor { get; }
 
     public ConstructorResolution CreateResolution(MapperConfigurations configurations)
     {
         // 1 - get the target parameters and the available source items for constructors.
-        var targetParameters = AvailableConstructor.CreateTargetParameters();
-        var availableSourceItems = AvailableSourceItems.CreateAvailableSourceItemsForConstructors(AdapterResolver.SourceItems);
+        var availableParameters = AvailableParameter.Create(Constructor);
+        var availableSourceItems = AvailableSourceItems.CreateAvailableSourceItemsForConstructors(AdapterResolver.SourceProperties);
 
         // 2 - create the parameter context for each target parameter.
-        var parametersContext = targetParameters.Select(p => ParameterResolver.Create(p, availableSourceItems)).ToList();
+        var parametersResolver = availableParameters.Select(p => ParameterResolver.Create(p, availableSourceItems)).ToList();
 
         // 3 - resolve each parameter context.
-        var parametersResolutions = parametersContext.Select(p => p.CreateResolution(configurations)).ToList();
+        var parametersResolutions = parametersResolver.Select(p => p.CreateResolution(configurations)).ToList();
 
         // 4 - check if all parameters are resolved.
         if (!parametersResolutions.TrueForAll(static p => p.Resolved))
@@ -51,7 +52,7 @@ internal sealed class ConstructorResolver
                     failure.AddMessages(p.Failure.Messages);
             }
 
-            return new ConstructorResolution(AvailableConstructor.Info, failure);
+            return new ConstructorResolution(Constructor, failure);
         }
 
         // 5 - check if all required source items are resolved.
@@ -68,10 +69,10 @@ internal sealed class ConstructorResolver
                     failure.AddMessage(required.GetFailureMessage());
             }
 
-            return new ConstructorResolution(AvailableConstructor.Info, failure);
+            return new ConstructorResolution(Constructor, failure);
         }
 
         // 6 - create the resolution.
-        return new ConstructorResolution(AvailableConstructor.Info, parametersResolutions);
+        return new ConstructorResolution(Constructor, parametersResolutions);
     }
 }

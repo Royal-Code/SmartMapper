@@ -29,7 +29,7 @@ internal sealed class ParameterResolver
 
     public ParameterResolution CreateResolution(MapperConfigurations configurations)
     {
-        var parameterName = AvailableParameter.ParameterInfo.Name!;
+        var parameterName = AvailableParameter.Parameter.ParameterInfo.Name!;
 
         // 1 - try to get a pre-configured property mapped to the parameter.
         if (AvailableSourceItems.TryGetAvailableSourcePropertyToParameter(parameterName,
@@ -44,20 +44,20 @@ internal sealed class ParameterResolver
                     toParameterResolutionOptions.AssignmentStrategy.Resolution,
                     toParameterResolutionOptions.AssignmentStrategy.Converter);
 
-                return ParameterResolution.Resolves(availableSourceProperty, AvailableParameter, assignmentStrategyResolution);
+                return new ParameterResolution(availableSourceProperty, AvailableParameter, assignmentStrategyResolution);
             }
             
             // discover the assignment strategy.
             var request = new AssignmentDiscoveryRequest(
                 configurations,
                 availableSourceProperty.SourceItem.Options.Property.PropertyType,
-                AvailableParameter.ParameterInfo.ParameterType);
+                AvailableParameter.Parameter.ParameterInfo.ParameterType);
 
             var result = configurations.Discovery.Assignment.Discover(request);
 
             // when the assignment strategy is resolved, return the resolution.
             if (result.IsResolved)
-                return ParameterResolution.Resolves(availableSourceProperty, AvailableParameter, result.Resolution);
+                return new ParameterResolution(availableSourceProperty, AvailableParameter, result.Resolution);
             
             // when the assignment strategy is not resolved, return the failure,
             // adding the messages from the resolution failure.

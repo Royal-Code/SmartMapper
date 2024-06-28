@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 
@@ -17,13 +18,12 @@ public class AvailableProperty
     /// <summary>
     /// Create a collection of <see cref="AvailableProperty"/> from the target type.
     /// </summary>
-    /// <param name="targetType"></param>
+    /// <param name="targetProperties"></param>
     /// <returns></returns>
-    public static ICollection<AvailableProperty> Create(Type targetType)
+    public static ICollection<AvailableProperty> Create(IReadOnlyCollection<TargetProperty> targetProperties)
     {
-        return targetType.GetTypeInfo()
-            .GetRuntimeProperties()
-            .Where(p => p is { CanWrite: true })
+        return targetProperties
+            .Where(p => !p.IsResolved)
             .Select(p => new AvailableProperty(p))
             .ToList();
     }
@@ -34,16 +34,16 @@ public class AvailableProperty
     /// <summary>
     /// Create a new instance of <see cref="AvailableProperty"/>.
     /// </summary>
-    /// <param name="info"></param>
-    public AvailableProperty(PropertyInfo info)
+    /// <param name="property"></param>
+    public AvailableProperty(TargetProperty property)
     {
-        Info = info;
+        Property = property;
     }
     
     /// <summary>
     /// The property information.
     /// </summary>
-    public PropertyInfo Info { get; init; }
+    public TargetProperty Property { get; init; }
 
     /// <summary>
     /// If the property is resolved.
@@ -67,7 +67,7 @@ public class AvailableProperty
     /// <returns></returns>
     public AvailableTargetProperties GetInnerAvailableProperties()
     {
-        innerAvailableProperties ??= new AvailableTargetProperties(Info.PropertyType);
+        innerAvailableProperties ??= new AvailableTargetProperties(Property.PropertyType);
         return innerAvailableProperties;
     }
 
@@ -82,7 +82,7 @@ public class AvailableProperty
     /// <returns></returns>
     public AvailableTargetMethods GetInnerAvailableMethods()
     {
-        innerAvailableMethods ??= new AvailableTargetMethods(Info.PropertyType);
+        innerAvailableMethods ??= new AvailableTargetMethods(Property.PropertyType);
         return innerAvailableMethods;
     }
 
@@ -92,6 +92,8 @@ public class AvailableProperty
     /// <param name="resolution">The resolution to resolve the property.</param>
     public void ResolvedBy(ResolutionBase resolution)
     {
+        // TODO: acho que não deveria ter isso aqui.
+
         Resolution = resolution;
         Resolved = true;
     }

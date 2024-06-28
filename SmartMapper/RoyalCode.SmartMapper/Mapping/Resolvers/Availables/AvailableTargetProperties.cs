@@ -1,4 +1,5 @@
 ﻿using RoyalCode.SmartMapper.Mapping.Resolutions;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -14,10 +15,10 @@ public class AvailableTargetProperties
     /// <summary>
     /// Create a new instance of <see cref="AvailableTargetProperties"/>.
     /// </summary>
-    /// <param name="targetType">The target type to be mapped.</param>
-    public AvailableTargetProperties(Type targetType)
+    /// <param name="targetProperties">The target type to be mapped.</param>
+    public AvailableTargetProperties(IReadOnlyCollection<TargetProperty> targetProperties)
     {
-        availableProperties = AvailableProperty.Create(targetType);
+        availableProperties = AvailableProperty.Create(targetProperties);
     }
     
     /// <summary>
@@ -49,7 +50,7 @@ public class AvailableTargetProperties
     public bool TryFindProperty(PropertyInfo propertyInfo, [NotNullWhen(true)] out AvailableProperty? availableProperty)
     {
         availableProperty = ListAvailableProperties()
-            .FirstOrDefault(p => p.Info == propertyInfo);
+            .FirstOrDefault(p => p.Property.PropertyInfo == propertyInfo);
         return availableProperty is not null;
     }
 }

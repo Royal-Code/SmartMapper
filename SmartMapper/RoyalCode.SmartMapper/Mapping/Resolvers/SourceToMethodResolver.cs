@@ -46,18 +46,18 @@ internal sealed class SourceToMethodResolver
 
         if (Options.MethodOptions.Method is not null)
         {
-            availableMethods = availableMethods.Where(a => a.Info == Options.MethodOptions.Method);
+            availableMethods = availableMethods.Where(a => a.Method.MethodInfo == Options.MethodOptions.Method);
         }
         else if (Options.MethodOptions.MethodName is not null)
         {
-            availableMethods = availableMethods.Where(a => a.Info.Name == Options.MethodOptions.MethodName);
+            availableMethods = availableMethods.Where(a => a.Method.MethodInfo.Name == Options.MethodOptions.MethodName);
         }
 
         IReadOnlyCollection<MethodParameterOptions>? sourceParameters = null;
         if (Options.IsSelectedParameters(out var parametersOptions))
         {
             sourceParameters = parametersOptions.GetAllParameterSequence();
-            availableMethods = availableMethods.Where(a => a.Info.GetParameters().Length == parametersOptions.CountParameterSequence());
+            availableMethods = availableMethods.Where(a => a.Method.Parameters.Count == parametersOptions.CountParameterSequence());
         }
 
         // 2.1 for each available method, try to resolve the method.
@@ -65,7 +65,7 @@ internal sealed class SourceToMethodResolver
         {
             // 3.1 get the available source items for the method.
             var availableSourceItems = sourceParameters is null
-                ? AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(availableMethod.Info, SourceItems)
+                ? AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(availableMethod.Method.MethodInfo, SourceItems)
                 : AvailableSourceItems.CreateAvailableSourceItemsForSourceToMethod(sourceParameters, SourceItems);
             
             // 3.2 if not satisfied, continue to the next method.
@@ -73,16 +73,16 @@ internal sealed class SourceToMethodResolver
                 continue;
             
             // 3.3 get target parameters.
-            var targetParameters = availableMethod.CreateTargetParameters();
+            var availableParameters = availableMethod.CreateAvailableParameters();
             
             // 3.4 - create the parameter context for each target parameter.
-            var parametersContext = targetParameters.Select(p => ParameterResolver.Create(p, availableSourceItems)).ToList();
+            var parameterResolvers = availableParameters.Select(p => ParameterResolver.Create(p, availableSourceItems)).ToList();
             
             // 3.5 - resolve each parameter context.
-            var parametersResolutions = parametersContext.Select(p => p.CreateResolution(configurations)).ToList();
+            var parameterResolutions = parameterResolvers.Select(p => p.CreateResolution(configurations)).ToList();
             
             // 3.6 - check if all parameters are resolved.
-            if (!parametersResolutions.TrueForAll(static p => p.Resolved))
+            if (!parameterResolutions.TrueForAll(static p => p.Resolved))
                 continue;
             
             // 3.7 - check if all required source items are resolved.
@@ -90,7 +90,7 @@ internal sealed class SourceToMethodResolver
                 continue;
             
             // 3.8 - create the resolution.
-            var resolution = new SourceToMethodResolution(availableMethod.Info, parametersResolutions);
+            var resolution = new SourceToMethodResolution(availableMethod.Method, parameterResolutions);
             resolution.Completed();
             return resolution;
         }

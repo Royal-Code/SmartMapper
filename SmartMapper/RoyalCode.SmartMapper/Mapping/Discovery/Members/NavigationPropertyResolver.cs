@@ -46,7 +46,7 @@ public sealed class NavigationPropertyResolver : MemberResolver
             
             var propertyResolution = new PropertyResolution(
                 names.Request.SourceProperty,
-                targetAvailableProperty.Info,
+                targetAvailableProperty.Property,
                 thenResolution.Resolution);
             
             targetAvailableProperty.ResolvedBy(propertyResolution);
@@ -62,7 +62,7 @@ public sealed class NavigationPropertyResolver : MemberResolver
         {
             IsResolved = false,
             Failure = new ResolutionFailure(
-                $"Could not resolve the property '{targetAvailableProperty.Info.Name}'")
+                $"Could not resolve the property '{targetAvailableProperty.Property.Name}'")
         };
     }
 }

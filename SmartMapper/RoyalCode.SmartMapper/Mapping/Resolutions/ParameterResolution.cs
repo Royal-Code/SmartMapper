@@ -18,31 +18,13 @@ public class ParameterResolution : ResolutionBase
     ///     to notify the source property that it has been resolved.
     /// </para>
     /// </summary>
-    /// <param name="availableSourceProperty">The available source property that was resolved.</param>
-    /// <param name="parameter">The target parameter that resolved the source property.</param>
-    /// <param name="assignmentStrategyResolution">The assignment strategy resolution.</param>
-    /// <returns>A new instance of <see cref="ParameterResolution"/>.</returns>
-    /// <exception cref="ArgumentNullException">
-    ///     Case any of the parameters are null.
-    /// </exception>
-    public static ParameterResolution Resolves(
-        AvailableSourceProperty availableSourceProperty,
-        AvailableParameter parameter,
-        AssignmentStrategyResolution assignmentStrategyResolution)
-    {
-        return new ParameterResolution(availableSourceProperty, parameter, assignmentStrategyResolution);
-    }
-    
-    /// <summary>
-    /// Creates a new instance of <see cref="ParameterResolution"/> for successful resolution.
-    /// </summary>
     /// <param name="availableSourceProperty"></param>
     /// <param name="parameter"></param>
     /// <param name="assignmentStrategyResolution"></param>
     /// <exception cref="ArgumentNullException">
     ///     Case any of the parameters are null.
     /// </exception>
-    private ParameterResolution(
+    public ParameterResolution(
         AvailableSourceProperty availableSourceProperty,
         AvailableParameter parameter,
         AssignmentStrategyResolution assignmentStrategyResolution)
@@ -94,5 +76,6 @@ public class ParameterResolution : ResolutionBase
     public override void Completed()
     {
         AvailableSourceProperty?.Completed();
+        Parameter?.Parameter.ResolvedBy(this);
     }
 }

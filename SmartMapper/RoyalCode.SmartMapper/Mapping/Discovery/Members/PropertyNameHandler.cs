@@ -19,7 +19,7 @@ public class PropertyNameHandler : INameHandler
         // Try full name property match
         if (context.Partitions.GetName(index, out var name)
             && context.Request.TargetProperties.ListAvailableProperties()
-                .Where(p => p.Info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                .Where(p => p.Property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 .HasSingle(out var property))
         {
             resolver = new AssignPropertyResolver(context.Request, property);
@@ -31,7 +31,7 @@ public class PropertyNameHandler : INameHandler
         {
             if (context.Partitions.GetName(index, end, out name)
                 && context.Request.TargetProperties.ListAvailableThenProperties()
-                    .Where(p => p.Info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    .Where(p => p.Property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     .HasSingle(out property))
             {
                 resolver = new NavigationPropertyResolver(context, property, context.Partitions.Parts.Length - end);
