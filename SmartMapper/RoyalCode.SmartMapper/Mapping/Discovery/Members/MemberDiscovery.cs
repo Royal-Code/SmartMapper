@@ -18,7 +18,7 @@ public sealed class MemberDiscovery : IMemberDiscovery
         return new()
         {
             IsResolved = false,
-            Failure = new($"Could not resolve member {request.SourceProperty.SourceItem.Options.Property.Name}")
+            Failure = new($"Could not resolve member {request.SourceProperty.SourceProperty.Options.Property.Name}")
         };
     }
 }

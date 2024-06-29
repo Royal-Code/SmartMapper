@@ -15,5 +15,5 @@ public enum ToPropertyResolutionStrategy
     /// to assign the value to the target navigation property
     /// or call a method of a target property.
     /// </summary>
-    Then,
+    Then, // TODO: restore the old strategies, like MemberAccess and MethodCall
 }

@@ -50,7 +50,7 @@ internal sealed class ParameterResolver
             // discover the assignment strategy.
             var request = new AssignmentDiscoveryRequest(
                 configurations,
-                availableSourceProperty.SourceItem.Options.Property.PropertyType,
+                availableSourceProperty.SourceProperty.Options.Property.PropertyType,
                 AvailableParameter.Parameter.ParameterInfo.ParameterType);
 
             var result = configurations.Discovery.Assignment.Discover(request);

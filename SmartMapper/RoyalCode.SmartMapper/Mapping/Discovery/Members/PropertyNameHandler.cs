@@ -1,5 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
+using RoyalCode.SmartMapper.Mapping.Resolutions;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
@@ -18,8 +19,9 @@ public class PropertyNameHandler : INameHandler
 
         // Try full name property match
         if (context.Partitions.GetName(index, out var name)
-            && context.Request.TargetProperties.ListAvailableProperties()
-                .Where(p => p.Property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            && context.Request.TargetProperties
+                .Where(p => !p.IsResolved)
+                .Where(p => p.PropertyInfo.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 .HasSingle(out var property))
         {
             resolver = new AssignPropertyResolver(context.Request, property);
@@ -30,8 +32,9 @@ public class PropertyNameHandler : INameHandler
         for (var end = 1; end < context.Partitions.Parts.Length; end++)
         {
             if (context.Partitions.GetName(index, end, out name)
-                && context.Request.TargetProperties.ListAvailableThenProperties()
-                    .Where(p => p.Property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                && context.Request.TargetProperties
+                    .Where(p => !p.IsResolved || p.Resolution is MemberAccessResolution)
+                    .Where(p => p.PropertyInfo.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     .HasSingle(out property))
             {
                 resolver = new NavigationPropertyResolver(context, property, context.Partitions.Parts.Length - end);

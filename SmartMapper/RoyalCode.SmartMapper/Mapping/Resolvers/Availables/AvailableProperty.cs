@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
@@ -67,7 +66,7 @@ public class AvailableProperty
     /// <returns></returns>
     public AvailableTargetProperties GetInnerAvailableProperties()
     {
-        innerAvailableProperties ??= new AvailableTargetProperties(Property.PropertyType);
+        innerAvailableProperties ??= new AvailableTargetProperties(Property.InnerProperties);
         return innerAvailableProperties;
     }
 
@@ -82,7 +81,7 @@ public class AvailableProperty
     /// <returns></returns>
     public AvailableTargetMethods GetInnerAvailableMethods()
     {
-        innerAvailableMethods ??= new AvailableTargetMethods(Property.PropertyType);
+        innerAvailableMethods ??= new AvailableTargetMethods(Property.InnerMethods);
         return innerAvailableMethods;
     }
 

@@ -38,7 +38,7 @@ internal class PropertyResolver
         var availableProperties = new AvailableTargetProperties(AdapterResolver.TargetProperties);
         
         // 2.1 property can have a resolution option.
-        if (Property.SourceItem.Options.ResolutionOptions is ToPropertyResolutionOptions resolutionOptions
+        if (Property.SourceProperty.Options.ResolutionOptions is ToPropertyResolutionOptions resolutionOptions
             && availableProperties.TryFindProperty(resolutionOptions.TargetProperty.TargetProperty, out var available))
         {
             // 2.1.1 check the resolution options e try to resolve the property.
@@ -47,10 +47,10 @@ internal class PropertyResolver
                 if (!ResolveStrategy(configurations, resolutionOptions.AssignmentStrategy, Property, available,
                     out var assignmentStrategyResolution, out var resolutionFailure))
                 {
-                    return new PropertyResolution(resolutionFailure);
+                    return PropertyResolution.Fail(resolutionFailure);
                 }
 
-                var resolution = new PropertyResolution(Property, available.Property, assignmentStrategyResolution);
+                var resolution = new AssignResolution(Property, available.Property, assignmentStrategyResolution);
                 available.ResolvedBy(resolution);
                 return resolution;
             }
@@ -65,29 +65,29 @@ internal class PropertyResolver
         }
 
         // 2.2 try to resolve the property by name.
-        // 2.2.1 try map the property by name to an available target method by name.
-        var discoveryPropertyToMethodResolution = configurations.Discovery.PropertyToMethod.Discover(
-            new PropertyToMethodRequest(configurations, Property.SourceItem, AdapterResolver.AvailableTargetMethods));
-        if (discoveryPropertyToMethodResolution.IsResolved)
-        {
-            return discoveryPropertyToMethodResolution.Resolution;
-        }
-
-        // 2.2.2 try map the property by name to an available target property.
-        var discoveryPropertyToPropertyResolution = configurations.Discovery.Property.Discover(
-            new PropertyRequest(configurations, Property.SourceItem, AdapterResolver.AvailableTargetProperties));
-        if (discoveryPropertyToPropertyResolution.IsResolved)
-        {
-            return discoveryPropertyToPropertyResolution.Resolution;
-        }
+        // // 2.2.1 try map the property by name to an available target method by name.
+        // var discoveryPropertyToMethodResolution = configurations.Discovery.PropertyToMethod.Discover(
+        //     new PropertyToMethodRequest(configurations, Property.SourceProperty, AdapterResolver.AvailableTargetMethods));
+        // if (discoveryPropertyToMethodResolution.IsResolved)
+        // {
+        //     return discoveryPropertyToMethodResolution.Resolution;
+        // }
+        //
+        // // 2.2.2 try map the property by name to an available target property.
+        // var discoveryPropertyToPropertyResolution = configurations.Discovery.Property.Discover(
+        //     new PropertyRequest(configurations, Property.SourceProperty, AdapterResolver.AvailableTargetProperties));
+        // if (discoveryPropertyToPropertyResolution.IsResolved)
+        // {
+        //     return discoveryPropertyToPropertyResolution.Resolution;
+        // }
         
         var failure = new ResolutionFailure(
             $"Failed to resolve the source property {Property.GetPropertyPathString()}. " +
             $"The property cannot be mapped to any target property or method of the target type.");
         
-        failure.AddMessages(discoveryPropertyToMethodResolution.Failure.Messages);
+        //failure.AddMessages(discoveryPropertyToMethodResolution.Failure.Messages);
 
-        return new(failure);
+        return PropertyResolution.Fail(failure);
     }
 
     private bool ResolveStrategy(
@@ -112,7 +112,7 @@ internal class PropertyResolver
         // discover the assignment strategy.
         var request = new AssignmentDiscoveryRequest(
             configurations, 
-            sourceProperty.SourceItem.Options.Property.PropertyType,
+            sourceProperty.SourceProperty.Options.Property.PropertyType,
             targetProperty.Property.PropertyInfo.PropertyType);
 
         var result = configurations.Discovery.Assignment.Discover(request);

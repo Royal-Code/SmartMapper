@@ -28,7 +28,7 @@ public sealed class AvailableInnerSourceProperties
     /// <summary>
     /// The source item of the parent source property.
     /// </summary>
-    public SourceProperty SourceItem => ParentSourceProperty.SourceItem;
+    public SourceProperty SourceItem => ParentSourceProperty.SourceProperty;
 
     /// <summary>
     /// The property options of the parent source property.

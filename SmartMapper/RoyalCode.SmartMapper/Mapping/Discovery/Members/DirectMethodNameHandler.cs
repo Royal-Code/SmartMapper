@@ -11,8 +11,9 @@ public class DirectMethodNameHandler : INameHandler
         if (!context.Partitions.GetName(index, out var name))
             return false;
 
-        var methods = context.Request.TargetMethods.ListAvailableMethods()
-            .Where(m => m.Method.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+        var methods = context.Request.TargetMethods
+            .Where(m => !m.IsResolved)
+            .Where(m => m.MethodInfo.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         if (methods.Count is 0)

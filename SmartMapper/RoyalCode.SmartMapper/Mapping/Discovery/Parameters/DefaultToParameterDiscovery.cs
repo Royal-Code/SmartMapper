@@ -14,7 +14,7 @@ internal sealed class DefaultToParameterDiscovery : IToParameterDiscovery
         // 2 - try to find the source parameter by the target parameter name
         var sourceProperty = request.AvailableSourceItems.AvailableSourceProperties
             .FirstOrDefault(x => x.Options.Property.Name.Equals(
-                targetParameter.Parameter.Name,
+                targetParameter.Parameter.ParameterInfo.Name,
                 StringComparison.OrdinalIgnoreCase));
         
         // 3 - if not found, return a failure
@@ -23,14 +23,14 @@ internal sealed class DefaultToParameterDiscovery : IToParameterDiscovery
             {
                 IsResolved = false,
                 Failure = new ResolutionFailure(
-                    $"The parameter {targetParameter.Parameter.Name} not found in the source type.")
+                    $"The parameter {targetParameter.Parameter.ParameterInfo.Name} not found in the source type.")
             };
         
         // 4 - Try to find the assignment strategy
         var assignmentRequest = new AssignmentDiscoveryRequest(
             request.Configurations,
             sourceProperty.Options.Property.PropertyType,
-            targetParameter.Parameter.ParameterType);
+            targetParameter.Parameter.ParameterInfo.ParameterType);
 
         var assignment = request.Configurations.Discovery.Assignment.Discover(assignmentRequest);
         
@@ -40,7 +40,7 @@ internal sealed class DefaultToParameterDiscovery : IToParameterDiscovery
             {
                 IsResolved = false,
                 Failure = new ResolutionFailure(
-                    $"Failed to find the assignment strategy for the parameter {targetParameter.Parameter.Name}.",
+                    $"Failed to find the assignment strategy for the parameter {targetParameter.Parameter.ParameterInfo.Name}.",
                     assignment.Failure)
             };
         

@@ -1,68 +1,54 @@
 ﻿using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Resolutions;
 
 /// <summary>
 /// <para>
-///     A resolution for the method mapping.
-/// </para>
-/// <para>
-///     This resolution is used to map the a source property to a method of a target property.
+///     A resolution for mapping a source property to a method of a target property.
 /// </para>
 /// </summary>
-public sealed class PropertyToMethodResolution : ResolutionBase
+public sealed class PropertyToMethodResolution : PropertyResolution
 {
+    /// <summary>
+    /// Constructor for failed resolution of <see cref="PropertyToMethodResolution"/> .
+    /// </summary>
+    /// <param name="failure"></param>
+    public PropertyToMethodResolution(ResolutionFailure failure) : base(failure) { }
+
+    /// <summary>
+    /// Constructor for successful resolution of <see cref="PropertyToMethodResolution"/> .
+    /// </summary>
+    /// <param name="method">The resolved method information.</param>
+    /// <param name="parametersResolutions">The parameters resolutions.</param>
+    /// <param name="availableSourceProperty">The available source property.</param>
+    /// <param name="targetProperty">The target property.</param>
     public PropertyToMethodResolution(
-        AvailableSourceProperty? availableSourceProperty,
-        PropertyInfo? targetProperty,
-        MethodInfo? methodInfo,
-        IEnumerable<ParameterResolution> parametersResolutions)
+        TargetMethod method,
+        IReadOnlyCollection<ParameterResolution> parametersResolutions,
+        AvailableSourceProperty availableSourceProperty,
+        TargetProperty targetProperty) : base(availableSourceProperty, targetProperty)
     {
-        Resolved = true;
-        AvailableSourceProperty = availableSourceProperty;
-        TargetProperty = targetProperty;
-        MethodInfo = methodInfo;
+        Method = method;
         ParametersResolutions = parametersResolutions;
     }
-
-    /// <summary>
-    /// Creates a new instance of <see cref="PropertyToMethodResolution"/> for failed resolution.
-    /// </summary>
-    /// <param name="failure">The failure of the resolution.</param>
-    public PropertyToMethodResolution(ResolutionFailure failure)
-    {
-        Resolved = false;
-        Failure = failure;
-        ParametersResolutions = [];
-    }
-
-    /// <summary>
-    /// The available source property.
-    /// </summary>
-    public AvailableSourceProperty? AvailableSourceProperty { get; }
-
-    /// <summary>
-    /// The target parameter.
-    /// </summary>
-    public PropertyInfo? TargetProperty { get; }
-
+    
     /// <summary>
     /// The resolved method information.
     /// </summary>
-    public MethodInfo? MethodInfo { get; }
+    public TargetMethod? Method { get; }
 
     /// <summary>
     /// The parameters resolutions.
     /// </summary>
-    public IEnumerable<ParameterResolution> ParametersResolutions { get; }
+    public IReadOnlyCollection<ParameterResolution>? ParametersResolutions { get; }
 
     /// <summary>
     /// Check if the resolution has a failure.
     /// </summary>
-    [MemberNotNullWhen(false, nameof(MethodInfo), nameof(TargetProperty), nameof(AvailableSourceProperty))]
+    [MemberNotNullWhen(false, nameof(Method), nameof(ParametersResolutions), nameof(AvailableSourceProperty), nameof(TargetProperty))]
     public bool HasFailure([NotNullWhen(true)] out ResolutionFailure? failure)
     {
         failure = Failure;
@@ -72,6 +58,8 @@ public sealed class PropertyToMethodResolution : ResolutionBase
     /// <inheritdoc />
     public override void Completed()
     {
+        base.Completed();
+        Method?.ResolvedBy(this);
         foreach (var resolution in ParametersResolutions)
             resolution.Completed();
     }

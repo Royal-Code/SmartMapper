@@ -1,5 +1,6 @@
 ﻿using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
 using System.Diagnostics.CodeAnalysis;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
@@ -11,7 +12,7 @@ public sealed class MemberDiscoveryContext
     {
         this.nameHandlers = nameHandlers;
         Request = request;
-        Partitions = new NamePartitions(request.SourceProperty.SourceItem.Options.Property.Name);
+        Partitions = new NamePartitions(request.SourceProperty.SourceProperty.Options.Property.Name);
     }
     
     private MemberDiscoveryContext(
@@ -28,13 +29,13 @@ public sealed class MemberDiscoveryContext
     
     public MemberDiscoveryRequest Request { get; }
     
-    public MemberDiscoveryContext Inner(AvailableProperty targetAvailableProperty)
+    public MemberDiscoveryContext Inner(TargetProperty targetProperty)
     {
         var innerRequest = new MemberDiscoveryRequest(
             Request.Configurations,
             Request.SourceProperty,
-            targetAvailableProperty.GetInnerAvailableMethods(),
-            targetAvailableProperty.GetInnerAvailableProperties());
+            targetProperty.InnerMethods,
+            targetProperty.InnerProperties);
 
         return new MemberDiscoveryContext(innerRequest, nameHandlers, Partitions);
     }

@@ -16,11 +16,11 @@ public sealed class AvailableSourceProperty
     /// <summary>
     /// Creates new instance of <see cref="AvailableSourceProperty"/>.
     /// </summary>
-    /// <param name="sourceItem">The source item.</param>
+    /// <param name="sourceProperty">The source item.</param>
     /// <param name="parentSourceProperty">The parent source property, if available.</param>
-    public AvailableSourceProperty(SourceProperty sourceItem, AvailableSourceProperty? parentSourceProperty = null)
+    public AvailableSourceProperty(SourceProperty sourceProperty, AvailableSourceProperty? parentSourceProperty = null)
     {
-        SourceItem = sourceItem;
+        SourceProperty = sourceProperty;
         Parent = parentSourceProperty;
 
         parentSourceProperty?.AddInnerProperty(this);
@@ -40,17 +40,17 @@ public sealed class AvailableSourceProperty
     /// <summary>
     /// The source item.
     /// </summary>
-    public SourceProperty SourceItem { get; }
+    public SourceProperty SourceProperty { get; }
 
     /// <summary>
     /// The property options.
     /// </summary>
-    public PropertyOptions Options => SourceItem.Options;
+    public PropertyOptions Options => SourceProperty.Options;
 
     /// <summary>
     /// The resolution options, if available.
     /// </summary>
-    public ResolutionOptionsBase? ResolutionOptions => SourceItem.Options.ResolutionOptions;
+    public ResolutionOptionsBase? ResolutionOptions => SourceProperty.Options.ResolutionOptions;
 
     /// <summary>
     /// The inner properties, if available.
@@ -84,7 +84,7 @@ public sealed class AvailableSourceProperty
         if (!Resolved)
             throw new InvalidOperationException("The property is not resolved.");
         
-        SourceItem.ResolvedBy(Resolution);
+        SourceProperty.ResolvedBy(Resolution);
         Parent?.Completed();
     }
 
@@ -123,7 +123,7 @@ public sealed class AvailableSourceProperty
         var isAllChildrenResolved = InnerProperties.Resolved;
         if (isAllChildrenResolved)
         {
-            ResolvedBy(new InnerPropertiesResolution(SourceItem, InnerProperties));
+            ResolvedBy(new InnerPropertiesResolution(SourceProperty, InnerProperties));
         }
     }
 }

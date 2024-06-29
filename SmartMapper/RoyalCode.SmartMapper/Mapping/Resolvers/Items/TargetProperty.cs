@@ -7,6 +7,9 @@ namespace RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 /// </summary>
 public sealed class TargetProperty : TargetBase
 {
+    private IReadOnlyCollection<TargetProperty>? innerProperties;
+    private IReadOnlyCollection<TargetMethod>? innerMethods;
+    
     /// <summary>
     /// Creates a list of <see cref="TargetProperty"/> of a target type.
     /// </summary>
@@ -40,4 +43,18 @@ public sealed class TargetProperty : TargetBase
     /// The property.
     /// </summary>
     public PropertyInfo PropertyInfo { get; }
+    
+    /// <summary>
+    /// <para>
+    ///     The inner methods of the property.
+    /// </para>
+    /// </summary>
+    public IReadOnlyCollection<TargetMethod> InnerMethods => innerMethods ??= TargetMethod.Create(PropertyInfo.PropertyType);
+    
+    /// <summary>
+    /// <para>
+    ///     The inner properties of the property.
+    /// </para>
+    /// </summary>
+    public IReadOnlyCollection<TargetProperty> InnerProperties => innerProperties ??= Create(PropertyInfo.PropertyType);
 }

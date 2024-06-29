@@ -36,9 +36,7 @@ public class AvailableTargetProperties
     /// <returns>A collection of available properties that are not resolved.</returns>
     public IEnumerable<AvailableProperty> ListAvailableThenProperties()
     {
-        return availableProperties.Where(p => !p.Resolved 
-        || (p.Resolution is PropertyResolution pr 
-            && pr.PropertyResolutionStrategy is Options.Resolutions.ToPropertyResolutionStrategy.Then));
+        return availableProperties.Where(p => !p.Resolved || p.Resolution is MemberAccessResolution);
     }
 
     /// <summary>

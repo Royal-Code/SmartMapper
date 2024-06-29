@@ -2,6 +2,7 @@
 using RoyalCode.SmartMapper.Core.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolutions;
 using RoyalCode.SmartMapper.Mapping.Resolvers.Availables;
+using RoyalCode.SmartMapper.Mapping.Resolvers.Items;
 
 namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 
@@ -10,7 +11,7 @@ namespace RoyalCode.SmartMapper.Mapping.Discovery.Members;
 /// </summary>
 public sealed class NavigationPropertyResolver : MemberResolver
 {
-    private readonly AvailableProperty targetAvailableProperty;
+    private readonly TargetProperty targetProperty;
     private readonly MemberDiscoveryContext names;
     private readonly int nameIndex;
 
@@ -18,14 +19,14 @@ public sealed class NavigationPropertyResolver : MemberResolver
     /// Creates a new instance of <see cref="NavigationPropertyResolver"/>.
     /// </summary>
     /// <param name="names">The name of the property.</param>
-    /// <param name="targetAvailableProperty">The target property to resolve.</param>
+    /// <param name="targetProperty">The target property to resolve.</param>
     /// <param name="nameIndex">The index of the name.</param>
     public NavigationPropertyResolver(
         MemberDiscoveryContext names,
-        AvailableProperty targetAvailableProperty,
+        TargetProperty targetProperty,
         int nameIndex)
     {
-        this.targetAvailableProperty = targetAvailableProperty;
+        this.targetProperty = targetProperty;
         this.names = names;
         this.nameIndex = nameIndex;
     }
@@ -33,7 +34,7 @@ public sealed class NavigationPropertyResolver : MemberResolver
     /// <inheritdoc />
     public override MemberDiscoveryResult CreateResolution(MapperConfigurations configurations)
     {
-        var innerContext = names.Inner(targetAvailableProperty);
+        var innerContext = names.Inner(targetProperty);
         if (innerContext.HandleNextPart(nameIndex, out var thenResolver))
         {
             var thenResolution = thenResolver.CreateResolution(configurations);
@@ -44,12 +45,10 @@ public sealed class NavigationPropertyResolver : MemberResolver
                     Failure = thenResolution.Failure
                 };
             
-            var propertyResolution = new PropertyResolution(
+            var propertyResolution = new MemberAccessResolution(
+                thenResolution.Resolution,
                 names.Request.SourceProperty,
-                targetAvailableProperty.Property,
-                thenResolution.Resolution);
-            
-            targetAvailableProperty.ResolvedBy(propertyResolution);
+                targetProperty);
             
             return new()
             {
@@ -62,7 +61,7 @@ public sealed class NavigationPropertyResolver : MemberResolver
         {
             IsResolved = false,
             Failure = new ResolutionFailure(
-                $"Could not resolve the property '{targetAvailableProperty.Property.Name}'")
+                $"Could not resolve the property '{targetProperty.PropertyInfo.Name}'")
         };
     }
 }
