@@ -1,15 +1,7 @@
 # SmartMapper
-An object-to-object mapper. Separated into four mapping categories: adapters, mappers, selectors, and specifiers.
+An object-to-object mapper. Separated into thre mapping categories: commands, selectors, and specifiers.
 
-**Adapters** map the property values of a source object to a new target object, where a new instance of the target object is created.
-<br/>
-The properties of the source object can be mapped as parameters of a constructor of the target object, as method parameters, or to other properties of the target object.
-
-
-**Mappers** are similar to adapters, but the target object must exist, a new object is not instantiated.
-<br/>
-So the source object's properties are not mapped as constructor parameters, but are mapped as method parameters and to other properties.
-
+**Commands** creates a handler that calls a method of the current object, reading entities, passing parameters, and returning the result.
 
 **Selectors** read values from source object properties to assign to a target object's properties, where a new instance of the target object is always created.
 <br/>

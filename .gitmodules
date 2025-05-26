@@ -1,0 +1,9 @@
+[submodule "external/utils"]
+	path = external/utils
+	url = https://github.com/Royal-Code/Utils.git
+[submodule "external/smart-selector"]
+	path = external/smart-selector
+	url = https://github.com/Royal-Code/SmartSelector.git
+[submodule "external/smart-commands"]
+	path = external/smart-commands
+	url = https://github.com/Royal-Code/SmartCommands.git
