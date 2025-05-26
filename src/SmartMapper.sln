@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartCommands.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.SmartCommands.WorkContext", "..\external\smart-commands\src\RoyalCode.SmartCommands.WorkContext\RoyalCode.SmartCommands.WorkContext.csproj", "{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.Extensions.SourceGenerator", "..\external\utils\RoyalCode.Utils\RoyalCode.Extensions.SourceGenerator\RoyalCode.Extensions.SourceGenerator.csproj", "{B2756EA6-D383-F600-2D37-68E5EA2E99E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.Extensions.SourceGenerator.Tests", "..\external\utils\RoyalCode.Utils\RoyalCode.Extensions.SourceGenerator.Tests\RoyalCode.Extensions.SourceGenerator.Tests.csproj", "{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +103,14 @@ Global
 		{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2756EA6-D383-F600-2D37-68E5EA2E99E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2756EA6-D383-F600-2D37-68E5EA2E99E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2756EA6-D383-F600-2D37-68E5EA2E99E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2756EA6-D383-F600-2D37-68E5EA2E99E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +129,8 @@ Global
 		{7CCFAD5B-C7CF-9080-B279-B49C14CE5D97} = {363E7EC3-197A-4849-B7D0-4B515A507A08}
 		{C460FDFE-1923-E2F9-9319-635EB71EA96D} = {363E7EC3-197A-4849-B7D0-4B515A507A08}
 		{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3} = {363E7EC3-197A-4849-B7D0-4B515A507A08}
+		{B2756EA6-D383-F600-2D37-68E5EA2E99E8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFEEFEC3-D752-4B1F-A19F-7771FE50F643}
