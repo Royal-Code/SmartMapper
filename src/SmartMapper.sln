@@ -45,6 +45,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.Extensions.Source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalCode.Extensions.SourceGenerator.Tests", "..\external\utils\RoyalCode.Utils\RoyalCode.Extensions.SourceGenerator.Tests\RoyalCode.Extensions.SourceGenerator.Tests.csproj", "{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".items", ".items", "{F944B5D9-AD28-4F0C-A888-60E8527AF2F3}"
+	ProjectSection(SolutionItems) = preProject
+		..\external\smart-selector\src\Directory.Build.props = ..\external\smart-selector\src\Directory.Build.props
+		..\external\smart-selector\src\libs.targets = ..\external\smart-selector\src\libs.targets
+		..\external\smart-selector\src\tests.targets = ..\external\smart-selector\src\tests.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +138,7 @@ Global
 		{DF736AF3-1340-6E5B-31D8-5F0E03EFF7C3} = {363E7EC3-197A-4849-B7D0-4B515A507A08}
 		{B2756EA6-D383-F600-2D37-68E5EA2E99E8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{2B3DD1A3-A9A7-47AA-0D83-D9A95ACE2B77} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F944B5D9-AD28-4F0C-A888-60E8527AF2F3} = {C5A89E3D-92AB-4785-92FA-E0E6CAF813BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFEEFEC3-D752-4B1F-A19F-7771FE50F643}
